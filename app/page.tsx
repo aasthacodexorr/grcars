@@ -46,7 +46,7 @@ const HomePage = () => {
       <Reviews/>
       <FaqSection/>
       <Footer />
-      <GoogleReviewsWidget/>
+      {/* <GoogleReviewsWidget/> */}
     </main>
   );
 };
