@@ -20,7 +20,7 @@ const CategoryPill = ({ label, image, href }: ExtendedCategoryPillProps) => {
       {image && (
         <div className="relative w-32 h-16 flex items-center justify-center">
           <Image
-            src={carImg?.src }
+            src={image || carImg?.src}
             alt={label}
             width={128}
             height={64}

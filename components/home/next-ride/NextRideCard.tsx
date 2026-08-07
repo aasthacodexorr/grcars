@@ -4,7 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { NextRideCardProps } from "./types";
-import HomeBgImg from "@/assets/cars/HomebgImg.png";
+import carImg from "@/assets/cars/car-white-suv 1.png";
 
 interface FeatureCardProps extends Omit<NextRideCardProps, "image"> {
   bgColor: string;
@@ -30,8 +30,7 @@ const NextRideCard = ({
 }: FeatureCardProps) => {
   return (
     <div
-      className={`rounded-3xl p-6 flex flex-col justify-between min-w-[280px] sm:min-w-[300px] lg:max-w-[300px] h-[400px] snap-start shrink-0 ${bgColor} ${textColor} transition-transform duration-200 hover:-translate-y-1`}
-    >
+className={`rounded-3xl p-6 flex flex-col justify-between w-full md:w-[300px] md:min-w-[300px] md:max-w-[300px] h-[400px] md:snap-start shrink-0 ${bgColor} ${textColor} transition-transform duration-200 hover:-translate-y-1`}    >
       {/* Top Header Section */}
       <div>
         <h3 className="text-2xl font-bold leading-tight mb-2">{title}</h3>
@@ -48,10 +47,10 @@ const NextRideCard = ({
           image && (
             <div className="relative w-full h-[180px] flex items-center justify-center">
               <Image
-                src={HomeBgImg?.src}
+                src={carImg?.src}
                 alt={title}
-                width={260}
-                height={160}
+                width={300}
+                height={200}
                 className="object-contain drop-shadow-xl"
               />
             </div>

@@ -122,7 +122,7 @@ const Header = () => {
       <header className={`lg:hidden w-full shadow-none relative z-50 bg-neutral-offWhite`}>
 
         {/* Top bar: logo + social icons */}
-        <div className="flex items-center justify-betwee pl-[12px] pr-[29px] py-[5px]">
+        <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full">
           <Link href="/" aria-label="GrCars home" className="[&_img]:max-w-[125px] [&_img]:h-auto">
             <GrCarsLogo />
           </Link>

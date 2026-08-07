@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import carImg from "@/assets/cars/car-white-suv 1.png"
-
+import rivian from "@/assets/cars/rivian.webp";
+import tesla from "@/assets/cars/tesla.webp";
+import equinox from "@/assets/cars/equinox.webp";
+import rogue from "@/assets/cars/rogue.webp";
+import escape from "@/assets/cars/escape.webp";
+import explorer from "@/assets/cars/explorer.webp";
 
 interface ModelCard {
   make: string;
@@ -15,86 +19,53 @@ interface ModelCard {
 }
 
 const MODELS: ModelCard[] = [
-  {
-    make: "Rivian",
-    model: "R1S/R1T",
-    image: "/images/models/rivian.png",
-    href: "/inventory?make=Rivian",
-  },
-  {
-    make: "Tesla",
-    model: "Model 3",
-    image: "/images/models/tesla-model-3.png",
-    href: "/inventory?make=Tesla&model=Model+3",
-  },
-  {
-    make: "Chevrolet",
-    model: "Equinox",
-    image: "/images/models/chevrolet-equinox.png",
-    href: "/inventory?make=Chevrolet&model=Equinox",
-  },
-  {
-    make: "Nissan",
-    model: "Rogue",
-    image: "/images/models/nissan-rogue.png",
-    href: "/inventory?make=Nissan&model=Rogue",
-  },
-  {
-    make: "Ford",
-    model: "Escape",
-    image: "/images/models/ford-escape.png",
-    href: "/inventory?make=Ford&model=Escape",
-  },
-  {
-    make: "Ford",
-    model: "Explorer",
-    image: "/images/models/ford-explorer.png",
-    href: "/inventory?make=Ford&model=Explorer",
-  },
-   {
-    make: "Ford",
-    model: "Escape",
-    image: "/images/models/ford-escape.png",
-    href: "/inventory?make=Ford&model=Escape",
-  },
-  {
-    make: "Ford",
-    model: "Explorer",
-    image: "/images/models/ford-explorer.png",
-    href: "/inventory?make=Ford&model=Explorer",
-  },
-   {
-    make: "Ford",
-    model: "Escape",
-    image: "/images/models/ford-escape.png",
-    href: "/inventory?make=Ford&model=Escape",
-  },
-  {
-    make: "Ford",
-    model: "Explorer",
-    image: "/images/models/ford-explorer.png",
-    href: "/inventory?make=Ford&model=Explorer",
-  },
-   {
-    make: "Ford",
-    model: "Escape",
-    image: "/images/models/ford-escape.png",
-    href: "/inventory?make=Ford&model=Escape",
-  },
-  {
-    make: "Ford",
-    model: "Explorer",
-    image: "/images/models/ford-explorer.png",
-    href: "/inventory?make=Ford&model=Explorer",
-  },
+  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory?make=Rivian" },
+  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory?make=Tesla&model=Model+3" },
+  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory?make=Chevrolet&model=Equinox" },
+  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory?make=Nissan&model=Rogue" },
+  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory?make=Ford&model=Escape" },
+  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory?make=Ford&model=Explorer" },
+  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory?make=Rivian" },
+  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory?make=Tesla&model=Model+3" },
+  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory?make=Chevrolet&model=Equinox" },
+  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory?make=Nissan&model=Rogue" },
+  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory?make=Ford&model=Escape" },
+  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory?make=Ford&model=Explorer" },
 ];
 
 const PopularModels = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Checks boundaries to toggle active/disabled states on arrows
+  const checkScrollBounds = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+    }
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      checkScrollBounds();
+      container.addEventListener("scroll", checkScrollBounds);
+      window.addEventListener("resize", checkScrollBounds);
+    }
+    return () => {
+      if (container) container.removeEventListener("scroll", checkScrollBounds);
+      window.removeEventListener("resize", checkScrollBounds);
+    };
+  }, []);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === "left" ? -260 : 260;
+      // Moves full container page width dynamically
+      const containerWidth = scrollContainerRef.current.clientWidth;
+      const scrollAmount = direction === "left" ? -containerWidth : containerWidth;
+
       scrollContainerRef.current.scrollBy({
         left: scrollAmount,
         behavior: "smooth",
@@ -113,14 +84,24 @@ const PopularModels = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleScroll("left")}
-              className="p-2.5 rounded-full cursor-pointer border border-gray-300 text-gray-400 hover:text-gray-700 hover:border-gray-500 transition-all"
+              disabled={!canScrollLeft}
+              className={`p-2.5 rounded-full transition-all ${
+                canScrollLeft
+                  ? "border border-gray-400 text-gray-800 hover:border-gray-900 cursor-pointer"
+                  : "border border-gray-200 text-gray-300 cursor-not-allowed opacity-50"
+              }`}
               aria-label="Scroll Left"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => handleScroll("right")}
-              className="p-2.5 rounded-full cursor-pointer border border-gray-400 text-gray-800 hover:border-gray-900 transition-all"
+              disabled={!canScrollRight}
+              className={`p-2.5 rounded-full transition-all ${
+                canScrollRight
+                  ? "border border-gray-400 text-gray-800 hover:border-gray-900 cursor-pointer"
+                  : "border border-gray-200 text-gray-300 cursor-not-allowed opacity-50"
+              }`}
               aria-label="Scroll Right"
             >
               <ChevronRight className="w-5 h-5" />
@@ -131,7 +112,7 @@ const PopularModels = () => {
         {/* Horizontal Scrollable Grid */}
         <div
           ref={scrollContainerRef}
-          className="flex items-center gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2"
+          className="flex items-center gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
         >
           {MODELS.map((item, index) => (
             <Link
@@ -152,7 +133,7 @@ const PopularModels = () => {
               {/* Vehicle Image */}
               <div className="relative w-full h-32 flex items-center justify-center mt-auto">
                 <Image
-                  src={carImg?.src}
+                  src={item?.image}
                   alt={`${item.make} ${item.model}`}
                   width={200}
                   height={120}
@@ -161,6 +142,17 @@ const PopularModels = () => {
               </div>
             </Link>
           ))}
+
+          {/* End of list: Shop All Link */}
+          <div className="snap-start flex-shrink-0 flex items-center justify-center pl-4 pr-8 h-[240px]">
+            <Link
+              href="/inventory"
+              className="flex items-center gap-2 text-[#0F2942] font-semibold text-lg hover:underline whitespace-nowrap"
+            >
+              Shop All
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

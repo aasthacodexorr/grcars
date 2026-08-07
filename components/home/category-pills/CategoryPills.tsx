@@ -56,7 +56,7 @@ const CategoryPills = () => {
       <div className="max-w-[1280px] mx-auto">
         {/* Header & Controls */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-[28px] font-bold text-[#0F2942]">
+          <h2 className=" text-[20px] md:text-[28px] font-bold text-[#0F2942]">
             Popular vehicle styles
           </h2>
           <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ const CategoryPills = () => {
           {/* End of list: Shop All Link */}
           <div className="snap-start flex-shrink-0 flex items-center justify-center pl-4 pr-8">
             <Link
-              href="/cars"
+              href="/inventory"
               className="flex items-center gap-2 text-[#0F2942] font-semibold text-lg hover:underline whitespace-nowrap"
             >
               Shop All

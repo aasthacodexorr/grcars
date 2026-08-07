@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { Card } from "./types";
-
+import carImg from "@/assets/cars/car-white-suv 1.png"
 export const CARDS: Card[] = [
   {
     title: "Cars under $20K",
@@ -19,7 +19,7 @@ export const CARDS: Card[] = [
           $18,590
         </span>
         <Image
-          src="/images/cards/budget-car.png"
+          src={carImg?.src}
           alt="Budget Car"
           width={208}
           height={120}
@@ -30,7 +30,7 @@ export const CARDS: Card[] = [
   },
   {
     title: "Discover Great Deals!",
-    subtitle: "Cars priced $1,500 or more below the Kelley Blue Book® Typical Listing Price.",
+    subtitle: "Cars priced $1,500 or more below the Kelley Black Book® Typical Listing Price.",
     bgColor: "bg-[#EAEAEA]",
     textColor: "text-[#0F2942]",
     buttonBg: "bg-[#0066CC] hover:bg-[#0052A3]",
