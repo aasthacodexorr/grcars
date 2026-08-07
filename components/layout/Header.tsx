@@ -24,6 +24,7 @@ import GrCarsLogo from "@/components/common/GrCarsLogo";
 import { getConstants, NAV_ITEMS } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
+import { useDrawer } from "@/context/DrawerContext";
 
 
 /*  Component */
@@ -33,6 +34,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { wishlist, isHydrated } = useWishlist();
+  const { openWishlistDrawer, isWishlistDrawerOpen } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
 
   // Close mobile menu whenever the route changes
@@ -102,8 +104,8 @@ const Header = () => {
               className={`text-[20px] font-semibold flex items-center gap-[5px] text-black hover:opacity-80 transition-opacity relative`}
               aria-label="Wishlist"
             >
-              <svg className="w-[30px] h-[30px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              <svg className="w-[26px] h-[26px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               {wishlistCount > 0 && (
                 <span className="absolute -top-2 -right-2  text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -227,12 +229,12 @@ const Header = () => {
               className={`py-4 border-b border-gray-100 text-[17px] flex items-center justify-between transition-colors ${pathname === "/wishlist" ? "font-medium" : "text-gray-900"
                 }`}
             >
-              <span className="flex items-center gap-3 relative">
-                Wishlist
-                {wishlistCount > 0 && (
-                  <span className="inline-flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5">
-                    {wishlistCount}
-                  </span>
+              <span className="flex items-center gap-2 relative">
+                Favourites
+                {wishlistCount >= 0 && (
+                  <span className="text-[17px]">
+                    ({wishlistCount})
+                  </span> 
                 )}
               </span>
             </Link>
