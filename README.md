@@ -1,6 +1,6 @@
-# Cardora - Next.js Frontend
+# GrCars - Next.js Frontend
 
-A modern, performant Next.js 16 application for Cardora's car dealership website. Built with React 19, TypeScript, Tailwind CSS, and integrated with Typesense for vehicle search.
+A modern, performant Next.js 16 application for GrCars's car dealership website. Built with React 19, TypeScript, Tailwind CSS, and integrated with Typesense for vehicle search.
 
 ## 🚀 Quick Start
 
@@ -14,7 +14,7 @@ A modern, performant Next.js 16 application for Cardora's car dealership website
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd cardora-fe
+   cd GrCars-fe
    ```
 
 2. **Install dependencies**
@@ -148,7 +148,7 @@ For questions or issues, please contact the development team or refer to the pro
 
 ## 📄 License
 
-This project is proprietary to Cardora. All rights reserved.
+This project is proprietary to GrCars. All rights reserved.
 
 ---
 

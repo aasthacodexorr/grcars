@@ -11,15 +11,14 @@
 ========================= */
 
 import { AppConfig, fallbackValue, defaultAppConfig } from "@/lib/appConfig";
+import {Search} from "lucide-react"
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 export const NAV_ITEMS = [
-  { label: "Shop", to: "/inventory" },
+  { label: "Search Cars", to: "/inventory" , icon:Search },
   { label: "Sell/Trade", to: "/trade-in-my-car" },
-  { label: "Finance", to: "/financing" },
-  { label: "Protection Plans", to: "/protection-plans" },
-  { label: "Service", to: "/service" },
-  { label: "Why Cardora?", to: "/about-us" },
+  { label: "Financing", to: "/financing" },
+ 
 ] as const;
 
 

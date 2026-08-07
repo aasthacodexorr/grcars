@@ -1,15 +1,18 @@
+import { ReactNode } from "react";
+
 export interface Card {
-  image: any;
-  alt: string;
   title: string;
   subtitle: string;
+  bgColor: string;
+  textColor: string;
+  buttonBg: string;
+  buttonText: string;
+  buttonLabel: string;
   to: string;
+  image?: string;
+  customVisual?: ReactNode;
 }
 
-export interface NextRideCardProps {
-  image: any;
-  alt: string;
-  title: string;
-  subtitle: string;
-  to: string;
+export interface NextRideCardProps extends Card {
+  alt?: string;
 }

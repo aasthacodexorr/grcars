@@ -1,6 +1,6 @@
 /* =========================
    Finance / Express Checkout Page
-   Embeds the Cardora express checkout iframe.
+   Embeds the GrCars express checkout iframe.
    Accepts an optional `inventory_id` query param
    to pre-load a specific vehicle in the checkout flow.
    Wrapped in Suspense to safely use useSearchParams.

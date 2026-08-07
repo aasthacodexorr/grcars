@@ -23,7 +23,7 @@ export default function ThankYouTradeIn() {
 
                 <p className="text-center font-medium max-w-xl text-[17px] mt-4">
                     Our smart pricing system is analyzing your vehicle details and
-                    matching them with real-time market data. A Cardora specialist will
+                    matching them with real-time market data. A GrCars specialist will
                     contact you shortly to review your offer and next steps.
                 </p>
             </div>
@@ -51,7 +51,7 @@ export default function ThankYouTradeIn() {
 
                     <li className="inline-flex items-center gap-[4px]">
                         <Smartphone size={14} strokeWidth={2} />
-                        <span>One of our Cardora specialists will reach out shortly with the next steps.</span>
+                        <span>One of our GrCars specialists will reach out shortly with the next steps.</span>
                     </li>
                 </ul>
             </div>

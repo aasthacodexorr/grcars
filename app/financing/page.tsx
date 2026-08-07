@@ -1,6 +1,6 @@
 /* =========================
    Financing Page
-   Embeds the Cardora financing application form
+   Embeds the GrCars financing application form
    via an iframe. Listens for postMessage events
    from the iframe to dynamically resize the iframe
    height, preventing scroll bars inside the embed.
@@ -62,7 +62,7 @@ const Finance = () => {
               id="financing_form"
               src={`${SITE_CONFIG.urls.financeRenderApiUrl}?`}
               name="iframe_a"
-              title="Cardora financing application"
+              title="GrCars financing application"
               scrolling="no"
               className="w-full block transition-[height] duration-300 ease-out border-0"
               style={{

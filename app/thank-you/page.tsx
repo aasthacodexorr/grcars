@@ -21,7 +21,7 @@ export default async function ThankYou() {
             <div className='w-full lg:px-48 lg:pb-20 px-4 pb-8 '>
                 <Image
                     src={thanksImg}
-                    alt="Blue Honda Civic Sedan showcasing Cardora Certified quality"
+                    alt="Blue Honda Civic Sedan showcasing GrCars Certified quality"
                     className="w-full h-auto object-contain"
                     width={1000}
                     height={500}

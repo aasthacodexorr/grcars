@@ -1,9 +1,9 @@
 /* =========================
    About Us Page
-   Tells the Cardora brand story.
+   Tells the GrCars brand story.
    Sections:
    - Hero with background image overlay
-   - "Cardora Certified" feature grid
+   - "GrCars Certified" feature grid
    - After-sale service + reviews cards
    - "Built in Canada" story with team photo
    - DreamVehicleCTA → GetInTouch → Footer
@@ -19,7 +19,6 @@ import { Header, Footer } from "@/components/layout";
 import { GetInTouch } from "@/components/common";
 import Image from "next/image";
 import about from "@/assets/icons/about.png";
-import blueCar from "@/assets/icons/cardora-blue-car.png";
 import saleServices from "@/assets/icons/sale-services.jpg";
 import reviews from "@/assets/icons/100reviews.png";
 import forCanada from "@/assets/icons/proudlycanadian.png";
@@ -92,7 +91,7 @@ const About = () => {
             >
               <Image
                 src={about}
-                alt="Cardora dealership illustration with flatbed delivery truck carrying a blue SUV"
+                alt="GrCars dealership illustration with flatbed delivery truck carrying a blue SUV"
                 className="w-full max-w-[750px] h-auto object-contain"
                 width={550}
                 height={320}
@@ -106,7 +105,7 @@ const About = () => {
           <hr className="text-gray-200" />
         </div>
 
-        {/* Cardora Certified Section: Header static, Badges reveal sequentially on scroll, Image static */}
+        {/* GrCars Certified Section: Header static, Badges reveal sequentially on scroll, Image static */}
         <section className="bg-white py-10 md:py-24 px-5">
           <div className="mx-auto max-w-[1240px] md:px-1">
             <h2 className="text-[27px] md:text-4xl lg:text-5xl font-bold lg:tracking-tight text-neutral-950 text-left leading-none">
@@ -142,8 +141,8 @@ const About = () => {
               {/* Right Column: Static Car Image */}
               <div className="w-full md:max-w-[700px] flex justify-center md:justify-end relative min-h-[250px] ">
                 <Image
-                  src={blueCar}
-                  alt="Blue Honda Civic Sedan showcasing Cardora Certified quality"
+                  src={about}
+                  alt="Blue Honda Civic Sedan showcasing GrCars Certified quality"
                   className="w-full h-auto object-contain drop-shadow-2xl md:absolute -top-10 md:-top-2 md:-right-4"
                   width={1000}
                   height={500}
@@ -162,7 +161,7 @@ const About = () => {
               <div className="overflow-hidden rounded-2xl bg-white shadow-md w-full lg:max-w-[670px] max-w-full">
                 <Image
                   src={saleServices}
-                  alt="Cardora service team standing proudly inside the dealership lot"
+                  alt="GrCars service team standing proudly inside the dealership lot"
                   className="w-full h-auto object-cover"
                   width={540}
                   height={320}
@@ -231,7 +230,7 @@ const About = () => {
             <div className="w-full flex justify-center md:justify-start">
               <Image
                 src={forCanada}
-                alt="Cardora dealership illustration featuring the Canadian flag and map silhouette"
+                alt="GrCars dealership illustration featuring the Canadian flag and map silhouette"
                 className="w-full lg:max-w-[650px] h-auto object-contain"
                 width={540}
                 height={320} 

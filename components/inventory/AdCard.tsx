@@ -22,7 +22,7 @@ const CardShell = ({
 );
 
 /* -------------------------------------------------------------------------
-   1) Finance ad — Carvana-style wordmark, green theme, links to Finance page
+   1) Finance ad — GrCars-style wordmark, green theme, links to Finance page
 ------------------------------------------------------------------------- */
 export const FinanceAdCard = () => {
   const financeUrl = `/financing`;
@@ -43,7 +43,7 @@ export const FinanceAdCard = () => {
 
       {/* Heading */}
       <h3 className="text-[22px] font-bold tracking-tight text-[#051329]">
-        Finance with Cardora
+        Finance with GrCars
       </h3>
 
       {/* Subtext */}
@@ -109,14 +109,14 @@ export const GreatDealsAdCard = () => {
       <div className="w-full flex items-center justify-center my-4 bg-white">
         <img
           src={AdCard3?.src}
-          alt="Cardora Certified"
+          alt="GrCars Certified"
           className="w-72 h-auto object-contain transform -rotate-12 bg-white transition-transform duration-300"
         />
       </div>
 
       {/* Heading with Info Icon */}
       <h3 className="text-[22px] font-bold tracking-tight text-[#051329] leading-none flex items-center justify-center gap-1.5 flex-wrap">
-        <span>Every vehicle you see is Cardora Certified.</span>
+        <span>Every vehicle you see is GrCars Certified.</span>
 
       </h3>
 

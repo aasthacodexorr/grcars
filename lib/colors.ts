@@ -16,8 +16,8 @@ export const COLORS = {
   // ═══════════════════════════════════════════════════════════════════════════
   primary: {
     // Main brand green - used for CTAs, buttons, and primary actions
-    green: '#00af66',
-    greenLight: '#A8E5CC',    // Light variant for gradients
+    green: '#06c',
+    greenLight: '#0075e3',    // Light variant for gradients
     greenMedium: '#85DBB8',   // Medium variant for gradients  
     greenDark: '#05B169',     // Dark variant for hover states
     green2: '#00b074',        // Secondary green variant

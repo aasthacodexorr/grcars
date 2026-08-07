@@ -237,7 +237,7 @@ export default function SkipTheDealership() {
                                 </ul>
                             </motion.div>
 
-                            {/* Cardora Column */}
+                            {/* GrCars Column */}
                             <motion.div variants={scaleUp} className="rounded-2xl p-6 md:p-4 bg-prequalify-blue border border-border-light">
                                 <h5 className="text-xl font-bold text-black border-b border-slate-200 py-7">
                                     {SITE_CONFIG?.dealership.name}

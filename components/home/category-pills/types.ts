@@ -2,6 +2,7 @@ export interface Category {
   label: string;
   icon?: any;
   href?: any;
+  id:number
 }
 
 export interface CategoryPillProps {

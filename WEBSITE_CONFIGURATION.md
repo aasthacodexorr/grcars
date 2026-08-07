@@ -6,7 +6,7 @@
 - **Port:** `443`
 - **Protocol:** `https`
 - **Collection:** `*********`
-  *(Note: This is specific for Cardora and changes depending on the customer we are trying to connect.)*
+  *(Note: This is specific for GrCars and changes depending on the customer we are trying to connect.)*
 
 ## Authentication
 Each page will have a PRE-DEFINED KEY.

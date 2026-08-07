@@ -1,52 +1,85 @@
-import {
-  faBolt,
-  faCar,
-  faVanShuttle,
-  faCarSide,
-  faPiggyBank,
-} from "@fortawesome/free-solid-svg-icons";
+// constants.ts
 import type { Category } from "./types";
 import { getInventoryUrlByRange, getInventoryUrlByRefinement } from "@/lib/inventoryUrls";
 import { AppConfig } from "@/lib/appConfig";
 
-export const getCategories = (appConfig: AppConfig): Category[] => [
+export const getCategories = (appConfig: AppConfig): (Category & { image: string })[] => [
   {
-    label: "EVs",
-    icon: faBolt,
-    href: getInventoryUrlByRefinement("body_type", ["Commercial EV"], appConfig),
+    id:1,
+    label: "SUVs",
+    image: "/images/vehicles/suv.png",
+    href: getInventoryUrlByRefinement("body_type", ["Suvs", "Sport Utility Vehicle", "SUV-Crossover"], appConfig),
   },
   {
+    id:2,
     label: "Sedans",
-    icon: faCar,
+    image: "/images/vehicles/sedan.png",
     href: getInventoryUrlByRefinement("body_type", ["Sedan", "Sedan 4 Dr."], appConfig),
   },
   {
-    label: "Used",
-    icon: faCar,
-    href: getInventoryUrlByRefinement("vehicle_type", ["Used"], appConfig),
+    id:3,
+    label: "Trucks",
+    image: "/images/vehicles/truck.png",
+    href: getInventoryUrlByRefinement("body_type", ["Truck", "Pickup"], appConfig),
   },
   {
-    label: "Vans",
-    icon: faVanShuttle,
-    href: getInventoryUrlByRefinement("body_type", ["Van", "Mini van"], appConfig),
+    id:4,
+    label: "EVs",
+    image: "/images/vehicles/ev.png",
+    href: getInventoryUrlByRefinement("body_type", ["Commercial EV"], appConfig),
   },
   {
-    label: "SUVs",
-    icon: faCarSide,
-    href: getInventoryUrlByRefinement("body_type", ["Suvs", "Sport Utility Vehicle", "SUV-Crossover",], appConfig),
-  },
-  {
+    id:5,
     label: "Hybrids",
-    icon: null,
+    image: "/images/vehicles/hybrid.png",
     href: getInventoryUrlByRefinement("fuel_type", ["hybrid"], appConfig),
   },
   {
-    label: "Below $20k",
-    icon: faPiggyBank,
-    href: getInventoryUrlByRange("selling_price", ":20000", appConfig),
-  }
+    id:6,
+    label: "Coupes",
+    image: "/images/vehicles/coupe.png",
+    href: getInventoryUrlByRefinement("body_type", ["Coupe"], appConfig),
+  },
+  {
+    id:7,
+    label: "Hatchbacks",
+    image: "/images/vehicles/hatchback.png",
+    href: getInventoryUrlByRefinement("body_type", ["Hatchback"], appConfig),
+  },
+  {
+    id:8,
+    label: "Sedans",
+    image: "/images/vehicles/sedan.png",
+    href: getInventoryUrlByRefinement("body_type", ["Sedan", "Sedan 4 Dr."], appConfig),
+  },
+  {
+    id:9,
+    label: "Trucks",
+    image: "/images/vehicles/truck.png",
+    href: getInventoryUrlByRefinement("body_type", ["Truck", "Pickup"], appConfig),
+  },
+  {
+    id:10,
+    label: "EVs",
+    image: "/images/vehicles/ev.png",
+    href: getInventoryUrlByRefinement("body_type", ["Commercial EV"], appConfig),
+  },
+  {
+    id:11,
+    label: "Hybrids",
+    image: "/images/vehicles/hybrid.png",
+    href: getInventoryUrlByRefinement("fuel_type", ["hybrid"], appConfig),
+  },
+  {
+    id:12,
+    label: "Coupes",
+    image: "/images/vehicles/coupe.png",
+    href: getInventoryUrlByRefinement("body_type", ["Coupe"], appConfig),
+  },
+  {
+    id:13,
+    label: "Hatchbacks",
+    image: "/images/vehicles/hatchback.png",
+    href: getInventoryUrlByRefinement("body_type", ["Hatchback"], appConfig),
+  },
 ];
-
-export const PILL_CLASS = "my-5 flex items-center px-9 gap-[0.5px] rounded-[12px] border border-brand2 bg-white py-4 text-brand2 font-medium text-base justify-center hover:bg-brand-btn-gradient hover:text-white transition-all duration-200 snap-start shrink-0";
-
-export const CONTAINER_CLASS = "mx-[19px] md:mx-auto flex md:items-center md:justify-center overflow-x-auto gap-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory";

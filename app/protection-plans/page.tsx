@@ -1,13 +1,13 @@
 /* =========================
    Protection Plans Page
-   Showcases Cardora's vehicle protection offerings.
+   Showcases GrCars's vehicle protection offerings.
    Sections:
    - "Every Vehicle Includes" feature grid
    - "We stand behind our cars" checklist + image
-   - "How Cardora keeps you covered" systems grid
+   - "How GrCars keeps you covered" systems grid
    - "What's included?" feature cards
    - GAP Coverage explanation with example scenarios
-   - "The Cardora difference" numbered cards
+   - "The GrCars difference" numbered cards
    - DreamVehicleCTA → GetInTouch → Footer
 ========================= */
 
@@ -28,7 +28,7 @@ import { GetInTouch } from "@/components/common";
 // Assets
 import rotateCar from "@/assets/cars/rotate-car.png";
 import greenCar from "@/assets/cars/green-car.png";
-import { CardoraDifference } from "@/components/home";
+import { GrCarsDifference } from "@/components/home";
 import Image from "next/image";
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
@@ -266,7 +266,7 @@ const ProtectionPlans = () => {
         </div>
       </section>
 
-      {/* How Cardora keeps you covered */}
+      {/* How GrCars keeps you covered */}
       <section className="py-16 md:py-20 px-0 bg-review-blue">
         <div className="mx-auto max-w-[1240px] px-6 md:px-1">
           <motion.div
@@ -430,9 +430,9 @@ const ProtectionPlans = () => {
         </div>
       </section>
 
-      {/* The Cardora Difference Section */}
+      {/* The GrCars Difference Section */}
       <div className="w-full mx-auto lg:mb-5 lg:px-28 lg:-mt-20 -mt-5">
-        <CardoraDifference />
+        <GrCarsDifference />
       </div>
 
       <GetInTouch />

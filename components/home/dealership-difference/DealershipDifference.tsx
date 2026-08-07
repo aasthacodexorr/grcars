@@ -1,6 +1,6 @@
 /* =========================
-   CardoraDifference Component (Home)
-   "The Cardora difference" section on the homepage.
+   GrCarsDifference Component (Home)
+   "The GrCars difference" section on the homepage.
    Displays three value-proposition cards, each with
    a custom SVG icon and a short description.
    Used on the homepage and referenced in ProtectionPlans.
@@ -23,7 +23,7 @@ const icons = [
   <Image src={HeartIcon} alt="Heart Icon" width={77} height={77} className="w-[77px] h-[77px] rounded-[20px]" />,
 ];
 
-const CardoraDifference = () => {
+const GrCarsDifference = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
   // Framer Motion parent orchestrator variants
@@ -82,4 +82,4 @@ const CardoraDifference = () => {
   );
 };
 
-export default CardoraDifference;
+export default GrCarsDifference;

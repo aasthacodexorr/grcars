@@ -20,7 +20,7 @@ import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
 import famicons from "@/assets/icons/famicons_call.svg";
 
-import CardoraLogo from "@/components/common/CardoraLogo";
+import GrCarsLogo from "@/components/common/GrCarsLogo";
 import { getConstants, NAV_ITEMS } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
@@ -51,22 +51,25 @@ const Header = () => {
   return (
     <>
       {/*  Desktop Header */}
-      <header className={`hidden lg:block fixed top-0 z-[999] w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>        
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[7.4px]">
+      <header className={`hidden lg:block fixed top-0 z-[999] w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[18px]">
 
           {/* Logo */}
-          <div className="flex-[0.2] [&_img]:w-full [&_img]:object-[initial] [&_img]:h-auto [&_img]:max-w-[165px]">
-            <Link href="/" aria-label="Cardora home">
-              <CardoraLogo />
+          <div className="[&_img]:w-full [&_img]:object-[initial] [&_img]:h-auto [&_img]:max-w-[165px]">
+            <Link href="/" aria-label="GrCars home">
+              <GrCarsLogo />
             </Link>
           </div>
 
           {/* Primary Navigation */}
-          <nav className="flex-[0.6] flex justify-center items-center gap-0">
+          <nav className="flex-[0.6] flex justify-start items-center gap-0">
             {NAV_ITEMS.map((item, index) => {
               const isActive =
                 pathname === item.to || pathname?.startsWith(item.to + "/");
               const isLast = index === NAV_ITEMS.length - 1;
+
+              const Icon = "icon" in item ? item.icon : null;
+
               return (
                 <Link
                   key={item.label}
@@ -74,19 +77,19 @@ const Header = () => {
                   onClick={(e) => {
                     if (item.to === "/inventory") {
                       e.preventDefault();
-                      // Force a clean page load with no query parameters
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={` relative text-[16px] font-bold transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif] ${
-                    !isLast ? `after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-[22px] after:w-[2px] after:bg-[rgba(181,180,180,0.35)]` : ""
-                  } ${
-                    isActive
+                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif] ${!isLast
+                      ? "after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-[22px] after:w-[2px] after:bg-[rgba(181,180,180,0.35)]"
+                      : ""
+                    } ${isActive
                       ? "text-brand-green"
                       : "text-black hover:text-brand-green"
-                  }`}
+                    }`}
                 >
-                  {item.label}
+                  {Icon && <Icon size={18} strokeWidth={2.5} />}
+                  <span>{item.label}</span>
                 </Link>
               );
             })}
@@ -96,25 +99,19 @@ const Header = () => {
           <div className="flex-[0.2] flex justify-end pr-5 items-center gap-4">
             <a
               href="/wishlist"
-              className={`text-[20px] font-semibold flex items-center gap-[5px] text-brand-green hover:opacity-80 transition-opacity relative`}
+              className={`text-[20px] font-semibold flex items-center gap-[5px] text-black hover:opacity-80 transition-opacity relative`}
               aria-label="Wishlist"
             >
               <svg className="w-[30px] h-[30px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2  text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
             </a>
-            <a
-              href={PHONE_HREF}
-              className={`text-[20px] font-semibold flex items-center gap-[5px] text-brand-green`}
-            >
-              <Image src={famicons} alt="Phone" className="w-[22px] h-[22px]" />
-              {PHONE_NUMBER}
-            </a>
+
           </div>
         </div>
       </header>
@@ -123,9 +120,9 @@ const Header = () => {
       <header className={`lg:hidden w-full shadow-none relative z-50 bg-neutral-offWhite`}>
 
         {/* Top bar: logo + social icons */}
-        <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[5px]">
-          <Link href="/" aria-label="Cardora home" className="[&_img]:max-w-[125px] [&_img]:h-auto">
-            <CardoraLogo />
+        <div className="flex items-center justify-betwee pl-[12px] pr-[29px] py-[5px]">
+          <Link href="/" aria-label="GrCars home" className="[&_img]:max-w-[125px] [&_img]:h-auto">
+            <GrCarsLogo />
           </Link>
 
           <div className="flex items-center gap-5">
@@ -135,9 +132,9 @@ const Header = () => {
               rel="noreferrer"
               aria-label="Facebook"
             >
-              <Image 
-                src={facebook} 
-                alt="Facebook" 
+              <Image
+                src={facebook}
+                alt="Facebook"
                 width={23}
                 height={23}
                 style={{
@@ -153,9 +150,9 @@ const Header = () => {
               rel="noreferrer"
               aria-label="Instagram"
             >
-              <Image 
-                src={instagram} 
-                alt="Instagram" 
+              <Image
+                src={instagram}
+                alt="Instagram"
                 width={23}
                 height={23}
                 style={{
@@ -202,16 +199,16 @@ const Header = () => {
           {/* Menu toggle */}
           <div className="flex items-start w-full justify-center">
             <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="flex flex-col items-center justify-center gap-1 mx-[7%] max-[537px]:mx-[6%] max-[397px]:mx-[4%]"
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-[24px] w-[24px] text-black fill-black" />
-            ) : (
-              <Menu className="h-[24px] w-[24px] text-black fill-black" />
-            )}
-          </button>
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="flex flex-col items-center justify-center gap-1 mx-[7%] max-[537px]:mx-[6%] max-[397px]:mx-[4%]"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-[24px] w-[24px] text-black fill-black" />
+              ) : (
+                <Menu className="h-[24px] w-[24px] text-black fill-black" />
+              )}
+            </button>
           </div>
 
           {/* Vertical divider before menu button */}
@@ -219,18 +216,16 @@ const Header = () => {
 
         {/* Slide-down nav drawer */}
         <div
-          className={`absolute top-full left-0 w-full bg-white overflow-hidden transition-all duration-300 z-50 ${
-            isMobileMenuOpen 
-              ? `max-h-[100vh] opacity-100 shadow-[0_15px_30px_rgba(0,0,0,0.12)] border-b border-gray-100` 
+          className={`absolute top-full left-0 w-full bg-white overflow-hidden transition-all duration-300 z-50 ${isMobileMenuOpen
+              ? `max-h-[100vh] opacity-100 shadow-[0_15px_30px_rgba(0,0,0,0.12)] border-b border-gray-100`
               : "max-h-0 opacity-0 pointer-events-none shadow-none"
-          }`}
+            }`}
         >
           <nav className="flex flex-col px-6 pt-4 pb-6">
             <Link
               href="/wishlist"
-              className={`py-4 border-b border-gray-100 text-[17px] flex items-center justify-between transition-colors ${
-                pathname === "/wishlist" ? "font-medium" : "text-gray-900"
-              }`}
+              className={`py-4 border-b border-gray-100 text-[17px] flex items-center justify-between transition-colors ${pathname === "/wishlist" ? "font-medium" : "text-gray-900"
+                }`}
             >
               <span className="flex items-center gap-3 relative">
                 Wishlist
@@ -255,9 +250,8 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${
-                    isActive ? "text-brand-green font-medium" : "text-gray-900"
-                  }`}
+                  className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${isActive ? "text-brand-green font-medium" : "text-gray-900"
+                    }`}
                 >
                   {item.label}
                 </Link>

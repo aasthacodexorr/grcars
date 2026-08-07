@@ -71,4 +71,8 @@ declare module 'lucide-react' {
   export const Lock:Icon;
   export const Smartphone:Icon;
   export const Smile:Icon;
+  export const ArrowLeft:Icon;
+  export const ExternalLink:Icon;
+  export const Plus:Icon;
+  export const Minus:Icon;
 }

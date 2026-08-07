@@ -1,59 +1,72 @@
-"use client"; // Required in Next.js App Router for Framer Motion
+// NextRideCard.tsx
+"use client";
 
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import type { NextRideCardProps } from "./types";
+import HomeBgImg from "@/assets/cars/HomebgImg.png";
 
+interface FeatureCardProps extends Omit<NextRideCardProps, "image"> {
+  bgColor: string;
+  textColor: string;
+  buttonBg: string;
+  buttonText: string;
+  buttonLabel: string;
+  image?: string;
+  customVisual?: React.ReactNode;
+}
 
-const NextRideCard = ({ image, alt, title, subtitle, to }: NextRideCardProps) => {
+const NextRideCard = ({
+  title,
+  subtitle,
+  to,
+  bgColor,
+  textColor,
+  buttonBg,
+  buttonText,
+  buttonLabel,
+  image,
+  customVisual,
+}: FeatureCardProps) => {
   return (
-    <Link
-      href={to}
-      className="group rounded-2xl relative border-2 border-border bg-card overflow-hidden flex flex-col hover:shadow-md transition-shadow w-full h-full"
+    <div
+      className={`rounded-3xl p-6 flex flex-col justify-between min-w-[280px] sm:min-w-[300px] lg:max-w-[300px] h-[400px] snap-start shrink-0 ${bgColor} ${textColor} transition-transform duration-200 hover:-translate-y-1`}
     >
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 bg-[#2f413936]" />
-
-      {/* Card image container */}
-      <div className="aspect-[4/4] overflow-hidden bg-muted relative w-full h-full">
-        <motion.div
-          // Fixed pixel translation ensures the element boundary does not collapse
-          initial={{ y: -120, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          exit={{ y: -120, opacity: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 55, 
-            damping: 14,
-            duration: 0.7 
-          }}
-          className="w-full h-full"
-        >
-          <Image
-            src={image.src}
-            alt={alt}
-            width={768}
-            height={960}
-            loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-          />
-        </motion.div>
+      {/* Top Header Section */}
+      <div>
+        <h3 className="text-2xl font-bold leading-tight mb-2">{title}</h3>
+        <p className="text-sm opacity-80 line-clamp-3 leading-relaxed">
+          {subtitle}
+        </p>
       </div>
 
-      {/* Card content */}
-      <div className="flex items-center justify-between gap-4 px-2 py-5">
-        <div className="opacity-70">
-          <h3 className="text-[18px] font-bold text-foreground">{title}</h3>
-          <p className="text-[16px] mt-1">{subtitle}</p>
-        </div>
-        <ArrowRight
-          className="h-6 w-6 text-brand-green shrink-0 transition-transform group-hover:translate-x-1"
-          strokeWidth={2.5}
-        />
+      {/* Center Visual/Graphic Section */}
+      <div className="relative my-auto flex items-center justify-center min-h-[180px] w-full">
+        {customVisual ? (
+          customVisual
+        ) : (
+          image && (
+            <div className="relative w-full h-[180px] flex items-center justify-center">
+              <Image
+                src={HomeBgImg?.src}
+                alt={title}
+                width={260}
+                height={160}
+                className="object-contain drop-shadow-xl"
+              />
+            </div>
+          )
+        )}
       </div>
-    </Link>
+
+      {/* Bottom CTA Button */}
+      <Link
+        href={to}
+        className={`w-full py-3.5 px-4 rounded-full text-center text-sm font-semibold transition-all shadow-sm ${buttonBg} ${buttonText}`}
+      >
+        {buttonLabel}
+      </Link>
+    </div>
   );
 };
 

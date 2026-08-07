@@ -1,9 +1,9 @@
 /* =========================
    Home Page
-   Root page of the Cardora website.
+   Root page of the GrCars website.
    Composes all homepage sections in order:
    Hero → CategoryPills → PreQualify → NextRide →
-   FeaturedVehicles → Reviews → CardoraDifference →
+   FeaturedVehicles → Reviews → GrCarsDifference →
    GetInTouch → Footer
 ========================= */
 
@@ -18,9 +18,11 @@ import {
   CategoryPills,
   PreQualify,
   NextRide,
-  FeaturedVehicles,
   Reviews,
-  CardoraDifference,
+  GrCarsDifference,
+  PopularVehicles,
+  FaqSection,
+  GoogleReviewsWidget,
 } from "@/components/home";
 
 // Shared/reusable sections
@@ -38,13 +40,13 @@ const HomePage = () => {
 
       {/* Homepage sections */}
       <CategoryPills />
-      <PreQualify />
       <NextRide />
-      <FeaturedVehicles />
-      <Reviews />
-      <CardoraDifference />
-      <GetInTouch />
+      <PopularVehicles/>
+      <PreQualify/>
+      <Reviews/>
+      <FaqSection/>
       <Footer />
+      <GoogleReviewsWidget/>
     </main>
   );
 };

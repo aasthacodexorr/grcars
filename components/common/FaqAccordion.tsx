@@ -21,35 +21,30 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
         return (
           <div
             key={index}
-            className="border border-slate-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-prequalify-blue"
+            className="border-b border-slate-200 cursor-pointer rounded-lg overflow-hidden  transition-all duration-300"
           >
             <button
               onClick={() => setOpenIndex(isOpen ? null : index)}
-              className={`w-full px-6 py-4 text-left font-semibold flex justify-between items-center transition-colors duration-300 cursor-pointer ${
-                isOpen ? 'text-slate-900' : 'text-slate-500/80  '
-              }`}
-              aria-expanded={isOpen}
-              aria-controls={`faq-answer-${index}`}
+              className="w-full px-6 py-4 cursor-pointer flex items-center justify-between text-left"
             >
-              <span className="flex-1 text-xl">{questionText}</span>
+              <span className="flex-1 text-md">{questionText}</span>
+
               <span
-                className={`text-xl transition-transform duration-300 flex-shrink-0 ml-4 ease-in-out ${
-                  isOpen ? 'rotate-180' : ''
-                }`}
+                className={`ml-4 inline-flex items-center justify-center w-4 h-4 rounded-full bg-primary-greenLight text-white transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                  }`}
               >
-                +
+                {isOpen ? "−" : "+"}
               </span>
             </button>
-            
+
             {/* Smooth Height Container */}
             <div
               id={`faq-answer-${index}`}
-              className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
-                isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-              }`}
+              className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
             >
               <div className="overflow-hidden">
-                <div className="px-6 pb-4 leading-relaxed text-slate-700">
+                <div className="px-6 pb-4 text-sm leading-relaxed text-[#475569]">
                   {answerText}
                 </div>
               </div>
