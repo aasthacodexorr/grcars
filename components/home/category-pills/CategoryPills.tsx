@@ -150,7 +150,7 @@ const CategoryPills = () => {
 
         {/* Mobile Pagination Dots */}
         <div className="flex md:hidden items-center justify-center gap-2 mt-6">
-          {Array.from({ length: totalItems }).map((_, index) => (
+          {Array.from({ length: 6 }).map((_, index) => (
             <button
               key={index}
               onClick={() => scrollToIndex(index)}

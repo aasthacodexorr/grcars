@@ -166,27 +166,6 @@ const Footer = () => {
 
         {/* Links Bar & Social Media Icons */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-800/80 text-sm font-semibold">
-          <div className="flex flex-wrap items-center gap-x-2 ">
-            <Link href="/inventory" onClick={(e) => handleInventoryClick(e, "/inventory")} className="hover:text-white">
-              Search Cars
-            </Link>
-            <span className="text-gray-500 font-normal">|</span>
-            <Link href="/sitemap" className="hover:text-white">
-              Sitemap
-            </Link>
-            <span className="text-gray-500 font-normal">|</span>
-            <Link href="/investors" className="hover:text-white">
-              Investors
-            </Link>
-            <span className="text-gray-500 font-normal">|</span>
-            <Link href="/patents" className="hover:text-white">
-              Patents
-            </Link>
-            <span className="text-gray-500 font-normal">|</span>
-            <Link href="/press" className="hover:text-white">
-              Press
-            </Link>
-          </div>
 
           {/* Social Icons */}
           <div className="flex items-center gap-5 text-gray-200">
@@ -207,12 +186,14 @@ const Footer = () => {
 
         {/* Copyright and Legal Terms */}
         <div className="pt-6 space-y-3 text-[12px] text-gray-400">
-          <div className="inline-flex items-center justify-between">
+          <div className="flex flex-col items-start justify-between gap-1">
             <p>Copyright © {new Date().getFullYear()} {safeD.dealership_name}, LLC. All Rights Reserved.</p>
-              <span>Powered by</span>
+              <div className="flex gap-1">
+                <span>Powered by</span>
               <a href="https://www.zopdealer.com/" target="_blank" rel="noopener noreferrer">
                 <Image src={zlogo} alt="Zop Dealer" width={18} height={18} className="w-auto h-3.5 object-contain brightness-200" />
               </a>
+              </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-2 text-gray-300 font-medium">
@@ -221,8 +202,7 @@ const Footer = () => {
             <Link href="/privacy-policy" className="hover:underline hover:text-white">Terms & Conditions</Link>
             <span className="text-gray-600">|</span>
             <Link href="/consumer-privacy" className="hover:underline hover:text-white">Site Map</Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/do-not-sell" className="hover:underline hover:text-white">Lowest Price Guaranteed</Link>
+            
           </div>
         </div>
 
