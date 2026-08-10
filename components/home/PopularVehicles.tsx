@@ -35,15 +35,39 @@ const MODELS: ModelCard[] = [
 
 const PopularModels = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Checks boundaries to toggle active/disabled states on arrows
+  // Detect mobile screen (< 768px matching Tailwind's md breakpoint)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Display max 6 models on mobile, all models on desktop
+  const displayedModels = isMobile ? MODELS.slice(0, 6) : MODELS;
+
+  // Total dots (rendered models + Shop All card)
+  const totalItems = displayedModels.length + 1;
+
+  // Checks boundaries to toggle active/disabled states on arrows & updates active dot
   const checkScrollBounds = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 5);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+
+      // Calculate active dot index based on scroll position
+      const scrollPercentage = scrollLeft / (scrollWidth - clientWidth || 1);
+      const calculatedIndex = Math.round(scrollPercentage * (totalItems - 1));
+      setActiveIndex(Math.min(calculatedIndex, totalItems - 1));
     }
   };
 
@@ -58,16 +82,28 @@ const PopularModels = () => {
       if (container) container.removeEventListener("scroll", checkScrollBounds);
       window.removeEventListener("resize", checkScrollBounds);
     };
-  }, []);
+  }, [totalItems]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
-      // Moves full container page width dynamically
       const containerWidth = scrollContainerRef.current.clientWidth;
       const scrollAmount = direction === "left" ? -containerWidth : containerWidth;
 
       scrollContainerRef.current.scrollBy({
         left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollToIndex = (index: number) => {
+    if (scrollContainerRef.current) {
+      const { scrollWidth, clientWidth } = scrollContainerRef.current;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      const targetScrollLeft = (maxScrollLeft / (totalItems - 1)) * index;
+
+      scrollContainerRef.current.scrollTo({
+        left: targetScrollLeft,
         behavior: "smooth",
       });
     }
@@ -81,7 +117,8 @@ const PopularModels = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-[#0F2942]">
             Shop popular models
           </h2>
-          <div className="flex items-center gap-3">
+          {/* Arrow Controls: Hidden on mobile, visible on desktop */}
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => handleScroll("left")}
               disabled={!canScrollLeft}
@@ -114,11 +151,11 @@ const PopularModels = () => {
           ref={scrollContainerRef}
           className="flex items-center gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
         >
-          {MODELS.map((item, index) => (
+          {displayedModels.map((item, index) => (
             <Link
               key={`${item.make}-${item.model}-${index}`}
               href={item.href}
-              className="bg-[#F5F7FA] rounded-2xl p-5 flex flex-col justify-between w-[210px] min-w-[210px] h-[240px] snap-start shrink-0 hover:shadow-md transition-shadow group"
+              className="bg-[#F5F7FA] rounded-2xl p-5 flex flex-col justify-between w-[230px] min-w-[210px] h-[240px] snap-start shrink-0 hover:shadow-md transition-shadow group"
             >
               {/* Text Header */}
               <div>
@@ -153,6 +190,22 @@ const PopularModels = () => {
               <ChevronRight className="w-5 h-5" />
             </Link>
           </div>
+        </div>
+
+        {/* Mobile Pagination Dots: Visible on mobile, hidden on desktop */}
+        <div className="flex md:hidden items-center justify-center gap-2 mt-6">
+          {Array.from({ length: totalItems }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToIndex(index)}
+              aria-label={`Go to item ${index + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ease-in-out ${
+                activeIndex === index
+                  ? "w-2 bg-brand-green"
+                  : "w-2 bg-gray-200 hover:bg-gray-300"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>

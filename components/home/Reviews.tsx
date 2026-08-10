@@ -41,9 +41,11 @@ const Reviews = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const isScrolling = useRef(false);
   const [slidesToShow, setSlidesToShow] = useState(3);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Triple array buffer for smooth infinite scroll loops
   const duplicatedReviews = [...reviews, ...reviews, ...reviews];
+  const totalOriginalItems = reviews.length;
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,6 +62,18 @@ const Reviews = () => {
     if (!scrollRef.current) return 0;
     const firstChild = scrollRef.current.querySelector("[data-slide]");
     return firstChild ? firstChild.clientWidth : scrollRef.current.clientWidth / slidesToShow;
+  };
+
+  const updateActiveIndex = () => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const scrollAmount = getScrollAmount();
+    if (scrollAmount <= 0) return;
+
+    // Calculate current slide based on scroll offset modulo total original reviews
+    const currentSlide = Math.round(container.scrollLeft / scrollAmount);
+    const normalizedIndex = ((currentSlide % totalOriginalItems) + totalOriginalItems) % totalOriginalItems;
+    setActiveIndex(normalizedIndex);
   };
 
   const scroll = (dir: "left" | "right") => {
@@ -81,6 +95,19 @@ const Reviews = () => {
     });
   };
 
+  const scrollToIndex = (index: number) => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const scrollAmount = getScrollAmount();
+    const singleSetWidth = scrollAmount * reviews.length;
+
+    // Scroll to the target item in the middle buffered set
+    container.scrollTo({
+      left: singleSetWidth + index * scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -90,6 +117,11 @@ const Reviews = () => {
 
     // Center scroll position on mount
     container.scrollLeft = singleSetWidth;
+    updateActiveIndex();
+
+    const handleScroll = () => {
+      updateActiveIndex();
+    };
 
     const handleScrollEnd = () => {
       if (!container) return;
@@ -107,10 +139,15 @@ const Reviews = () => {
       }
 
       isScrolling.current = false;
+      updateActiveIndex();
     };
 
+    container.addEventListener("scroll", handleScroll);
     container.addEventListener("scrollend", handleScrollEnd);
-    return () => container.removeEventListener("scrollend", handleScrollEnd);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scrollend", handleScrollEnd);
+    };
   }, [slidesToShow]);
 
   return (
@@ -120,20 +157,19 @@ const Reviews = () => {
         <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#0e1726] tracking-tight leading-tight">
           What our customers are saying
         </h2>
-        <p className="mt-2 text-xs sm:text-sm text-gray-600 max-w-2xl leading-relaxed">
+        <p className="mt-2 text-base max-w-2xl leading-relaxed">
           We’ve purchased more than 3 million cars from customers and received a lot of great feedback. See what’s behind our 4.8 star average rating.
         </p>
 
         {/* Rating Summary + Controls Row */}
         <div className="mt-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex items-center gap-1 self-center">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="h-5 w-5 shrink-0 fill-[#ffb800] text-[#ffb800]" />
                 ))}
               </div>
-
               <span className="text-xl sm:text-2xl font-extrabold text-[#0e1726] leading-none translate-y-[1px]">
                 4.8 stars
               </span>
@@ -144,15 +180,15 @@ const Reviews = () => {
               href="https://www.google.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs sm:text-sm font-semibold text-[#0088FF] hover:underline flex items-center gap-1 translate-y-[5px]"
+              className="text-xs sm:text-sm font-semibold text-[#0088FF] hover:underline flex items-center gap-1 translate-y-[20px]  lg:translate-y-[5px]"
             >
               See All Reviews
               <ExternalLink className="h-3.5 w-3.5 shrink-0" />
             </a>
           </div>
 
-          {/* Top-Right Control Buttons */}
-          <div className="flex items-center gap-2">
+          {/* Arrow Controls: Hidden on mobile, visible on desktop */}
+          <div className="hidden md:flex items-center gap-2">
             <button
               onClick={() => scroll("left")}
               aria-label="Previous review"
@@ -181,12 +217,13 @@ const Reviews = () => {
                 <div
                   key={`${r.name}-${index}`}
                   data-slide
-                  className={`snap-center shrink-0  ${slidesToShow === 1
+                  className={`snap-center shrink-0 ${
+                    slidesToShow === 1
                       ? "w-full"
                       : slidesToShow === 2
                         ? "w-1/2"
                         : "w-1/3"
-                    }`}
+                  }`}
                 >
                   <article className="rounded-xl bg-white p-6 shadow-xs border border-gray-100 flex flex-col h-full min-h-[220px] justify-between">
                     <div>
@@ -201,25 +238,25 @@ const Reviews = () => {
                       </div>
 
                       {/* Review Paragraph */}
-                      <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-normal">
+                      <p className="text-base text-gray-700 leading-relaxed font-normal">
                         {r.text}
                       </p>
 
                       {/* Read More Link */}
-                      <button className="mt-2 text-xs font-semibold text-[#0088FF] hover:underline focus:outline-none block">
+                      <button className="mt-2 text-base font-semibold text-[#0088FF] hover:underline focus:outline-none block">
                         Read More
                       </button>
                     </div>
 
                     {/* Footer Author & Date Details */}
                     <div className="mt-6 pt-2">
-                      <div className="text-xs font-bold text-gray-900">
+                      <div className="text-base font-bold text-gray-900">
                         {r.name}{" "}
                         <span className="font-normal text-gray-500">
                           {r.location}
                         </span>
                       </div>
-                      <div className="text-[11px] text-gray-400 mt-0.5">
+                      <div className="text-base text-gray-400 mt-0.5">
                         {r.date}
                       </div>
                     </div>
@@ -228,6 +265,22 @@ const Reviews = () => {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Mobile Pagination Dots: Visible on mobile, hidden on desktop */}
+        <div className="flex md:hidden items-center justify-center gap-2 mt-6">
+          {reviews.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToIndex(index)}
+              aria-label={`Go to review ${index + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ease-in-out ${
+                activeIndex === index
+                  ? "w-2 bg-brand-green"
+                  : "w-2 bg-gray-300 hover:bg-gray-400"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>

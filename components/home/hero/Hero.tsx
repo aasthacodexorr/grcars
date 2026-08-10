@@ -1,41 +1,57 @@
+import { Search, ChevronRight, Wallet, Repeat } from "lucide-react";
+import HeroDesktop from "@/assets/cars/HomebgImg.png"
+import HeroMobile from "@/assets/cars/hero-mobile.jpg";
+import Link from "next/link";
 
-import { Search } from "lucide-react";
-import HomeBgImg from "@/assets/cars/HomebgImg.png";
+const src = (img: any) => (typeof img === "string" ? img : img?.src);
+
 
 const Hero = () => {
   return (
-    <section 
-      className="relative w-full min-h-[550px] lg:min-h-[650px] bg-cover bg-center bg-no-repeat flex flex-col justify-between px-6 md:px-12 py-8 lg:py-12"
-      style={{ backgroundImage: `url(${HomeBgImg?.src})` }}
-    >
-      {/* Dark overlay gradient to ensure text readability */}
-      <div className="absolute inset-0 bg-gradient-to-l from-white/30 via-transparent to-slate/80 pointer-events-none" />
+    <section className="relative w-full min-h-[420px] md:min-h-[550px] lg:min-h-[500px] flex flex-col justify-between px-6 md:px-12 md:py-8 lg:py-10 overflow-hidden">
+ 
+      {/* Background image layer — responsive art-directed picture, matches Carvana's real markup */}
+       <picture className="absolute inset-x-0 z-0 block w-full h-full">
+        <source media="(min-width: 1516px)" srcSet={src(HeroDesktop)} />
+        <source media="(min-width: 768px)" srcSet={src(HeroMobile)} />
+        <img
+          src={src(HeroMobile)}
+          alt="A Carvana hauler with a red car on it, driving through a neighborhood"
+          className="h-full w-full object-cover object-[center_80%] md:object-center"
+          fetchPriority="high"
+        />
+      </picture>
+
+      {/* Dark overlay gradient — desktop only, for text legibility over the full-bleed image */}
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-l from-white/30 via-transparent to-slate-800/80 pointer-events-none -z-10" />
+      {/* Light top-fade on mobile so heading stays readable without dimming the truck */}
+      <div className="absolute inset-x-0 top-0 h-28 md:hidden bg-gradient-to-b from-white/70 via-white/20 to-transparent pointer-events-none -z-10" />
 
       {/* Main Hero Content Container */}
-      <div className="relative z-10 max-w-[1280px] w-full mt-44 mx-auto flex flex-col justify-between h-full min-h-[480px]">
-        
+      <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-36 mx-auto flex flex-col justify-between h-full min-h-[380px] md:min-h-[480px]">
+
         {/* Top Text & Search Section */}
-        <div className="max-w-xl space-y-6 pt-6">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase">
+        <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
+          <h1 className="text-2xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase">
             Right Car. <br />
             Right Price.
           </h1>
 
-          {/* Search Input Bar */}
-          <div className="relative flex items-center w-full max-w-lg bg-white rounded-lg shadow-lg px-4 py-3">
-            <Search className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
+          <div className="relative flex items-center w-full max-w-lg bg-white rounded-lg shadow-lg pl-4 pr-1.5 py-1.5 md:px-4 md:py-3">
+            <Search className="w-4 h-4 md:w-5 md:h-5 text-gray-400 mr-2 md:mr-3 shrink-0" />
             <input
               type="text"
-              placeholder="Search make, model, or keyword"
-              className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-base md:text-lg"
+              placeholder="Make, model, or keyword"
+              className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-sm md:text-lg"
             />
+            <Link href={"/inventory"}  className="md:hidden ml-2 shrink-0 bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-md text-sm transition-colors">
+              Go
+            </Link >
           </div>
         </div>
 
-        {/* Bottom CTA Cards Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4  pt-12">
-          
-          {/* Card 1: Financing */}
+        {/* Desktop CTA cards */}
+        <div className="hidden md:grid grid-cols-2 gap-4">
           <div className="bg-grey-900/75 backdrop-blur-md text-white p-6 rounded-lg flex items-center justify-between shadow-xl border border-white/10">
             <div>
               <h3 className="text-lg md:text-xl font-bold">Financing made simple</h3>
@@ -43,12 +59,11 @@ const Hero = () => {
                 No credit impact, view real payments while shopping
               </p>
             </div>
-            <button className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-lg text-xs md:text-sm transition-all shadow-md">
+            <Link href={"/inventory"} className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md">
               Get Pre-Qualified
-            </button>
+            </Link>
           </div>
 
-          {/* Card 2: Sell or Trade */}
           <div className="bg-grey-900/75 backdrop-blur-md text-white p-6 rounded-lg flex items-center justify-between shadow-xl border border-white/10">
             <div>
               <h3 className="text-lg md:text-xl font-bold">Sell or trade your car</h3>
@@ -56,11 +71,29 @@ const Hero = () => {
                 Get a real offer in under 2 minutes
               </p>
             </div>
-            <button className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-lg text-xs md:text-sm transition-all shadow-md">
+            <Link href={"/inventory"} className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md">
               Get Your Offer
-            </button>
+            </Link>
           </div>
+        </div>
 
+        {/* Mobile CTA rows */}
+        <div className="md:hidden flex flex-col gap-2 pb-2 mt-auto">
+          <button className="w-full flex items-center justify-between bg-grey-900/80 backdrop-blur-md text-white px-4 py-3 rounded-lg">
+            <div className="flex items-center gap-2.5">
+              <Wallet className="w-4 h-4" />
+              <span className="font-semibold text-sm">Financing made easy</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-300" />
+          </button>
+
+          <button className="w-full flex items-center justify-between bg-grey-900/80 backdrop-blur-md text-white px-4 py-3 rounded-lg">
+            <div className="flex items-center gap-2.5">
+              <Repeat className="w-4 h-4" />
+              <span className="font-semibold text-sm">Sell or trade your car</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-300" />
+          </button>
         </div>
       </div>
     </section>

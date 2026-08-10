@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 
 export interface FAQItem {
@@ -11,8 +12,16 @@ export interface FAQItem {
 export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  const handleToggle = (index: number) => {
+    // If the clicked FAQ is already open, do nothing
+    if (openIndex === index) return;
+
+    // Otherwise, open the clicked FAQ
+    setOpenIndex(index);
+  };
+
   return (
-    <div className="space-y-4">
+    <div>
       {faqs.map((faq, index) => {
         const isOpen = openIndex === index;
         const questionText = faq.q || faq.question;
@@ -21,30 +30,34 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
         return (
           <div
             key={index}
-            className="border-b border-slate-200 cursor-pointer rounded-lg overflow-hidden  transition-all duration-300"
+            className="border-b border-slate-200 rounded-lg overflow-hidden transition-all duration-300"
           >
             <button
-              onClick={() => setOpenIndex(isOpen ? null : index)}
+              onClick={() => handleToggle(index)}
               className="w-full px-6 py-4 cursor-pointer flex items-center justify-between text-left"
             >
-              <span className="flex-1 text-md">{questionText}</span>
-
-              <span
-                className={`ml-4 inline-flex items-center justify-center w-4 h-4 rounded-full bg-primary-greenLight text-white transition-transform duration-300 ${isOpen ? "rotate-180" : ""
-                  }`}
-              >
-                {isOpen ? "−" : "+"}
+              <span className="flex-1 text-base font-lg">
+                {questionText}
               </span>
+
+              {/* Show + only when FAQ is closed */}
+              {!isOpen && (
+                <span className="ml-4 inline-flex items-center justify-center w-4 h-4 rounded-full bg-primary-greenLight text-white">
+                  +
+                </span>
+              )}
             </button>
 
             {/* Smooth Height Container */}
             <div
-              id={`faq-answer-${index}`}
-              className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-                }`}
+              className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+                isOpen
+                  ? 'grid-rows-[1fr]'
+                  : 'grid-rows-[0fr]'
+              }`}
             >
               <div className="overflow-hidden">
-                <div className="px-6 pb-4 text-sm leading-relaxed text-[#475569]">
+                <div className="px-6 pb-4 text-base leading-relaxed text-[#475569]">
                   {answerText}
                 </div>
               </div>

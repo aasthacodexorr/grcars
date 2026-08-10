@@ -32,90 +32,83 @@ const Footer = () => {
   };
 
   // Structured columns array for dynamic mapping
-  const footerColumns = [
-    {
-      sections: [
-        {
-          title: "Financing",
-          links: [{ label: "Learn More", href: "/financing" }],
-        },
-        {
-          title: "Sell/Trade",
-          links: [
-            { label: "Get an Offer", href: "/trade-in-my-car" },
-            { label: `${safeD.dealership_name} Value Tracker`, href: "/value-tracker" },
-          ],
-        },
-      ],
-    },
-    {
-      sections: [
-        {
-          title: "How it works",
-          links: [
-            { label: `Buying From ${safeD.dealership_name}`, href: "/inventory", forceReload: true },
-            { label: "Selling or Trading In", href: "/trade-in-my-car" },
-            { label: "Our Protection Plans", href: "/protection-plans" },
-            { label: `Repairs with ${safeD.dealership_name}`, href: "/repairs" },
-            { label: "Certified Cars", href: "/inventory?certified=true", forceReload: true },
-            { label: `${safeD.dealership_name} Insurance`, href: "/insurance" },
-            { label: "Guide to Buying a Used EV", href: "/ev-guide" },
-          ],
-        },
-      ],
-    },
-    {
-      sections: [
-        {
-          title: `About ${safeD.dealership_name}`,
-          links: [
-            { label: "About Us", href: "/about-us" },
-            { label: "Car Vending Machines", href: "/vending-machine" },
-            { label: "Customer Reviews", href: "/reviews" },
-            { label: "Careers", href: "/careers" },
-          ],
-        },
-      ],
-    },
-    {
-      sections: [
-        {
-          title: "Support",
-          links: [
-            {
-              label: "Support and Contact",
-              href: "/contact-us",
-              icon: (
-                <svg className="w-4 h-4 mr-1.5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              ),
-            },
-            {
-              label: "Chat With Us",
-              href: "#chat",
-              icon: (
-                <svg className="w-4 h-4 mr-1.5 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              ),
-            },
-          ],
-        },
-        {
-          title: "Other",
-          links: [
-            { label: `partnerships@${safeD.dealership_name.toLowerCase().replace(/\s+/g, "")}.com`, href: "mailto:partnerships@dealership.com" },
-            { label: `media@${safeD.dealership_name.toLowerCase().replace(/\s+/g, "")}.com`, href: "mailto:media@dealership.com" },
-            { label: `realestate@${safeD.dealership_name.toLowerCase().replace(/\s+/g, "")}.com`, href: "mailto:realestate@dealership.com" },
-          ],
-        },
-      ],
-    },
-  ];
+ const footerColumns = [
+  {
+    sections: [
+      {
+        title: "QUICK LINKS",
+        links: [
+          { label: "INVENTORY", href: "/inventory" },
+          { label: "SELL / TRADE", href: "/trade-in-my-car" },
+          { label: "APPLY FOR FINANCING", href: "/financing" },
+          { label: "TIRE & RIMS", href: "/tire-rims" },
+          { label: "PAYMENT CALCULATOR", href: "/payment-calculator" },
+          { label: "ABOUT US", href: "/about-us" },
+          { label: "BLOG", href: "/blog" },
+          { label: "CONTACT", href: "/contact-us" },
+        ],
+      },
+    ],
+  },
+
+  {
+    sections: [
+      {
+        title: "SHOP NOW",
+        links: [
+          { label: "AUDI", href: "/inventory?makes=Audi" },
+          { label: "BMW", href: "/inventory?makes=BMW" },
+          { label: "CADILLAC", href: "/inventory?makes=Cadillac" },
+          { label: "CHEVROLET", href: "/inventory?makes=Chevrolet" },
+          { label: "CHRYSLER", href: "/inventory?makes=Chrysler" },
+          { label: "DODGE", href: "/inventory?makes=Dodge" },
+          { label: "FORD", href: "/inventory?makes=Ford" },
+          { label: "GMC", href: "/inventory?makes=GMC" },
+        ],
+      },
+    ],
+  },
+
+  {
+    sections: [
+      {
+        title: "CONTACT INFO",
+        links: [
+          {
+            label: "316 ORENDA RD,",
+            href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
+          },
+          {
+            label: "BRAMPTON, ON,",
+            href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
+          },
+          {
+            label: "L6T 1G1",
+            href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    sections: [
+      {
+        title: "CALL US",
+        links: [
+          {
+            label: "Sales: (905) 247-8040",
+            href: "tel:+19052478040",
+          },
+        ],
+      },
+       
+    ],
+  },
+];
 
   return (
-    <footer className="w-full bg-white py-8 px-4 sm:px-6 lg:px-12 font-sans">
+    <footer className="w-full font-sans">
       <div className="max-w-[1400px] mx-auto bg-[#101827] text-white rounded-[32px] p-8 sm:p-12 lg:px-28 py-16">
         
         {/* Main Grid: Logo + Nav Columns */}
@@ -151,7 +144,7 @@ const Footer = () => {
             <div key={colIdx} className="space-y-8">
               {col.sections.map((sec, secIdx) => (
                 <div key={secIdx}>
-                  <h3 className="text-[15px] font-bold text-white mb-3 tracking-wide">{sec.title}</h3>
+                  <h3 className="text-xl font-bold text-white mb-3 tracking-wide">{sec.title}</h3>
                   <ul className="space-y-2.5 text-[13px]">
                     {sec.links.map((link, linkIdx) => (
                       <li key={linkIdx}>
@@ -160,7 +153,6 @@ const Footer = () => {
                           onClick={(e) => ("forceReload" in link && link.forceReload) && handleInventoryClick(e, link.href)}
                           className="hover:text-white transition-colors flex items-center"
                         >
-                          {("icon" in link && link.icon) && link.icon}
                           {link.label}
                         </Link>
                       </li>
@@ -174,7 +166,7 @@ const Footer = () => {
 
         {/* Links Bar & Social Media Icons */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-800/80 text-sm font-semibold">
-          <div className="flex flex-wrap items-center gap-x-2 text-gray-200">
+          <div className="flex flex-wrap items-center gap-x-2 ">
             <Link href="/inventory" onClick={(e) => handleInventoryClick(e, "/inventory")} className="hover:text-white">
               Search Cars
             </Link>
@@ -215,30 +207,22 @@ const Footer = () => {
 
         {/* Copyright and Legal Terms */}
         <div className="pt-6 space-y-3 text-[12px] text-gray-400">
-          <div className="flex items-center justify-between">
+          <div className="inline-flex items-center justify-between">
             <p>Copyright © {new Date().getFullYear()} {safeD.dealership_name}, LLC. All Rights Reserved.</p>
-            <div className="flex items-center gap-1.5 text-gray-500">
               <span>Powered by</span>
               <a href="https://www.zopdealer.com/" target="_blank" rel="noopener noreferrer">
                 <Image src={zlogo} alt="Zop Dealer" width={18} height={18} className="w-auto h-3.5 object-contain brightness-200" />
               </a>
-            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-2 text-gray-300 font-medium">
-            <Link href="/user-agreement" className="hover:underline hover:text-white">User Agreement</Link>
+            <Link href="/user-agreement" className="hover:underline hover:text-white">Privacy Policy</Link>
             <span className="text-gray-600">|</span>
-            <Link href="/privacy-policy" className="hover:underline hover:text-white">Financial and Other Privacy Notices</Link>
+            <Link href="/privacy-policy" className="hover:underline hover:text-white">Terms & Conditions</Link>
             <span className="text-gray-600">|</span>
-            <Link href="/consumer-privacy" className="hover:underline hover:text-white">Consumer Privacy Notice</Link>
+            <Link href="/consumer-privacy" className="hover:underline hover:text-white">Site Map</Link>
             <span className="text-gray-600">|</span>
-            <Link href="/do-not-sell" className="hover:underline hover:text-white">Do Not Sell or Share My Personal Information</Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/code-of-conduct" className="hover:underline hover:text-white">Code of Conduct</Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/responsible-disclosure" className="hover:underline hover:text-white">Responsible Disclosure</Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/accessibility" className="hover:underline hover:text-white">Accessibility</Link>
+            <Link href="/do-not-sell" className="hover:underline hover:text-white">Lowest Price Guaranteed</Link>
           </div>
         </div>
 

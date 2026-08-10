@@ -12,7 +12,7 @@ const CategoryPill = ({ label, image, href }: ExtendedCategoryPillProps) => {
   return (
     <Link
       href={href}
-      className="flex flex-col items-center justify-center p-2 min-w-[120px] transition-transform hover:-translate-y-1 group snap-start shrink-0"
+      className="flex flex-col items-center justify-center p-2 min-w-[160px] transition-transform hover:-translate-y-1 group snap-start shrink-0"
     >
       <span className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors mb-2">
         {label}

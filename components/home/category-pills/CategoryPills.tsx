@@ -4,24 +4,49 @@ import React, { useRef, useState, useEffect } from "react";
 import CategoryPill from "./CategoryPill";
 import { getCategories } from "./constants";
 import { useAppConfig } from "@/app/providers";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 const CategoryPills = () => {
   const appConfig = useAppConfig();
-  const categories = getCategories(appConfig);
+  const allCategories = getCategories(appConfig) || [];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  const [isMobile, setIsMobile] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Check scroll position to update arrow disabled/active states
+  // Detect mobile screen (sm breakpoint < 768px)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Display max 6 on mobile, all on desktop
+  const displayedCategories = isMobile
+    ? allCategories.slice(0, 6)
+    : allCategories;
+
+  // Total dots (rendered categories + Shop All card)
+  const totalItems = displayedCategories.length + 1;
+
+  // Check scroll position to update arrow disabled states & active dot indicator
   const checkScrollBounds = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 5);
-      // Allow a small offset margin (5px) for browser rounding errors
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+
+      // Calculate active dot index based on scroll position
+      const scrollPercentage = scrollLeft / (scrollWidth - clientWidth || 1);
+      const calculatedIndex = Math.round(scrollPercentage * (totalItems - 1));
+      setActiveIndex(Math.min(calculatedIndex, totalItems - 1));
     }
   };
 
@@ -36,11 +61,10 @@ const CategoryPills = () => {
       if (container) container.removeEventListener("scroll", checkScrollBounds);
       window.removeEventListener("resize", checkScrollBounds);
     };
-  }, []);
+  }, [totalItems]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
-      // Scroll by the full visible container width
       const containerWidth = scrollContainerRef.current.clientWidth;
       const scrollAmount = direction === "left" ? -containerWidth : containerWidth;
 
@@ -51,15 +75,29 @@ const CategoryPills = () => {
     }
   };
 
+  const scrollToIndex = (index: number) => {
+    if (scrollContainerRef.current) {
+      const { scrollWidth, clientWidth } = scrollContainerRef.current;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      const targetScrollLeft = (maxScrollLeft / (totalItems - 1)) * index;
+
+      scrollContainerRef.current.scrollTo({
+        left: targetScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <section className="w-full bg-white py-10 px-6 md:px-12 mt-2">
       <div className="max-w-[1280px] mx-auto">
         {/* Header & Controls */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className=" text-[20px] md:text-[28px] font-bold text-[#0F2942]">
+          <h2 className="text-[20px] md:text-[28px] font-bold text-[#0F2942]">
             Popular vehicle styles
           </h2>
-          <div className="flex items-center gap-3">
+          {/* Arrow navigation: Hidden on mobile, visible on desktop */}
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => handleScroll("left")}
               disabled={!canScrollLeft}
@@ -92,7 +130,7 @@ const CategoryPills = () => {
           ref={scrollContainerRef}
           className="flex items-center gap-8 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
         >
-          {categories.map(({ id, label, image, href }) => (
+          {displayedCategories.map(({ id, label, image, href }) => (
             <div key={id} className="snap-start flex-shrink-0">
               <CategoryPill label={label} image={image} href={href} />
             </div>
@@ -108,6 +146,22 @@ const CategoryPills = () => {
               <ChevronRight className="w-5 h-5" />
             </Link>
           </div>
+        </div>
+
+        {/* Mobile Pagination Dots */}
+        <div className="flex md:hidden items-center justify-center gap-2 mt-6">
+          {Array.from({ length: totalItems }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToIndex(index)}
+              aria-label={`Go to item ${index + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ease-in-out ${
+                activeIndex === index
+                  ? "w-2 bg-brand-green"
+                  : "w-2 bg-gray-200 hover:bg-gray-300"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>

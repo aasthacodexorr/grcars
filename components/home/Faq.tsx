@@ -9,7 +9,7 @@ interface FaqItem {
   answer: string;
 }
 
-const FAQ_DATA: FaqItem[] = [
+const faqs = [
   {
     question: "Why should I choose Gedi Route Cars to buy used cars in Toronto?",
     answer:
@@ -18,32 +18,47 @@ const FAQ_DATA: FaqItem[] = [
   {
     question: "What types of vehicles do you sell?",
     answer:
-      "We offer a wide range of pre-owned vehicles including sedans, SUVs, trucks, and luxury vehicles from top reliable manufacturers.",
+      "From sedans and spacious family SUVs to powerful pickup trucks, We offer an extensive selection of quality pre-owned vehicles to suit every lifestyle. Our inventory features leading brands such as Toyota, Lexus, Honda, BMW, Ford, Jeep, Hyundai, Chevrolet, and Mercedes-Benz, among others.",
   },
   {
     question: "Are your vehicles inspected and certified?",
     answer:
-      "Yes, every vehicle in our inventory undergoes a rigorous safety and mechanical inspection to ensure high performance and safety standards.",
+      "Yes. Every vehicle at Gedi Route Cars goes through a comprehensive 210-point inspection performed by certified technicians. This ensures that each vehicle meets our strict standards for safety and performance before reaching our lot.",
   },
   {
     question: "What is the down payment required?",
     answer:
-      "Down payment requirements vary based on financing approval and credit profile. We offer zero-down payment options for qualified buyers.",
+      "The required down payment depends on the vehicle price, your credit profile, and financing terms. Our finance team works with multiple lenders to help you find the most affordable option possible. However, you can confirm the exact price for the specific model you choose during financing.",
   },
   {
     question: "How long does the approval process take?",
     answer:
-      "Our financing pre-qualification process is quick and often provides instant terms with no impact on your credit score.",
+      "Our financing approval process is designed to be quick and hassle-free. Most customers receive approval within minutes, and many are able to drive away the same day once documentation is complete.",
   },
   {
     question: "Can I purchase a vehicle online or remotely?",
     answer:
-      "Yes, you can browse, get pre-qualified, complete financing paperwork, and organize vehicle delivery 100% online.",
+      "Yes. You can browse our entire inventory, get pre-qualified for financing, and start your purchase online. Our team can also assist you virtually throughout the buying process to make your experience smooth and convenient.",
   },
   {
     question: "Do you ship or deliver vehicles outside the local area?",
     answer:
-      "We offer delivery services across Ontario and can arrange shipping options depending on your location.",
+      "Delivery within the Brampton may be available upon request. For customers located outside, please contact our sales team directly to discuss possible delivery arrangements.",
+  },
+  {
+    question: "How do I book a test drive?",
+    answer:
+      "You can book a test drive by contacting our team through our website’s contact form or by calling our dealership directly. Simply share the vehicle you are interested in and your preferred time, and we will confirm your appointment promptly.",
+  },
+  {
+    question: "Can I get a loan with bad credit?",
+    answer:
+      "Absolutely. We specialize in helping customers with all credit types, no matter their situation. Whether you have good credit or bad, we have access to multiple lenders. Our finance experts will work to secure the best possible rates and terms for your situation.",
+  },
+  {
+    question: "Can I bring my own mechanic to inspect the car before purchase?",
+    answer:
+      "Customers are welcome to request an independent inspection prior to purchase. Please coordinate with our team in advance so we can schedule a convenient time for your mechanic to view the vehicle.",
   },
 ];
 
@@ -62,14 +77,14 @@ const FaqSection = () => {
           <h2 className="text-3xl sm:text-2xl lg:text-[40px] font-semibold text-[#0e1726] tracking-tight leading-[1.15]">
             Frequently Asked Questions
           </h2>
-          <p className="text-sm mt-2 sm:text-base text-gray-900 max-w-xl leading-relaxed">
+          <p className="text-base mt-2 sm:text-base text-gray-900 max-w-xl leading-relaxed">
             Have questions about selling or trading your car? We’ve got you covered.
           </p>
         </div>
 
         {/* Right Column: Accordion List */}
         <div className="lg:col-span-7 divide-y divide-gray-200 border-b border-gray-200">
-          <FaqAccordion faqs={FAQ_DATA} />
+          <FaqAccordion faqs={faqs} />
         </div>
       </div>
     </section>

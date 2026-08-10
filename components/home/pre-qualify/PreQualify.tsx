@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PreQualifyForm from "./PreQualifyForm";
 import { APR_MAP } from "./constants";
-import carImg from "@/assets/cars/car-white-suv 1.png"
+import carImg from "@/assets/cars/buying.avif"
 
 
 const PreQualify = () => {
@@ -35,7 +35,7 @@ const PreQualify = () => {
   }
 
   return (
-    <section className="w-full bg-[#f8f9fa] py-12 md:py-12 px-4 sm:px-6 lg:px-12">
+    <section className="w-full bg-[#f8f9fa] py-12 md:py-12 px-5 sm:px-6 lg:px-12">
       <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         {/* Left Column: Heading, Subtitle & Car Image */}
@@ -43,7 +43,7 @@ const PreQualify = () => {
           <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-black tracking-tight leading-tight">
             Know your buying power
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+          <p className="text-black text-base leading-relaxed">
             At Gedi Route Cars, we go above and beyond for our customers — and that’s why we’re recognized as one of the best used car dealerships in Brampton.
           </p>
 
@@ -77,17 +77,17 @@ const PreQualify = () => {
           />
 
           {/* Payment Result Section */}
-          <div className="mt-8 pt-4 flex flex-col items-end text-right">
+          <div className="mt-8 pt-4 flex flex-col md:items-end md:text-right">
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl lg:text-[42px] font-black text-slate-900 tracking-tight">
+              <span className="text-4xl sm:text-4xl font-light lg:text-[42px] font-black text-slate-900 leading-7">
                 ${biWeeklyPayment.toFixed(2)}
               </span>
-              <span className="text-sm font-semibold text-gray-500">
+              <span className="text-base text-black">
                 at {rate.toFixed(2)}% APR
               </span>
             </div>
 
-            <p className="text-xs sm:text-sm text-gray-600 mt-2">
+            <p className="text-base mt-2">
               Not ready to pre-qualify?{" "}
               <Link href="/inventory" className="text-[#0088FF] font-medium hover:underline">
                 Shop by estimated budget

@@ -18,9 +18,9 @@ const PreQualifyForm = ({
   onIncludeTradeInToggle,
   onTradeInValueChange,
 }: PreQualifyFormProps) => {
-  const labelStyle = "block text-xs sm:text-sm font-semibold text-gray-700 mb-2";
+  const labelStyle = "block text-base text-black mb-2";
   const inputStyle =
-    "w-full h-11 px-3 text-sm sm:text-base border border-gray-900 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-black transition-all";
+    "w-full h-11 px-3 text-sm sm:text-base border border-gray-900 rounded-lg bg-white text-gray-900 focus:outline-none transition-all";
 
   return (
     <div className="space-y-6">
@@ -86,13 +86,12 @@ const PreQualifyForm = ({
         <button
           type="button"
           onClick={onIncludeTradeInToggle}
-          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-            includeTradeIn ? "bg-[#00D084]" : "bg-gray-200"
-          }`}
+          className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none
+           bg-gray-200`}
         >
           <span
-            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-              includeTradeIn ? "translate-x-5" : "translate-x-0"
+            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out ${
+              includeTradeIn ? "bg-[#00D084] translate-x-5" : "bg-[#00D084] translate-x-0"
             }`}
           />
         </button>
