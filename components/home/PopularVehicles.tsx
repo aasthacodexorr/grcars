@@ -19,18 +19,18 @@ interface ModelCard {
 }
 
 const MODELS: ModelCard[] = [
-  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory?make=Rivian" },
-  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory?make=Tesla&model=Model+3" },
-  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory?make=Chevrolet&model=Equinox" },
-  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory?make=Nissan&model=Rogue" },
-  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory?make=Ford&model=Escape" },
-  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory?make=Ford&model=Explorer" },
-  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory?make=Rivian" },
-  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory?make=Tesla&model=Model+3" },
-  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory?make=Chevrolet&model=Equinox" },
-  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory?make=Nissan&model=Rogue" },
-  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory?make=Ford&model=Escape" },
-  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory?make=Ford&model=Explorer" },
+  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory/Rivian" },
+  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory/tesla" },
+  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory/Chevrolet" },
+  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory/Nissan" },
+  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory/Ford" },
+  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory/Ford" },
+  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory/Rivian" },
+  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory/tesla" },
+  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory/Chevrolet" },
+  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory/Nissan" },
+  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory/Ford" },
+  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory/Ford" },
 ];
 
 const PopularModels = () => {
