@@ -402,6 +402,8 @@ const MakeRefinementList = () => {
     refine: refineMake,
   } = useRefinementList({
     attribute: "make",
+    limit:100,
+    sortBy:["name:asc"],
   });
 
   const {
@@ -409,6 +411,8 @@ const MakeRefinementList = () => {
     refine: refineModel,
   } = useRefinementList({
     attribute: "model",
+    limit:100,
+    sortBy:["name:asc"],
   });
 
   const handleToggle = (item: typeof makeItems[number]) => {
