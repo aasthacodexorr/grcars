@@ -74,7 +74,7 @@ const Finance = () => {
         </div>
       </section>
 
-      <GetInTouch />
+      
       <Footer />
     </div>
   );

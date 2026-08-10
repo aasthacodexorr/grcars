@@ -312,7 +312,7 @@ export default async function VehicleDetailsPage({
 
             <div className="w-full bg-black">
                 <div className="max-w-[1440px] xl:max-w-[1600px] 2xl:max-w-full  mx-auto w-full">
-                    <GetInTouch />
+                    
                     <Footer />
                 </div>
             </div>

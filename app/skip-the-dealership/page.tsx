@@ -262,7 +262,7 @@ export default function SkipTheDealership() {
                 </section>
 
             </div>
-            <GetInTouch />
+            
             <Footer />
         </>
     );

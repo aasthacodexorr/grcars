@@ -19,7 +19,7 @@ const VehicleForm = () => {
                 "lg:[scrollbar-width:none] lg:[-ms-overflow-style:none]"'
         />
       </div>
-      <GetInTouch />
+      
       <Footer />
     </>
 

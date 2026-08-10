@@ -480,7 +480,7 @@ export default async function ServicePage({ params }: PageProps) {
         </div>
       </section>
 
-      <GetInTouch />
+      
 
       <Footer />
     </div>

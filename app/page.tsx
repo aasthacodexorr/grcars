@@ -23,6 +23,7 @@ import {
   PopularVehicles,
   FaqSection,
   GoogleReviewsWidget,
+  BudgetCards,
 } from "@/components/home";
 
 // Shared/reusable sections
@@ -40,7 +41,8 @@ const HomePage = () => {
 
       {/* Homepage sections */}
       <CategoryPills />
-      <NextRide />
+      {/* <NextRide /> */}
+      <BudgetCards/>
       <PopularVehicles/>
       <PreQualify/>
       <Reviews/>

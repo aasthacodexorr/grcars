@@ -235,7 +235,7 @@ export default function CarLoanLanding() {
           </div>
         </div>
       </main>
-      <GetInTouch />
+      
       <Footer />
     </>
   );

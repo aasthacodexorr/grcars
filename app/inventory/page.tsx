@@ -345,7 +345,7 @@ const PageFooter = () => {
 
   return (
     <div className="mt-12 transition-opacity duration-300 ease-in">
-      <GetInTouch />
+      
       <Footer />
     </div>
   );

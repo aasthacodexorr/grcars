@@ -435,7 +435,7 @@ const ProtectionPlans = () => {
         <GrCarsDifference />
       </div>
 
-      <GetInTouch />
+      
       <Footer />
     </div>
   );
