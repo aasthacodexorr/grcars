@@ -1,17 +1,30 @@
+"use client";
+
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ChevronRight, Wallet, Repeat } from "lucide-react";
-import HeroDesktop from "@/assets/cars/HomebgImg.png"
+import HeroDesktop from "@/assets/cars/HomebgImg.png";
 import HeroMobile from "@/assets/cars/hero-mobile.jpg";
 import Link from "next/link";
 
 const src = (img: any) => (typeof img === "string" ? img : img?.src);
 
-
 const Hero = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    // Redirects to /inventory with the query parameter
+    router.push(`/inventory?q=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
   return (
     <section className="relative w-full min-h-[420px] md:min-h-[550px] lg:min-h-[500px] flex flex-col justify-between px-6 md:px-12 md:py-8 lg:py-10 overflow-hidden">
- 
-      {/* Background image layer — responsive art-directed picture, matches Carvana's real markup */}
-       <picture className="absolute inset-x-0 z-0 block w-full h-full">
+      {/* Background image layer */}
+      <picture className="absolute inset-x-0 z-0 block w-full h-full">
         <source media="(min-width: 1516px)" srcSet={src(HeroDesktop)} />
         <source media="(min-width: 768px)" srcSet={src(HeroMobile)} />
         <img
@@ -22,14 +35,12 @@ const Hero = () => {
         />
       </picture>
 
-      {/* Dark overlay gradient — desktop only, for text legibility over the full-bleed image */}
+      {/* Dark overlay gradients */}
       <div className="absolute inset-0 hidden md:block bg-gradient-to-l from-white/30 via-transparent to-slate-800/80 pointer-events-none -z-10" />
-      {/* Light top-fade on mobile so heading stays readable without dimming the truck */}
       <div className="absolute inset-x-0 top-0 h-28 md:hidden bg-gradient-to-b from-white/70 via-white/20 to-transparent pointer-events-none -z-10" />
 
       {/* Main Hero Content Container */}
       <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-36 mx-auto flex flex-col justify-between h-full min-h-[380px] md:min-h-[480px]">
-
         {/* Top Text & Search Section */}
         <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
           <h1 className="text-2xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase">
@@ -37,17 +48,28 @@ const Hero = () => {
             Right Price.
           </h1>
 
-          <div className="relative flex items-center w-full max-w-lg bg-white rounded-lg shadow-lg pl-4 pr-1.5 py-1.5 md:px-4 md:py-3">
-            <Search className="w-4 h-4 md:w-5 md:h-5 text-gray-400 mr-2 md:mr-3 shrink-0" />
+          {/* Search Form */}
+          <form
+            onSubmit={handleSearch}
+            className="relative flex items-center w-full max-w-lg bg-white rounded-lg shadow-lg pl-4 pr-1.5 py-1.5 md:px-4 md:py-3"
+          >
+            <button type="submit" aria-label="Search" className="shrink-0">
+              <Search className="w-4 h-4 md:w-5 md:h-5 text-gray-400 mr-2 md:mr-3" />
+            </button>
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Make, model, or keyword"
               className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-sm md:text-lg"
             />
-            <Link href={"/inventory"}  className="md:hidden ml-2 shrink-0 bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-md text-sm transition-colors">
+            <button
+              type="submit"
+              className="md:hidden ml-2 shrink-0 bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-md text-sm transition-colors"
+            >
               Go
-            </Link >
-          </div>
+            </button>
+          </form>
         </div>
 
         {/* Desktop CTA cards */}
@@ -59,7 +81,10 @@ const Hero = () => {
                 No credit impact, view real payments while shopping
               </p>
             </div>
-            <Link href={"/inventory"} className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md">
+            <Link
+              href={"/inventory"}
+              className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md"
+            >
               Get Pre-Qualified
             </Link>
           </div>
@@ -71,7 +96,10 @@ const Hero = () => {
                 Get a real offer in under 2 minutes
               </p>
             </div>
-            <Link href={"/inventory"} className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md">
+            <Link
+              href={"/inventory"}
+              className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md"
+            >
               Get Your Offer
             </Link>
           </div>
