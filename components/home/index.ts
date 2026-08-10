@@ -13,3 +13,4 @@ export { default as GrCarsDifference } from "./dealership-difference/DealershipD
 export { default as DifferenceCard }    from "./dealership-difference/DifferenceCard";
 export { default as FaqSection }    from "./Faq";
 export { default as GoogleReviewsWidget }    from "./GoogleReviewsWidget";
+export { default as BudgetCards }    from "./BudgetCards";

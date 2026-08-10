@@ -65,3 +65,43 @@
 .clip-ribbon {
       clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%);
     }
+
+
+
+/* Custom Card Animations */
+@keyframes leafWind {
+  0%   { transform: rotate(-32deg); }
+  25%  { transform: rotate(-20deg); }
+  50%  { transform: rotate(-30deg); }
+  75%  { transform: rotate(-18deg); }
+  100% { transform: rotate(-32deg); }
+}
+
+@keyframes truckPass {
+  0% { transform: translateX(-130%); opacity: 0; }
+  14% { transform: translateX(0); opacity: 1; }
+  58% { transform: translateX(0); opacity: 1; }
+  78% { transform: translateX(130%); opacity: 0; }
+  100% { transform: translateX(-130%); opacity: 0; }
+}
+
+@keyframes fuelNissan {
+  0%, 5% { opacity: 0.25; transform: rotate(0deg) scale(1.7) translate(33px, 9px); }
+  15%, 90% { opacity: 1; transform: rotate(2.09deg) scale(1) translate(56px, -42px); }
+  95%, 99.99% { opacity: 0; transform: rotate(2.09deg) scale(1) translate(56px, -42px); }
+  100% { opacity: 0.25; transform: rotate(0deg) scale(1.7) translate(33px, 9px); }
+}
+
+@keyframes fuelMitsubishi {
+  0%, 5% { opacity: 0.5; transform: rotate(0deg) scale(1.35) translate(32px, 7px); }
+  15%, 90% { opacity: 1; transform: rotate(-2.36deg) scale(1) translate(45px, -29px); }
+  95%, 99.99% { opacity: 0; transform: rotate(-2.36deg) scale(1) translate(45px, -29px); }
+  100% { opacity: 0.5; transform: rotate(0deg) scale(1.35) translate(32px, 7px); }
+}
+
+@keyframes fuelFord {
+  0%, 5% { opacity: 0.75; transform: rotate(0deg) scale(1.2) translate(26px, 5px); }
+  15%, 90% { opacity: 1; transform: rotate(2.5deg) scale(1) translate(28px, -15px); }
+  95%, 99.99% { opacity: 0; transform: rotate(2.5deg) scale(1) translate(28px, -15px); }
+  100% { opacity: 0.75; transform: rotate(0deg) scale(1.2) translate(26px, 5px); }
+}
