@@ -50,9 +50,9 @@ export const defaultAppConfig = defineAppConfig({
       "https://zopsoftware-asset.b-cdn.net/image/3052a46429ae1b30c67d59f82c1b3a07/1691004750_0b3143a68b415b9465e9.jpg",
   },
   site: {
-    saas_api: "https://cardora.zopsoftware.com/",
+    saas_api: "https://gediroute.zopsoftware.com",
     cdn_api: "https://zopsoftware-asset.b-cdn.net",
-    collection: "07cb7c095c0cf712732a976016079e19",
+    collection: "3052a46429ae1b30c67d59f82c1b3a07",
     feature_inventory_key:
       "Rjl5ckZSUmJVaE5raS9KRi9BUDV2bld6S2h0a3dSOFJYMTcybnBnQ2N3Yz1oZmUweyJmaWx0ZXJfYnkiOiJzdGF0dXM6W0luc3RvY2tdICYmIGZlYXR1cmVfbGlzdGluZzoxICYmIHZpc2liaWxpdHk6PjAgJiYgZGVsZXRlZF9hdDo9MCJ9",
     default_sort: "/sort/status_rank:asc,created_at:desc",
@@ -293,7 +293,7 @@ function deepMerge<T extends Record<string, any>>(target: T, source: Record<stri
 
 export async function getAppConfig(): Promise<AppConfig> {
   try {
-    const res = await fetch("https://cardora.zopsoftware.com/api/website/configuration", {
+    const res = await fetch("https://gediroute.zopsoftware.com/api/website/configuration", {
       next: { revalidate: 60 }
     });
     if (!res.ok) {
