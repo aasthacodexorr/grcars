@@ -122,7 +122,7 @@ export const COLORS = {
   // ═══════════════════════════════════════════════════════════════════════════
   special: {
     // Price display
-    price: 'hsl(145 75% 40%)', // Price green
+    price: '#005dff', // Price green
     
     // Rating / Stars
     star: 'hsl(45 100% 51%)',  // Gold/yellow for star ratings

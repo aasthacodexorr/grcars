@@ -119,7 +119,7 @@ export const PriceAndCTA = ({ vehicle }: any) => {
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full bg-white cursor-pointer border-2 font-bold py-3 rounded-xl transition-colors text-[16px] sm:text-[20px] border-brand-green-alpha text-price-green hover:bg-brand-green-alpha hover:text-white hover:border-brand-green-alpha"
+            className="w-full bg-white cursor-pointer border-2 font-bold py-3 rounded-xl transition-colors text-[16px] sm:text-[20px] border-brand-green text-price-green hover:bg-primary-greenLight hover:text-white hover:border-brand-green-alpha"
           >
             Send message
           </button>
