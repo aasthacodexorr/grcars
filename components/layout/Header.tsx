@@ -99,20 +99,21 @@ const Header = () => {
 
           {/* Call-Us Button */}
           <div className="flex-[0.2] flex justify-end pr-5 items-center gap-4">
-            <a
-              href="/wishlist"
-              className={`text-[20px] font-semibold flex items-center gap-[5px] text-black hover:opacity-80 transition-opacity relative`}
+            <button
+              onClick={openWishlistDrawer}
+              className={`text-[18px] cursor-pointer flex items-center gap-[5px] text-black hover:opacity-80 transition-opacity relative`}
               aria-label="Wishlist"
             >
               <svg className="w-[26px] h-[26px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2  text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {wishlistCount}
+              <span>Favourites</span>
+              {wishlistCount >= 0 && (
+                <span className="text-black text-[18px]  flex items-center justify-center">
+                  ({wishlistCount})
                 </span>
               )}
-            </a>
+            </button>
 
           </div>
         </div>

@@ -1001,26 +1001,28 @@ const InventoryContent = () => {
 
   const renderFilterGroups = () => (
     <div className="space-y-[18px]">
-      <FilterGroup title="LOCATION" isOpen={openFilter === "LOCATION"} onToggle={() => setOpenFilter(openFilter === "LOCATION" ? null : "LOCATION")}>
+      {/* <FilterGroup title="LOCATION" isOpen={openFilter === "LOCATION"} onToggle={() => setOpenFilter(openFilter === "LOCATION" ? null : "LOCATION")}>
         <RefinementList attribute="location" classNames={refinementListClassNames} />
-      </FilterGroup>
-      <FilterGroup title="VEHICLE TYPE" isOpen={openFilter === "VEHICLE TYPE"} onToggle={() => setOpenFilter(openFilter === "VEHICLE TYPE" ? null : "VEHICLE TYPE")}>
-        <RefinementList attribute="vehicle_type" classNames={refinementListClassNames} />
-      </FilterGroup>
-      <FilterGroup title="PRICE" isOpen={openFilter === "PRICE"} onToggle={() => setOpenFilter(openFilter === "PRICE" ? null : "PRICE")}>
-        <PriceRangeFilter />
-      </FilterGroup>
-      <FilterGroup title="YEAR" isOpen={openFilter === "YEAR"} onToggle={() => setOpenFilter(openFilter === "YEAR" ? null : "YEAR")}>
-        <RefinementList attribute="year" sortBy={["name:desc"]} classNames={refinementListClassNames} />
-      </FilterGroup>
+      </FilterGroup> */}
       <FilterGroup title="MAKE" isOpen={openFilter === "MAKE"} onToggle={() => setOpenFilter(openFilter === "MAKE" ? null : "MAKE")}>
         <MakeRefinementList />
       </FilterGroup>
       <FilterGroup title="MODEL" isOpen={openFilter === "MODEL"} onToggle={() => setOpenFilter(openFilter === "MODEL" ? null : "MODEL")}>
         <ModelRefinementList />
       </FilterGroup>
+      
+     
+      <FilterGroup title="YEAR" isOpen={openFilter === "YEAR"} onToggle={() => setOpenFilter(openFilter === "YEAR" ? null : "YEAR")}>
+        <RefinementList attribute="year" sortBy={["name:desc"]} classNames={refinementListClassNames} />
+      </FilterGroup>
+       <FilterGroup title="PRICE" isOpen={openFilter === "PRICE"} onToggle={() => setOpenFilter(openFilter === "PRICE" ? null : "PRICE")}>
+        <PriceRangeFilter />
+      </FilterGroup>
       <FilterGroup title="ODOMETER" isOpen={openFilter === "ODOMETER"} onToggle={() => setOpenFilter(openFilter === "ODOMETER" ? null : "ODOMETER")}>
         <OdometerRangeFilter />
+      </FilterGroup>
+      <FilterGroup title="VEHICLE TYPE" isOpen={openFilter === "VEHICLE TYPE"} onToggle={() => setOpenFilter(openFilter === "VEHICLE TYPE" ? null : "VEHICLE TYPE")}>
+        <RefinementList attribute="vehicle_type" classNames={refinementListClassNames} />
       </FilterGroup>
       <FilterGroup title="EXTERIOR COLOR" isOpen={openFilter === "EXTERIOR COLOR"} onToggle={() => setOpenFilter(openFilter === "EXTERIOR COLOR" ? null : "EXTERIOR COLOR")}>
         <RefinementList attribute="exterior_color" classNames={refinementListClassNames} />
@@ -1113,7 +1115,7 @@ const InventoryContent = () => {
                         <button
                           onClick={scrollToTop}
                           className={[
-                            "pointer-events-auto cursor-pointer flex items-center gap-2 bg-[#222] hover:bg-black text-white text-[13px] font-bold px-5 py-2.5 rounded-full shadow-lg active:scale-95 transition-all duration-200",
+                            "pointer-events-auto cursor-pointer flex items-center gap-2 bg-brand-green hover:bg-primary-greenLight text-white text-[13px] font-bold px-5 py-2.5 rounded-full shadow-lg active:scale-95 transition-all duration-200",
                             "-translate-y-7 lg:translate-y-0",
                             showScrollTop
                               ? "opacity-100 scale-100 visible"
