@@ -34,7 +34,7 @@ const MODELS: ModelCard[] = [
 ];
 
 // Number of cards shown per "page" on mobile — drives the dot pagination
-const MOBILE_CARDS_PER_PAGE = 3;
+const MOBILE_CARDS_PER_PAGE = 2;
 
 const PopularModels = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -45,9 +45,10 @@ const PopularModels = () => {
   // Show ALL models on both mobile and desktop now
   const displayedModels = MODELS;
 
-  // Mobile pages: groups of MOBILE_CARDS_PER_PAGE cars, plus one final page for "Shop All"
-  const totalMobilePages =
-    Math.ceil(displayedModels.length / MOBILE_CARDS_PER_PAGE);
+  // Mobile pages: groups of MOBILE_CARDS_PER_PAGE cars
+  const totalMobilePages = Math.ceil(
+    displayedModels.length / MOBILE_CARDS_PER_PAGE
+  );
 
   // Checks boundaries to toggle active/disabled states on arrows & updates active dot
   const checkScrollBounds = () => {
@@ -88,7 +89,7 @@ const PopularModels = () => {
     }
   };
 
-  // Scrolls to a given mobile "page" (group of 3 cars, or the Shop All page)
+  // Scrolls to a given mobile "page" (group of 3 cars)
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
       const { clientWidth } = scrollContainerRef.current;
@@ -145,7 +146,11 @@ const PopularModels = () => {
             <Link
               key={`${item.make}-${item.model}-${index}`}
               href={item.href}
-              className="bg-[#F5F7FA] rounded-2xl p-5 flex flex-col justify-between w-[230px] min-w-[210px] h-[240px] snap-start shrink-0 hover:shadow-md transition-shadow group"
+              className="bg-[#F5F7FA] rounded-2xl p-4 md:p-5 flex flex-col justify-between
+                         w-[calc((100%-1rem)/2)] min-w-[calc((100%-1rem)/2)]
+                         md:w-[230px] md:min-w-[210px]
+                         h-[200px] md:h-[240px]
+                         snap-start shrink-0 hover:shadow-md transition-shadow group"
             >
               {/* Text Header */}
               <div>
@@ -169,20 +174,9 @@ const PopularModels = () => {
               </div>
             </Link>
           ))}
-
-          {/* End of list: Shop All Link */}
-          <div className="snap-start flex-shrink-0 flex items-center justify-center pl-4 pr-8 h-[240px]">
-            <Link
-              href="/inventory"
-              className="flex items-center gap-2 text-[#0F2942] font-semibold text-lg hover:underline whitespace-nowrap"
-            >
-              Shop All
-              <ChevronRight className="w-5 h-5" />
-            </Link>
-          </div>
         </div>
 
-        {/* Mobile Pagination Dots: one dot per group of 3 cars, plus one for Shop All */}
+        {/* Mobile Pagination Dots: one dot per group of 3 cars */}
         <div className="flex md:hidden items-center justify-center gap-2 mt-6">
           {Array.from({ length: totalMobilePages }).map((_, index) => (
             <button
