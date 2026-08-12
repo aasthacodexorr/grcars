@@ -240,7 +240,6 @@ export default function SitemapPage() {
           </div>
         </div>
       </div>
-      <GetInTouch />
       <Footer />
     </>
   );
