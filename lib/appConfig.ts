@@ -4,7 +4,7 @@ export const defaultAppConfig = defineAppConfig({
   dealership: {
     dealership_name: "Demo Dealership",
     dealership_logo:
-      "https://zopsoftware-asset.b-cdn.net/phaeton/themes/theme-1/images/demo_dealership_2_cropped.png",
+      "",
     full_address_1: "1 Yonge St #1801",
     city_1: "Toronto",
     province_1: "Ontario",
