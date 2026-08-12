@@ -18,7 +18,6 @@ import Image from "next/image";
 
 import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
-import famicons from "@/assets/icons/famicons_call.svg";
 
 import GrCarsLogo from "@/components/common/GrCarsLogo";
 import { getConstants, NAV_ITEMS } from "@/constants";
