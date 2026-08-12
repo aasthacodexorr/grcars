@@ -39,7 +39,6 @@ const FinanceContent = () => {
         </div>
       </section>
     </main>
-    <GetInTouch/>
     <Footer/>
     </>
   );

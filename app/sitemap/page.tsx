@@ -172,7 +172,6 @@ export default function SitemapPage() {
             </div>
           </div>
         </div>
-        <GetInTouch />
         <Footer />
       </>
     );
@@ -190,7 +189,6 @@ export default function SitemapPage() {
             </div>
           </div>
         </div>
-        <GetInTouch />
         <Footer />
       </>
     );
