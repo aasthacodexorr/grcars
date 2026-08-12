@@ -30,7 +30,7 @@ const Hero = () => {
         <img
           src={src(HeroMobile)}
           alt="Neighborhood background"
-          className="h-full w-full object-cover object-center"
+          className="h-full w-full object-cover object-start"
           fetchPriority="high"
         />
       </picture>
@@ -40,7 +40,7 @@ const Hero = () => {
       <div className="absolute inset-x-0 top-0 h-28 md:hidden bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none z-[1]" />
 
       {/* Main Hero Content Container */}
-      <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-16 lg:mt-24 mx-auto flex flex-col justify-between h-full min-h-[380px] md:min-h-[480px]">
+      <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-16 lg:mt-24 mx-auto flex flex-col justify-between h-full min-h-[450px] md:min-h-[480px]">
         {/* Top Text & Search Section */}
         <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
@@ -65,7 +65,7 @@ const Hero = () => {
             />
             <button
               type="submit"
-              className="md:hidden ml-2 shrink-0 bg-blue-700 hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-md text-sm transition-colors"
+              className="md:hidden ml-2 shrink-0 bg-brand-green hover:bg-blue-800 text-white font-semibold px-4 py-2 rounded-md text-sm transition-colors"
             >
               Go
             </button>
@@ -105,23 +105,33 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Mobile CTA rows */}
-        <div className="md:hidden flex flex-col gap-2 pb-2 mt-auto">
-          <button className="w-full flex items-center justify-between bg-grey-900/80 backdrop-blur-md text-white px-4 py-3 rounded-lg">
-            <div className="flex items-center gap-2.5">
-              <Wallet className="w-4 h-4" />
-              <span className="font-semibold text-sm">Financing made easy</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-gray-300" />
-          </button>
+     {/* Mobile CTA rows */}
+        <div className="md:hidden pb-3">
+          <div className="bg-grey-900/80 backdrop-blur-md text-white rounded-2xl p-2 border border-white/10">
 
-          <button className="w-full flex items-center justify-between bg-grey-900/80 backdrop-blur-md text-white px-4 py-3 rounded-lg">
-            <div className="flex items-center gap-2.5">
-              <Repeat className="w-4 h-4" />
-              <span className="font-semibold text-sm">Sell or trade your car</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-gray-300" />
-          </button>
+            {/* Row 1 */}
+            <button className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-xl">
+              <div className="flex items-center gap-3">
+                <Wallet className="w-5 h-5" />
+                <span className="font-semibold text-base">Financing made easy</span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-white/80" />
+            </button>
+
+         <hr className="mx-4 border-2 border-t border-white/20 " />
+
+            
+
+            {/* Row 2 */}
+            <button className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-xl">
+              <div className="flex items-center gap-3">
+                <Repeat className="w-5 h-5" />
+                <span className="font-semibold text-base">Sell or trade your car</span>
+              </div>
+              <ChevronRight className="w-5 h-5 text-white/80" />
+            </button>
+
+          </div>
         </div>
       </div>
     </section>

@@ -7,34 +7,24 @@ import { useAppConfig } from "@/app/providers";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
+// Number of pills shown per "page" on mobile — drives the dot pagination
+const MOBILE_PILLS_PER_PAGE = 3;
+
 const CategoryPills = () => {
   const appConfig = useAppConfig();
   const allCategories = getCategories(appConfig) || [];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const [isMobile, setIsMobile] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Detect mobile screen (sm breakpoint < 768px)
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  // Show ALL categories on both mobile and desktop now
+  const displayedCategories = allCategories;
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Display max 6 on mobile, all on desktop
-  const displayedCategories = isMobile
-    ? allCategories.slice(0, 6)
-    : allCategories;
-
-  // Total dots (rendered categories + Shop All card)
-  const totalItems = displayedCategories.length + 1;
+  // Mobile pages: groups of MOBILE_PILLS_PER_PAGE pills, plus one final page for "Shop All"
+  const totalMobilePages =
+    Math.ceil(displayedCategories.length / MOBILE_PILLS_PER_PAGE);
 
   // Check scroll position to update arrow disabled states & active dot indicator
   const checkScrollBounds = () => {
@@ -43,10 +33,9 @@ const CategoryPills = () => {
       setCanScrollLeft(scrollLeft > 5);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
 
-      // Calculate active dot index based on scroll position
-      const scrollPercentage = scrollLeft / (scrollWidth - clientWidth || 1);
-      const calculatedIndex = Math.round(scrollPercentage * (totalItems - 1));
-      setActiveIndex(Math.min(calculatedIndex, totalItems - 1));
+      // Each mobile "page" is exactly one container width wide
+      const pageIndex = clientWidth > 0 ? Math.round(scrollLeft / clientWidth) : 0;
+      setActiveIndex(Math.min(Math.max(pageIndex, 0), totalMobilePages - 1));
     }
   };
 
@@ -61,7 +50,8 @@ const CategoryPills = () => {
       if (container) container.removeEventListener("scroll", checkScrollBounds);
       window.removeEventListener("resize", checkScrollBounds);
     };
-  }, [totalItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalMobilePages]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -75,14 +65,12 @@ const CategoryPills = () => {
     }
   };
 
+  // Scrolls to a given mobile "page" (group of 3 pills, or the Shop All page)
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
-      const { scrollWidth, clientWidth } = scrollContainerRef.current;
-      const maxScrollLeft = scrollWidth - clientWidth;
-      const targetScrollLeft = (maxScrollLeft / (totalItems - 1)) * index;
-
+      const { clientWidth } = scrollContainerRef.current;
       scrollContainerRef.current.scrollTo({
-        left: targetScrollLeft,
+        left: clientWidth * index,
         behavior: "smooth",
       });
     }
@@ -131,7 +119,12 @@ const CategoryPills = () => {
           className="flex items-center gap-8 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
         >
           {displayedCategories.map(({ id, label, image, href }) => (
-            <div key={id} className="snap-start flex-shrink-0">
+            <div
+              key={id}
+              className="snap-start shrink-0 flex items-center justify-center
+                         w-[calc((100%-4rem)/3)] min-w-[calc((100%-4rem)/3)]
+                         md:w-auto md:min-w-0"
+            >
               <CategoryPill label={label} image={image} href={href} />
             </div>
           ))}
@@ -148,13 +141,13 @@ const CategoryPills = () => {
           </div>
         </div>
 
-        {/* Mobile Pagination Dots */}
+        {/* Mobile Pagination Dots: one dot per group of 3 pills, plus one for Shop All */}
         <div className="flex md:hidden items-center justify-center gap-2 mt-6">
-          {Array.from({ length: 6 }).map((_, index) => (
+          {Array.from({ length: totalMobilePages }).map((_, index) => (
             <button
               key={index}
               onClick={() => scrollToIndex(index)}
-              aria-label={`Go to item ${index + 1}`}
+              aria-label={`Go to page ${index + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ease-in-out ${
                 activeIndex === index
                   ? "w-2 bg-brand-green"
