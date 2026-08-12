@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     const response = await fetch(
-      'https://cardora.zopsoftware.com/api/website/sitemap',
+      'https://gediroute.zopsoftware.com/api/website/sitemap',
       {
         cache: 'no-store',
       }

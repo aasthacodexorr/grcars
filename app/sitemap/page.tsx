@@ -89,7 +89,7 @@ function categorizeSitemapUrls(urls: SitemapUrl[]): SitemapGroup[] {
           lastmod,
         });
       }
-    } else if (loc !== 'https://www.cardora.ca/') {
+    } else if (loc !== 'https://www.grcars.ca/') {
       // Other pages
       groups['Resources'].push({
         label: loc.split('/').filter(Boolean).pop() || 'Home',
@@ -204,7 +204,7 @@ export default function SitemapPage() {
           {/* Page Header */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Site Map</h1>
-            <p className="text-gray-600">Browse all pages and listings on Cardora</p>
+            <p className="text-gray-600">Browse all pages and listings on GrCars</p>
           </div>
 
           {/* Sitemap Groups */}

@@ -53,7 +53,7 @@ const Header = () => {
   return (
     <>
       {/*  Desktop Header */}
-      <header className={`hidden lg:block fixed top-0 z-[999] w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
+      <header className={`hidden lg:block fixed top-0 z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
         <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[18px]">
 
           {/* Logo */}

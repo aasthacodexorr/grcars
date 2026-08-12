@@ -115,7 +115,7 @@ export default async function VehicleDetailsPage({
 
     const isSold = vehicle.status?.toLowerCase() !== "instock";
 
-    let host = "www.cardora.ca";
+    let host = "www.grcars.ca";
     try {
         const headersList = await headers();
         const headerHost = headersList.get("host");
