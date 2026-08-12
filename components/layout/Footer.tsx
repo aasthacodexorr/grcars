@@ -109,7 +109,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full font-sans">
-      <div className="max-w-[1400px] mx-auto bg-[#101827] text-white rounded-[32px] p-8 sm:p-12 lg:px-28 py-16">
+      <div className="max-w-[1550px] mx-auto bg-[#101827] text-white rounded-[32px] p-8 sm:p-12 lg:px-28 py-16">
         
         {/* Main Grid: Logo + Nav Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-16">
@@ -201,7 +201,7 @@ const Footer = () => {
             <span className="text-gray-600">|</span>
             <Link href="/privacy-policy" className="hover:underline hover:text-white">Terms & Conditions</Link>
             <span className="text-gray-600">|</span>
-            <Link href="/consumer-privacy" className="hover:underline hover:text-white">Site Map</Link>
+            <Link target="_blank" href="/sitemap" className="hover:underline hover:text-white">Site Map</Link>
             
           </div>
         </div>
