@@ -8,6 +8,7 @@ import { getConstants } from '@/constants';
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
+    
     const locations = [
         {
             id: 'Brampton',
@@ -55,6 +56,15 @@ export default function ContactUs() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    // Smooth scroll to element by ID
+    const scrollToLocation = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     return (
         <>
             <Header />
@@ -70,7 +80,8 @@ export default function ContactUs() {
                             <a
                                 key={loc.id}
                                 href={`#${loc.id}`}
-                                className="px-10 py-2 border border-black text-md uppercase tracking-wider text-black hover:bg-black hover:text-white transition-colors duration-200 rounded-sm"
+                                onClick={(e) => scrollToLocation(e, loc.id)}
+                                className="px-10 py-2 border border-black text-md uppercase tracking-wider text-black hover:bg-black hover:text-white transition-colors duration-200 rounded-sm cursor-pointer"
                             >
                                 {loc.name}
                             </a>
@@ -165,12 +176,12 @@ export default function ContactUs() {
                             <p className="text-xl text-black mb-6">
                                 Submit a question through our contact form below and we’ll get back to you as soon as possible.
                             </p>
-                            <div className="w-full bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                            <div className="w-full min-h-[640px] bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
                                 <iframe
                                     id="finance_form"
                                     src={`${SITE_CONFIG?.urls.contactUsBaseUrl}`}
                                     name="iframe_a"
-                                    className="w-full h-full border-none"
+                                    className="w-full min-h-[640px] border-none"
                                     title="Contact Form"
                                 />
                             </div>
@@ -180,11 +191,11 @@ export default function ContactUs() {
 
                 {/* Location Sections with Embedded Maps */}
                 <section className="border-t border-gray-200 mb-10">
-                    {locations.map((loc, idx) => (
+                    {locations.map((loc) => (
                         <div
                             key={loc.id}
                             id={loc.id}
-                            className={` `}
+                            className="scroll-mt-36" /* Offsets sticky headers during scroll */
                         >
                             <div className="max-w-[1400px] py-12 border-b border-gray-200 mx-auto px-6 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div className="space-y-4">
