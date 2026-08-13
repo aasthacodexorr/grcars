@@ -1,95 +1,228 @@
 "use client"
 import { GetInTouch } from '@/components/common';
 import { Footer, Header } from '@/components/layout';
-import Image from 'next/image';
-import callIcon from "@/assets/icons/call_icon.svg";
-import envelopIcon from "@/assets/icons/envelop_icon.svg";
+import supportImg from "@/assets/cars/supportContact.jpg"
+import { useAppConfig } from '../providers';
 import { getConstants } from '@/constants';
-import { useAppConfig } from '@/app/providers';
-import Link from 'next/link';
-
 
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
+    const locations = [
+        {
+            id: 'Brampton',
+            name: 'Brampton',
+            address: '316 Orenda Rd\nBrampton, ON\nL6T 1G1',
+            phone: '1-855-895-9800',
+            mapSrc:
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.4300984651895!2d-79.70557192332906!3d43.70161014929783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b3e7bd56f8457%3A0xcf19d3086ece63bf!2s316%20Orenda%20Rd%2C%20Brampton%2C%20ON%20L6T%201G1%2C%20Canada!5e0!3m2!1sen!2sin!4v1713623875572!5m2!1sen!2sin',
+        },
+        {
+            id: 'guelph',
+            name: 'Guelph',
+            address: '875 Woodlawn Rd W\nGuelph, ON\nN1K 1B7',
+            phone: '1-855-895-9800',
+            mapSrc:
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2892.245486010123!2d-80.31913072333542!3d43.53892445981369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b902c17d77ad3%3A0xaad6a26890e0dca6!2s875%20Woodlawn%20Rd%20W%2C%20Guelph%2C%20ON%20N1K%201B7%2C%20Canada!5e0!3m2!1sen!2sin!4v1713621474404!5m2!1sen!2sin',
+        },
+        {
+            id: 'Simcoe',
+            name: 'Simcoe',
+            address: '51 Queensway East\nSimcoe, ON\nN3Y 4M5',
+            phone: '1-855-895-9800',
+            mapSrc:
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2925.204018986846!2d-80.30483732336198!3d42.84742510417138!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882c4e73aff60f7d%3A0x1d8591c87b7b6f67!2s51%20Queensway%20East%2C%20Simcoe%2C%20ON%20N3Y%204M5%2C%20Canada!5e0!3m2!1sen!2sin!4v1713629788972!5m2!1sen!2sin',
+        },
+        {
+            id: 'Fergus',
+            name: 'Fergus',
+            address: '850 St David St N,\nFergus, ON\nN1M 2L2',
+            phone: '1-855-895-9800',
+            mapSrc:
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2883.8357169773394!2d-80.39127352332858!3d43.71396304849807!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882bbe41e7a22da9%3A0x79afff35b0487e3c!2s850%20St%20David%20St%20N%2C%20Fergus%2C%20ON%20N1M%202L2%2C%20Canada!5e0!3m2!1sen!2sin!4v1713629856865!5m2!1sen!2sin',
+        },
+        {
+            id: 'Seaforth',
+            name: 'Seaforth',
+            address: '13 Main St N\nSeaforth, ON\nN0K 1W0',
+            phone: '1-855-895-9800',
+            mapSrc:
+                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2891.524812621072!2d-81.39580522364753!3d43.55394637110706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88292e8f95f8cb4f%3A0x3128d7f6a492bf41!2s13%20Main%20St%20N%2C%20Seaforth%2C%20ON%20N0K%201W0%2C%20Canada!5e0!3m2!1sen!2sin!4v1729699213782!5m2!1sen!2sin',
+        },
+    ];
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <>
             <Header />
-            <div className="min-h-screen flex items-center justify-center px-3 py-10 lg:px-24 font-sans text-gray-900 lg:mt-24">
-                <div className="w-full grid grid-cols-1 lg:grid-cols-2 lg:gap-12 gap-8">
-
-                    {/* Left Side */}
-                    <div className="space-y-8">
-                        <h1 className="text-2xl sm:text-[42px] font-bold lg:mt-28 lg:max-w-xl">
-                            Got a question? We’re here to help.
-                        </h1>
-                        <div className="space-y-7 lg:space-y-4 lg:w-[480px]">
-                            {/* Call Card */}
-                            <Link
-                                href={`tel:${appConfig.dealership.sales_number_1}`}
-                                className="group relative bg-white p-6 rounded-md border border-gray-200 flex justify-between overflow-hidden cursor-pointer block"
-                            >
-                                <div className="absolute inset-0 bg-[#2f413936] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                <div className="relative z-10">
-                                    <h2 className="text-xl font-bold mb-1">Call us</h2>
-                                    <p className="text-gray-600">Call Us Anytime Now</p>
-                                </div>
-
-                                <div className="relative z-10 h-[55px] w-[55px] rounded-full bg-brand-green flex items-center justify-center">
-                                    <Image
-                                        src={callIcon}
-                                        alt="Call icon"
-                                        width={27}
-                                        height={27}
-                                        className="object-contain"
-                                    />
-                                </div>
-                            </Link>
-
-                            {/* Email Card */}
-                            <Link
-                                href={`mailto:${appConfig.dealership.email_1}`}
-                                className="group relative bg-white p-6 rounded-md border border-gray-200 flex justify-between overflow-hidden cursor-pointer block"
-                            >
-                                <div className="absolute inset-0 bg-[#2f413936] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                <div className="relative z-10">
-                                    <h2 className="text-xl font-bold mb-1">Email</h2>
-                                    <p className="text-gray-600">Send Us an Email</p>
-                                </div>
-
-                                <div className="relative z-10 h-[55px] w-[55px] rounded-full bg-brand-green flex items-center justify-center">
-                                    <Image
-                                        src={envelopIcon}
-                                        alt="Email icon"
-                                        width={27}
-                                        height={27}
-                                        className="object-contain"
-                                    />
-                                </div>
-                            </Link>
-                        </div>
+            <div className="min-h-screen bg-white text-gray-800 font-sans lg:mt-32">
+                {/* Locations Header Nav */}
+                <div id="top-back" className="py-8 text-center border-b border-gray-100">
+                    <div className="flex items-center justify-center gap-2 mb-4 text-xl font-semibold tracking-wide uppercase text-black">
+                        <span className="text-red-600">📍</span>
+                        <span>5 Locations To Serve You Better</span>
                     </div>
+                    <div className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto px-4">
+                        {locations.map((loc) => (
+                            <a
+                                key={loc.id}
+                                href={`#${loc.id}`}
+                                className="px-10 py-2 border border-black text-md uppercase tracking-wider text-black hover:bg-black hover:text-white transition-colors duration-200 rounded-sm"
+                            >
+                                {loc.name}
+                            </a>
+                        ))}
+                    </div>
+                </div>
 
-                    {/* Right Side: Form Container */}
-                    <div className=" bg-white px-4 pt-8 pb-18 sm:p-6 rounded-2xl shadow-[0_2px_18px_rgba(0,0,0,0.1)] border border-gray-100">
-                        <h2 className="text-2xl sm:text-3xl font-bold mb-6">Let’s Get You on the Road</h2>
-                        <div className="h-[600px]">
-                            <iframe
-                                src={`${SITE_CONFIG?.urls.contactUsBaseUrl}`}
-                                className="w-full rounded-2xl h-full"
-                                title="Contact Us"
-                                allow="payment"
+                {/* Hero / Contact Overview */}
+                <section className="max-w-[1400px] mx-auto px-6 lg:px-2 py-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
+                        <div>
+                            <span className="text-base lg:text-xl font-bold uppercase text-gray-400 block mb-2">
+                                CONTACT US
+                            </span>
+                            <h1 className="text-3xl font-semibold text-gray-900 leading-tight">
+                                Got a question? We’re
+                                <br />
+                                here to help.
+                            </h1>
+                        </div>
+                        <div>
+                            <img
+                                src={supportImg?.src}
+                                alt="Support Representative"
+                                className="w-full object-cover shadow-sm"
                             />
                         </div>
                     </div>
 
-                </div>
-            </div>
+                    {/* Contact Methods & Form Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-gray-100 pt-12">
+                        {/* Left Column: Call / Text & Chat */}
+                        <div className="space-y-10">
+                            {/* Call Section */}
+                            <div className="space-y-3">
+                                <h3 className="text-xl font-bold text-gray-900">Call or text us</h3>
+                                <p className="text-xl text-gray-600 leading-relaxed">
+                                    Our Customer Support team is available via telephone 7 days a week. You can also check out our{' '}
+                                    <a href="#" className="underline font-medium hover:text-black">
+                                        FAQ Page
+                                    </a>{' '}
+                                    for more information.
+                                </p>
+                                <ul className="text-lg text-gray-600 space-y-1 py-1">
+                                    <li>
+                                        <strong className="text-gray-800">Monday – Friday:</strong> 10am – 8pm
+                                    </li>
+                                    <li>
+                                        <strong className="text-gray-800">Saturday:</strong> 10am – 7pm
+                                    </li>
+                                    <li>
+                                        <strong className="text-gray-800">Sunday:</strong> 11am – 6pm
+                                    </li>
+                                </ul>
+                                <a
+                                    href="tel:9052478040"
+                                    className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded hover:bg-gray-800 transition-colors"
+                                >
+                                    (905) 247-8040
+                                </a>
+                            </div>
 
-            
+                            {/* Chat Section */}
+                            <div className="space-y-3 pt-6 border-t border-gray-100">
+                                <h3 className="text-xl font-bold text-gray-900">Chat with us</h3>
+                                <p className="text-xl text-gray-600 leading-relaxed">
+                                    We’re here for you in real time. Chat with our Customer Support team, or send in your question overnight and we’ll get back to you the next day.
+                                </p>
+                                <ul className="text-lg text-gray-600 space-y-1 py-1">
+                                    <li>
+                                        <strong className="text-gray-800">Monday – Friday:</strong> 10am – 8pm
+                                    </li>
+                                    <li>
+                                        <strong className="text-gray-800">Saturday:</strong> 10am – 7pm
+                                    </li>
+                                    <li>
+                                        <strong className="text-gray-800">Sunday:</strong> 11am – 6pm
+                                    </li>
+                                </ul>
+                                <a
+                                    href="#"
+                                    className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded hover:bg-gray-800 transition-colors"
+                                >
+                                    Start live chat
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Right Column: Contact Form Iframe Container */}
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">Submit a question</h3>
+                            <p className="text-xl text-black mb-6">
+                                Submit a question through our contact form below and we’ll get back to you as soon as possible.
+                            </p>
+                            <div className="w-full bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                                <iframe
+                                    id="finance_form"
+                                    src={`${SITE_CONFIG?.urls.contactUsBaseUrl}`}
+                                    name="iframe_a"
+                                    className="w-full h-full border-none"
+                                    title="Contact Form"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Location Sections with Embedded Maps */}
+                <section className="border-t border-gray-200 mb-10">
+                    {locations.map((loc, idx) => (
+                        <div
+                            key={loc.id}
+                            id={loc.id}
+                            className={` `}
+                        >
+                            <div className="max-w-[1400px] py-12 border-b border-gray-200 mx-auto px-6 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                <div className="space-y-4">
+                                    <h3 className="text-2xl font-extrabold text-gray-900">{loc.name}</h3>
+                                    <p className="text-xl text-gray-600 whitespace-pre-line leading-relaxed">
+                                        {loc.address}
+                                    </p>
+                                    <p className="text-xl text-gray-800">
+                                        phone:{' '}
+                                        <a
+                                            href={`tel:${loc.phone}`}
+                                            className="font-bold hover:underline"
+                                        >
+                                            {loc.phone}
+                                        </a>
+                                    </p>
+                                    <button
+                                        onClick={scrollToTop}
+                                        className="inline-block bg-black text-white text-lg font-semibold px-5 py-2.5 rounded hover:bg-gray-800 transition-colors mt-2"
+                                    >
+                                        Back to top
+                                    </button>
+                                </div>
+                                <div className="w-full h-[350px] rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                                    <iframe
+                                        src={loc.mapSrc}
+                                        className="w-full h-full border-none"
+                                        loading="lazy"
+                                        allowFullScreen
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title={`${loc.name} Location Map`}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </section>
+            </div>
             <Footer />
         </>
     );
