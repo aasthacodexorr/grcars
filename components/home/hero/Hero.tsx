@@ -105,7 +105,7 @@ const Hero = () => {
           </div>
         </div>
 
-     {/* Mobile CTA rows */}
+        {/* Mobile CTA rows */}
         <div className="md:hidden pb-3">
           <div className="bg-grey-900/80 backdrop-blur-md text-white rounded-2xl p-2 border border-white/10">
 
@@ -118,9 +118,7 @@ const Hero = () => {
               <ChevronRight className="w-5 h-5 text-white/80" />
             </button>
 
-         <hr className="mx-4 border-2 border-t border-white/20 " />
-
-            
+            <hr className="mx-4 border-2 border-t border-white/20 " />
 
             {/* Row 2 */}
             <button className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-xl">

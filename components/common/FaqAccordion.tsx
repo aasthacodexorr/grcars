@@ -36,7 +36,7 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
               onClick={() => handleToggle(index)}
               className="w-full px-6 py-4 cursor-pointer flex items-center justify-between text-left"
             >
-              <span className="flex-1 text-base font-lg">
+              <span className="flex-1 text-xl font-lg">
                 {questionText}
               </span>
 
