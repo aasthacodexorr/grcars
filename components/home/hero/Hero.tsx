@@ -82,7 +82,7 @@ const Hero = () => {
               </p>
             </div>
             <Link
-              href={"/inventory"}
+              href={"/financing"}
               className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md"
             >
               Get Pre-Qualified
@@ -97,7 +97,7 @@ const Hero = () => {
               </p>
             </div>
             <Link
-              href={"/inventory"}
+              href={"/trade-in-my-car"}
               className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md"
             >
               Get Your Offer
@@ -110,24 +110,24 @@ const Hero = () => {
           <div className="bg-grey-900/80 backdrop-blur-md text-white rounded-2xl p-2 border border-white/10">
 
             {/* Row 1 */}
-            <button className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-xl">
+            <Link href={"/financing"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-xl">
               <div className="flex items-center gap-3">
                 <Wallet className="w-5 h-5" />
                 <span className="font-semibold text-base">Financing made easy</span>
               </div>
               <ChevronRight className="w-5 h-5 text-white/80" />
-            </button>
+            </Link>
 
             <hr className="mx-4 border-2 border-t border-white/20 " />
 
             {/* Row 2 */}
-            <button className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-xl">
+            <Link href={"/trade-in-my-car"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-xl">
               <div className="flex items-center gap-3">
                 <Repeat className="w-5 h-5" />
                 <span className="font-semibold text-base">Sell or trade your car</span>
               </div>
               <ChevronRight className="w-5 h-5 text-white/80" />
-            </button>
+            </Link>
 
           </div>
         </div>
