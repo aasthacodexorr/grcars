@@ -90,7 +90,7 @@ const Header = () => {
                     }`}
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
-                  <span>{item.label}</span>
+                  <span className="font-semibold tracking-wide">{item.label}</span>
                 </a>
               );
             })}
