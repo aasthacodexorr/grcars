@@ -30,13 +30,13 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
         return (
           <div
             key={index}
-            className="border-b border-slate-200 rounded-lg overflow-hidden transition-all duration-300"
+            className="border-b border-slate-200 rounded-lg overflow-hidden transition-all duration-300 "
           >
             <button
               onClick={() => handleToggle(index)}
-              className="w-full px-6 py-4 cursor-pointer flex items-center justify-between text-left"
+              className="w-full px-6 py-7 cursor-pointer flex items-center justify-between text-left"
             >
-              <span className="flex-1 text-xl font-lg">
+              <span className="flex-1 text-xl font-lg ">
                 {questionText}
               </span>
 
@@ -50,7 +50,7 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
 
             {/* Smooth Height Container */}
             <div
-              className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+              className={`grid transition-[grid-template-rows] duration-300 ease-in-out  ${
                 isOpen
                   ? 'grid-rows-[1fr]'
                   : 'grid-rows-[0fr]'

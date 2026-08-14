@@ -90,8 +90,9 @@ const Finance = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <section className="py-6 md:py-10 pb-16 lg:mt-28">
+      <section className="py-6 md:py-10 pb-16 lg:mt-24">
         <div className="mx-auto max-w-[1100px] px-4 md:px-6">
+          <h1 className="text-3xl font-bold text-center">Used Car Financing</h1>
           <div className="overflow-hidden">
             <iframe
               ref={iframeRef}
@@ -107,11 +108,9 @@ const Finance = () => {
               }}
             />
           </div>
-
-
         </div>
         {/* Welcome Banner Section */}
-        <div className="relative overflow-hidden text-white ">
+        <div className="relative overflow-hidden text-white">
           {/* Background Image */}
           <div className=" inset-0 z-0 min-h-[70vh]">
             <Image
@@ -127,7 +126,7 @@ const Finance = () => {
           </div>
 
           {/* Content */}
-          <div className="absolute top-9 left-[450px] z-10 flex flex-col items-center px-6 py-20 text-center max-w-4xl mx-auto">
+          <div className="absolute top-9 w-full z-10 flex flex-col items-center px-6 py-20 text-center mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
               Welcome to Gedi Route
             </h2>
@@ -142,9 +141,6 @@ const Finance = () => {
             </p>
           </div>
         </div>
-
-
-
         <Reviews />
 
        <div className="mx-auto max-w-[1100px] px-4 md:px-6 py-20 flex flex-col justify-center items-center">
