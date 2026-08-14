@@ -155,7 +155,7 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
         <div className="space-y-2.5">
           {/* Button 1: Get Pre-Approved */}
           <a href="/vehicle-financing/" className="block w-full">
-            <button className="w-full cursor-pointer   bg-brand-green hover:bg-primary-greenLight text-white font-bold py-3.5 rounded-full transition-colors text-base shadow-sm">
+            <button className="w-full cursor-pointer bg-brand-green hover:bg-primary-greenLight text-white font-bold py-3.5 rounded-full transition-colors text-base shadow-sm">
               Get Pre-Approved
             </button>
           </a>
@@ -176,13 +176,13 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
           }`}
       >
         <a href="/vehicle-financing/" className="flex-1">
-          <button className="w-full bg-[#00874e] text-white font-bold py-3 rounded-full text-sm shadow-md">
+          <button className="w-full bg-brand-green hover:bg-primary-greenLight text-white font-bold py-3 rounded-full text-sm shadow-md">
             Get Pre-Approved
           </button>
         </a>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex-1 bg-white border-2 border-[#00874e] text-[#00874e] font-bold py-3 rounded-full text-sm"
+          className="flex-1 bg-white border-2 bg-white hover:bg-brand-green text-brand-green hover:text-white font-bold py-3 rounded-full text-sm"
         >
           Request Info
         </button>

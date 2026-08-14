@@ -81,4 +81,5 @@ declare module 'lucide-react' {
   export const DollarSign:Icon;
   export const Share:Icon;
   export const ArrowDownCircle:Icon;
+  export const Grid:Icon;
 }

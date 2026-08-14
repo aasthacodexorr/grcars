@@ -184,9 +184,9 @@ export default async function VehicleDetailsPage({
         We added 'max-w-[1440px] xl:max-w-[1600px] w-full mx-auto' to control the core structure 
         so that on large monitors the entire layout centers like the design.
       */}
-            <section className="w-full bg-background lg:mt-24">
+            <section className="w-full bg-background lg:mt-20">
                 <div className="w-full pt-[2px] flex-1  mx-auto">
-                    <div className="flex justify-end mb-2 mr-6">
+                    <div className="flex justify-end mr-6">
                         <VDPWishlistButton vehicle={vehicle} />
                     </div>
                     {/* SECTION ROW: Controls the boundaries of the sticky sidebar */}
@@ -195,7 +195,7 @@ export default async function VehicleDetailsPage({
                         {/* Left column: gallery + specs + description */}
                         <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
                             {/* Image gallery */}
-                            <ImageGallery images={images} title={titleText} isSold={isSold} centered={!showSidebar} />
+                            <ImageGallery images={images} title={titleText} isSold={isSold} />
 
                             <div className="text-[12px] font-light border-b border-gray-200">
                                 <p><strong className="font-medium">STOCK #</strong>: G-148421</p>
