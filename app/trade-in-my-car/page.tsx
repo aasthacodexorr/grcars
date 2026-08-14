@@ -11,7 +11,12 @@ import { Header, Footer } from "@/components/layout";
 
 // Assets
 import sell from "@/assets/cars/sell-image1.jpg";
-import saveImg from "@/assets/cars/sell-image2.jpg"
+import saveImg from "@/assets/cars/sell-image2.jpg";
+import { useAppConfig } from "../providers";
+import { getConstants } from "@/constants";
+import Link from "next/link";
+
+
 
 /* Data Structures */
 const steps = [
@@ -24,7 +29,7 @@ const steps = [
     icon: Banknote,
     title: 'Submit Your Documents',
     description: 'Provide proof of ownership and any other necessary documents.',
-    isActive: true, // Example flag for highlighted card state
+    isActive: true,
   },
   {
     icon: Calendar,
@@ -121,7 +126,11 @@ const faqs = [
 ];
 
 const TradeIn = () => {
+  const appConfig = useAppConfig();
+  const { SITE_CONFIG } = getConstants(appConfig);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
@@ -129,7 +138,6 @@ const TradeIn = () => {
 
       {/* 1. Hero Section */}
       <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-10 px-6 lg:px-20 py-16 overflow-hidden">
-        {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
             src={sell}
@@ -141,7 +149,6 @@ const TradeIn = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 items-center">
-          {/* Left Hero Text */}
           <div>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight text-white mb-4">
               Sell Your Car The <br /> Smart Way
@@ -151,7 +158,6 @@ const TradeIn = () => {
             </p>
           </div>
 
-          {/* Right CARFAX Card */}
           <div className="justify-self-center lg:justify-start w-full max-w-[320px]">
             <div className="bg-white text-slate-900 rounded-lg p-8 shadow-2xl min-h-80 text-center border border-gray-100">
               <div className="flex justify-center mb-4">
@@ -173,13 +179,60 @@ const TradeIn = () => {
               <h3 className="text-3xl font-bold mb-6 text-slate-800 leading-snug">
                 Find out what your trade-in is worth.
               </h3>
-              <button className="w-full bg-[#1877F2] hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded text-base transition-colors shadow">
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="w-full bg-[#1877F2] hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded text-base transition-colors shadow"
+              >
                 Get Started
               </button>
             </div>
           </div>
         </div>
       </section>
+
+      {/* CARFAX / Trade-in Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Dark Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-xl bg-white rounded-xl shadow-2xl overflow-hidden z-10 min-h-[500px] flex flex-col"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="absolute top-4 right-4 z-20 text-gray-500 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Iframe or Embedded Form Container */}
+              <div className="w-full h-full flex-1">
+                <iframe
+                  src={SITE_CONFIG?.urls?.tradeFormByVin}
+                  title="Trade-in Estimator Widget"
+                  className="w-full h-full min-h-[500px] border-none"
+                  allow="geolocation"
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* 2. Sub-Hero Announcement Bar */}
       <section className="bg-black text-white text-center py-12 px-4 lg:px-72">
@@ -198,25 +251,21 @@ const TradeIn = () => {
           {steps.map((step, idx) => {
             const IconComponent = step.icon;
             return (
-              <div
+              <Link 
+                href={"/inventory"}
                 key={idx}
-                className={`bg-white rounded-xl p-8 text-center transition-all duration-200 cursor-pointer hover:border-2 hover:border-blue-500 shadow-sm border border-gray-200/80 shadow-sm hover:shadow-md`}
+                className={`bg-white rounded-xl p-8 text-center transition-all duration-200 cursor-pointer hover:border-2 hover:border-blue-500 shadow-sm border border-gray-200/80 hover:shadow-md`}
               >
-                {/* Circular Icon Container */}
                 <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <IconComponent className="w-6 h-6 text-white" />
                 </div>
-
-                {/* Title */}
                 <h3 className="text-base md:text-xl text-slate-900 mb-3 px-2">
                   {step.title}
                 </h3>
-
-                {/* Description */}
                 <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
                   {step.description}
                 </p>
-              </div>
+              </Link>
             );
           })}
         </div>
@@ -234,9 +283,9 @@ const TradeIn = () => {
                 key={idx}
                 className={`bg-white rounded-xl p-8 shadow-sm flex flex-col`}
               >
-                <h3 className="text-center hover:text-brand-green cursor-pointer text-lg lg:text-2xl text-slate-900 mb-8 border-b border-gray-100 pb-4">
+                <Link href={"/inventory"} className="text-center hover:text-brand-green cursor-pointer text-lg lg:text-2xl text-slate-900 mb-8 border-b border-gray-100 pb-4">
                   {col.title}
-                </h3>
+                </Link>
                 <ul className="space-y-4 text-xs md:text-sm text-gray-600 flex-1">
                   {col.items.map((item, itemIdx) => (
                     <li key={itemIdx} className="flex items-start gap-3">
@@ -261,7 +310,7 @@ const TradeIn = () => {
 
       {/* 5. Benefits with Image Section */}
       <section className="max-w-6xl mx-auto px-6 lg:px-0 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2  gap-10 lg:gap-0  items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0 items-center">
           <div className="px-6">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8">
               Trade-In Your Car and Save
@@ -330,7 +379,7 @@ const TradeIn = () => {
                       {faq.q}
                     </span>
                     {!isOpen && (
-                      <Plus className="w-5 h-5 bg-gray-300 p-1 rounded-full text-white  text-2xl flex-shrink-0 ml-4" />
+                      <Plus className="w-5 h-5 bg-gray-300 p-1 rounded-full text-white text-2xl flex-shrink-0 ml-4" />
                     )}
                   </button>
                   <AnimatePresence>
