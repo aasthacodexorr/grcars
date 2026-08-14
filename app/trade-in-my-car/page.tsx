@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Check, X, CarFront, Plus } from "lucide-react";
+import { ChevronDown, Check, X, CarFront, Plus, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -11,7 +11,7 @@ import { Header, Footer } from "@/components/layout";
 
 // Assets
 import sell from "@/assets/cars/sell-image1.jpg";
-import saveImg from "@/assets/cars/sell-image2.jpg";
+import happyfam from "@/assets/pages/HappyFamily.webp";
 import { useAppConfig } from "../providers";
 import { getConstants } from "@/constants";
 import Link from "next/link";
@@ -36,11 +36,7 @@ const steps = [
     title: 'Schedule a Drop-Off',
     description: 'Bring your car to our facility at a time that suits you.',
   },
-  {
-    icon: CreditCard,
-    title: 'Receive Instant Payment',
-    description: "We'll handle the rest and transfer the payment to you promptly.",
-  },
+   
 ];
 
 const comparisonData = [
@@ -131,6 +127,10 @@ const TradeIn = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const toggleFaq = (idx:any) => {
+    setOpenFaq(openFaq === idx ? null : idx);
+  };
+
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
@@ -181,7 +181,7 @@ const TradeIn = () => {
               </h3>
               <button 
                 onClick={() => setIsModalOpen(true)}
-                className="w-full bg-[#1877F2] hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded text-base transition-colors shadow"
+                className="w-full bg-[#1877F2] hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-full text-base transition-colors shadow"
               >
                 Get Started
               </button>
@@ -242,34 +242,44 @@ const TradeIn = () => {
       </section>
 
       {/* 3. How to Trade In Section */}
-      <section className="max-w-7xl mx-auto px-6 py-24 bg-white">
-        <h2 className="text-2xl md:text-4xl font-bold text-center text-slate-900 mb-12">
+      <section className="max-w-7xl mx-auto px-3 py-28 bg-white font-sans">
+      {/* Title */}
+      <div className="mb-10 text-left">
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
           How to Trade In a Car?
         </h2>
+        <p className="text-base my-1 text-gray-500">Trade in or sell your vehicle to GrCars in just a few easy steps.</p>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, idx) => {
-            const IconComponent = step.icon;
-            return (
-              <Link 
-                href={"/inventory"}
-                key={idx}
-                className={`bg-white rounded-xl p-8 text-center transition-all duration-200 cursor-pointer hover:border-2 hover:border-blue-500 shadow-sm border border-gray-200/80 hover:shadow-md`}
-              >
-                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <IconComponent className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-base md:text-xl text-slate-900 mb-3 px-2">
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {steps.map((step, idx) => {
+          const IconComponent = step.icon;
+          return (
+            <Link 
+              href={"/inventory"}
+              key={idx}
+              className="flex items-start gap-4 group cursor-pointer"
+            >
+              {/* Left Icon Container */}
+              <div className="shrink-0 text-blue-600 transition-transform duration-200 group-hover:scale-105">
+                <IconComponent className="w-9 h-9 stroke-[1.5]" />
+              </div>
+
+              {/* Text Content */}
+              <div>
+                <h3 className="text-base md:text-xl font-bold text-slate-900 mb-3">
                   {step.title}
                 </h3>
-                <p className="text-xs md:text-sm text-gray-500 leading-relaxed">
+                <p className="text-xs md:text-base text-gray-500 leading-relaxed">
                   {step.description}
                 </p>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
 
       {/* 4. Why Choose Us / Comparison Section */}
       <section className="bg-[#F0F4FA] py-24 px-6">
@@ -309,7 +319,7 @@ const TradeIn = () => {
       </section>
 
       {/* 5. Benefits with Image Section */}
-      <section className="max-w-6xl mx-auto px-6 lg:px-0 py-20">
+      {/* <section className="max-w-6xl mx-auto px-6 lg:px-0 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0 items-center">
           <div className="px-6">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8">
@@ -352,46 +362,62 @@ const TradeIn = () => {
             />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* 6. FAQ Accordion Section */}
-      <section className="bg-[#F0F4FA] py-24 px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-4xl font-bold text-center text-slate-900 mb-12">
-            Frequently Asked Questions
+      <section className="bg-white py-16 px-6 md:py-16">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        
+        {/* Left Column: Heading, Subtitle & CTA */}
+        <div className="lg:col-span-5 flex flex-col items-start justify-start py-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] tracking-tight mb-4">
+            Frequently asked questions
           </h2>
-          <div className="space-y-2">
+          <p className="text-slate-600 text-base md:text-lg mb-8 max-w-md leading-relaxed">
+            Have questions about selling or trading your car? We’ve got you covered.
+          </p>
+          <a
+            href="#all-faqs"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-[#0F172A] text-[#0F172A] font-semibold text-sm hover:bg-[#0F172A] hover:text-white transition-colors duration-200"
+          >
+            View All FAQs
+          </a>
+        </div>
+
+        {/* Right Column: Accordion List */}
+        <div className="lg:col-span-7">
+          <div className="">
             {faqs.map((faq, idx) => {
               const isOpen = openFaq === idx;
+
               return (
-                <div
-                  key={idx}
-                  className={`rounded-lg transition-colors border ${isOpen
-                      ? "bg-[#F0F4FA] border-sky-100"
-                      : "bg-gray-50/70 border-gray-200/60"
-                    }`}
-                >
+                <div key={idx} className="border-b border-slate-200">
                   <button
-                    onClick={() => setOpenFaq(idx)}
-                    className="w-full flex cursor-pointer items-center justify-between p-5 text-left text-sm md:text-2xl text-slate-800"
+                    onClick={() => toggleFaq(idx)}
+                    className="w-full cursor-pointer flex items-center justify-between py-6 text-left group transition-colors duration-200"
                   >
-                    <span className={isOpen ? "text-blue-600" : "text-slate-800"}>
+                    <span className="text-base md:text-lg font-bold text-[#0F172A] pr-4">
                       {faq.q}
                     </span>
-                    {!isOpen && (
-                      <Plus className="w-5 h-5 bg-gray-300 p-1 rounded-full text-white text-2xl flex-shrink-0 ml-4" />
-                    )}
+                    <div className="flex-shrink-0 text-slate-900">
+                      {isOpen ? (
+                        <Minus className="w-5 h-5 stroke-[2]" />
+                      ) : (
+                        <Plus className="w-5 h-5 stroke-[2]" />
+                      )}
+                    </div>
                   </button>
+
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 pb-5 text-xs md:text-lg text-black leading-relaxed">
+                        <div className="pb-6 text-sm md:text-base text-slate-600 leading-relaxed pr-6">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -402,7 +428,41 @@ const TradeIn = () => {
             })}
           </div>
         </div>
-      </section>
+
+      </div>
+    </section>
+
+
+    <section className="max-w-[1300px] mx-auto py-12">
+      <div className="bg-[#0b3b60] rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
+        {/* Left Content Side */}
+        <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-start text-white">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight">
+            Trade in and save on your purchase
+          </h2>
+          
+          <p className="text-sm sm:text-base text-gray-200 mb-8 max-w-md font-light leading-relaxed">
+            Save more when you trade in the car you have for the car you want. It's easy and all online.
+          </p>
+
+          <Link
+            href="/get-started"
+            className="inline-block px-7 py-3 rounded-full border border-white text-white font-medium hover:bg-white hover:text-[#0b3b60] transition-colors duration-200 text-sm"
+          >
+            Get Started
+          </Link>
+        </div>
+
+        {/* Right Image Side */}
+        <div className="relative min-h-[300px] md:min-h-full">
+          <img
+            src={happyfam?.src}
+            alt="Family gathered at dining table with laptop"
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+      </div>
+    </section>
 
       <Footer />
     </div>

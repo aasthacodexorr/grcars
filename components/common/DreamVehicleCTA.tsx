@@ -23,7 +23,7 @@ const DreamVehicleCTA = () => {
           {/* Browse inventory CTA */}
           <a
             href="/inventory"
-            className="inline-flex items-center gap-2 rounded-md bg-brand-green text-brand-green-foreground px-7 py-4 font-semibold text-[16px] hover:opacity-95 transition-opacity"
+            className="inline-flex items-center gap-2 rounded-full bg-brand-green text-brand-green-foreground px-7 py-4 font-semibold text-[16px] hover:opacity-95 transition-opacity"
           >
             Browse all Cars
             <ArrowRight className="h-5 w-5" strokeWidth={2.5} />
@@ -32,7 +32,7 @@ const DreamVehicleCTA = () => {
           {/* Pre-qualify CTA */}
           <a
             href="/financing"
-            className="inline-flex items-center gap-2 rounded-md border-2 border-foreground/80 text-foreground px-7 py-4 font-semibold text-[16px] hover:bg-foreground hover:text-background transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-foreground/80 text-foreground px-7 py-4 font-semibold text-[16px] hover:bg-foreground hover:text-background transition-colors"
           >
             Get pre-qualified
           </a>

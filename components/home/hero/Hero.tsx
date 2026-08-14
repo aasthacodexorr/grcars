@@ -110,7 +110,7 @@ const Hero = () => {
           <div className="bg-grey-900/80 backdrop-blur-md text-white rounded-2xl p-2 border border-white/10">
 
             {/* Row 1 */}
-            <Link href={"/financing"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-xl">
+            <Link href={"/financing"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-full">
               <div className="flex items-center gap-3">
                 <Wallet className="w-5 h-5" />
                 <span className="font-semibold text-base">Financing made easy</span>
@@ -121,7 +121,7 @@ const Hero = () => {
             <hr className="mx-4 border-2 border-t border-white/20 " />
 
             {/* Row 2 */}
-            <Link href={"/trade-in-my-car"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-xl">
+            <Link href={"/trade-in-my-car"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-full">
               <div className="flex items-center gap-3">
                 <Repeat className="w-5 h-5" />
                 <span className="font-semibold text-base">Sell or trade your car</span>

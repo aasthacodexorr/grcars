@@ -230,7 +230,7 @@ const Service = () => {
                 <h3 className="text-xl md:text-[30px] font-bold text-gray-900">
                   Find the time that Works best for you.
                 </h3>
-                <Link href={"/book-an-appointment"} className="block text-center cursor-pointer text-white font-medium text-base w-full hover:opacity-90 transition-opacity rounded-[12px] py-3 px-[30px] bg-brand-btn-gradient">
+                <Link href={"/book-an-appointment"} className="block text-center cursor-pointer text-white font-medium text-base w-full hover:opacity-90 transition-opacity rounded-full py-3 px-[30px] bg-brand-btn-gradient">
                   <button className="w-full h-full cursor-pointer">
                     Schedule Online
                   </button>
@@ -326,7 +326,7 @@ const Service = () => {
                   <div key={label} className="shrink-0">
                     <Link
                       href="/book-an-appointment"
-                      className="shrink-0 inline-flex items-center gap-2 bg-white rounded-xl px-4 py-3 transition-all duration-150 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
+                      className="shrink-0 inline-flex items-center gap-2 bg-white rounded-full px-4 py-3 transition-all duration-150 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
                     >
                       <RenderIcon className="h-4 w-4 shrink-0" />
                       <span className="text-sm whitespace-nowrap mt-[3px]">{label}</span>

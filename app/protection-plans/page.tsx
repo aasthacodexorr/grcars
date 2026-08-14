@@ -295,7 +295,7 @@ const ProtectionPlans = () => {
                 variants={itemVariants}
                 whileHover={{ y: -4, scale: 1.02 }}
                 key={label}
-                className="w-ful min-w-[160px] sm:min-w-[180px] lg:min-w-0 shrink-0 lg:shrink grow bg-card rounded-xl cursor-pointer px-4 py-3 flex items-center justify-center gap-3 transition-all duration-200 border border-brand2 text-brand2 hover:text-white hover:bg-brand-green-alpha"
+                className="w-ful min-w-[160px] sm:min-w-[180px] lg:min-w-0 shrink-0 lg:shrink grow bg-card rounded-full cursor-pointer px-4 py-3 flex items-center justify-center gap-3 transition-all duration-200 border border-brand2 text-brand2 hover:text-white hover:bg-brand-green-alpha"
               >
                 <Icon className="h-5 w-5 shrink-0" strokeWidth={2} />
                 <p className="mt-1 text-sm whitespace-nowrap lg:whitespace-normal">{label}</p>

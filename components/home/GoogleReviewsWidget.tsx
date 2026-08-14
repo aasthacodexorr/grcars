@@ -51,7 +51,7 @@ export default function GoogleReviewsWidget() {
       <div className="fixed bottom-6 left-6 z-40">
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative flex flex-col cursor-pointer items-center justify-center rounded-2xl bg-white p-4 shadow-xl border border-gray-100 transition-transform duration-200 hover:scale-105"
+          className="group relative flex flex-col cursor-pointer items-center justify-center rounded-full bg-white p-4 shadow-xl border border-gray-100 transition-transform duration-200 hover:scale-105"
         >
           {/* Top Right External Icon */}
           <ExternalLink className="absolute top-2.5 right-2.5 h-4 w-4 text-gray-500" />
@@ -99,7 +99,7 @@ export default function GoogleReviewsWidget() {
           <div className="relative w-full max-w-5xl rounded-lg bg-white shadow-2xl">
             <button
                   onClick={() => setIsOpen(false)}
-                  className="rounded bg-gray-600 p-1 text-white items-end right-3 top-3 absolute  hover:bg-gray-700 transition"
+                  className="rounded-full bg-gray-600 p-1 text-white items-end right-3 top-3 absolute  hover:bg-gray-700 transition"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -111,7 +111,7 @@ export default function GoogleReviewsWidget() {
               </div>
               <div className="flex flex-col items-center gap-1">
                 
-                <button className="rounded-md bg-primary-greenLight px-12 py-2 text-base text-white shadow-xs hover:bg-blue-600">
+                <button className="rounded-full bg-primary-greenLight px-12 py-2 text-base text-white shadow-xs hover:bg-blue-600">
                   Write Review
                 </button>
                 <span className="text-[13px] text-gray-700">Powered By ZOP</span>
@@ -162,7 +162,7 @@ export default function GoogleReviewsWidget() {
 
               {/* Load More Button */}
               <div className="flex justify-center pt-2">
-                <button className="rounded-md bg-slate-600 px-4 py-1.5 text-lg text-white hover:bg-slate-700 transition">
+                <button className="rounded-full bg-slate-600 px-4 py-1.5 text-lg text-white hover:bg-slate-700 transition">
                   More Reviews
                 </button>
               </div>

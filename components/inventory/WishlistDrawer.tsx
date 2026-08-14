@@ -115,7 +115,7 @@ export default function WishlistDrawer({ isOpen, onClose }: WishlistDrawerProps)
               <Link
                 href="/inventory"
                 onClick={onClose}
-                className="inline-flex items-center justify-center bg-brand-green hover:bg-brand-green-alpha hover:text-white transition-all text-white px-6 py-3 rounded-xl text-base transition-colors mb-6"
+                className="inline-flex items-center justify-center bg-brand-green hover:bg-brand-green-alpha hover:text-white transition-all text-white px-6 py-3 rounded-full text-base transition-colors mb-6"
               >
                 Browse vehicles
               </Link>

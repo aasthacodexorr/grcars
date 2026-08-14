@@ -72,13 +72,13 @@ export default function SkipTheDealership() {
                         >
                             <Link
                                 href="/inventory"
-                                className="bg-white px-8 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
+                                className="bg-white px-8 py-3 rounded-full shadow-sm hover:shadow-md transition-all duration-200 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
                             >
                                 Browse Inventory
                             </Link>
                             <Link
                                 href="/financing"
-                                className="bg-white px-8 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
+                                className="bg-white px-8 py-3 rounded-full shadow-sm hover:shadow-md transition-all duration-200 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
                             >
                                 Get Pre-Approved
                             </Link>

@@ -81,7 +81,7 @@ export default function ContactUs() {
                                 key={loc.id}
                                 href={`#${loc.id}`}
                                 onClick={(e) => scrollToLocation(e, loc.id)}
-                                className="px-10 py-2 border border-black text-md uppercase tracking-wider text-black hover:bg-black hover:text-white transition-colors duration-200 rounded-sm cursor-pointer"
+                                className="px-10 py-2 border border-black text-md uppercase tracking-wider text-black hover:bg-black hover:text-white transition-colors duration-200 rounded-full cursor-pointer"
                             >
                                 {loc.name}
                             </a>
@@ -138,7 +138,7 @@ export default function ContactUs() {
                                 </ul>
                                 <a
                                     href="tel:9052478040"
-                                    className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded hover:bg-gray-800 transition-colors"
+                                    className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
                                 >
                                     (905) 247-8040
                                 </a>
@@ -163,7 +163,7 @@ export default function ContactUs() {
                                 </ul>
                                 <a
                                     href="#"
-                                    className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded hover:bg-gray-800 transition-colors"
+                                    className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
                                 >
                                     Start live chat
                                 </a>
@@ -214,7 +214,7 @@ export default function ContactUs() {
                                     </p>
                                     <button
                                         onClick={scrollToTop}
-                                        className="inline-block bg-black text-white text-lg font-semibold px-5 py-2.5 rounded hover:bg-gray-800 transition-colors mt-2"
+                                        className="inline-block bg-black text-white text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors mt-2"
                                     >
                                         Back to top
                                     </button>
