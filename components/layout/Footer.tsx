@@ -197,9 +197,9 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-x-2 text-gray-300 font-medium">
-            <Link href="/user-agreement" className="hover:underline hover:text-white">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="hover:underline hover:text-white">Privacy Policy</Link>
             <span className="text-gray-600">|</span>
-            <Link href="/privacy-policy" className="hover:underline hover:text-white">Terms & Conditions</Link>
+            <Link href="/terms-conditions/" className="hover:underline hover:text-white">Terms & Conditions</Link>
             <span className="text-gray-600">|</span>
             <Link target="_blank" href="/sitemap" className="hover:underline hover:text-white">Site Map</Link>
             
