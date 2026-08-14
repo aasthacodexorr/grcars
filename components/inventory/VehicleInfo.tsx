@@ -111,7 +111,7 @@ export const PriceAndCTA = ({ vehicle }: any) => {
         </div>
 
         <div className="mt-1 space-y-3">
-          <a href={`/finance/?inventory_id=${vehicle?.id}`}>
+          <a href={`/vehicle-financing/`}>
             <button className="cursor-pointer my-3 font-bold w-full rounded-[10px] sm:rounded-[12px] border text-white py-[12px] sm:py-[10px] text-[15px] sm:text-[20px] hover:opacity-90 shadow-md transition-opacity bg-brand-btn-gradient border-brand-green">
               Get Pre-Approved
             </button>
@@ -131,7 +131,7 @@ export const PriceAndCTA = ({ vehicle }: any) => {
         className={`fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 px-4 py-3 shadow-2xl lg:hidden flex gap-3 transition-transform duration-300 ease-in-out ${showSticky ? "translate-y-0" : "translate-y-full"
           }`}
       >
-        <a href={`/finance/?inventory_id=${vehicle?.id}`} className="flex-1">
+        <a href={`/vehicle-financing/`} className="flex-1">
           <button className="w-full font-bold rounded-xl text-white py-3 text-[15px] bg-brand-btn-gradient border border-brand-green shadow-md">
             Get Pre-Approved
           </button>
