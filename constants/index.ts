@@ -17,7 +17,7 @@ import {Search} from "lucide-react"
 export const NAV_ITEMS = [
   { label: "Search Cars", to: "/inventory" , icon:Search },
   { label: "Sell/Trade", to: "/trade-in-my-car" },
-  { label: "Tire & Rims", to: "/skip-the-dealership" },
+  { label: "Tire & Rims", to: "https://www.grwheels.ca/" },
   { label: "Financing", to: "/financing" },
   { label: "Contact", to: "/contact-us" }, 
 ] as const;
@@ -143,12 +143,12 @@ export const getConstants = (appConfig: AppConfig) => {
 
     SITE_CONFIG: {
       urls: {
-        financeBaseUrl: `${appConfig.site.saas_api}/api/templates/render/17`,
+        financeBaseUrl: `${appConfig.site.saas_api}/api/templates/render/19`,
         financeRenderApiUrl: `${appConfig.site.saas_api}/api/templates/render/17`,
         assetBaseUrl: appConfig.site.cdn_api,
         googleMapsUrl: safeD.address_map_url_1 || safeD.address_1_bar,
         tradeFormByVehicle: `${appConfig.site.saas_api}/api/templates/render/17`,
-        tradeFormByVin: `${appConfig.site.saas_api}/api/templates/render/18`,
+        tradeFormByVin: `https://truetrade.carfax.ca/?token=6e815089-b095-4c90-899f-af19e3390145`,
         bookAppointment:`${appConfig.site.saas_api}/api/templates/render/23`,
         contactUsBaseUrl:`${appConfig.site.saas_api}/api/templates/render/2`,
         vehiclePageContactUsBaseUrl:`${appConfig.site.saas_api}/api/templates/render/7`,
