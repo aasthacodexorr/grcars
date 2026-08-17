@@ -2,7 +2,7 @@ export const defineAppConfig = (config: any) => config;
 
 export const defaultAppConfig = defineAppConfig({
   dealership: {
-    dealership_name: "Demo Dealership",
+    dealership_name: "GrCars",
     dealership_logo:
       "",
     full_address_1: "1 Yonge St #1801",

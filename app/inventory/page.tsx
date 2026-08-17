@@ -255,7 +255,7 @@ const SearchResultsWrapper = ({ children }: { children: React.ReactNode }) => {
 const CustomHitsCount = () => {
   const { results } = useHits();
   return (
-    <span className="text-[13px] font-normal text-white leading-none uppercase p-0 tracking-tight">
+    <span className="text-[13px] font-normal  text-white leading-none uppercase p-0 tracking-tight">
       {results?.nbHits || 0} Matching Vehicles Found
     </span>
   );
@@ -1225,7 +1225,7 @@ useEffect(() => {
                   ].join(" ")}
                 >
                   <div className="flex flex-col items-center gap-4 pb-0">
-                    <div className="text-white text-center py-3 px-4 rounded-xl font-bold text-[14px] w-full shadow-sm bg-brand">
+                    <div className="text-white text-center py-3 px-4 rounded-full font-bold text-[14px] w-full shadow-sm bg-brand">
                       <CustomHitsCount />
                     </div>
                     <ClearFiltersButton />
