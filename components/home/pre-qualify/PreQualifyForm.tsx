@@ -91,7 +91,7 @@ const PreQualifyForm = ({
         >
           <span
             className={`pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out ${
-              includeTradeIn ? "bg-[#00D084] translate-x-5" : "bg-[#00D084] translate-x-0"
+              includeTradeIn ? "bg-brand-green translate-x-5" : "bg-brand-green translate-x-0"
             }`}
           />
         </button>

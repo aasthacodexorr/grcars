@@ -47,7 +47,7 @@ export async function generateMetadata(
   const title = replacePlaceholders(options.title, safeD, options.additionalReplacements);
   const description = replacePlaceholders(options.description, safeD, options.additionalReplacements);
 
-  let host = "www.cardora.ca";
+  let host = "www.grcars.ca";
   try {
     const headersList = await headers();
     const headerHost = headersList.get("host");

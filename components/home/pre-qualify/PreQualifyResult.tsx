@@ -52,7 +52,7 @@ const PreQualifyResult = ({ biWeeklyPayment, rate, loanAmount }: PreQualifyResul
           className="my-1 lg:mt-[5px] text-[55px] sm:text-[50px] font-semibold leading-none text-center font-[Poppins,sans-serif] text-neutral-darkGray2">
           $0.00
         </div>
-        <div className="mt-3 sm:mt-3 inline-block rounded-md text-white px-4 sm:px-5 py-[4px] text-[16px] sm:text-[15px] font-semibold shadow-sm font-[Poppins,sans-serif] bg-brand-green">
+        <div className="mt-3 sm:mt-3 inline-block rounded-full text-white px-4 sm:px-5 py-[4px] text-[16px] sm:text-[15px] font-semibold shadow-sm font-[Poppins,sans-serif] bg-brand-green">
           at {rate.toFixed(2)}% APR
         </div>
       </div>
@@ -61,7 +61,7 @@ const PreQualifyResult = ({ biWeeklyPayment, rate, loanAmount }: PreQualifyResul
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         href="/financing"
-        className="mt-7 sm:mt-[10px] w-full min-w-full block text-center rounded-[10px] sm:rounded-[12px] text-white py-[12px] sm:py-[10px] text-[18px] sm:text-[16px] font-medium hover:opacity-90 transition-opacity bg-brand-btn-gradient border border-brand-green2">
+        className="mt-7 sm:mt-[10px] w-full min-w-full block text-center rounded-full text-white py-[12px] sm:py-[10px] text-[18px] sm:text-[16px] font-medium hover:opacity-90 transition-opacity bg-brand-btn-gradient border border-brand-green2">
         Get pre-qualified
       </motion.a>
 

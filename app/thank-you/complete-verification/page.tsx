@@ -27,15 +27,15 @@ export default function CarLoanLanding() {
 
             {/* Buttons Container */}
             <div className="flex flex-col sm:flex-row justify-between items-center mt-20 gap-4 sm:gap-12 md:gap-24 w-full px-4">
-              <Link href={"/inventory"} className="whitespace-nowrap cursor-pointer text-white text-base py-3 px-6 rounded-xl transition duration-200 shadow-sm hover:opacity-90 bg-brand">
+              <Link href={"/inventory"} className="whitespace-nowrap cursor-pointer text-white text-base py-3 px-6 rounded-full transition duration-200 shadow-sm hover:opacity-90 bg-brand">
                 View In-Stock Inventory
               </Link>
 
-              <Link href={"/about-us"} className="whitespace-nowrap cursor-pointer text-white text-base py-3 px-6 rounded-xl transition duration-200 shadow-sm hover:opacity-90 bg-brand">
+              <Link href={"/about-us"} className="whitespace-nowrap cursor-pointer text-white text-base py-3 px-6 rounded-full transition duration-200 shadow-sm hover:opacity-90 bg-brand">
                 Call Dealership
               </Link>
 
-              <Link href={"/"} className="whitespace-nowrap cursor-pointer text-white text-base py-3 px-6 rounded-xl transition duration-200 shadow-sm hover:opacity-90 bg-brand">
+              <Link href={"/"} className="whitespace-nowrap cursor-pointer text-white text-base py-3 px-6 rounded-full transition duration-200 shadow-sm hover:opacity-90 bg-brand">
                 Go Back to Home Page
               </Link>
             </div>
@@ -65,7 +65,7 @@ export default function CarLoanLanding() {
                 Complete our online car loan application in minutes to pre-qualify for the car of your choice. We offer financing options for all credit situations.
               </p>
 
-              <Link className="w-fit text-white text-sm font-semibold py-3 px-8 cursor-pointer rounded-xl transition duration-200 hover:opacity-90 bg-brand" href={"/finance"}>
+              <Link className="w-fit text-white text-sm font-semibold py-3 px-8 cursor-pointer rounded-full transition duration-200 hover:opacity-90 bg-brand" href={"/finance"}>
                 Get started
               </Link>
             </div>
@@ -121,7 +121,7 @@ export default function CarLoanLanding() {
             </div>
 
             <div className="mt-12">
-              <Link className="w-fit text-white text-base font-semibold py-3 px-8 cursor-pointer rounded-xl transition duration-200 hover:opacity-90 bg-brand" href={"/finance"}>
+              <Link className="w-fit text-white text-base font-semibold py-3 px-8 cursor-pointer rounded-full transition duration-200 hover:opacity-90 bg-brand" href={"/finance"}>
                 Get started
               </Link>
             </div>
@@ -170,7 +170,7 @@ export default function CarLoanLanding() {
               <p className="text-gray-600 text-base mb-8">
                 Ready to get started? Talk to a real human today.
               </p>
-              <Link className="w-fit text-white text-base py-5 px-10 cursor-pointer rounded-xl transition duration-200 hover:opacity-90 bg-brand" href={"/contact-us"}>
+              <Link className="w-fit text-white text-base py-5 px-10 cursor-pointer rounded-full transition duration-200 hover:opacity-90 bg-brand" href={"/contact-us"}>
                 Get started
               </Link>
             </div>
