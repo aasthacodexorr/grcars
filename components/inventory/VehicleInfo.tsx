@@ -68,6 +68,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
     vehicle?.original_price || (vehicle?.selling_price ? vehicle?.price : 15990);
   const hasPriceDrop = originalPrice && originalPrice > currentPrice;
 
+  const isSold = vehicle.status && vehicle.status.toLowerCase() !== "instock";
+
+
   return (
     <>
       {/* Primary Card Container (Observed for sticky bar) */}
@@ -87,13 +90,13 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
         </p>
 
         {/* Pricing & Tooltip Section */}
-        <div className="flex items-center justify-center gap-1.5 mb-3">
+        {
+          !isSold ? <div className="flex items-center justify-center gap-1.5 mb-3">
           <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" />
-
-          <span className="text-3xl font-extrabold text-[#0d2238]">
-            ${Number(currentPrice).toLocaleString("en-US")}
-          </span>
-
+            <span className="text-3xl font-extrabold text-[#0d2238]">
+              ${Number(currentPrice).toLocaleString("en-US")}
+            </span> 
+        
           {hasPriceDrop && (
             <span className="text-sm text-slate-500 font-normal ml-1">
               was{" "}
@@ -137,19 +140,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
               <div className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] w-2.5 h-2.5 bg-black rotate-45" />
             </div>
           </div>
-        </div>
+        </div> : null
+        }
 
-        {/* Upgrades Banner */}
-        <button
-          type="button"
-          className="w-full bg-[#eef7fc] hover:bg-[#e2f0fc] text-[#0d2238] text-xs font-semibold py-2.5 px-3 rounded-md flex items-center justify-between transition-colors mb-5"
-        >
-          <span>
-            {vehicle?.upgrades_text ||
-              "Includes: $2,365 in factory upgrades"}
-          </span>
-          <ChevronRight className="w-4 h-4 text-slate-600" />
-        </button>
 
         {/* Buttons Action Group */}
         <div className="space-y-2.5">
