@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 import { HERO_LINE_CLASS, HERO_TAGLINE_CLASS } from "./constants";
 import type { HeroLineProps } from "./types";
 
-const HeroLine = ({ text, image, imageAlt, reverse = false, tagline }: HeroLineProps) => {
+interface ExtendedHeroLineProps extends HeroLineProps {
+  afterText?: string;
+}
+
+const HeroLine = ({ text, afterText, image, imageAlt, reverse = false, tagline }: ExtendedHeroLineProps) => {
   const carTransition = { type: "spring" as const, stiffness: 90, damping: 15, delay: 0.1 };
 
   return (
@@ -29,11 +33,11 @@ const HeroLine = ({ text, image, imageAlt, reverse = false, tagline }: HeroLineP
         </motion.div>
       )}
       
-      {text && <span className="mr-4">{text}</span>}
+      {text && <span className="whitespace-nowrap">{text} {afterText}</span>}
       
       {!reverse && image && (
         <motion.div 
-          initial={{ x: 70, opacity: 0 }}
+          initial={{ x: -70, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={carTransition}

@@ -18,7 +18,6 @@ import Image from "next/image";
 
 import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
-import famicons from "@/assets/icons/famicons_call.svg";
 
 import GrCarsLogo from "@/components/common/GrCarsLogo";
 import { getConstants, NAV_ITEMS } from "@/constants";
@@ -64,10 +63,12 @@ const Header = () => {
           </div>
 
           {/* Primary Navigation */}
+          {/* Primary Navigation */}
           <nav className="flex-[0.6] flex justify-start items-center gap-0">
             {NAV_ITEMS.map((item, index) => {
               const isActive =
                 pathname === item.to || pathname?.startsWith(item.to + "/");
+
               const isLast = index === NAV_ITEMS.length - 1;
 
               const Icon = "icon" in item ? item.icon : null;
@@ -82,13 +83,16 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif] ${!isLast
+                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif]
+          ${!isLast
                       ? "after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-[22px] after:w-[2px] after:bg-[rgba(181,180,180,0.35)]"
                       : ""
-                    } ${isActive
+                    }
+          ${isActive
                       ? "text-brand-green"
                       : "text-black hover:text-brand-green"
-                    }`}
+                    }
+        `}
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
                   <span>{item.label}</span>
@@ -108,7 +112,7 @@ const Header = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
               <span>Favourites</span>
-              {wishlistCount >= 0 && (
+              {isHydrated && (
                 <span className="text-black text-[18px]  flex items-center justify-center">
                   ({wishlistCount})
                 </span>
@@ -200,7 +204,7 @@ const Header = () => {
           </div>
 
           {/* Menu toggle */}
-          <div className="flex items-start w-full justify-center">
+          <div className="flex items-start w-full justify-end mr-3">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="flex flex-col items-center justify-center gap-1 mx-[7%] max-[537px]:mx-[6%] max-[397px]:mx-[4%]"
@@ -220,8 +224,8 @@ const Header = () => {
         {/* Slide-down nav drawer */}
         <div
           className={`absolute top-full left-0 w-full bg-white overflow-hidden transition-all duration-300 z-50 ${isMobileMenuOpen
-              ? `max-h-[100vh] opacity-100 shadow-[0_15px_30px_rgba(0,0,0,0.12)] border-b border-gray-100`
-              : "max-h-0 opacity-0 pointer-events-none shadow-none"
+            ? `max-h-[100vh] opacity-100 shadow-[0_15px_30px_rgba(0,0,0,0.12)] border-b border-gray-100`
+            : "max-h-0 opacity-0 pointer-events-none shadow-none"
             }`}
         >
           <nav className="flex flex-col px-6 pt-4 pb-6">
@@ -232,10 +236,10 @@ const Header = () => {
             >
               <span className="flex items-center gap-2 relative">
                 Favourites
-                {wishlistCount >= 0 && (
+                {isHydrated && (
                   <span className="text-[17px]">
                     ({wishlistCount})
-                  </span> 
+                  </span>
                 )}
               </span>
             </Link>

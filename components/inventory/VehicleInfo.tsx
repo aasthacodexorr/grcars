@@ -166,14 +166,7 @@ export const VehicleHeader = ({ vehicle }: any) => (
 
     <div className="flex items-center justify-center gap-3 mt-4 text-black flex-wrap">
       <div className="flex items-center gap-1 text-[16px]">
-        <svg
-          className="w-4 h-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-          fill="currentColor"
-        >
-          <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm320 96c0-26.9-16.5-49.9-40-59.3V120c0-13.3-10.7-24-24-24s-24 10.7-24 24v172.7c-23.5 9.5-40 32.5-40 59.3 0 35.3 28.7 64 64 64s64-28.7 64-64z" />
-        </svg>
+        <svg className="w-4.5 h-4.5" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 640 640"><path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM384 416C384 389.1 367.5 366.1 344 356.7L344 184C344 170.7 333.3 160 320 160C306.7 160 296 170.7 296 184L296 356.7C272.5 366.2 256 389.2 256 416C256 451.3 284.7 480 320 480C355.3 480 384 451.3 384 416zM208 240C225.7 240 240 225.7 240 208C240 190.3 225.7 176 208 176C190.3 176 176 190.3 176 208C176 225.7 190.3 240 208 240zM192 320C192 302.3 177.7 288 160 288C142.3 288 128 302.3 128 320C128 337.7 142.3 352 160 352C177.7 352 192 337.7 192 320zM480 352C497.7 352 512 337.7 512 320C512 302.3 497.7 288 480 288C462.3 288 448 302.3 448 320C448 337.7 462.3 352 480 352zM464 208C464 190.3 449.7 176 432 176C414.3 176 400 190.3 400 208C400 225.7 414.3 240 432 240C449.7 240 464 225.7 464 208z"/></svg>
         <span>{Number(vehicle?.odometer).toLocaleString("en-CA")} KM</span>
       </div>
 
@@ -228,12 +221,12 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
   if (!isOpen || !mounted) return null;
 
   return createPortal(
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999] px-4 text-left min-h-screen">
-      <div className="bg-white rounded-2xl w-full z-[9999] max-w-[620px] relative shadow-2xl p-6 lg:p-5 flex flex-col max-h-[88vh]">
+    <div className="fixed inset-0 bg-black/50 z-[9999] overflow-y-auto p-4 sm:p-6 flex min-h-full items-center justify-center">
+      <div className="bg-white rounded-2xl w-full max-w-[520px] relative p-6 lg:p-8 flex flex-col my-auto shadow-xl">
 
         <button
           onClick={onClose}
-          className="absolute right-5 cursor-pointer top-5 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-5 top-5 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors z-10"
           type="button"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -241,11 +234,11 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
           </svg>
         </button>
 
-        <h2 className="text-[24px] font-bold text-gray-900 mb-5 ">Got a question</h2>
-        <div className="h-[600px]">
+        <h2 className="text-[24px] font-bold text-gray-900 mb-5">Got a question</h2>
+        <div className="w-full">
           <iframe
             src={`${SITE_CONFIG?.urls.vehiclePageContactUsBaseUrl}?inventory_id=${inventoryId}`}
-            className="w-full rounded-2xl h-full"
+            className="w-full rounded-2xl h-[600px] border-0"
             title="Contact Us"
             allow="payment"
           />

@@ -150,7 +150,7 @@ function readPathOnlyFilters(segments: string[], refinementList: PlainObject) {
     remainingVehicle = remainingVehicle.slice(0, -bodyType.length).replace(/-$/, "");
   }
 
-  const makes = ["mercedes-benz", "aston-martin", "land-rover", "volkswagen", "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", "acura", "audi", "bmw", "buick", "dodge", "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", "ram", "volvo"];
+  const makes = ["mercedes-benz", "aston-martin", "land-rover", "volkswagen", "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", "tesla", "rivian", "acura", "audi", "bmw", "buick", "dodge", "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", "ram", "volvo"];
   const make = makes.find((value) => remainingVehicle === value || remainingVehicle.startsWith(`${value}-`));
   if (make) {
     set("make", make);
@@ -485,10 +485,16 @@ export function createInventoryRouter(_config: AppConfig) {
       ? window.history.state?.__inventoryPathFilters || getPathFilters(initialRoute)
       : {};
 
+  // Tracks the last URL we actually wrote via history.replaceState, so we can
+  // skip no-op writes below. See performWrite for why this matters.
+  let lastWrittenUrl: string | null = null;
+
   if (typeof window !== "undefined" && Object.keys(pathFilters).length && window.location.pathname === "/inventory") {
+    const bootstrapUrl = serializePublicUrl(initialRoute, pathFilters);
     isInternalUrlWrite = true;
-    window.history.replaceState({ ...initialRoute, __inventoryPathFilters: pathFilters }, "", serializePublicUrl(initialRoute, pathFilters));
+    window.history.replaceState({ ...initialRoute, __inventoryPathFilters: pathFilters }, "", bootstrapUrl);
     isInternalUrlWrite = false;
+    lastWrittenUrl = bootstrapUrl;
   }
 
   const performWrite = (route: PlainObject, filters: PathFilters) => {
@@ -496,11 +502,21 @@ export function createInventoryRouter(_config: AppConfig) {
     if (!isInventoryListingPath(window.location.pathname)) return;
 
     const url = serializePublicUrl(route, filters);
+
+    if (url === lastWrittenUrl) return;
+    lastWrittenUrl = url;
+
     const state = { ...route, __inventoryPathFilters: filters };
 
+    // Safari often jumps scroll UP on history.replaceState. Only correct
+    // upward jumps so bottom infinite-scroll growth is not fought.
+    const scrollY = window.scrollY;
     isInternalUrlWrite = true;
     window.history.replaceState(state, "", url);
     isInternalUrlWrite = false;
+    if (window.scrollY < scrollY - 1) {
+      window.scrollTo(0, scrollY);
+    }
   };
 
   const resync = () => performWrite(previousRoute, pathFilters);
