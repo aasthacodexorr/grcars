@@ -31,7 +31,7 @@ import Image from "next/image";
 import VehicleSpecificationsAccordion from "@/components/inventory/Faq";
 import Terms from "@/components/inventory/Terms";
 import AboutVehicle from "@/components/inventory/AboutVehicle";
-import { PriceAndCTA, VehicleHeader } from "@/components/inventory/VehicleInfo";
+import { VehicleHeaderAndCTA } from "@/components/inventory/VehicleInfo";
 import CoverageModal from "@/components/inventory/CoverageModal";
 
 // Force dynamic rendering — vehicle data changes frequently
@@ -115,7 +115,7 @@ export default async function VehicleDetailsPage({
 
     const isSold = vehicle.status?.toLowerCase() !== "instock";
 
-    let host = "www.cardora.ca";
+    let host = "www.grcars.ca";
     try {
         const headersList = await headers();
         const headerHost = headersList.get("host");
@@ -184,9 +184,9 @@ export default async function VehicleDetailsPage({
         We added 'max-w-[1440px] xl:max-w-[1600px] w-full mx-auto' to control the core structure 
         so that on large monitors the entire layout centers like the design.
       */}
-            <section className="w-full bg-background lg:mt-24">
+            <section className="w-full bg-background lg:mt-20">
                 <div className="w-full pt-[2px] flex-1  mx-auto">
-                    <div className="flex justify-end mb-2 mr-6">
+                    <div className="flex justify-end mr-6">
                         <VDPWishlistButton vehicle={vehicle} />
                     </div>
                     {/* SECTION ROW: Controls the boundaries of the sticky sidebar */}
@@ -195,7 +195,7 @@ export default async function VehicleDetailsPage({
                         {/* Left column: gallery + specs + description */}
                         <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
                             {/* Image gallery */}
-                            <ImageGallery images={images} title={titleText} isSold={isSold} centered={!showSidebar} />
+                            <ImageGallery images={images} title={titleText} isSold={isSold} />
 
                             <div className="text-[12px] font-light border-b border-gray-200">
                                 <p><strong className="font-medium">STOCK #</strong>: G-148421</p>
@@ -205,8 +205,8 @@ export default async function VehicleDetailsPage({
                             <div className={`flex justify-center w-full lg:hidden -mt-4`}>
                                 <div className="w-full">
                                     <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
-                                        <VehicleHeader vehicle={vehicle} />
-                                        <PriceAndCTA vehicle={vehicle} />
+                                        <VehicleHeaderAndCTA vehicle={vehicle} />
+                                         
                                     </div>
                                     <Terms vehicle={vehicle} />
                                 </div>
@@ -227,7 +227,7 @@ export default async function VehicleDetailsPage({
                                     <div className="flex-shrink-0 w-full md:w-auto text-center">
                                         <div>
                                             <a href={`/trade-in-my-car?inventory_id=${vehicle.id}`}
-                                                className="inline-block w-full md:w-auto hover:opacity-90 shadow-md transition-opacity text-white text-lg font-semibold px-9 py-3.5 rounded-xl no-underline transition-all duration-200 text-center whitespace-nowrap bg-brand-btn-gradient">
+                                                className="inline-block w-full md:w-auto hover:opacity-90 shadow-md transition-opacity text-white text-lg font-semibold px-9 py-3.5 rounded-full no-underline transition-all duration-200 text-center whitespace-nowrap bg-brand-btn-gradient">
                                                 Sell or trade in
                                             </a>
                                         </div>
@@ -286,9 +286,8 @@ export default async function VehicleDetailsPage({
                             <div className="hidden lg:block lg:w-[450px] xl:w-[450px] 2xl:w-[520px]">
                                 <div className="sticky top-6 h-fit space-y-5">
                                     <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
-                                        <VehicleHeader vehicle={vehicle} />
-                                        <PriceAndCTA vehicle={vehicle} />
-                                    </div>
+                                        <VehicleHeaderAndCTA vehicle={vehicle} />
+                                     </div>
                                     <Terms vehicle={vehicle} />
                                 </div>
                             </div>
@@ -297,7 +296,7 @@ export default async function VehicleDetailsPage({
 
                     {/* Finance Calculator - Now spans full responsive width within the centralized container bounds */}
                     <div className="mt-12 w-full">
-                        <FinanceCalculator vehiclePrice={vehicle.selling_price} inventoryId={id} />
+                        {/* <FinanceCalculator vehiclePrice={vehicle.selling_price} inventoryId={id} /> */}
                     </div>
 
                 </div>
@@ -310,7 +309,7 @@ export default async function VehicleDetailsPage({
                 </div>
             </div>
 
-        <div className="w-full">
+            <div className="w-full mb-18 md:mb-0 lg:mt-10">
                 <div className="max-w-[1440px] xl:max-w-[1600px] 2xl:max-w-full  mx-auto w-full">
                     
                     <Footer />
