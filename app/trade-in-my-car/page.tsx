@@ -376,12 +376,7 @@ const TradeIn = () => {
           <p className="text-slate-600 text-base md:text-lg mb-8 max-w-md leading-relaxed">
             Have questions about selling or trading your car? We’ve got you covered.
           </p>
-          <a
-            href="#all-faqs"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-[#0F172A] text-[#0F172A] font-semibold text-sm hover:bg-[#0F172A] hover:text-white transition-colors duration-200"
-          >
-            View All FAQs
-          </a>
+         
         </div>
 
         {/* Right Column: Accordion List */}
