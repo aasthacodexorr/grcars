@@ -1239,29 +1239,26 @@ useEffect(() => {
             {/* ── Results Column ── */}
             <div id="results-column" className="w-full flex-1 mt-32 lg:mt-3 min-w-0 min-h-screen ">
 
+              {/* ── Scroll to Top Button (Bottom Left Corner) ── */}
+              <button
+                onClick={scrollToTop}
+                className={[
+                  "fixed bottom-6 right-6 z-40 pointer-events-auto cursor-pointer",
+                  "w-12 h-12 rounded-tl-2xl rounded-br-2xl bg-black hover:bg-gray-900",
+                  "flex items-center justify-center text-white shadow-lg active:scale-95",
+                  "transition-all duration-200 border-2 border-black shadow-xl",
+                  showScrollTop
+                    ? "opacity-100 scale-100 visible"
+                    : "opacity-0 scale-95 invisible pointer-events-none",
+                ].join(" ")}
+                title="Scroll to top"
+              >
+                <ChevronUp className="h-5 w-5" />
+              </button>
+
               {/* ── Search + Sort bar (sticky below header) ── */}
               <div className="sticky z-40 px-4 py-2 bg-light-gray">
                 <div className="flex flex-col lg:flex-row lg:items-center items-end justify-between gap-4">
-
-                  <div className="fixed inset-x-0 z-50 pointer-events-none" style={{ top: sidebarTop + 26 }}>
-                    <div className="max-w-[1550px] mx-auto px-3 lg:px-14">
-                      <div className="flex justify-center lg:pl-[340px] 2xl:pl-[380px]">
-                        <button
-                          onClick={scrollToTop}
-                          className={[
-                            "pointer-events-auto cursor-pointer flex items-center gap-2 bg-brand-green hover:bg-primary-greenLight text-white text-[13px] font-bold px-5 py-2.5 rounded-full shadow-lg active:scale-95 transition-all duration-200",
-                            "-translate-y-7 lg:translate-y-0",
-                            showScrollTop
-                              ? "opacity-100 scale-100 visible"
-                              : "opacity-0 scale-95 invisible",
-                          ].join(" ")}
-                        >
-                          <ChevronUp className="h-4 w-4" />
-                          <span>Back to top</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
 
                   {/* Search Input Box */}
                   <div className="relative w-full lg:max-w-[440px]">
