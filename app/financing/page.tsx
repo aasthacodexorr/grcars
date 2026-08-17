@@ -90,7 +90,7 @@ const Finance = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <section className="py-6 md:py-10 pb-16 lg:mt-24">
+      <section className="py-6 md:py-10 pb-16 mt-44 lg:mt-24">
         <div className="mx-auto max-w-[1100px] px-4 md:px-6">
           <h1 className="text-3xl font-bold text-center">Used Car Financing</h1>
           <div className="overflow-hidden">

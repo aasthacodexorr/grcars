@@ -184,7 +184,7 @@ export default async function VehicleDetailsPage({
         We added 'max-w-[1440px] xl:max-w-[1600px] w-full mx-auto' to control the core structure 
         so that on large monitors the entire layout centers like the design.
       */}
-            <section className="w-full bg-background lg:mt-20">
+            <section className="w-full bg-background lg:mt-20 mt-36">
                 <div className="w-full pt-[2px] flex-1  mx-auto">
                     <div className="flex justify-end mr-6">
                         <VDPWishlistButton vehicle={vehicle} />

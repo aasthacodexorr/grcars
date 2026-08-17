@@ -1237,7 +1237,7 @@ useEffect(() => {
             </aside>
 
             {/* ── Results Column ── */}
-            <div id="results-column" className="w-full flex-1 mt-3 min-w-0 min-h-screen">
+            <div id="results-column" className="w-full flex-1 mt-32 lg:mt-3 min-w-0 min-h-screen ">
 
               {/* ── Search + Sort bar (sticky below header) ── */}
               <div className="sticky z-40 px-4 py-2 bg-light-gray">

@@ -124,10 +124,10 @@ const Header = () => {
       </header>
 
       {/*  Mobile Header */}
-      <header className={`lg:hidden w-full shadow-none relative z-50 bg-neutral-offWhite`}>
+      <header className="lg:hidden fixed top-0 left-0 w-full z-50 bg-neutral-offWhite shadow-none">
 
         {/* Top bar: logo + social icons */}
-        <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full">
+        <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full ">
           <Link href="/" aria-label="GrCars home" className="[&_img]:max-w-[125px] [&_img]:h-auto">
             <GrCarsLogo />
           </Link>

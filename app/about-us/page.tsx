@@ -32,7 +32,7 @@ const About = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans text-neutral-900 overflow-x-hidden">
       <Header />
 
-      <main className="flex-1 w-full pt-16 md:pt-20">
+      <main className="flex-1 w-full pt-36 md:pt-20">
 
         {/* =========================================
             1. HERO SECTION WITH IMAGE OVERLAY
