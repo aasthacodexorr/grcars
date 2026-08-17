@@ -76,4 +76,10 @@ declare module 'lucide-react' {
   export const Plus:Icon;
   export const Minus:Icon;
   export const Repeat:Icon;
+  export const CreditCard:Icon;
+  export const Banknote:Icon;
+  export const DollarSign:Icon;
+  export const Share:Icon;
+  export const ArrowDownCircle:Icon;
+  export const Grid:Icon;
 }

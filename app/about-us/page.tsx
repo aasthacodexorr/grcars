@@ -1,270 +1,202 @@
-/* =========================
-   About Us Page
-   Tells the GrCars brand story.
-   Sections:
-   - Hero with background image overlay
-   - "GrCars Certified" feature grid
-   - After-sale service + reviews cards
-   - "Built in Canada" story with team photo
-   - DreamVehicleCTA → GetInTouch → Footer
-========================= */
-
 "use client";
 
-import { ShieldCheck, Wrench, PhoneCall, RefreshCw, Check } from "lucide-react";
-import { motion, Variants } from "framer-motion";
-// Layout
-import { Header, Footer } from "@/components/layout";
-// Shared components
-import { GetInTouch } from "@/components/common";
 import Image from "next/image";
-import about from "@/assets/icons/about.png";
-import saleServices from "@/assets/icons/sale-services.jpg";
-import reviews from "@/assets/icons/100reviews.png";
-import forCanada from "@/assets/icons/proudlycanadian.png";
+import { motion, Variants } from "framer-motion";
+import { Header, Footer } from "@/components/layout";
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 
-/* Static Data */
-const certified = [
-  { icon: ShieldCheck, label: "6-month warranty" },
-  { icon: Wrench, label: "150-point inspection" },
-  { icon: PhoneCall, label: "Roadside assistance" },
-  { icon: RefreshCw, label: "10-day exchange" },
-];
+// Import your custom section graphics/illustrations here
+import aboutHeroBg from "@/assets/pages/abt.png"; // Hero background
+import whoWeAreImg from "@/assets/pages/who-we-are.png"; // Dome image with red SUV & white Mercedes
+import ourVehiclesImg from "@/assets/pages/welcome-and-financing-block.png"; // Banner + grey BMW SUV
+import ourCustomersImg from "@/assets/pages/our-customer-1.png"; // Dome image with customer handshake & grey SUV
 
-/* Animation Constants */
-const scaleUp: Variants = {
-  hidden: { opacity: 0, scale: 0.96 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.65, ease: "easeOut" } }
-};
-
+/* Animation Variants */
 const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 25 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const slideInLeft: Variants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: "easeOut" } }
-};
-
-const containerVariants: Variants = {
+const fadeIn: Variants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.05 }
-  }
+  visible: { opacity: 1, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
 const About = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
+  const dealershipName = SITE_CONFIG?.dealership?.name || "Gedi Route Cars";
+
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans text-neutral-900 overflow-x-hidden">
       <Header />
 
-      <div className="flex-1 w-full overflow-hidden px-0 lg:mt-20">
-        
-        {/* Hero Section: Text static, Image slides in repeatedly */}
-        <section className="bg-white pb-12 mt-4 px-5">
-          <div className="mx-auto lg:max-w-[1240px] md:px-1 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
-            
-            {/* Left Column: Static Text Content */}
-            <div className="w-full text-left md:w-2xl md:pt-5 lg:w-full">
-              <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-neutral-900 leading-none">
-                Pre-Owned, Without Compromise.
-              </h1>
-              <p className="mt-6 text-[20px] md:text-[23px] text-neutral-800 leading-relaxed font-normal">
-                Only the best cars, backed by expertise and a customer-<br className="hidden lg:inline" />first experience.
-                That&apos;s how {SITE_CONFIG?.dealership.name} does it.
-              </p>
-            </div>
+      <main className="flex-1 w-full pt-16 md:pt-20">
 
-            {/* Right Column: Animated Image */}
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="w-full flex justify-center md:justify-end"
-            >
-              <Image
-                src={about}
-                alt="GrCars dealership illustration with flatbed delivery truck carrying a blue SUV"
-                className="w-full max-w-[750px] h-auto object-contain"
-                width={550}
-                height={320}
-                priority
-              />
-            </motion.div>
+        {/* =========================================
+            1. HERO SECTION WITH IMAGE OVERLAY
+           ========================================= */}
+        <section className="relative w-full h-[220px] sm:h-[280px] md:h-[340px] flex items-center overflow-hidden bg-black/70">
+          {/* Background Image with Dark Overlay */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={aboutHeroBg}
+              alt={`${dealershipName} Showroom`}
+              fill
+              className="object-cover object-center opacity-40"
+              priority
+            />
+          </div>
+
+          {/* Banner Content */}
+          <div className="relative z-10 max-w-[1240px] text-white px-6 md:px-12 lg:px-52">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
+              About {dealershipName}
+            </h1>
+            <p className="mt-3 text-sm sm:text-base md:text-lg font-light text-neutral-200 max-w-2xl mx-auto">
+              A fast and convenient way to research and find a vehicle that is right for you.
+            </p>
           </div>
         </section>
 
-        <div className="mx-auto md:px-1">
-          <hr className="text-gray-200" />
-        </div>
+        {/* =========================================
+            2. WHO WE ARE SECTION
+           ========================================= */}
+        <section className="py-16 md:py-10 px-6 md:px-0 max-w-[1240px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
-        {/* GrCars Certified Section: Header static, Badges reveal sequentially on scroll, Image static */}
-        <section className="bg-white py-10 md:py-24 px-5">
-          <div className="mx-auto max-w-[1240px] md:px-1">
-            <h2 className="text-[27px] md:text-4xl lg:text-5xl font-bold lg:tracking-tight text-neutral-950 text-left leading-none">
-              All our cars are {SITE_CONFIG?.dealership.name} Certified
-            </h2>
-            
-            <div className="flex flex-col lg:flex-row items-center justify-between mt-12 gap-8 lg:gap-0 lg:mb-20">
-              {/* Left Column: Animated Badge List */}
-              <div className="flex flex-col items-start w-full lg:w-auto">
-                <motion.div 
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-50px" }}
-                  variants={containerVariants}
-                  className="flex flex-col gap-5 lg:gap-4 w-full pr-16 md:pr-0"
-                >
-                  {certified.map(({ label }, index) => (
-                    <motion.div
-                      key={index}
-                      variants={slideInLeft}
-                      whileHover={{ y: -2, scale: 1.01, transition: { duration: 0.15 } }}
-                      className="flex items-center gap-3 rounded-full px-5 py-5 w-full sm:w-80 shadow-[0_2px_18px_rgba(0,0,0,0.06)] cursor-default bg-[#e6f4ff]"
-                    >
-                      <Check className="h-5 w-5 text-emerald-600 flex-shrink-0" strokeWidth={2.5} />
-                      <span className="text-base font-medium text-black">
-                        {label}
-                      </span>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
+            {/* Left Content */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              className="space-y-4 mt-6 lg:mt-28"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-black">
+                Who We Are
+              </h2>
+              <p className="text-black leading-relaxed text-sm sm:text-base max-w-xl">
+                At {dealershipName}, we have only one standard when it comes to the quality of our cars—the highest. That means you can purchase with supreme confidence when shopping our inventory for the right car for you.
+              </p>
+            </motion.div>
 
-              {/* Right Column: Static Car Image */}
-              <div className="w-full md:max-w-[700px] flex justify-center md:justify-end relative min-h-[250px] ">
+            {/* Right Graphic */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeIn}
+              className="flex justify-center lg:justify-end items-center"
+            >
+              <div className="relative w-full max-w-[650px] h-auto lg:h-[680px] flex items-center justify-center">
                 <Image
-                  src={about}
-                  alt="Blue Honda Civic Sedan showcasing GrCars Certified quality"
-                  className="w-full h-auto object-contain drop-shadow-2xl md:absolute -top-10 md:-top-2 md:-right-4"
+                  src={whoWeAreImg}
+                  alt={`About ${dealershipName} quality selection`}
+                  className="w-full max-w-full h-auto lg:min-w-[700px] lg:min-h-[700px] object-contain"
+                  priority
+                />
+              </div>
+            </motion.div>
+
+          </div>
+        </section>
+
+        {/* =========================================
+            3. OUR VEHICLES SECTION
+           ========================================= */}
+        <section className="py-12 md:py-0 px-6 md:px-1 max-w-[1300px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-28">
+
+            {/* Left Graphic */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeIn}
+              className="flex justify-center lg:justify-start order-2 lg:order-1 items-center"
+            >
+              <div className="relative w-full max-w-[650px] h-auto lg:h-[680px] flex items-center justify-center lg:justify-start">
+                <Image
+                  src={ourVehiclesImg}
+                  alt={`${dealershipName} Certified Cars, Competitive Prices, Financing Available banner with car`}
+                  className="w-full max-w-full h-auto lg:min-w-[700px] lg:min-h-[700px] object-contain"
                   width={1000}
-                  height={500}
+                  height={650}
+                  priority
                 />
               </div>
-            </div>
+            </motion.div>
+
+            {/* Right Content */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              className="space-y-4 order-1 lg:order-2 mt-6 lg:mt-28 max-w-xl"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-black">
+                Our Vehicles
+              </h2>
+              <p className="text-black leading-relaxed text-sm sm:text-base max-w-xl">
+                Our vehicles are hand-selected for top quality and then each vehicle is sent to the reconditioning centers for inspection before being delivered to the dealership. Once on the lot, our no-haggle pricing model and belief in transparency provide a pressure-free sales environment for every customer.
+              </p>
+            </motion.div>
+
           </div>
         </section>
 
-        {/* 1. After-Sale Service Section: Image static, Text Block Animates up repeatedly */}
-        <section className="py-16 md:py-20 px-0 bg-review-blue">
-          <div className="mx-auto max-w-[1240px] px-6 md:px-1 flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-12">
-            
-            {/* Left: Static Image Container */}
-            <div className="w-full flex justify-center md:justify-start">
-              <div className="overflow-hidden rounded-2xl bg-white shadow-md w-full lg:max-w-[670px] max-w-full">
+        {/* =========================================
+            4. OUR CUSTOMERS SECTION
+           ========================================= */}
+        <section className="py-16 md:py-28 px-6 md:px-1 max-w-[1300px] mx-auto lg:mb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+
+            {/* Left Content */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeInUp}
+              className="space-y-4 lg:mt-12 max-w-xl"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-black">
+                Our Customers
+              </h2>
+              <p className="text-black leading-relaxed text-sm sm:text-base max-w-xl">
+                We put integrity and transparency at the heart of every interaction with you, whether that interaction is online, on the phone, or in person. We are committed to bringing clarity to each decision you make so you can feel confident about buying the car you love — and enjoy the ride while you do it.
+              </p>
+            </motion.div>
+
+            {/* Right Graphic */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={fadeIn}
+              className="flex justify-center lg:justify-end items-center"
+            >
+              <div className="relative w-full max-w-[650px] h-auto lg:h-[500px] flex items-center justify-center lg:justify-end">
                 <Image
-                  src={saleServices}
-                  alt="GrCars service team standing proudly inside the dealership lot"
-                  className="w-full h-auto object-cover"
-                  width={540}
-                  height={320}
+                  src={ourCustomersImg}
+                  alt="Customer handshake with vehicle background"
+                  className="w-full max-w-full h-auto lg:min-w-[750px] lg:min-h-[700px] object-contain"
+                  width={1000}
+                  height={650}
+                  priority
                 />
               </div>
-            </div>
-
-            {/* Right: Animated Text Block */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="w-full text-left"
-            >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-950">
-                After-Sale Service
-              </h2>
-              <p className="mt-2 lg:mt-5 text-[20px] md:text-[19px] text-neutral-800 leading-relaxed font-normal">
-                We&apos;re here for you long after you drive away. Our team is dedicated to
-                fast, efficient support and making sure every concern is handled with care.
-              </p>
             </motion.div>
+
           </div>
         </section>
 
-        {/* 2. Reviews Section: Text Block static, Graphic Cloud scales into view repeatedly */}
-        <section className="bg-white py-1 lg:my-12 mt-9">
-          <div className="mx-auto max-w-[1240px] px-6 md:px-1 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12">
-            
-            {/* Left: Static Text Block */}
-            <div className="w-full lg:max-w-2xl">
-              <h2 className="text-[28px] md:text-[42px] lg:text-5xl font-bold tracking-tight text-neutral-950 leading-tight">
-                Hundreds of Five-Star Reviews — and Counting
-              </h2>
-              <p className="mt-2 lg:mt-2 text-[18px] md:text-[20px] text-neutral-800 lg:leading-relaxed font-medium">
-                Hundreds of five-star Google reviews and counting—because a great
-                experience is never accidental.
-              </p>
-            </div>
+      </main>
 
-            {/* Right: Animated Graphic Cloud */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={scaleUp}
-              className="w-full flex justify-center md:justify-end"
-            >
-              <Image
-                src={reviews}
-                alt="100+ Five-Star Reviews from Happy Customers illustration with Google logo"
-                className="w-full lg:max-w-[520px] h-auto object-contain"
-                width={520}
-                height={340}
-              />
-            </motion.div>
-          </div>
-        </section>
-
-        {/* 3. Built in Canada Section: Image static, Text Content Block slides/fades up repeatedly */}
-        <section className="bg-white py-1 pb-12 md:pb-20 md:py-0">
-          <div className="mx-auto max-w-[1400px] px-5 md:px-1 flex flex-col lg:flex-row items-center justify-between gap-10 md:gap-16">
-            
-            {/* Left: Static Graphic Illustration */}
-            <div className="w-full flex justify-center md:justify-start">
-              <Image
-                src={forCanada}
-                alt="GrCars dealership illustration featuring the Canadian flag and map silhouette"
-                className="w-full lg:max-w-[650px] h-auto object-contain"
-                width={540}
-                height={320} 
-              />
-            </div>
-
-            {/* Right: Animated Text Block */}
-            <motion.div 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={fadeInUp}
-              className="w-full text-left max-w-2xl"
-            >
-              <h2 className="text-[25px] md:text-4xl lg:text-[43px] font-bold tracking-tight text-neutral-950">
-                Built in Canada, for Canadians
-              </h2>
-              <p className="mt-3 text-[22px] font-light md:text-xl text-neutral-500">
-                A proudly homegrown success story
-              </p>
-              <p className="mt-4 text-base md:text-md leading-relaxed text-black font-normal">
-                {SITE_CONFIG?.dealership.name} was founded on a simple belief: Canadians deserve a better
-                pre-owned car experience. So we built one.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-      </div>
-
-      {/* Footer Area Wrapper */}
-      <div className="w-full">
-        
-        <Footer />
-      </div>
+      {/* Footer Wrapper */}
+      <Footer />
     </div>
   );
 };

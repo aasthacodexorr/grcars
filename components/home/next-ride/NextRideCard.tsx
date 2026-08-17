@@ -68,5 +68,4 @@ className={`rounded-3xl p-6 flex flex-col justify-between w-full md:w-[300px] md
     </div>
   );
 }
-
-export default NextRideCard
+export default NextRideCard;

@@ -18,12 +18,12 @@ export const COLORS = {
     // Main brand green - used for CTAs, buttons, and primary actions
     green: '#06c',
     greenLight: '#0075e3',    // Light variant for gradients
-    greenMedium: '#85DBB8',   // Medium variant for gradients  
-    greenDark: '#05B169',     // Dark variant for hover states
-    green2: '#00b074',        // Secondary green variant
-    green3: '#00b872',        // Tertiary green variant (SVG stroke)
-    greenAlt: '#01a960',      // Alternative green shade
-    greenAlpha: 'rgba(0, 175, 102, 0.65)', // With 65% opacity (#00af66a6)
+    greenMedium: '#0075e3',   // Medium variant for gradients  
+    greenDark: '#0075e3',     // Dark variant for hover states
+    green2: '#0075e3',        // Secondary green variant
+    green3: '#0075e3',        // Tertiary green variant (SVG stroke)
+    greenAlt: '#0075e3',      // Alternative green shade
+    greenAlpha: 'rgba(43, 107, 224, 0.65)', // With 65% opacity (#00af66a6)
   },
 
   // ═══════════════════════════════════════════════════════════════════════════

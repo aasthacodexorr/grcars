@@ -408,7 +408,7 @@ export default function BudgetCards() {
             </div>
 
             {/* Dots Navigation (Visible on mobile/tablet screens <900px) */}
-            <div className="flex min-[900px]:hidden justify-center items-center gap-2 mt-1.5 pb-1">
+            <div className="flex min-[900px]:hidden justify-center items-center gap-2 mt-10 pb-1">
                 {[0, 1, 2, 3].map((i) => (
                     <button
                         key={i}

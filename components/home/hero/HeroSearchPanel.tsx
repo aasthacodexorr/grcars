@@ -166,7 +166,7 @@ const HeroSearchPanelContent = () => {
         {/* Browse all Cars button */}
         <Link
           href={`/inventory/`}
-          className="block text-center text-white font-medium text-base w-full hover:opacity-90 transition-opacity rounded-[12px] py-3 px-[30px] bg-brand-btn-gradient"
+          className="block text-center text-white font-medium text-base w-full hover:opacity-90 transition-opacity rounded-full py-3 px-[30px] bg-brand-btn-gradient"
         >
           Browse all Cars
         </Link>

@@ -52,7 +52,7 @@ const Header = () => {
   return (
     <>
       {/*  Desktop Header */}
-      <header className={`hidden lg:block fixed top-0 z-[999] w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
+      <header className={`hidden lg:block fixed top-0 z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
         <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[18px]">
 
           {/* Logo */}
@@ -74,7 +74,7 @@ const Header = () => {
               const Icon = "icon" in item ? item.icon : null;
 
               return (
-                <Link
+                <a
                   key={item.label}
                   href={item.to}
                   onClick={(e) => {
@@ -95,8 +95,8 @@ const Header = () => {
         `}
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
-                  <span>{item.label}</span>
-                </Link>
+                  <span className="font-semibold tracking-wide">{item.label}</span>
+                </a>
               );
             })}
           </nav>

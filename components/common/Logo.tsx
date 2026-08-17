@@ -13,22 +13,27 @@ import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
 const GrCarsLogo = () => {
   const appConfig = useAppConfig();
   const defaultD = defaultAppConfig.dealership;
-  
+
   const safeD = {
     dealership_logo: fallbackValue(appConfig.dealership.dealership_logo, defaultD.dealership_logo),
     dealership_name: fallbackValue(appConfig.dealership.dealership_name, defaultD.dealership_name),
   };
-  
+
   return (
-    // <Image
-    //   src={safeD.dealership_logo || "/GrCars-logo.png"}h
-    //   alt={`${safeD.dealership_name} Logo`}
-    //   width={200}
-    //   height={60}
-    //   priority
-    //   className="h-[48px] w-auto object-contain"
-    // />
-    <p className="text-2xl font-bold uppercase">Gedi route</p>
+    <>
+      {
+        safeD.dealership_logo ?
+          <Image
+            src={safeD.dealership_logo || "/GrCars-logo.png"}
+            alt={`${safeD.dealership_name} Logo`}
+            width={200}
+            height={60}
+            priority
+            className="h-[48px] w-auto object-contain"
+          /> : <p className="text-2xl font-bold uppercase">Gedi route</p>
+
+      }
+    </>
   );
 };
 

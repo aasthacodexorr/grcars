@@ -30,29 +30,22 @@ const MODELS: ModelCard[] = [
   { make: "Honda", model: "Accord", image: explorer?.src, href: getInventoryUrlByModel("Honda", "Accord") },
 ];
 
+// Number of cards shown per "page" on mobile — drives the dot pagination
+const MOBILE_CARDS_PER_PAGE = 2;
+
 const PopularModels = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Detect mobile screen (< 768px matching Tailwind's md breakpoint)
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+  // Show ALL models on both mobile and desktop now
+  const displayedModels = MODELS;
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Display max 6 models on mobile, all models on desktop
-  const displayedModels = isMobile ? MODELS.slice(0, 6) : MODELS;
-
-  // Total dots (rendered models + Shop All card)
-  const totalItems = displayedModels.length + 1;
+  // Mobile pages: groups of MOBILE_CARDS_PER_PAGE cars
+  const totalMobilePages = Math.ceil(
+    displayedModels.length / MOBILE_CARDS_PER_PAGE
+  );
 
   // Checks boundaries to toggle active/disabled states on arrows & updates active dot
   const checkScrollBounds = () => {
@@ -61,10 +54,9 @@ const PopularModels = () => {
       setCanScrollLeft(scrollLeft > 5);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
 
-      // Calculate active dot index based on scroll position
-      const scrollPercentage = scrollLeft / (scrollWidth - clientWidth || 1);
-      const calculatedIndex = Math.round(scrollPercentage * (totalItems - 1));
-      setActiveIndex(Math.min(calculatedIndex, totalItems - 1));
+      // Each mobile "page" is exactly one container width wide
+      const pageIndex = clientWidth > 0 ? Math.round(scrollLeft / clientWidth) : 0;
+      setActiveIndex(Math.min(Math.max(pageIndex, 0), totalMobilePages - 1));
     }
   };
 
@@ -79,7 +71,8 @@ const PopularModels = () => {
       if (container) container.removeEventListener("scroll", checkScrollBounds);
       window.removeEventListener("resize", checkScrollBounds);
     };
-  }, [totalItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalMobilePages]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -93,14 +86,12 @@ const PopularModels = () => {
     }
   };
 
+  // Scrolls to a given mobile "page" (group of 3 cars)
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
-      const { scrollWidth, clientWidth } = scrollContainerRef.current;
-      const maxScrollLeft = scrollWidth - clientWidth;
-      const targetScrollLeft = (maxScrollLeft / (totalItems - 1)) * index;
-
+      const { clientWidth } = scrollContainerRef.current;
       scrollContainerRef.current.scrollTo({
-        left: targetScrollLeft,
+        left: clientWidth * index,
         behavior: "smooth",
       });
     }
@@ -146,26 +137,30 @@ const PopularModels = () => {
         {/* Horizontal Scrollable Grid */}
         <div
           ref={scrollContainerRef}
-          className="flex items-center gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
+          className="flex items-stretch gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
         >
           {displayedModels.map((item, index) => (
             <Link
               key={`${item.make}-${item.model}-${index}`}
               href={item.href}
-              className="bg-[#F5F7FA] rounded-2xl p-5 flex flex-col justify-between w-[230px] min-w-[210px] h-[240px] snap-start shrink-0 hover:shadow-md transition-shadow group"
+              className="bg-[#F5F7FA] rounded-2xl p-4 md:p-5 flex flex-col justify-between
+                         w-[calc((100%-1rem)/2)] min-w-[calc((100%-1rem)/2)]
+                         md:w-[230px] md:min-w-[210px]
+                         h-[200px] md:h-[240px]
+                         snap-start shrink-0 hover:shadow-md transition-shadow group"
             >
               {/* Text Header */}
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="text-[10px] md:text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   {item.make}
                 </p>
-                <h3 className="text-base font-bold text-[#0F2942] group-hover:text-blue-600 transition-colors mt-0.5">
+                <h3 className="text-sm md:text-base font-bold text-[#0F2942] group-hover:text-blue-600 transition-colors mt-0.5">
                   {item.model}
                 </h3>
               </div>
 
               {/* Vehicle Image */}
-              <div className="relative w-full h-32 flex items-center justify-center mt-auto">
+              <div className="relative w-full h-20 md:h-32 flex items-center justify-center mt-auto">
                 <Image
                   src={item?.image}
                   alt={`${item.make} ${item.model}`}
@@ -176,26 +171,15 @@ const PopularModels = () => {
               </div>
             </Link>
           ))}
-
-          {/* End of list: Shop All Link */}
-          <div className="snap-start flex-shrink-0 flex items-center justify-center pl-4 pr-8 h-[240px]">
-            <Link
-              href="/inventory"
-              className="flex items-center gap-2 text-[#0F2942] font-semibold text-lg hover:underline whitespace-nowrap"
-            >
-              Shop All
-              <ChevronRight className="w-5 h-5" />
-            </Link>
-          </div>
         </div>
 
-        {/* Mobile Pagination Dots: Visible on mobile, hidden on desktop */}
+        {/* Mobile Pagination Dots: one dot per group of 3 cars */}
         <div className="flex md:hidden items-center justify-center gap-2 mt-6">
-          {Array.from({ length: 6 }).map((_, index) => (
+          {Array.from({ length: totalMobilePages }).map((_, index) => (
             <button
               key={index}
               onClick={() => scrollToIndex(index)}
-              aria-label={`Go to item ${index + 1}`}
+              aria-label={`Go to page ${index + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ease-in-out ${
                 activeIndex === index
                   ? "w-2 bg-brand-green"
