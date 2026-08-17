@@ -19,9 +19,8 @@ interface Step {
   title: string;
   description: string;
 }
- 
 
-export const steps: Step[] = [
+const steps: Step[] = [
   {
     icon: (
       <svg
