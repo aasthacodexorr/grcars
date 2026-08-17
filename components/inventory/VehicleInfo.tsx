@@ -91,25 +91,47 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
 
         {/* Pricing & Tooltip Section */}
         {
-          !isSold ? <div className="flex items-center justify-center gap-1.5 mb-3">
-          <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" />
-            <span className="text-3xl font-extrabold text-[#0d2238]">
-              ${Number(currentPrice).toLocaleString("en-US")}
-            </span> 
-        
-          {hasPriceDrop && (
-            <span className="text-sm text-slate-500 font-normal ml-1">
-              was{" "}
-              <span className="line-through">
-                ${Number(originalPrice).toLocaleString("en-US")}
-              </span>
-            </span>
-          )}
+  !isSold ? (
+    <div className="flex flex-col gap-2 mb-3">
+      {/* Cash Price */}
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center gap-1.5">
+          {/* <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" /> */}
 
-          {/* Info Tooltip */}
+          <span className="text-lg font-semibold text-[#0d2238]">
+            Cash Price
+          </span>
+        </div>
+
+        <span className="text-lg font-semibold text-[#0d2238]">
+          ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
+        </span>
+      </div>
+
+      {/* Finance Price */}
+      <div className="flex items-center justify-between w-full">
+        <span className="text-lg font-semibold text-[#0d2238]">
+          Finance Price
+        </span>
+
+        <span className="text-lg font-semibold text-[#0d2238]">
+          ${Number(currentPrice).toLocaleString("en-US")}
+        </span>
+      </div>
+
+      {/* Original Price + Tooltip */}
+      {/* {hasPriceDrop && (
+        <div className="flex items-center justify-end gap-2 text-sm text-slate-500">
+          <span>
+            was{" "}
+            <span className="line-through">
+              ${Number(originalPrice).toLocaleString("en-US")}
+            </span>
+          </span>
+
           <div
             ref={tooltipRef}
-            className="relative inline-flex items-center group ml-1"
+            className="relative inline-flex items-center group"
           >
             <button
               type="button"
@@ -131,17 +153,22 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
             </button>
 
             <div
-              className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[220px] bg-black text-white text-xs px-3 py-2 rounded-md shadow-lg z-50 transition-all duration-200 ${showTooltip
+              className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[220px] bg-black text-white text-xs px-3 py-2 rounded-md shadow-lg z-50 transition-all duration-200 ${
+                showTooltip
                   ? "opacity-100 visible"
                   : "opacity-0 invisible"
-                } md:group-hover:opacity-100 md:group-hover:visible`}
+              } md:group-hover:opacity-100 md:group-hover:visible`}
             >
               Listed price does not include taxes and licensing fees.
+
               <div className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] w-2.5 h-2.5 bg-black rotate-45" />
             </div>
           </div>
-        </div> : null
-        }
+        </div>
+      )} */}
+    </div>
+  ) : null
+}
 
 
         {/* Buttons Action Group */}
