@@ -25,7 +25,7 @@ const Footer = () => {
   };
 
   const handleInventoryClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (pathname === "/inventory" && href.startsWith("/inventory")) {
+    if (pathname.startsWith("/inventory") && href.startsWith("/inventory")) {
       e.preventDefault();
       window.location.href = href;
     }
@@ -56,14 +56,14 @@ const Footer = () => {
       {
         title: "SHOP NOW",
         links: [
-          { label: "AUDI", href: "/inventory?makes=Audi" },
-          { label: "BMW", href: "/inventory?makes=BMW" },
-          { label: "CADILLAC", href: "/inventory?makes=Cadillac" },
-          { label: "CHEVROLET", href: "/inventory?makes=Chevrolet" },
-          { label: "CHRYSLER", href: "/inventory?makes=Chrysler" },
-          { label: "DODGE", href: "/inventory?makes=Dodge" },
-          { label: "FORD", href: "/inventory?makes=Ford" },
-          { label: "GMC", href: "/inventory?makes=GMC" },
+          { label: "AUDI", href: "/inventory/audi" },
+          { label: "BMW", href: "/inventory/bmw" },
+          { label: "CADILLAC", href: "/inventory/cadillac" },
+          { label: "CHEVROLET", href: "/inventory/chevrolet" },
+          { label: "CHRYSLER", href: "/inventory/chrysler" },
+          { label: "DODGE", href: "/inventory/dodge" },
+          { label: "FORD", href: "/inventory/ford" },
+          { label: "GMC", href: "/inventory/gmc" },
         ],
       },
     ],

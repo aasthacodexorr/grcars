@@ -3,38 +3,79 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ExternalLink, Star } from "lucide-react";
 
-type Review = {
+interface Review {
   name: string;
-  location: string;
+  location?: string;
   date: string;
   text: string;
-};
+}
 
 const reviews: Review[] = [
   {
-    name: "Caryle K.",
-    location: "from CT",
-    date: "Jan. 2026",
-    text: "We traded in our car with GrCars for a fair price and received a gorgeous vehicle exactly as advertised.",
+    name: "Dimple Sharma",
+    date: "08/11/2023",
+    text: "Had a very good experience with gedi routes. I got approval within 15 minutes. Thank you"
   },
   {
-    name: "Megan A.",
-    location: "from WA",
-    date: "Jan. 2026",
-    text: "The online quote was the exact amount on the check I received from GrCars, no haggling or negotiating needed.",
+    name: "Navdeep Singh",
+    date: "08/10/2023",
+    text: "Best experience, got approval right away. Must visit"
   },
   {
-    name: "Gary G.",
-    location: "from SC",
-    date: "Jan. 2026",
-    text: "GrCars gave me a fair price for my Nissan and picked it up the very same day.",
+    name: "Satpreet Rattu",
+    date: "08/24/2025",
+    text: "Must visit for wheels and tires, thanks to MANMOL"
   },
   {
-    name: "Alex B.",
-    location: "from ON",
-    date: "Feb. 2026",
-    text: "Amazing experience dealing with Sam and his team. I highly recommend them for any vehicle purchase.",
+    name: "raman preet",
+    date: "08/23/2025",
+    text: "im here today for delivery of my first car,had great experience with Mandeep bhai,very smooth and transparent process here at Gedi route cars"
   },
+  {
+    name: "Harshdeep singh Harraich",
+    date: "08/23/2025",
+    text: "Best experience for wheels . Thanks to MANMOL"
+  },
+  {
+    name: "TARUNBIR SINGH",
+    date: "08/22/2025",
+    text: "amazing rims collection at gedi route wheels. nice experience"
+  },
+  {
+    name: "tanishq choudhary",
+    date: "08/22/2025",
+    text: "Super happy with gedi route cars\nHighly recommend"
+  },
+  {
+    name: "Gurpargat Singh",
+    date: "08/22/2025",
+    text: "Gursewak brother helped us with amazing service great deal"
+  },
+  {
+    name: "Hs S",
+    date: "08/22/2025",
+    text: "Great service by Gursewak brother, beautiful deal and amazing customer service and experience"
+  },
+  {
+    name: "Nanak Sidhu",
+    date: "08/22/2025",
+    text: "Very good experience with gedi route wheels\nPlease visit gedi route wheels for amazing deals ⛳️"
+  },
+  {
+    name: "kuldeep mangat",
+    date: "08/22/2025",
+    text: "great experience with arsh and gedi route card"
+  },
+  {
+    name: "JAGMEET SINGH DHILLON",
+    date: "08/22/2025",
+    text: "I just bought a new car form and the experience was so nice"
+  },
+  {
+    name: "Nigel Lindsay",
+    date: "08/22/2025",
+    text: "Nice collection of Rims\nMust visit for good service"
+  }
 ];
 
 const Reviews = () => {
@@ -176,7 +217,7 @@ const Reviews = () => {
             </div>
 
             {/* View All Link */}
-            <a
+            {/* <a
               href="https://www.google.com"
               target="_blank"
               rel="noopener noreferrer"
@@ -184,7 +225,7 @@ const Reviews = () => {
             >
               See All Reviews
               <ExternalLink className="h-3.5 w-3.5 shrink-0" />
-            </a>
+            </a> */}
           </div>
 
           {/* Arrow Controls: Hidden on mobile, visible on desktop */}

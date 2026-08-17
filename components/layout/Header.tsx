@@ -63,10 +63,12 @@ const Header = () => {
           </div>
 
           {/* Primary Navigation */}
+          {/* Primary Navigation */}
           <nav className="flex-[0.6] flex justify-start items-center gap-0">
             {NAV_ITEMS.map((item, index) => {
               const isActive =
                 pathname === item.to || pathname?.startsWith(item.to + "/");
+
               const isLast = index === NAV_ITEMS.length - 1;
 
               const Icon = "icon" in item ? item.icon : null;
@@ -81,13 +83,16 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif] ${!isLast
+                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif]
+          ${!isLast
                       ? "after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-[22px] after:w-[2px] after:bg-[rgba(181,180,180,0.35)]"
                       : ""
-                    } ${isActive
+                    }
+          ${isActive
                       ? "text-brand-green"
                       : "text-black hover:text-brand-green"
-                    }`}
+                    }
+        `}
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
                   <span className="font-semibold tracking-wide">{item.label}</span>

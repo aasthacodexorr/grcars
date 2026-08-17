@@ -150,7 +150,7 @@ function readPathOnlyFilters(segments: string[], refinementList: PlainObject) {
     remainingVehicle = remainingVehicle.slice(0, -bodyType.length).replace(/-$/, "");
   }
 
-  const makes = ["mercedes-benz", "aston-martin", "land-rover", "volkswagen", "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", "acura", "audi", "bmw", "buick", "dodge", "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", "ram", "volvo"];
+  const makes = ["mercedes-benz", "aston-martin", "land-rover", "volkswagen", "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", "tesla", "rivian", "acura", "audi", "bmw", "buick", "dodge", "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", "ram", "volvo"];
   const make = makes.find((value) => remainingVehicle === value || remainingVehicle.startsWith(`${value}-`));
   if (make) {
     set("make", make);

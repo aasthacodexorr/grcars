@@ -10,6 +10,7 @@ import equinox from "@/assets/cars/equinox.webp";
 import rogue from "@/assets/cars/rogue.webp";
 import escape from "@/assets/cars/escape.webp";
 import explorer from "@/assets/cars/explorer.webp";
+import { getInventoryUrlByModel } from "@/lib/inventoryUrls";
 
 interface ModelCard {
   make: string;
@@ -19,18 +20,14 @@ interface ModelCard {
 }
 
 const MODELS: ModelCard[] = [
-  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory/Rivian" },
-  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory/tesla" },
-  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory/Chevrolet" },
-  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory/Nissan" },
-  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory/Ford" },
-  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory/Ford" },
-  { make: "Rivian", model: "R1S/R1T", image: rivian?.src, href: "/inventory/Rivian" },
-  { make: "Tesla", model: "Model 3", image: tesla?.src, href: "/inventory/tesla" },
-  { make: "Chevrolet", model: "Equinox", image: equinox?.src, href: "/inventory/Chevrolet" },
-  { make: "Nissan", model: "Rogue", image: rogue?.src, href: "/inventory/Nissan" },
-  { make: "Ford", model: "Escape", image: escape?.src, href: "/inventory/Ford" },
-  { make: "Ford", model: "Explorer", image: explorer?.src, href: "/inventory/Ford" },
+  { make: "Tesla", model: "Model 3", image: tesla?.src, href: getInventoryUrlByModel("Tesla", "Model 3") },
+  { make: "Nissan", model: "Rogue", image: rivian?.src, href: getInventoryUrlByModel("Nissan", "Rogue") },
+  { make: "Toyota", model: "Camry", image: equinox?.src, href: getInventoryUrlByModel("Toyota", "Camry") },
+  { make: "Honda", model: "Civic", image: escape?.src, href: getInventoryUrlByModel("Honda", "Civic") },
+  { make: "Nissan", model: "Altima", image: rivian?.src, href: getInventoryUrlByModel("Nissan", "Altima") },
+  { make: "Jeep", model: "Grand Cherokee", image: rogue?.src, href: getInventoryUrlByModel("Jeep", "Grand Cherokee") },
+  { make: "Ford", model: "F-150 SuperCrew", image: escape?.src, href: getInventoryUrlByModel("Ford", "F-150 SuperCrew") },
+  { make: "Honda", model: "Accord", image: explorer?.src, href: getInventoryUrlByModel("Honda", "Accord") },
 ];
 
 // Number of cards shown per "page" on mobile — drives the dot pagination

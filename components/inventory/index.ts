@@ -10,3 +10,4 @@ export { default as AboutVehicle } from "./AboutVehicle";
 export { default as Faq }  from "./Faq";
 export { default as FinanceCalculator } from "./FinanceCalculator";
 export { default as Terms } from "./Terms";
+export { HitCardSkeleton, InventoryGridSkeleton, InventoryLoadMoreSkeleton } from "./HitCardSkeleton";

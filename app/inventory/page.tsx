@@ -170,6 +170,57 @@ const FilterGroup = ({ title, children, isOpen, onToggle }: FilterGroupProps) =>
   );
 };
 
+const useSearchLoadingState = () => {
+  const { status } = useInstantSearch();
+  const { results } = useHits();
+
+  const lastNbHitsRef = useRef(0);
+  if (typeof results?.nbHits === "number" && !results?.__isArtificial) {
+    lastNbHitsRef.current = results.nbHits;
+  }
+  const hasHits = lastNbHitsRef.current > 0;
+
+  const [isHydrated, setIsHydrated] = useState(false);
+  useEffect(() => {
+    if (!isHydrated && status === "idle" && results && !results.__isArtificial) {
+      setIsHydrated(true);
+    }
+  }, [status, results, isHydrated]);
+
+  return (!isHydrated || status === "stalled") && !hasHits;
+};
+
+const MobileControlsBar = ({
+  onOpenFilters,
+  sortItems,
+}: {
+  onOpenFilters: () => void;
+  sortItems: { label: string; value: string }[];
+}) => {
+  const isLoading = useSearchLoadingState();
+
+  return (
+    <div
+      className={`w-full lg:w-auto items-center justify-between sm:justify-end gap-2 mt-1 lg:mt-0 ${
+        isLoading ? "hidden lg:flex" : "flex"
+      }`}
+    >
+      <button
+        type="button"
+        onClick={onOpenFilters}
+        className="flex lg:hidden items-center justify-center gap-2 h-[42px] px-4 rounded-[12px] bg-white text-black text-[14px] font-bold shadow-sm hover:bg-gray-50 transition-colors cursor-pointer shrink-0 border border-border-standard"
+      >
+        <Settings2 className="h-4 w-4" />
+        <span>Filters</span>
+      </button>
+
+      <div className="flex items-start">
+        <CustomSortBy sortItems={sortItems} />
+      </div>
+    </div>
+  );
+};
+
 const SearchResultsWrapper = ({ children }: { children: React.ReactNode }) => {
   const { status } = useInstantSearch();
   const { results } = useHits();
@@ -399,10 +450,8 @@ const CustomInfiniteHits = ({ hitComponent: HitComponent }: any) => {
 };
 
 const PageFooter = () => {
-  const { status } = useInstantSearch();
-  const { hits, isLastPage } = useInfiniteHits();
-
-  const shouldShowFooter = status === "idle" && isLastPage && hits.length > 0;
+  const { hits } = useInfiniteHits();
+  const shouldShowFooter = hits.length > 0;
 
   if (!shouldShowFooter) return null;
 
@@ -465,8 +514,8 @@ const MakeRefinementList = () => {
     refine: refineMake,
   } = useRefinementList({
     attribute: "make",
-    limit:100,
-    sortBy:["name:asc"],
+    limit: 200,
+    sortBy: ["name:asc"],
   });
 
   const {
@@ -474,8 +523,8 @@ const MakeRefinementList = () => {
     refine: refineModel,
   } = useRefinementList({
     attribute: "model",
-    limit:100,
-    sortBy:["name:asc"],
+    limit: 200,
+    sortBy: ["name:asc"],
   });
   const handleToggle = (item: typeof makeItems[number]) => {
     const make = item.value as string;
@@ -1019,20 +1068,33 @@ const InventoryContent = () => {
   const sidebarMaxHeight = `calc(100vh - ${headerHeight + 50}px)`;
 
   // ── Scroll Management State ──
-  const [showScrollTop, setShowScrollTop] = useState(false);
-  const lastScrollY = useRef(0);
-  const isVisible = useRef(false);
+  // ── Scroll Management State ──
+const [showScrollTop, setShowScrollTop] = useState(false);
+const lastScrollY = useRef(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const current = window.scrollY;
-      setShowScrollTop(current > 0);
-    };
+useEffect(() => {
+  const handleScroll = () => {
+    const current = window.scrollY;
+    const previous = lastScrollY.current;
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // set correct state on mount too
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    if (current <= 0) {
+      // At the very top, nothing to scroll back to
+      setShowScrollTop(false);
+    } else if (current < previous) {
+      // Scrolling up → show button
+      setShowScrollTop(true);
+    } else if (current > previous) {
+      // Scrolling down → hide button
+      setShowScrollTop(false);
+    }
+
+    lastScrollY.current = current;
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  handleScroll(); // set correct state on mount too
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -1218,20 +1280,10 @@ const InventoryContent = () => {
                     <Search className="h-[20px] w-[18px] absolute left-2 top-1/2 -translate-y-1/2 text-black pointer-events-none" />
                   </div>
 
-                  <div className="w-full lg:w-auto flex items-center justify-between sm:justify-end gap-2 mt-1 lg:mt-0">
-                    <button
-                      type="button"
-                      onClick={() => setIsMobileFilterOpen(true)}
-                      className="flex lg:hidden items-center justify-center gap-2 h-[42px] px-4 rounded-[12px] bg-white text-black text-[14px] font-bold shadow-sm hover:bg-gray-50 transition-colors cursor-pointer shrink-0 border border-border-standard"
-                    >
-                      <Settings2 className="h-4 w-4" />
-                      <span>Filters</span>
-                    </button>
-
-                    <div className="flex items-start">
-                      <CustomSortBy sortItems={getSortItems(TYPESENSE_COLLECTION_NAME)} />
-                    </div>
-                  </div>
+                  <MobileControlsBar
+                    onOpenFilters={() => setIsMobileFilterOpen(true)}
+                    sortItems={getSortItems(TYPESENSE_COLLECTION_NAME)}
+                  />
 
                 </div>
               </div>
