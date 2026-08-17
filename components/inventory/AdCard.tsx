@@ -115,7 +115,7 @@ export const GreatDealsAdCard = () => {
       </div>
 
       {/* Heading with Info Icon */}
-      <h3 className="text-[22px] font-bold tracking-tight text-[#051329] leading-none flex items-center justify-center gap-1.5 flex-wrap">
+      <h3 className="text-[22px] font-bold tracking-tight text-[#051329] leading-7 flex items-center justify-center gap-1.5 flex-wrap">
         <span>Every vehicle you see is GrCars Certified.</span>
 
       </h3>

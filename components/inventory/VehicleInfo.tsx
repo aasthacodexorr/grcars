@@ -68,6 +68,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
     vehicle?.original_price || (vehicle?.selling_price ? vehicle?.price : 15990);
   const hasPriceDrop = originalPrice && originalPrice > currentPrice;
 
+  const isSold = vehicle.status && vehicle.status.toLowerCase() !== "instock";
+
+
   return (
     <>
       {/* Primary Card Container (Observed for sticky bar) */}
@@ -87,26 +90,48 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
         </p>
 
         {/* Pricing & Tooltip Section */}
-        <div className="flex items-center justify-center gap-1.5 mb-3">
-          <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" />
+        {
+          !isSold ? (
+            <div className="flex flex-col gap-2 mb-3">
+              {/* Cash Price */}
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-1.5">
+                  {/* <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" /> */}
 
-          <span className="text-3xl font-extrabold text-[#0d2238]">
-            ${Number(currentPrice).toLocaleString("en-US")}
+                  <span className="text-lg font-semibold text-[#0d2238]">
+                    Cash Price
+                  </span>
+                </div>
+
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
+                </span>
+              </div>
+
+              {/* Finance Price */}
+              <div className="flex items-center justify-between w-full">
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  Finance Price
+                </span>
+
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  ${Number(currentPrice).toLocaleString("en-US")}
+                </span>
+              </div>
+
+              {/* Original Price + Tooltip */}
+              {/* {hasPriceDrop && (
+        <div className="flex items-center justify-end gap-2 text-sm text-slate-500">
+          <span>
+            was{" "}
+            <span className="line-through">
+              ${Number(originalPrice).toLocaleString("en-US")}
+            </span>
           </span>
 
-          {hasPriceDrop && (
-            <span className="text-sm text-slate-500 font-normal ml-1">
-              was{" "}
-              <span className="line-through">
-                ${Number(originalPrice).toLocaleString("en-US")}
-              </span>
-            </span>
-          )}
-
-          {/* Info Tooltip */}
           <div
             ref={tooltipRef}
-            className="relative inline-flex items-center group ml-1"
+            className="relative inline-flex items-center group"
           >
             <button
               type="button"
@@ -128,28 +153,23 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
             </button>
 
             <div
-              className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[220px] bg-black text-white text-xs px-3 py-2 rounded-md shadow-lg z-50 transition-all duration-200 ${showTooltip
+              className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[220px] bg-black text-white text-xs px-3 py-2 rounded-md shadow-lg z-50 transition-all duration-200 ${
+                showTooltip
                   ? "opacity-100 visible"
                   : "opacity-0 invisible"
-                } md:group-hover:opacity-100 md:group-hover:visible`}
+              } md:group-hover:opacity-100 md:group-hover:visible`}
             >
               Listed price does not include taxes and licensing fees.
+
               <div className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] w-2.5 h-2.5 bg-black rotate-45" />
             </div>
           </div>
         </div>
+      )} */}
+            </div>
+          ) : null
+        }
 
-        {/* Upgrades Banner */}
-        <button
-          type="button"
-          className="w-full bg-[#eef7fc] hover:bg-[#e2f0fc] text-[#0d2238] text-xs font-semibold py-2.5 px-3 rounded-md flex items-center justify-between transition-colors mb-5"
-        >
-          <span>
-            {vehicle?.upgrades_text ||
-              "Includes: $2,365 in factory upgrades"}
-          </span>
-          <ChevronRight className="w-4 h-4 text-slate-600" />
-        </button>
 
         {/* Buttons Action Group */}
         <div className="space-y-2.5">

@@ -150,7 +150,7 @@ export default function PaymentCalculator() {
     return (
         <>
             <Header />
-            <div className='bg-gray-400/20 lg:px-44'>
+            <div className='bg-gray-400/20 lg:px-44 mt-36 lg:mt-0'>
                 <div className="lg:mt-20 mx-auto px-5 lg:px-0 py-8 lg:py-12 font-sans text-gray-700">
                     <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Car Payment Calculator</h1>
                     <div className=' bg-white'>

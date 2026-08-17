@@ -32,7 +32,7 @@ import { GetInTouch } from "@/components/common";
 /*  Page Component */
 const HomePage = () => {
   return (
-    <main className="min-h-screen bg-background overflow-hidden">
+    <main className="min-h-screen bg-background overflow-hidden pt-[130px] lg:pt-0">
       {/* Hero section has a blue background */}
       <div className="bg-hero-bg ">
         <Header />
