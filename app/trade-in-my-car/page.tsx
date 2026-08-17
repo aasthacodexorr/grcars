@@ -2,10 +2,8 @@
 
 import { ReactNode, useState } from "react";
 import { ChevronDown, Check, X, CarFront, Plus, Minus } from "lucide-react";
-import { motion, AnimatePresence, Steps } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-
-import { Car, Banknote, Calendar, CreditCard } from 'lucide-react';
 // Layout
 import { Header, Footer } from "@/components/layout";
 
