@@ -91,36 +91,36 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
 
         {/* Pricing & Tooltip Section */}
         {
-  !isSold ? (
-    <div className="flex flex-col gap-2 mb-3">
-      {/* Cash Price */}
-      <div className="flex items-center justify-between w-full">
-        <div className="flex items-center gap-1.5">
-          {/* <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" /> */}
+          !isSold ? (
+            <div className="flex flex-col gap-2 mb-3">
+              {/* Cash Price */}
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-1.5">
+                  {/* <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" /> */}
 
-          <span className="text-lg font-semibold text-[#0d2238]">
-            Cash Price
-          </span>
-        </div>
+                  <span className="text-lg font-semibold text-[#0d2238]">
+                    Cash Price
+                  </span>
+                </div>
 
-        <span className="text-lg font-semibold text-[#0d2238]">
-          ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
-        </span>
-      </div>
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
+                </span>
+              </div>
 
-      {/* Finance Price */}
-      <div className="flex items-center justify-between w-full">
-        <span className="text-lg font-semibold text-[#0d2238]">
-          Finance Price
-        </span>
+              {/* Finance Price */}
+              <div className="flex items-center justify-between w-full">
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  Finance Price
+                </span>
 
-        <span className="text-lg font-semibold text-[#0d2238]">
-          ${Number(currentPrice).toLocaleString("en-US")}
-        </span>
-      </div>
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  ${Number(currentPrice).toLocaleString("en-US")}
+                </span>
+              </div>
 
-      {/* Original Price + Tooltip */}
-      {/* {hasPriceDrop && (
+              {/* Original Price + Tooltip */}
+              {/* {hasPriceDrop && (
         <div className="flex items-center justify-end gap-2 text-sm text-slate-500">
           <span>
             was{" "}
@@ -166,9 +166,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
           </div>
         </div>
       )} */}
-    </div>
-  ) : null
-}
+            </div>
+          ) : null
+        }
 
 
         {/* Buttons Action Group */}
