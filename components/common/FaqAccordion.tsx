@@ -1,5 +1,6 @@
 'use client';
 
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
 export interface FAQItem {
@@ -42,8 +43,8 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
 
               {/* Show + only when FAQ is closed */}
               {!isOpen && (
-                <span className="ml-4 inline-flex items-center justify-center w-4 h-4 rounded-full bg-primary-greenLight text-white">
-                  +
+                <span className=" inline-flex items-center justify-center p-1 rounded-full bg-primary-greenLight text-white">
+                  <Plus size={18}/>
                 </span>
               )}
             </button>

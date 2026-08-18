@@ -9,7 +9,7 @@
 import Image from "next/image";
 import { useAppConfig } from "@/app/providers";
 import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
-import logo from "@/assets/pages/grcarslogo.png";
+import logo from "@/assets/pages/grcarslogo.png"
 
 const GrCarsLogo = () => {
   const appConfig = useAppConfig();
@@ -22,15 +22,7 @@ const GrCarsLogo = () => {
 
   return (
     <>
-      {
-        safeD.dealership_logo ? <Image
-          src={safeD.dealership_logo || "/GrCars-logo.png"}
-          alt={`${safeD.dealership_name} Logo`}
-          width={200}
-          height={60}
-          priority
-          className="h-[48px] w-auto object-contain"
-        /> : logo ? 
+      {logo ? 
         <img src={logo?.src}/> : 
         <p className="text-2xl font-bold uppercase"> Gedi Route </p>
       }

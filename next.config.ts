@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
+        protocol: 'https',
+        hostname: 'zd-website.b-cdn.net',
+        pathname: '/**',
+      },
+      {
         protocol: "https",
         hostname: "cardora.ca",
         pathname: "/**",
