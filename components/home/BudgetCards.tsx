@@ -336,7 +336,7 @@ export default function BudgetCards() {
                                 Go the distance
                             </h2>
                             <p className="mt-1.5 text-[rgba(255,255,255,0.92)] text-[13px] font-normal leading-[1.4]">
-                                We offer a wide variety of vehicles with 40 MPG/MPGe or greater.
+                                We offer a wide variety of vehicles with a fuel economy of 5.5 L/100 km or better
                             </p>
 
                             <div className="relative h-[180px] mt-1 mb-1.5 overflow-visible" aria-hidden="true">
