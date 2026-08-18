@@ -1,71 +1,12 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
-
+import { safeParseVehicleJson } from '@/utils/vehicleSpecs';
 
 interface AccordionProps {
-  standardJson: string;          // From vehicle.standard
-  techSpecsJson: string;         // From vehicle.technical_specification
-  optionalJson: string;          // From vehicle.optional
-}
-
-// Cleans up the features and completely removes keys with empty data
-function safeParseJson(jsonString: any): Record<string, string[]> {
-  if (!jsonString) return {};
-  
-  try {
-    // 1. If it's a string, parse it first
-    let parsed = typeof jsonString === 'string' ? JSON.parse(jsonString) : jsonString;
-    
-    // 2. Look for an intermediate wrapper key like {"Specifications": {...}} and unwrap it
-    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-      const keys = Object.keys(parsed);
-      if (keys.length === 1 && typeof parsed[keys[0]] === 'object' && !Array.isArray(parsed[keys[0]])) {
-        parsed = parsed[keys[0]]; 
-      }
-    }
-
-    const normalized: Record<string, string[]> = {};
-
-    // 3. Process each category and clean the values
-    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-      for (const [key, value] of Object.entries(parsed)) {
-        let cleanedItems: string[] = [];
-
-        if (Array.isArray(value)) {
-          cleanedItems = value.map(item => String(item));
-        } else if (value && typeof value === 'object') {
-          cleanedItems = Object.entries(value)
-            .map(([subKey, subVal]) => {
-              if (subVal === 1 || subVal === "1" || subVal === true) {
-                return subKey;
-              }
-              if (subVal === 0 || subVal === "0" || subVal === false) {
-                return `No ${subKey}`;
-              }
-              return `${subKey}: ${String(subVal)}`;
-            });
-        } else if (value !== null && value !== undefined) {
-          if (value === 1 || value === "1" || value === true) {
-            cleanedItems = [key];
-          } else {
-            cleanedItems = [String(value)];
-          }
-        }
-
-        // ONLY add the subcategory to our output if it actually has feature strings inside
-        if (cleanedItems.length > 0) {
-          normalized[key] = cleanedItems;
-        }
-      }
-      return normalized;
-    }
-
-    return {};
-  } catch (e) {
-    console.error("Failed to parse vehicle specifications JSON:", e);
-    return {};
-  }
+  standardJson: string; // From vehicle.standard
+  techSpecsJson: string; // From vehicle.technical_specification
+  optionalJson: string; // From vehicle.optional
 }
 
 export default function VehicleSpecificationsAccordion({
@@ -74,9 +15,9 @@ export default function VehicleSpecificationsAccordion({
   optionalJson
 }: AccordionProps) {
   
-  const parsedStandard = safeParseJson(standardJson);
-  const parsedTechSpecs = safeParseJson(techSpecsJson);
-  const parsedOptional = safeParseJson(optionalJson);
+  const parsedStandard = safeParseVehicleJson(standardJson);
+  const parsedTechSpecs = safeParseVehicleJson(techSpecsJson);
+  const parsedOptional = safeParseVehicleJson(optionalJson);
 
   const categoriesData = {
     standard: { label: "Standard", data: parsedStandard },

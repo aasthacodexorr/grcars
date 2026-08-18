@@ -33,6 +33,8 @@ import Terms from "@/components/inventory/Terms";
 import AboutVehicle from "@/components/inventory/AboutVehicle";
 import { VehicleHeaderAndCTA } from "@/components/inventory/VehicleInfo";
 import CoverageModal from "@/components/inventory/CoverageModal";
+import VehicleDetailsTabsNav from "@/components/inventory/VehicleDetailsTabsNav";
+import ViewAllFeaturesButton from "@/components/inventory/ViewAllFeaturesButton";
 
 // Force dynamic rendering — vehicle data changes frequently
 export const dynamic = "force-dynamic";
@@ -213,7 +215,7 @@ export default async function VehicleDetailsPage({
                             </div>
 
                             {/* Trade In Banner */}
-                            <div className="w-full lg:mb-30 max-w-[925px] -mt-3 lg:-mt-0">
+                            <div className="w-full lg:mb-1 max-w-[925px] -mt-3 lg:-mt-0">
                                 <div className="flex flex-col md:flex-row items-center justify-between border border-gray-200 rounded-2xl p-6 bg-white w-full gap-6 box-border font-sans">
                                     <div className="flex sm:flex-row md:gap- flex-1">
                                         <div className="flex-shrink-0">
@@ -235,9 +237,22 @@ export default async function VehicleDetailsPage({
                                 </div>
                             </div>
 
+                            {/* Tab header: Vehicle Details / Vehicle Description */}
+                            {/* Sticky Vehicle Details / Description Tabs */}
+<div className="sticky top-40 z-50 w-full mb-12 bg-white">
+    <VehicleDetailsTabsNav />
+</div>
+
                             {/* Specs grid & Extended Coverage */}
-                            <div className="w-full max-w-[925px]">
+                            <div className="w-full max-w-[925px] scroll-mt-28">
                                 <AboutVehicle vehicle={vehicle} />
+                                
+                                <ViewAllFeaturesButton
+                                    standardJson={vehicle.standard}
+                                    techSpecsJson={vehicle.technical_specification}
+                                    optionalJson={vehicle.optional}
+                                />
+                                
                                 <div className="w-full border-t border-gray-200 mt-4">
                                     <div className="flex flex-col sm:flex-row items-center border border-gray-200 rounded-2xl px-6 py-4  mt-4 bg-white w-full mx-auto gap-5 box-border font-sans">
                                         <div className="flex items-center sm:text-left gap-3">
@@ -259,7 +274,10 @@ export default async function VehicleDetailsPage({
 
                                 {/* Vehicle description */}
                                 {vehicle.vehicle_description && (
-                                    <div className="bg-card border-none rounded-xl p-0 mt-[15px] lg:mt-[45px] flex-wrap">
+                                    <div
+                                        id="vehicle-description-section"
+                                        className="bg-card border-none rounded-xl p-0 mt-[15px] lg:mt-[45px] flex-wrap scroll-mt-28"
+                                    >
                                         <h2 className="text-[22px] font-semibold text-black mb-[15px]">
                                             Vehicle Description
                                         </h2>
@@ -272,13 +290,13 @@ export default async function VehicleDetailsPage({
                             </div>
 
                             {/* Accordion list */}
-                            <div className="w-full flex justify-start lg:mt-4 mt-0 max-w-[860px]">
+                            {/* <div className="w-full flex justify-start lg:mt-4 mt-0 max-w-[860px]">
                                 <VehicleSpecificationsAccordion
                                     standardJson={vehicle.standard}
                                     techSpecsJson={vehicle.technical_specification}
                                     optionalJson={vehicle.optional}
                                 />
-                            </div>
+                            </div> */}
                         </div>
 
                         {/* Right column: sticky sidebar (desktop) */}
