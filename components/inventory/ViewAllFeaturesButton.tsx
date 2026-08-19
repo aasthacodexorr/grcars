@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { safeParseVehicleJson } from '@/utils/vehicleSpecs';
 
@@ -13,6 +13,18 @@ interface Props {
 export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, optionalJson }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState<'features' | 'specs'>('features');
+
+  // Lock background scroll while the modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
 
   const standard = safeParseVehicleJson(standardJson);
   const optional = safeParseVehicleJson(optionalJson);
@@ -52,7 +64,7 @@ export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, opt
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="mt-4 w-full cursor-pointer sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-brand-green text-brand-green font-semibold text-[14px] hover:bg-brand-green hover:text-white transition-colors duration-200"
+        className="mt-4 w-full cursor-pointer sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-[#0a2237] text-[#0a2237] font-semibold text-[15px] hover:bg-[#0d375e] hover:text-white transition-colors duration-200"
       >
         View All Features &amp; Specialities
       </button>
@@ -74,7 +86,7 @@ export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, opt
                 onClick={() => setIsOpen(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 cursor-pointer" />
               </button>
             </div>
 
