@@ -1,72 +1,74 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const TABS = [
-  {
-    id: 'details',
-    label: 'Vehicle Details',
-    target: 'vehicle-details-section',
-  },
-  {
-    id: 'description',
-    label: 'Vehicle Description',
-    target: 'vehicle-description-section',
-  },
+  { id: 'details', label: 'Vehicle Details', target: 'vehicle-details-section' },
+  { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
-const SCROLL_OFFSET = 300;
+const EXTRA_GAP = 64; // breathing room below the nav
 
 export default function VehicleDetailsTabsNav() {
   const [activeTab, setActiveTab] = useState<string>('details');
   const [showTabs, setShowTabs] = useState(true);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  // Track the real fixed header height so the nav sticks right below it
+  useEffect(() => {
+    const header = document.querySelector('header');
+    if (!header) return;
+
+    const update = () => setHeaderHeight(header.getBoundingClientRect().height);
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(header);
+    window.addEventListener('resize', update);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', update);
+    };
+  }, []);
 
   useEffect(() => {
     const footer = document.querySelector('footer');
-
     if (!footer) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Footer is visible -> hide tabs
-        setShowTabs(!entry.isIntersecting);
-      },
-      {
-        threshold: 0,
-      }
+      ([entry]) => setShowTabs(!entry.isIntersecting),
+      { threshold: 0 }
     );
-
     observer.observe(footer);
-
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   const handleTabClick = (tabId: string, targetId: string) => {
     setActiveTab(tabId);
 
     const el = document.getElementById(targetId);
+    const navEl = navRef.current;
+    if (!el || !navEl) return;
 
-    if (el) {
-      const y =
-        el.getBoundingClientRect().top +
-        window.scrollY -
-        SCROLL_OFFSET;
+    // Total space the fixed header + sticky nav occupy at the top of the viewport
+    const navHeight = navEl.getBoundingClientRect().height;
+    const offset = headerHeight + navHeight + EXTRA_GAP;
 
-      window.scrollTo({
-        top: y,
-        behavior: 'smooth',
-      });
-    }
+    // Apply scroll-margin-top right on the target so scrollIntoView lands correctly
+    el.style.scrollMarginTop = `${offset}px`;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  if (!showTabs) {
-    return null;
-  }
+  if (!showTabs) return null;
 
   return (
-    <div className="w-full bg-white shadow-lg border-b border-gray-200 rounded-full">
+    <div
+      ref={navRef}
+      style={{ top: headerHeight }}
+      className="w-full bg-white shadow-lg border-b border-gray-200 rounded-full sticky z-50"
+    >
       <div className="w-full flex items-center justify-start py-3 px-3">
         <div className="inline-flex items-center gap-1 bg-white rounded-full p-1.5">
           {TABS.map((tab) => (

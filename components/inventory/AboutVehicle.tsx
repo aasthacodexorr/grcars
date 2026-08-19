@@ -5,7 +5,7 @@ import { motion, Variants } from "framer-motion"; // Imported
 
 const AboutVehicle = ({ vehicle }: any) => {
   // Animation rules for items container
-  const containerVariants:Variants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -14,140 +14,219 @@ const AboutVehicle = ({ vehicle }: any) => {
   };
 
   // Animation rules for individual cards
-  const itemVariants:Variants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
   };
 
   return (
-    <div id="vehicle-details-section" className="bg-card border-none rounded-xl p-0 w-full xl:-mt-2 -mt-3">
-      <motion.h2 
+    <div id="vehicle-details-section" className="bg-card border-none rounded-xl p-0 w-full -mt-3">
+      <motion.h2
         initial={{ opacity: 0, x: -15 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        className="text-[22px] font-semibold text-black mb-[30px]"
+        className="text-[22px] font-semibold text-black text-center mb-[30px]"
       >
-        About this vehicle
+        Vehicle Details
       </motion.h2>
+      <div className="max-w-4xl mx-auto py-8 px-4">
 
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.15 }} // Animates on repeat
-        className="grid grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        {/* Odometer */}
-        {vehicle?.odometer !== undefined && vehicle?.odometer !== null && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <svg className="w-5 h-5 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                <path d="M0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0zm80 0h64.3c8.7 0 15.7-7.1 17.3-15.6 4.4-24.4 18.1-45.5 37.2-59.7 7.4-5.5 10.6-15.6 6-23.6l-32.5-56.3c-4.3-7.5-13.9-10.3-21.2-5.5-48.2 31.5-81.3 84.2-86.3 144.8-.7 8.8 6.5 16 15.3 16zm137.9 89.8c-8.5-3.7-18.8-1.4-23.5 6.6l-31 53.8c-4.3 7.5-1.9 17.2 5.8 21.1 26.1 13.2 55.5 20.7 86.8 20.7s60.7-7.5 86.8-20.7c7.7-3.9 10.1-13.6 5.8-21.1l-31-53.8c-4.6-8-15-10.3-23.5-6.6-11.7 5-24.5 7.8-38.1 7.8s-26.4-2.8-38.1-7.8zM350.4 240.4c1.6 8.6 8.5 15.6 17.3 15.6H432c8.8 0 16.1-7.2 15.3-16-5-60.6-38.1-113.2-86.3-144.8-7.3-4.8-16.8-2-21.2 5.5L307.3 157c-4.6 8-1.4 18.1 6 23.6 19.1 14.2 32.7 35.4 37.2 59.7zM256 305.7a48 48 0 1 0 0-96 48 48 0 1 0 0 96z" />
-              </svg>
-              <span>
-                Odometer
-                <p className="font-bold text-[15px] text-black">
-                  {Number(vehicle?.odometer).toLocaleString("en-CA")} KM
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
 
-        {/* Exterior Color */}
-        {vehicle?.exterior_color && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <PaintBucket color="black" />
-              <span>
-                Exterior Color
-                <p className="font-bold text-[15px] text-black">
-                  {vehicle?.exterior_color}
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
+        {/* Details Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.15 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6"
+        >
+          {/* MPG */}
+          {vehicle?.mpg && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" d="M13 5a1 1 0 0 0-1 1v6a1 1 0 1 0 2 0v-2h1a1 1 0 1 0 0-2h-1V7h2a1 1 0 1 0 0-2zM24.5 5a1 1 0 1 0 0 2c2.826 0 5.625.544 8.235 1.602a21.5 21.5 0 0 1 6.976 4.557 21 21 0 0 1 4.656 6.812A20.6 20.6 0 0 1 46 28c0 2.755-.555 5.483-1.633 8.029a21 21 0 0 1-4.656 6.812 21.5 21.5 0 0 1-6.976 4.557A21.95 21.95 0 0 1 24.5 49a1 1 0 1 0 0 2c3.083 0 6.136-.594 8.986-1.748a23.5 23.5 0 0 0 7.623-4.98 a23 23 0 0 0 5.1-7.463A22.6 22.6 0 0 0 48 28c0-3.024-.61-6.017-1.792-8.81a23 23 0 0 0-5.099-7.461 23.5 23.5 0 0 0-7.623-4.981A23.95 23.95 0 0 0 24.5 5"></path>
+                    <path fill="currentColor" d="M24 10a1 1 0 0 1 1-1 19 19 0 0 1 0 38 1 1 0 0 1-1-1v-4a1 1 0 1 1 2 0v2.97a17 17 0 0 0 4.527-.894l-.797-1.792a1 1 0 1 1 1.828-.813l.812 1.828.007.017a17 17 0 0 0 4.435-3.09l-2.52-2.519a1 1 0 0 1 1.415-1.414l2.46 2.46a17 17 0 0 0 2.119-3.313l-1.809-.708a1 1 0 0 1 .73-1.862l1.847.723A17 17 0 0 0 41.97 29H39a1 1 0 1 1 0-2h2.97a17 17 0 0 0-.906-4.563l-1.846.757a1 1 0 0 1-.759-1.85l1.84-.755a17 17 0 0 0-2.21-3.436l-2.382 2.383a1 1 0 0 1-1.414-1.415l2.431-2.431a17 17 0 0 0-4.314-2.99l-.762 1.82a1 1 0 0 1-1.845-.773l.76-1.811A17 17 0 0 0 26 11.029V14a1 1 0 1 1-2 0zM11 43a1 1 0 0 1 1-1h3a1 1 0 1 1 0 2h-2v1h1a1 1 0 1 1 0 2h-1v1h2a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1z"></path>
+                    <path fill="currentColor" d="M33.88 23.634a1 1 0 1 0-1-1.732l-6.613 3.818a3 3 0 0 0-4.9 2.829l-.867.5a1 1 0 1 0 1 1.732l.868-.5a3 3 0 0 0 4.9-2.829z"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">MPG</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.mpg}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Interior Color */}
-        {vehicle?.interior_color && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <Palette color="black" />
-              <span>
-                Interior Color
-                <p className="font-bold text-[15px] text-black">
-                  {vehicle?.interior_color}
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
+          {/* Drivetrain */}
+          {vehicle?.drivetrain && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200 pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" d="M52 11.249A3.25 3.25 0 0 0 48.75 8h-3.503A3.25 3.25 0 0 0 42 11.25v1.503A3.25 3.25 0 0 0 45.248 16h3.503A3.25 3.25 0 0 0 52 12.752zM10.751 8A3.25 3.25 0 0 1 14 11.25v1.503A3.25 3.25 0 0 1 10.75 16H7.248A3.25 3.25 0 0 1 4 12.752v-1.503A3.25 3.25 0 0 1 7.248 8zM10.751 40A3.25 3.25 0 0 1 14 43.25v1.503A3.25 3.25 0 0 1 10.75 48H7.248A3.25 3.25 0 0 1 4 44.752v-1.503A3.25 3.25 0 0 1 7.248 40zM48.751 48A3.25 3.25 0 0 0 52 44.752v-1.503A3.25 3.25 0 0 0 48.75 40h-3.503A3.25 3.25 0 0 0 42 43.25v1.503A3.25 3.25 0 0 0 45.248 48z"></path>
+                    <path fill="currentColor" fillRule="evenodd" d="M10 19a1 1 0 1 0-2 0v5.126a4.002 4.002 0 0 0 0 7.748V37a1 1 0 1 0 2 0v-5.126A4.01 4.01 0 0 0 12.874 29h30.252A4.01 4.01 0 0 0 46 31.874V37a1 1 0 0 0 2 0v-5.126a4.002 4.002 0 0 0 0-7.748V19a1 1 0 1 0-2 0v5.126A4.01 4.01 0 0 0 43.126 27H12.874A4.01 4.01 0 0 0 10 24.126zm37 7a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-36 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0" clipRule="evenodd"></path>
+                    <path fill="currentColor" d="M37 24a1 1 0 0 1-1 1H20a1 1 0 0 1 0-2h16a1 1 0 0 1 1 1M36 33a1 1 0 1 0 0-2H20a1 1 0 0 0 0 2z"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Drivetrain</span>
+                  <span className="font-bold text-[15px] text-[#0B2545] leading-snug">
+                    {vehicle?.drivetrain}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Body Style */}
-        {vehicle?.body_type && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <svg className="w-5 h-5 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                <path d="M165.4 96h181.2c13.6 0 25.7 8.6 30.2 21.4l26.1 74.6H109.1l26.1-74.6c4.5-12.8 16.6-21.4 30.2-21.4zm-90.6.3L39.6 196.8C16.4 206.4 0 229.3 0 256v96c0 23.7 12.9 44.4 32 55.4V448c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32v-32h256v32c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32v-40.6c19.1-11.1 32-31.7 32-55.4v-96c0-26.7-16.4-49.6-39.6-59.2L437.2 96.3C423.7 57.8 387.4 32 346.6 32H165.4c-40.8 0-77.1 25.8-90.6 64.3zM208 288h96c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16h-96c-8.8 0-16-7.2-16-16v-32c0-8.8 7.2-16 16-16zM48 280c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H72c-13.3 0-24-10.7-24-24zm360-24h32c13.3 0 24 10.7 24 24s-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
-              </svg>
-              <span>
-                Body Style
-                <p className="font-bold text-[15px] text-black">
-                  {vehicle?.body_type}
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
+          {/* Exterior Color */}
+          {vehicle?.exterior_color && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" fillRule="evenodd" d="M14.5 3a3.45 3.45 0 0 0-3.107 1.945L5.046 18.022A10.4 10.4 0 0 0 4 22.575C4 28.343 8.752 33 14.5 33S25 28.343 25 22.575c0-1.578-.358-3.134-1.046-4.553L17.607 4.945A3.45 3.45 0 0 0 14.5 3m-1.307 2.819a1.453 1.453 0 0 1 2.614 0l6.347 13.077A8.4 8.4 0 0 1 23 22.574C23 27.219 19.164 31 14.5 31S6 27.218 6 22.575c0-1.275.29-2.533.846-3.68z" clipRule="evenodd"></path>
+                    <path fill="currentColor" d="M28.816 12c-.57 0-1.105.28-1.43.748l-2.208 3.182a1 1 0 0 0 1.644 1.14l1.95-2.811 6.423 13.66c.53 1.127.805 2.359.805 3.605v.208a8.268 8.268 0 0 1-15.891 3.2l-.187-.444a1 1 0 0 0-1.844.774l.187.445A10.27 10.27 0 0 0 27.732 42C33.402 42 38 37.403 38 31.732v-.208c0-1.54-.34-3.062-.995-4.457L30.39 13c-.287-.61-.9-1-1.575-1"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Exterior color</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.exterior_color}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Transmission */}
-        {vehicle?.transmission && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <svg className="w-5 h-5 text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="currentColor">
-                <path d="M415.9 210.5c12.2-3.3 25 2.5 30.5 13.8L465 261.9c10.3 1.4 20.4 4.2 29.9 8.1l35-23.3c10.5-7 24.4-5.6 33.3 3.3l19.2 19.2c8.9 8.9 10.3 22.9 3.3 33.3l-23.3 34.9c1.9 4.7 3.6 9.6 5 14.7 1.4 5.1 2.3 10.1 3 15.2l37.7 18.6c11.3 5.6 17.1 18.4 13.8 30.5l-7 26.2c-3.3 12.1-14.6 20.3-27.2 19.5l-42-2.7c-6.3 8.1-13.6 15.6-21.9 22l2.7 41.9c.8 12.6-7.4 24-19.5 27.2l-26.2 7c-12.2 3.3-24.9-2.5-30.5-13.8l-18.6-37.6c-10.3-1.4-20.4-4.2-29.9-8.1l-35 23.3c-10.5 7-24.4 5.6-33.3-3.3l-19.2-19.2c-8.9-8.9-10.3-22.8-3.3-33.3l23.3-35c-1.9-4.7-3.6-9.6-5-14.7s-2.3-10.2-3-15.2l-37.7-18.6c-11.3-5.6-17-18.4-13.8-30.5l7-26.2c3.3-12.1 14.6-20.3 27.2-19.5l41.9 2.7c6.3-8.1 13.6-15.6 21.9-22l-2.7-41.8c-.8-12.6 7.4-24 19.5-27.2l26.2-7zM448.4 340a44 44 0 1 0 .1 88 44 44 0 1 0-.1-88zM224.9-45.5l26.2 7c12.1 3.3 20.3 14.7 19.5 27.2l-2.7 41.8c8.3 6.4 15.6 13.8 21.9 22l42-2.7c12.5-.8 23.9 7.4 27.2 19.5l7 26.2c3.2 12.1-2.5 24.9-13.8 30.5l-37.7 18.6c-.7 5.1-1.7 10.2-3 15.2s-3.1 10-5 14.7l23.3 35c7 10.5 5.6 24.4-3.3 33.3L307.3 262c-8.9 8.9-22.8 10.3-33.3 3.3L239 242c-9.5 3.9-19.6 6.7-29.9 8.1l-18.6 37.6c-5.6 11.3-18.4 17-30.5 13.8l-26.2-7c-12.2-3.3-20.3-14.7-19.5-27.2l2.7-41.9c-8.3-6.4-15.6-13.8-21.9-22l-42 2.7c-12.5.8-23.9-7.4-27.2-19.5l-7-26.2c-3.2-12.1 2.5-24.9 13.8-30.5l37.7-18.6c.7-5.1 1.7-10.1 3-15.2 1.4-5.1 3-10 5-14.7L55.1 46.5c-7-10.5-5.6-24.4 3.3-33.3L77.6-6c8.9-8.9 22.8-10.3 33.3-3.3l35 23.3c9.5-3.9 19.6-6.7 29.9-8.1l18.6-37.6c5.6-11.3 18.3-17 30.5-13.8zM192.4 84a44 44 0 1 0 0 88 44 44 0 1 0 0-88z" />
-              </svg>
-              <span>
-                Transmission
-                <p className="font-bold text-[15px] text-black">
-                  {vehicle?.transmission}
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
+          {/* Interior Color */}
+          {vehicle?.interior_color && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path stroke="currentColor" d="M17.066 8.577a4.32 4.32 0 0 0-6.056 0l-2.327 2.29a4.29 4.29 0 0 0 0 6.116 2.29 2.29 0 0 1 0 3.267 4.29 4.29 0 0 0 0 6.117 2.29 2.29 0 0 1 0 3.266 4.29 4.29 0 0 0 0 6.117 2.29 2.29 0 0 1 0 3.267 4.29 4.29 0 0 0 0 6.117l2.327 2.289a4.32 4.32 0 0 0 6.056 0 2.32 2.32 0 0 1 3.251 0 4.32 4.32 0 0 0 6.057 0 2.32 2.32 0 0 1 3.252 0 4.32 4.32 0 0 0 6.057 0 2.32 2.32 0 0 1 3.25 0 4.32 4.32 0 0 0 6.057 0l2.327-2.29a4.29 4.29 0 0 0 0-6.117 2.29 2.29 0 0 1 0-3.266 4.29 4.29 0 0 0 0-6.117 2.29 2.29 0 0 1 0-3.266 4.29 4.29 0 0 0 0-6.117 2.29 2.29 0 0 1 0-3.267 4.29 4.29 0 0 0 0-6.117L44.99 8.577a4.32 4.32 0 0 0-6.056 0 2.32 2.32 0 0 1-3.251 0 4.32 4.32 0 0 0-6.057 0 2.32 2.32 0 0 1-3.252 0 4.32 4.32 0 0 0-6.057 0 2.32 2.32 0 0 1-3.25 0"></path>
+                    <path stroke="currentColor" d="M25.879 17.393a1 1 0 1 1 1.414 1.415l-8.485 8.485a1 1 0 0 1-1.415-1.415zM36.293 18.293a1 1 0 0 1 1.414 1.414l-18 18a1 1 0 0 1-1.414-1.414zM37.192 28.707a1 1 0 0 1 1.415 1.414l-8.486 8.485a1 1 0 0 1-1.414-1.414z"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Interior</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.interior_color}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Drivetrain */}
-        {vehicle?.drivetrain && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <Radiation color="black" />
-              <span>
-                Drivetrain
-                <p className="font-bold text-[15px] text-black">
-                  {vehicle?.drivetrain}
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
+          {/* Seating */}
+          {vehicle?.seating && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" d="M25 41.752a.75.75 0 0 0-.752-.752h-3.42c-.39 0-.773.09-1.121.265l-.52.26a4.5 4.5 0 0 1-2.014.475h-4.346c-.7 0-1.39-.163-2.014-.476l-.52-.26A2.5 2.5 0 0 0 9.173 41H5.752a.75.75 0 0 0-.752.752v3.496c0 .415.337.752.752.752h18.496a.75.75 0 0 0 .752-.752zm26 0a.75.75 0 0 0-.752-.752h-3.42c-.39 0-.773.09-1.121.265l-.52.26a4.5 4.5 0 0 1-2.014.475h-4.346c-.7 0-1.39-.163-2.014-.476l-.52-.26a2.5 2.5 0 0 0-1.12-.264h-3.421a.75.75 0 0 0-.752.752v3.496c0 .415.337.752.752.752h18.496a.75.75 0 0 0 .752-.752zM10.6 21.084a1 1 0 0 1 1.316.516l7 15a1 1 0 1 1-1.832.8l-7-15a1 1 0 0 1 .516-1.316m33.484.516a1 1 0 1 1 1.832.8l-7 15a1 1 0 1 1-1.832-.8zM18 10.752a.75.75 0 0 0-.752-.752h-4.496a.75.75 0 0 0-.752.752v.496c0 .415.337.752.752.752h4.496a.75.75 0 0 0 .752-.752zm26 0a.75.75 0 0 0-.752-.752h-4.496a.75.75 0 0 0-.752.752v.496c0 .415.337.752.752.752h4.496a.75.75 0 0 0 .752-.752zm-22 9.752A2.504 2.504 0 0 0 19.496 18h-8.992A2.504 2.504 0 0 0 8 20.504V39h1.173c.7 0 1.39.163 2.015.476l.519.26c.348.173.731.264 1.12.264h4.346c.389 0 .772-.09 1.12-.265l.52-.26A4.5 4.5 0 0 1 20.827 39H22zm26 0A2.504 2.504 0 0 0 45.496 18h-8.992A2.504 2.504 0 0 0 34 20.504V39h1.173c.7 0 1.39.163 2.014.476l.52.26c.348.173.731.264 1.12.264h4.346c.389 0 .772-.09 1.12-.265l.52-.26A4.5 4.5 0 0 1 46.827 39H48zM24 39h.248A2.75 2.75 0 0 1 27 41.752v3.496A2.75 2.75 0 0 1 24.248 48H5.752A2.75 2.75 0 0 1 3 45.248v-3.496A2.75 2.75 0 0 1 5.752 39H6V20.504A4.504 4.504 0 0 1 10.504 16h8.992A4.504 4.504 0 0 1 24 20.504zm26 0h.248A2.75 2.75 0 0 1 53 41.752v3.496A2.75 2.75 0 0 1 50.248 48H31.752A2.75 2.75 0 0 1 29 45.248v-3.496A2.75 2.75 0 0 1 31.752 39H32V20.504A4.504 4.504 0 0 1 36.504 16h8.992A4.504 4.504 0 0 1 50 20.504zM20 11.248A2.75 2.75 0 0 1 17.248 14h-4.496A2.75 2.75 0 0 1 10 11.248v-.496A2.75 2.75 0 0 1 12.752 8h4.496A2.75 2.75 0 0 1 20 10.752zm26 0A2.75 2.75 0 0 1 43.248 14h-4.496A2.75 2.75 0 0 1 36 11.248v-.496A2.75 2.75 0 0 1 38.752 8h4.496A2.75 2.75 0 0 1 46 10.752z"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Seating</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.seating}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-        {/* Fuel Type */}
-        {vehicle?.fuel_type && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-start gap-2 text-[13px] text-muted-foreground mb-1">
-              <Fuel color="black" />
-              <span>
-                Fuel Type
-                <p className="font-bold text-[15px] text-black">
-                  {vehicle?.fuel_type}
-                </p>
-              </span>
-            </div>
-          </motion.div>
-        )}
-      </motion.div>
+          {/* Engine */}
+          {vehicle?.engine && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" d="M17 12a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1M25 12a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1M33 12a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1"></path>
+                    <path fill="currentColor" fillRule="evenodd" d="M24.228 27.918c-.863 0-1.321-1.02-.748-1.665l5.665-6.37c.363-.408 1.026-.02.845.498l-1.637 4.701h3.42c.863 0 1.32 1.02.747 1.665l-5.664 6.37c-.364.409-1.026.02-.846-.497l1.638-4.702zm2.227-2 .054-.06.026.06zm3.036 1.225-.026-.06h.08z" clipRule="evenodd"></path>
+                    <path fill="currentColor" fillRule="evenodd" d="M10 33a6 6 0 0 0 6 6h12.417a3 3 0 0 1 2.458 1.28l1.709 2.44A3 3 0 0 0 35.04 44H43a1 1 0 0 0 .97-.758l.48-1.917c.305.12.623.18.92.202 1.074.083 2.367-.26 3.426-.596.265-.084.633-.207.972-.407.354-.21.733-.538.943-1.058.405-.997.721-2.75.935-4.247.216-1.512.354-2.968.354-3.433V30a3 3 0 0 0-3-3h-3v-4h-.303c.184-.581.303-1.323.303-2.273C46 16.94 42.98 14 39.273 14H15a5 5 0 0 0-5 5v1c0 1.178.303 2.129.808 2.874q.044.064.09.126H10v2H9v-6.5a2.5 2.5 0 0 0-5 0v17a2.5 2.5 0 0 0 5 0V29h1zm2-8h7a1 1 0 1 0 0-2h-3.944l-.092-.005a4 4 0 0 1-.37-.044 4 4 0 0 1-1.118-.348 2.56 2.56 0 0 1-1.013-.852c-.257-.38-.463-.93-.463-1.751v-1a3 3 0 0 1 3-3h24.273C41.89 16 44 18.06 44 20.727c0 1.457-.337 2.047-.486 2.245l-.01.014-.012.014H39a1 1 0 1 0 0 2h5v5h-5a1 1 0 1 0 0 2h5v.917l-.98 5.88-.8 3.203H35.04a1 1 0 0 1-.819-.426l-1.709-2.441A5 5 0 0 0 28.418 37H16a4 4 0 0 1-4-4v-1h7a1 1 0 1 0 0-2h-7zm34 8.083V29h3a1 1 0 0 1 1 1v1.786c0 .308-.118 1.637-.334 3.15-.218 1.529-.51 3.042-.808 3.778q.002.003-.013.018a.5.5 0 0 1-.096.071c-.123.073-.296.138-.559.222-1.07.34-2.024.558-2.665.508-.304-.023-.408-.099-.433-.123-.007-.007-.079-.072-.09-.336zM7 23.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0M6.5 33q-.257 0-.5-.05v2.55a.5.5 0 0 0 1 0v-2.55q-.243.05-.5.05m0-12q-.257 0-.5.05V18.5a.5.5 0 0 1 1 0v2.55a2.5 2.5 0 0 0-.5-.05" clipRule="evenodd"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Engine</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.engine}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Transmission */}
+          {vehicle?.transmission && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" fillRule="evenodd" d="M7 12a5 5 0 1 1 10 0 5 5 0 0 1-10 0m5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6" clipRule="evenodd"></path>
+                    <path fill="currentColor" d="M45 20a1 1 0 1 0-2 0v6a1 1 0 0 1-1 1H29v-7a1 1 0 1 0-2 0v7H13v-7a1 1 0 1 0-2 0v16a1 1 0 1 0 2 0v-7h14v7a1 1 0 1 0 2 0v-7h13a3 3 0 0 0 3-3z"></path>
+                    <path fill="currentColor" fillRule="evenodd" d="M44 31a1 1 0 0 1 1 1v7.1a5.002 5.002 0 0 1-1 9.9 5 5 0 0 1-1-9.9V32a1 1 0 0 1 1-1m0 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6M28 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10m-3 5a3 3 0 1 1 6 0 3 3 0 0 1-6 0M39 12a5 5 0 1 1 10 0 5 5 0 0 1-10 0m5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6M23 44a5 5 0 1 1 10 0 5 5 0 0 1-10 0m5-3a3 3 0 1 0 0 6 3 3 0 0 0 0-6M12 39a5 5 0 1 0 0 10 5 5 0 0 0 0-10m-3 5a3 3 0 1 1 6 0 3 3 0 0 1-6 0" clipRule="evenodd"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Transmission</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.transmission}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Fuel Type */}
+          {vehicle?.fuel_type && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" fillRule="evenodd" d="M28.969 11C30.549 11 32 12.185 32 13.845v7.31C32 22.815 30.55 24 28.969 24H18.03C16.451 24 15 22.815 15 21.155v-7.31C15 12.185 16.45 11 18.031 11zM18.03 13c-.662 0-1.031.467-1.031.845v7.31c0 .378.369.845 1.031.845H28.97c.662 0 1.031-.467 1.031-.845v-7.31c0-.378-.369-.845-1.031-.845z" clipRule="evenodd"></path>
+                    <path fill="currentColor" fillRule="evenodd" d="M29.236 5C33.485 5 37 8.335 37 12.518V23.66h1.88c1.03 0 2.036.412 2.789 1.059.755.649 1.331 1.606 1.331 2.731V38c0 1.2.844 2.05 2 2.05s2-.85 2-2.05V21.463a4 4 0 1 1-2.395-7.444l-5.312-5.312a1 1 0 1 1 1.414-1.414l7.414 7.414c.56.56.879 1.312.879 2.112V38c0 2.26-1.696 4.05-4 4.05s-4-1.79-4-4.05V27.45c0-.414-.215-.852-.635-1.214-.422-.363-.974-.576-1.485-.576H37V48h1a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h1V12.379C10 8.284 13.43 5.013 17.598 5L17.609 5zM17.62 7C14.48 7 12 9.448 12 12.379V48h23V12.518C35 9.509 32.45 7 29.236 7zM45 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4" clipRule="evenodd"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Fuel type</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.fuel_type}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Number of Keys */}
+          {vehicle?.number_of_keys && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
+                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
+                    <path fill="currentColor" fillRule="evenodd" d="M20.706 14.475a4.167 4.167 0 1 0 0-8.334 4.167 4.167 0 0 0 0 8.334m0-2a2.167 2.167 0 1 0 0-4.334 2.167 2.167 0 0 0 0 4.334" clipRule="evenodd"></path>
+                    <path fill="currentColor" d="M26.979 23.657a1 1 0 0 0-1.957.415l1.045 4.932a1 1 0 0 0 1.956-.415zM23.19 24.657a1 1 0 0 0-1.956.415l4.18 19.728a1 1 0 1 0 1.956-.414z"></path>
+                    <path fill="currentColor" fillRule="evenodd" d="M30.147 23.683c2.63-2.287 3.747-5.632 3.747-9.333 0-6.805-5.516-12.32-12.32-12.32S9.251 7.544 9.251 14.35c0 5.423 2.824 10.106 7.787 11.686l4.764 22.491a3 3 0 0 0 1.128 1.773l4.329 3.267a2 2 0 0 0 3.013-.744l2.115-4.484a5 5 0 0 0 .348-3.265L30.393 35a1 1 0 1 1 .026-.546l1.133-3.358a3 3 0 0 0 .063-1.707zM21.572 4.029c-5.7 0-10.32 4.621-10.32 10.321 0 5.108 2.806 9.112 7.41 10.043l.069-.015.006.03.022.004-.01.051 5.01 23.65a1 1 0 0 0 .376.59l4.328 3.267 2.115-4.484a3 3 0 0 0 .209-1.959l-2.343-10.074a3 3 0 0 1 .08-1.639l1.132-3.357a1 1 0 0 0 .021-.57l-1.802-7.003.024-.006c2.732-1.781 3.994-4.779 3.994-8.528 0-5.7-4.62-10.32-10.32-10.32" clipRule="evenodd"></path>
+                    <path fill="currentColor" d="M34.288 22.269a1 1 0 0 0-1.564 1.245l2.25 2.828a1 1 0 0 1 .212.515l.282 2.583a3 3 0 0 0 .549 1.43l5.503 7.632a1 1 0 0 1 .187.644l-.226 3.82-3.834-.704a1 1 0 0 1-.588-.344l-2.349-2.824a1 1 0 0 0-1.538 1.279l2.35 2.824a3 3 0 0 0 1.765 1.032l3.833.704a2 2 0 0 0 2.358-1.85l.225-3.819a3 3 0 0 0-.56-1.932L37.638 29.7a1 1 0 0 1-.183-.477l-.282-2.583a3 3 0 0 0-.635-1.543z"></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[15px] text-gray-500 leading-tight">Number of keys</span>
+                  <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
+                    {vehicle?.number_of_keys}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+      
     </div>
   );
 };

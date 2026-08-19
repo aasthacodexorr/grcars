@@ -6,9 +6,10 @@ import { useState } from "react";
 
 interface VDPWishlistButtonProps {
   vehicle: Record<string, any>;
+  showLabel?: boolean; // true = show "Save"/"Saved" text (used on the card instance)
 }
 
-export default function VDPWishlistButton({ vehicle }: VDPWishlistButtonProps) {
+export default function VDPWishlistButton({ vehicle, showLabel = false }: VDPWishlistButtonProps) {
   const { addToWishlist, removeFromWishlist, isInWishlist, isHydrated } = useWishlist();
   const [showToast, setShowToast] = useState(false);
 
@@ -47,11 +48,13 @@ export default function VDPWishlistButton({ vehicle }: VDPWishlistButtonProps) {
     <>
       <button
         onClick={handleClick}
-        className={`flex items-center gap-2 px-4 cursor-pointer py-3 rounded-lg font-semibold transition-all duration-300`}
+        className={`flex items-center gap-2 px-4 cursor-pointer py-3 rounded-lg font-semibold transition-all duration-300 ${
+          showLabel ? "text-[#0d2238] hover:text-[#06c]" : ""
+        }`}
         aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
       >
         <svg
-          className={`w-6 h-6 transition-colors duration-300`}
+          className={`transition-colors duration-300 ${showLabel ? "w-5 h-5" : "w-6 h-6"}`}
           fill={inWishlist ? "#06c" : "none"}
           stroke={inWishlist ? "#06c" : "currentColor"}
           viewBox="0 0 24 24"
@@ -63,7 +66,10 @@ export default function VDPWishlistButton({ vehicle }: VDPWishlistButtonProps) {
             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
           />
         </svg>
-       </button>
+        {showLabel && (
+          <span className="text-base ">{inWishlist ? "Saved" : "Save"}</span>
+        )}
+      </button>
     </>
   );
 }

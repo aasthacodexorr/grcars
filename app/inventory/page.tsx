@@ -145,7 +145,7 @@ type FilterGroupProps = {
 
 const FilterGroup = ({ title, children, isOpen, onToggle }: FilterGroupProps) => {
   return (
-    <div className={`border-b border-border py-[7px] mb-0 last:border-b-0 first:border-t first:border-t-border transition-all duration-300 ${isOpen ? "pb-4" : ""}`}>
+    <div className={`border-b border-border py-[7px] mb-0 last:border-b-0 transition-all duration-300 ${isOpen ? "pb-4" : ""}`}>
       <button onClick={onToggle} className="w-full cursor-pointer">
         <div className={`flex items-center justify-between rounded-[10px] px-[10px] py-[8px] transition-colors duration-200 hover:bg-gray-50 ${isOpen ? "bg-gray-100" : ""}`}>
           <span className="text-[16px] font-medium tracking-[0.5px] text-left normal-case">
@@ -1224,11 +1224,13 @@ useEffect(() => {
                     "lg:[scrollbar-width:thin]",
                   ].join(" ")}
                 >
-                  <div className="flex flex-col items-center gap-4 pb-0">
+                  <div className="flex flex-col items-center gap-4 pb-0 ">
                     <div className="text-white text-center py-3 px-4 rounded-full font-bold text-[14px] w-full shadow-sm bg-brand">
                       <CustomHitsCount />
                     </div>
-                    <ClearFiltersButton />
+                    <div className="w-full flex justify-center border-b border-gray-200">
+                      <ClearFiltersButton />
+                    </div>
                   </div>
 
                   {renderFilterGroups()}

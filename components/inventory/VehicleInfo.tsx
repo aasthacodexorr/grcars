@@ -6,12 +6,14 @@ import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { createPortal } from "react-dom";
 import { ChevronRight, ArrowDownCircle } from 'lucide-react';
+import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
 
 
 export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
+  const [showCardWishlist, setShowCardWishlist] = useState(false);
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const inlineContainerRef = useRef<HTMLDivElement>(null);
@@ -32,6 +34,33 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
     return () => observer.disconnect();
   }, []);
 
+  // 1b. Detect when the page-level wishlist heart (top of page, above the
+  // gallery) is scrolled out of view / hidden under the header. Only then do
+  // we show the alternative save button on this card.
+  useEffect(() => {
+  const topWishlistEl = document.getElementById("vdp-top-wishlist");
+  if (!topWishlistEl) return;
+
+  // Measure the actual fixed header so this works for both mobile (mt-36)
+  // and desktop (lg:mt-24) without hardcoding pixel values.
+  const headerEl = document.querySelector("header"); // adjust selector/id to match your Header component
+  const headerHeight = headerEl?.getBoundingClientRect().height ?? 0;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      setShowCardWishlist(!entry.isIntersecting);
+    },
+    {
+      root: null,
+      threshold: 0,
+      rootMargin: `-${headerHeight}px 0px 0px 0px`,
+    }
+  );
+
+  observer.observe(topWishlistEl);
+
+  return () => observer.disconnect();
+}, []);
   // 2. Tooltip outside click handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -76,10 +105,10 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
       {/* Primary Card Container (Observed for sticky bar) */}
       <div
         ref={inlineContainerRef}
-        className="w-full bg-white rounded-3xl p-6 font-sans text-center relative"
+        className="w-full bg-white rounded-3xl font-sans text-center relative"
       >
         {/* Vehicle Title */}
-        <h1 className="text-2xl sm:text-[26px] font-extrabold text-[#0d2238] tracking-tight leading-tight mb-1">
+        <h1 className="text-2xl sm:text-[26px] p-6 font-extrabold text-[#0d2238] tracking-tight leading-tight mb-1">
           {vehicle?.year || "2016"} {vehicle?.make || "INFINITI"}{" "}
           {vehicle?.model || "Q50"}
         </h1>
@@ -92,7 +121,7 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
         {/* Pricing & Tooltip Section */}
         {
           !isSold ? (
-            <div className="flex flex-col gap-2 mb-3">
+            <div className="flex flex-col gap-2 mb-3 px-6">
               {/* Cash Price */}
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-1.5">
@@ -172,7 +201,7 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
 
 
         {/* Buttons Action Group */}
-        <div className="space-y-2.5">
+        <div className="space-y-2.5 px-6 mb-5">
           {/* Button 1: Get Pre-Approved */}
           <a href="/vehicle-financing/" className="block w-full">
             <button className="w-full cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-4 rounded-full transition-colors text-base shadow-sm">
@@ -185,11 +214,16 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
           {/* Button 2: Request Information */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full cursor-pointer bg-white hover:bg-brand-green text-brand-green hover:text-white border-2 border-brand-green font-bold py-4 rounded-full transition-colors text-base"
+            className="w-full cursor-pointer  bg-white hover:bg-brand-green text-brand-green hover:text-white border-2 border-brand-green font-bold py-4 rounded-full transition-colors text-base"
           >
             Request Information
           </button>
         </div>
+        {showCardWishlist && (
+            <div className="flex justify-center bg-gray-200">
+              <VDPWishlistButton vehicle={vehicle} showLabel />
+            </div>
+          )}
       </div>
 
       {/* Dynamic Sticky Mobile Action Bar */}
@@ -202,10 +236,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
             Get Pre-Approved
           </button>
         </a>
-         <p>Get terms personalized to you!</p>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex-1 w-full cursor-pointer bg-white hover:bg-brand-green text-brand-green hover:text-white font-bold py-3 rounded-full text-sm"
+          className="flex-1 w-full cursor-pointer bg-white hover:bg-brand-green text-brand-green hover:text-white border-2 border-brand-green font-bold py-3 rounded-full text-sm"
         >
           Request Info
         </button>
