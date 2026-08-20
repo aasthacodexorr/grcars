@@ -19,13 +19,16 @@ const AboutVehicle = ({ vehicle }: any) => {
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
   };
 
+
+  console.log(vehicle, "Vvvvvvvvvvvvv");
+
   return (
     <div id="vehicle-details-section" className="bg-card border-none rounded-xl p-0 w-full -mt-3">
       <motion.h2
         initial={{ opacity: 0, x: -15 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        className="text-[22px] font-semibold text-black text-center mb-[30px]"
+        className="text-[30px] font-semibold text-black text-center mb-[2px]"
       >
         Vehicle Details
       </motion.h2>
@@ -123,7 +126,7 @@ const AboutVehicle = ({ vehicle }: any) => {
           )}
 
           {/* Seating */}
-          {vehicle?.seating && (
+          {vehicle?.passengers && (
             <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
@@ -134,7 +137,7 @@ const AboutVehicle = ({ vehicle }: any) => {
                 <div className="flex flex-col">
                   <span className="text-[15px] text-gray-500 leading-tight">Seating</span>
                   <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
-                    {vehicle?.seating}
+                    {vehicle?.passengers}
                   </span>
                 </div>
               </div>
@@ -204,21 +207,29 @@ const AboutVehicle = ({ vehicle }: any) => {
           )}
 
           {/* Number of Keys */}
-          {vehicle?.number_of_keys && (
-            <motion.div variants={itemVariants} className="border-b border-gray-200  pb-5">
+          {vehicle?.door && (
+            <motion.div variants={itemVariants} className="border-b border-gray-200 pb-5">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-[#eaf5ff] flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-[#228be6]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 56 56" aria-hidden="true">
-                    <path fill="currentColor" fillRule="evenodd" d="M20.706 14.475a4.167 4.167 0 1 0 0-8.334 4.167 4.167 0 0 0 0 8.334m0-2a2.167 2.167 0 1 0 0-4.334 2.167 2.167 0 0 0 0 4.334" clipRule="evenodd"></path>
-                    <path fill="currentColor" d="M26.979 23.657a1 1 0 0 0-1.957.415l1.045 4.932a1 1 0 0 0 1.956-.415zM23.19 24.657a1 1 0 0 0-1.956.415l4.18 19.728a1 1 0 1 0 1.956-.414z"></path>
-                    <path fill="currentColor" fillRule="evenodd" d="M30.147 23.683c2.63-2.287 3.747-5.632 3.747-9.333 0-6.805-5.516-12.32-12.32-12.32S9.251 7.544 9.251 14.35c0 5.423 2.824 10.106 7.787 11.686l4.764 22.491a3 3 0 0 0 1.128 1.773l4.329 3.267a2 2 0 0 0 3.013-.744l2.115-4.484a5 5 0 0 0 .348-3.265L30.393 35a1 1 0 1 1 .026-.546l1.133-3.358a3 3 0 0 0 .063-1.707zM21.572 4.029c-5.7 0-10.32 4.621-10.32 10.321 0 5.108 2.806 9.112 7.41 10.043l.069-.015.006.03.022.004-.01.051 5.01 23.65a1 1 0 0 0 .376.59l4.328 3.267 2.115-4.484a3 3 0 0 0 .209-1.959l-2.343-10.074a3 3 0 0 1 .08-1.639l1.132-3.357a1 1 0 0 0 .021-.57l-1.802-7.003.024-.006c2.732-1.781 3.994-4.779 3.994-8.528 0-5.7-4.62-10.32-10.32-10.32" clipRule="evenodd"></path>
-                    <path fill="currentColor" d="M34.288 22.269a1 1 0 0 0-1.564 1.245l2.25 2.828a1 1 0 0 1 .212.515l.282 2.583a3 3 0 0 0 .549 1.43l5.503 7.632a1 1 0 0 1 .187.644l-.226 3.82-3.834-.704a1 1 0 0 1-.588-.344l-2.349-2.824a1 1 0 0 0-1.538 1.279l2.35 2.824a3 3 0 0 0 1.765 1.032l3.833.704a2 2 0 0 0 2.358-1.85l.225-3.819a3 3 0 0 0-.56-1.932L37.638 29.7a1 1 0 0 1-.183-.477l-.282-2.583a3 3 0 0 0-.635-1.543z"></path>
+                  <svg
+                    className="w-7 h-7 text-[#228be6]"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 18V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+                    <path d="M14 12h2" />
                   </svg>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[15px] text-gray-500 leading-tight">Number of keys</span>
+                  <span className="text-[15px] text-gray-500 leading-tight">Number of doors</span>
                   <span className="font-bold text-[18px] text-[#0B2545] leading-snug">
-                    {vehicle?.number_of_keys}
+                    {vehicle?.door}
                   </span>
                 </div>
               </div>
@@ -226,7 +237,7 @@ const AboutVehicle = ({ vehicle }: any) => {
           )}
         </motion.div>
       </div>
-      
+
     </div>
   );
 };

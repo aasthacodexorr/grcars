@@ -144,8 +144,8 @@ export default function PaymentCalculator() {
     return (
         <>
             <Header />
-            <div className='bg-gray-400/20 lg:px-44 mt-36 lg:mt-0'>
-                <div className="lg:mt-20 mx-auto px-5 lg:px-16 py-8 lg:py-12 shadow-sm font-sans text-gray-700 bg-light-gray2">
+            <div className='bg-gray-400/20 lg:px-44 mt-36 lg:mt-10'>
+                <div className="lg:mt-20 mx-auto px-5 lg:px-0 py-8 lg:py-12 font-sans text-gray-700">
                     <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Payment Calculator</h1>
 
                     <div className=' bg-white'>
@@ -190,7 +190,7 @@ export default function PaymentCalculator() {
                                                 key={cls}
                                                 type="button"
                                                 onClick={() => setPackageClass(packageClass === cls ? null : cls)}
-                                                className={`flex items-center justify-between gap-6 min-w-[160px] px-4 lg:px-6 py-3 border rounded-xl text-sm font-medium transition-colors duration-200 cursor-pointer ${packageClass === cls
+                                                className={`flex items-center justify-between gap-5 min-w-[130px] px-4 lg:px-3 py-3 border rounded-xl text-sm font-medium transition-colors duration-200 cursor-pointer ${packageClass === cls
                                                     ? 'text-white border-none bg-brand-gradient'
                                                     : 'bg-white text-gray-700 border-slate-300 hover:bg-brand-gradient hover:text-white hover:border-transparent'
                                                     }`}
