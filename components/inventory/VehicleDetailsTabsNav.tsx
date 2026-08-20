@@ -7,7 +7,7 @@ const TABS = [
   { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
-const EXTRA_GAP = 64; // breathing room below the nav
+const EXTRA_GAP = -10; // breathing room below the nav
 
 export default function VehicleDetailsTabsNav() {
   const [activeTab, setActiveTab] = useState<string>('details');
