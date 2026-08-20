@@ -13,6 +13,7 @@ import happyfam from "@/assets/pages/HappyFamily.webp";
 import { useAppConfig } from "../providers";
 import { getConstants } from "@/constants";
 import Link from "next/link";
+import FaqAccordion from "@/components/common/FaqAccordion";
 
 interface Step {
   icon: ReactNode;  
@@ -495,45 +496,7 @@ const TradeIn = () => {
         {/* Right Column: Accordion List */}
         <div className="lg:col-span-7">
           <div className="">
-            {faqs.map((faq, idx) => {
-              const isOpen = openFaq === idx;
-
-              return (
-                <div key={idx} className="border-b border-slate-200">
-                  <button
-                    onClick={() => toggleFaq(idx)}
-                    className="w-full cursor-pointer flex items-center justify-between py-6 text-left group transition-colors duration-200"
-                  >
-                    <span className="text-base md:text-lg font-bold text-[#0F172A] pr-4">
-                      {faq.q}
-                    </span>
-                    <div className="flex-shrink-0 text-slate-900">
-                      {isOpen ? (
-                        <Minus className="w-5 h-5 stroke-[2]" />
-                      ) : (
-                        <Plus className="w-5 h-5 stroke-[2]" />
-                      )}
-                    </div>
-                  </button>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pb-6 text-sm md:text-base text-slate-600 leading-relaxed pr-6">
-                          {faq.a}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
+           <FaqAccordion faqs={faqs}/>
           </div>
         </div>
 

@@ -8,6 +8,7 @@ import pc1 from "@/assets/cars/PC1.jpg"
 import pc2 from "@/assets/cars/PC2.jpg"
 import pc3 from "@/assets/cars/PC3.jpg"
 import { motion, AnimatePresence } from 'framer-motion';
+import FaqAccordion from '@/components/common/FaqAccordion';
 
 const steps = [
     {
@@ -585,45 +586,7 @@ export default function PaymentCalculator() {
                         Frequently Asked Questions About the Car Payment Calculator in Ontario
                     </h2>
                     <div className="space-y-2">
-                        {faqs.map((faq, idx) => {
-                            const isOpen = openFaq === idx;
-                            return (
-                                <div
-                                    key={idx}
-                                    className={`rounded-lg transition-colors border ${isOpen
-                                        ? "bg-[#F0F4FA] border-sky-100"
-                                        : " border-gray-200/60"
-                                        }`}
-                                >
-                                    <button
-                                        onClick={() => setOpenFaq(idx)}
-                                        className="w-full flex cursor-pointer items-center justify-between p-5 text-left text-base md:text-2xl text-slate-800"
-                                    >
-                                        <span className={isOpen ? "text-blue-600" : "text-slate-800"}>
-                                            {faq.q}
-                                        </span>
-                                        {!isOpen && (
-                                            <Plus className="w-5 h-5 bg-gray-300 p-1 rounded-full text-white text-2xl flex-shrink-0 ml-4" />
-                                        )}
-                                    </button>
-                                    <AnimatePresence>
-                                        {isOpen && (
-                                            <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="overflow-hidden"
-                                            >
-                                                <div className="px-5 pb-5 text-base  md:text-lg text-black leading-relaxed">
-                                                    {faq.a}
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            );
-                        })}
+                        <FaqAccordion faqs={faqs}/>
                     </div>
                 </div>
             </section>
