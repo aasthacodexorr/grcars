@@ -1239,7 +1239,7 @@ useEffect(() => {
             </aside>
 
             {/* ── Results Column ── */}
-            <div id="results-column" className="w-full flex-1 mt-32 lg:mt-3 min-w-0 min-h-screen ">
+            <div id="results-column" className="w-full flex-1 mt-36 lg:mt-3 min-w-0 min-h-screen ">
 
               {/* ── Scroll to Top Button (Bottom Left Corner) ── */}
               <button

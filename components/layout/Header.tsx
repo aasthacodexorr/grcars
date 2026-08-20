@@ -1,8 +1,3 @@
-/* =========================
-   Header Component (Layout)
-   Renders the site-wide navigation header.
-========================= */
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -20,37 +15,39 @@ import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
 import { useDrawer } from "@/context/DrawerContext";
 
+/* Component */
 const Header = () => {
   const appConfig = useAppConfig();
-  const { SITE_CONFIG, PHONE_HREF } = getConstants(appConfig);
+  const { SITE_CONFIG, PHONE_NUMBER, PHONE_HREF } = getConstants(appConfig);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { wishlist, isHydrated } = useWishlist();
   const { openWishlistDrawer } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
 
-  // Close mobile menu whenever route changes
+  // Check if current page is a VDP (matches /inventory/<slug>)
+  const isVdpPage = /^\/inventory\/[^\/]+$/.test(pathname || "");
+  const positionClass = isVdpPage ? "relative" : "fixed top-0";
+
+  // Close mobile menu whenever the route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Lock body scroll only when mobile drawer is open
+  // Prevent body scroll while mobile drawer is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
 
   return (
     <>
       {/* Desktop Header */}
-      <header className="hidden lg:block z-40 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white relative">
+      <header className={`hidden lg:block ${positionClass} z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
         <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[18px]">
+
           {/* Logo */}
           <div className="[&_img]:w-full [&_img]:object-[initial] [&_img]:h-auto [&_img]:max-w-[165px]">
             <Link href="/" aria-label="GrCars home">
@@ -63,7 +60,9 @@ const Header = () => {
             {NAV_ITEMS.map((item, index) => {
               const isActive =
                 pathname === item.to || pathname?.startsWith(item.to + "/");
+
               const isLast = index === NAV_ITEMS.length - 1;
+
               const Icon = "icon" in item ? item.icon : null;
 
               return (
@@ -76,15 +75,16 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif] ${
-                    !isLast
+                  className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif]
+          ${!isLast
                       ? "after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-[22px] after:w-[2px] after:bg-[rgba(181,180,180,0.35)]"
                       : ""
-                  } ${
-                    isActive
+                    }
+          ${isActive
                       ? "text-brand-green"
                       : "text-black hover:text-brand-green"
-                  }`}
+                    }
+        `}
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
                   <span className="font-semibold tracking-wide">{item.label}</span>
@@ -93,11 +93,11 @@ const Header = () => {
             })}
           </nav>
 
-          {/* Wishlist Button */}
+          {/* Call-Us Button */}
           <div className="flex-[0.2] flex justify-end pr-5 items-center gap-4">
             <button
               onClick={openWishlistDrawer}
-              className="text-[18px] cursor-pointer flex items-center gap-[5px] text-black hover:opacity-80 transition-opacity relative"
+              className={`text-[18px] cursor-pointer flex items-center gap-[5px] text-black hover:opacity-80 transition-opacity relative`}
               aria-label="Wishlist"
             >
               <svg className="w-[26px] h-[26px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,14 +110,16 @@ const Header = () => {
                 </span>
               )}
             </button>
+
           </div>
         </div>
       </header>
 
       {/* Mobile Header */}
-      <header className="lg:hidden relative w-full z-40 bg-neutral-offWhite shadow-none">
+      <header className={`lg:hidden ${positionClass} left-0 w-full z-50 bg-neutral-offWhite shadow-none`}>
+
         {/* Top bar: logo + social icons */}
-        <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full">
+        <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full ">
           <Link href="/" aria-label="GrCars home" className="[&_img]:max-w-[125px] [&_img]:h-auto">
             <GrCarsLogo />
           </Link>
@@ -134,7 +136,11 @@ const Header = () => {
                 alt="Facebook"
                 width={23}
                 height={23}
-                style={{ width: "auto", height: "auto" }}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  maxWidth: "100%",
+                }}
               />
             </a>
             <a
@@ -148,75 +154,81 @@ const Header = () => {
                 alt="Instagram"
                 width={23}
                 height={23}
-                style={{ width: "auto", height: "auto" }}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  maxWidth: "100%",
+                }}
               />
             </a>
           </div>
         </div>
 
-        {/* Action Bar: Call, Directions, Menu Toggle */}
-        <div className="text-white flex items-center justify-between py-2 border-t border-b border-neutral-mediumGray bg-white">
-          <div className="flex items-center gap-2 px-3">
+        {/* Green action bar: call, directions, menu toggle */}
+        <div className={`text-white flex items-center justify-between py-2 relative border-t border-b border-neutral-mediumGray`}>
+          <div className="flex items-center gap-5 px-3 top-0">
+
             {/* Call */}
             <a
               href={PHONE_HREF}
-              className="flex items-center justify-center gap-1 text-white rounded-[5px] w-[90px] min-[400px]:w-[110px] sm:w-[150px] py-[13px] bg-brand-green"
-              aria-label="Call Us"
+              className={`flex flex-col items-center justify-center gap-1 group text-white rounded-[5px] w-[181px] max-[537px]:w-[150px] max-[480px]:w-[100px] max-[397px]:w-[90px] py-[13px] px-[10px] bg-brand-green`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-4 w-4 fill-white">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="h-4 w-4 fill-white text-white">
                 <path d="M160.2 25C152.3 6.1 131.7-3.9 112.1 1.4l-5.5 1.5c-64.6 17.6-119.8 80.2-103.7 156.4 37.1 175 174.8 312.7 349.8 349.8 76.3 16.2 138.8-39.1 156.4-103.7l1.5-5.5c5.4-19.7-4.7-40.3-23.5-48.1l-97.3-40.5c-16.5-6.9-35.6-2.1-47 11.8l-38.6 47.2C233.9 335.4 177.3 277 144.8 205.3L189 169.3c13.9-11.3 18.6-30.4 11.8-47L160.2 25z" />
               </svg>
             </a>
 
             {/* Directions */}
             <a
-              href="/contact-us"
-              className="flex items-center justify-center gap-1 text-white rounded-[5px] w-[90px] min-[400px]:w-[110px] sm:w-[150px] py-[13px] bg-brand-green"
-              aria-label="Directions"
+              href={"/contact-us"}
+              rel="noreferrer"
+              className={`flex flex-col items-center justify-center gap-1 group text-white bg-brand-green rounded-[5px] w-[181px] max-[537px]:w-[150px] max-[480px]:w-[100px] max-[397px]:w-[90px] py-[13px] px-[10px]`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="h-4 w-4 fill-white">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="h-4 w-4 fill-white text-white">
                 <path d="M0 188.6C0 84.4 86 0 192 0S384 84.4 384 188.6c0 119.3-120.2 262.3-170.4 316.8-11.8 12.8-31.5 12.8-43.3 0-50.2-54.5-170.4-197.5-170.4-316.8zM192 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128z" />
               </svg>
             </a>
           </div>
 
-          <div className="h-[30px] w-[1px] bg-neutral-mediumGray" />
+          <div className={`border-r min-h-[50px] ml-10 border-neutral-mediumGray`}>
+            <span className={`border-r border-neutral-mediumGray`}></span>
+          </div>
 
-          {/* Menu Toggle Button */}
-          <div className="flex items-center justify-end px-4">
+          {/* Menu toggle */}
+          <div className="flex items-start w-full justify-end mr-3">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 flex items-center justify-center"
+              className="flex flex-col items-center justify-center gap-1 mx-[7%] max-[537px]:mx-[6%] max-[397px]:mx-[4%]"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMobileMenuOpen ? (
-                <X className="h-6 w-6 text-black" />
+                <X className="h-[24px] w-[24px] text-black fill-black" />
               ) : (
-                <Menu className="h-6 w-6 text-black" />
+                <Menu className="h-[24px] w-[24px] text-black fill-black" />
               )}
             </button>
           </div>
         </div>
 
-        {/* Slide-down Mobile Nav Drawer */}
+        {/* Slide-down nav drawer */}
         <div
-          className={`absolute top-full left-0 w-full bg-white z-50 transition-all duration-300 ease-in-out border-b border-gray-200 ${
-            isMobileMenuOpen
-              ? "max-h-[80vh] opacity-100 shadow-lg overflow-y-auto"
-              : "max-h-0 opacity-0 pointer-events-none overflow-hidden"
-          }`}
+          className={`absolute top-full left-0 w-full bg-white overflow-hidden transition-all duration-300 z-50 ${isMobileMenuOpen
+            ? `max-h-[100vh] opacity-100 shadow-[0_15px_30px_rgba(0,0,0,0.12)] border-b border-gray-100`
+            : "max-h-0 opacity-0 pointer-events-none shadow-none"
+            }`}
         >
-          <nav className="flex flex-col px-6 pt-2 pb-6 bg-white">
+          <nav className="flex flex-col px-6 pt-4 pb-6">
             <Link
               href="/wishlist"
-              className={`py-4 border-b border-gray-100 text-[17px] flex items-center justify-between transition-colors ${
-                pathname === "/wishlist" ? "text-brand-green font-medium" : "text-gray-900"
-              }`}
+              className={`py-4 border-b border-gray-100 text-[17px] flex items-center justify-between transition-colors ${pathname === "/wishlist" ? "font-medium" : "text-gray-900"
+                }`}
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2 relative">
                 Favourites
                 {isHydrated && (
-                  <span className="text-[17px]">({wishlistCount})</span>
+                  <span className="text-[17px]">
+                    ({wishlistCount})
+                  </span>
                 )}
               </span>
             </Link>
@@ -234,9 +246,8 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${
-                    isActive ? "text-brand-green font-medium" : "text-gray-900"
-                  }`}
+                  className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${isActive ? "text-brand-green font-medium" : "text-gray-900"
+                    }`}
                 >
                   {item.label}
                 </Link>
