@@ -218,20 +218,18 @@ const Header = () => {
             }`}
         >
           <nav className="flex flex-col px-6 pt-4 pb-6">
-            <Link
-              href="/wishlist"
-              className={`py-4 border-b border-gray-100 text-[17px] flex items-center justify-between transition-colors ${pathname === "/wishlist" ? "font-medium" : "text-gray-900"
-                }`}
+            <button
+              onClick={openWishlistDrawer}
+              className={`text-[17px] cursor-pointer flex items-center gap-[5px] text-gray-800 hover:opacity-80 transition-opacity relative`}
+              aria-label="Wishlist"
             >
-              <span className="flex items-center gap-2 relative">
-                Favourites
-                {isHydrated && (
-                  <span className="text-[17px]">
-                    ({wishlistCount})
-                  </span>
-                )}
-              </span>
-            </Link>
+              <span>Favourites</span>
+              {isHydrated && (
+                <span className="text-gray-800 text-[18px] flex items-center justify-center">
+                  ({wishlistCount})
+                </span>
+              )}
+            </button>
 
             {NAV_ITEMS.map((item) => {
               const isActive =
