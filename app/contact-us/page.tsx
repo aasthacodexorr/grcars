@@ -182,7 +182,7 @@ export default function ContactUs() {
                                     </p>
                                     <button
                                         onClick={scrollToTop}
-                                        className="inline-block bg-black text-white text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors mt-2"
+                                        className="inline-block bg-black text-white cursor-pointer text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors mt-2"
                                     >
                                         Back to top
                                     </button>
