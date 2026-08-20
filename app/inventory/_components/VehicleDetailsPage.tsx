@@ -244,7 +244,7 @@ export default async function VehicleDetailsPage({
                             {showSidebar && (
                                 <div className="hidden lg:block lg:w-[450px] xl:w-[450px] 2xl:w-[520px]">
                                     {/* NON-STICKY WISHLIST: Scrolls up naturally with the page */}
-                                    <div id="vdp-top-wishlist" className="flex justify-end w-full max-w-[400px] mb-3">
+                                    <div id="vdp-top-wishlist" className="flex justify-end w-full max-w-[410px] mb-3">
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
 
