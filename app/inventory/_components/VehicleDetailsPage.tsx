@@ -23,6 +23,7 @@ import AboutVehicle from "@/components/inventory/AboutVehicle";
 import { VehicleHeaderAndCTA } from "@/components/inventory/VehicleInfo";
 import VehicleDetailsTabsNav from "@/components/inventory/VehicleDetailsTabsNav";
 import ViewAllFeaturesButton from "@/components/inventory/ViewAllFeaturesButton";
+import Link from "next/link";
 
 // Force dynamic rendering — vehicle data changes frequently
 export const dynamic = "force-dynamic";
@@ -167,25 +168,34 @@ export default async function VehicleDetailsPage({
             />
             {/* Header spanning 100% viewport, inside contents are usually centered natively */}
             <div className="w-full bg-hero-bg">
-                <Header/>
+                <Header />
             </div>
 
-            <section className="w-full bg-background mt-10">
+            <section className="w-full bg-background mt-5">
                 <div className="w-full pt-[2px] flex-1 mx-auto">
 
                     {/* CONTAINER WRAPPER */}
                     <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-5 md:px-8 lg:px-10 2xl:px-0 w-full">
 
-                        {/* WISHLIST BUTTON (Positioned top-right above Gallery & Sidebar) */}
-                        <div id="vdp-top-wishlist" className="flex justify-end w-full mb-4 xl:max-w-[1480px] lg:max-w-[1200px]">
-                            <VDPWishlistButton vehicle={vehicle} />
-                        </div>
-
-                        {/* SECTION ROW: Controls the boundaries of the sticky sidebar */}
+                        {/* SECTION ROW: Grid containing both columns */}
                         <div className="flex flex-col gap-8 lg:flex-row items-stretch relative w-full">
 
-                            {/* Left column: gallery + specs + description */}
+                            {/* Left column: Breadcrumbs + Gallery + Specs */}
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
+
+                                {/* BREADCRUMBS: Aligned to top-left of gallery */}
+                                <nav className="flex items-center text-sm text-gray-500 gap-1.5 -mb-4">
+                                    <Link href="/inventory" className="hover:underline hover:text-black transition-colors ml-2.5">
+                                        All Cars
+                                    </Link>
+                                    <span>/</span>
+                                    <Link href={`/inventory/${vehicle.make}`} className="hover:underline hover:text-black transition-colors">
+                                        {vehicle.make}
+                                    </Link>
+                                    <span>/</span>
+                                    <span className="text-gray-900 font-medium">{vehicle.model}</span>
+                                </nav>
+
                                 {/* Image gallery */}
                                 <ImageGallery images={images} title={titleText} isSold={isSold} />
 
@@ -217,7 +227,7 @@ export default async function VehicleDetailsPage({
                                             id="vehicle-description-section"
                                             className="bg-card border-none rounded-xl p-0 mt-20 scroll-mt-44 flex-wrap"
                                         >
-                                            <h2 className="text-[22px] text-center font-semibold text-black mb-[15px]">
+                                            <h2 className="text-[30px] text-center font-semibold text-black mb-[25px]">
                                                 Vehicle Description
                                             </h2>
                                             <div
@@ -229,11 +239,17 @@ export default async function VehicleDetailsPage({
                                 </div>
                             </div>
 
-                            {/* Right column: sticky sidebar (desktop) */}
+                            {/* Right column: Sticky Sidebar + Right Aligned Wishlist */}
+                            {/* Right column: Sticky Sidebar + Right Aligned Wishlist */}
                             {showSidebar && (
                                 <div className="hidden lg:block lg:w-[450px] xl:w-[450px] 2xl:w-[520px]">
+                                    {/* NON-STICKY WISHLIST: Scrolls up naturally with the page */}
+                                    <div id="vdp-top-wishlist" className="flex justify-end w-full max-w-[400px] mb-3">
+                                        <VDPWishlistButton vehicle={vehicle} />
+                                    </div>
+
+                                    {/* STICKY CTA CARD: Stays pinned while scrolling */}
                                     <div className="sticky top-6 h-fit space-y-3">
-                                        {/* CTA CARD */}
                                         <div className="max-w-[400px] shadow-xl rounded-xl bg-white overflow-hidden">
                                             <VehicleHeaderAndCTA vehicle={vehicle} />
                                         </div>
