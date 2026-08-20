@@ -1,4 +1,3 @@
-import { GetInTouch } from "@/components/common";
 import { Footer, Header } from "@/components/layout";
 import Link from "next/link";
 
@@ -63,7 +62,6 @@ export default function NotFound() {
                     Shop cars
                 </Link>
             </div>
-            <GetInTouch />
             <Footer />
         </main>
     );
