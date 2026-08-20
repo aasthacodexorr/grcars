@@ -294,7 +294,7 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
           </svg>
         </button>
 
-        <h2 className="text-[24px] font-bold text-gray-900 mb-5">Got a question</h2>
+        <h2 className="text-[24px] font-bold text-gray-900 mb-5 text-center">Request Information</h2>
         <div className="w-full">
           <iframe
             src={`${SITE_CONFIG?.urls.vehiclePageContactUsBaseUrl}?inventory_id=${inventoryId}`}
