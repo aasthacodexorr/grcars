@@ -46,20 +46,14 @@ export default function VehicleDetailsTabsNav() {
   }, []);
 
   const handleTabClick = (tabId: string, targetId: string) => {
-    setActiveTab(tabId);
+  setActiveTab(tabId);
 
-    const el = document.getElementById(targetId);
-    const navEl = navRef.current;
-    if (!el || !navEl) return;
+  const el = document.getElementById(targetId);
+  if (!el) return;
 
-    // Total space the fixed header + sticky nav occupy at the top of the viewport
-    const navHeight = navEl.getBoundingClientRect().height;
-    const offset = headerHeight + navHeight + EXTRA_GAP;
-
-    // Apply scroll-margin-top right on the target so scrollIntoView lands correctly
-    el.style.scrollMarginTop = `${offset}px`;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  // Modern browser-native smooth scroll using CSS scroll-margin-top
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
 
   if (!showTabs) return null;
 

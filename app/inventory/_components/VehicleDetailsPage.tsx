@@ -194,7 +194,7 @@
 
 
                                 {/* Tab header: Vehicle Details / Vehicle Description */}
-                                <div className="sticky top-10 z-50 w-full mb-12 bg-white">
+                                <div className="sticky top-4 z-50 w-full mb-12 bg-white">
                                     <VehicleDetailsTabsNav />
                                 </div>
 
@@ -213,7 +213,8 @@
                                     {vehicle.vehicle_description && (
                                         <div
                                             id="vehicle-description-section"
-                                            className="bg-card border-none rounded-xl p-0 mt-[15px] lg:mt-[165px] flex-wrap"
+                                            /* Added standard mt-10 for standard flow, scroll-mt-32 to create space below sticky header on click */
+                                            className="bg-card border-none rounded-xl p-0 mt-20 scroll-mt-44 flex-wrap"
                                         >
                                             <h2 className="text-[22px] text-center font-semibold text-black mb-[15px]">
                                                 Vehicle Description
