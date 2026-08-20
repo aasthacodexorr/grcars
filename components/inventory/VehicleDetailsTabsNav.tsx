@@ -7,8 +7,6 @@ const TABS = [
   { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
-const EXTRA_GAP = -10; // breathing room below the nav
-
 export default function VehicleDetailsTabsNav() {
   const [activeTab, setActiveTab] = useState<string>('details');
   const [showTabs, setShowTabs] = useState(true);
@@ -52,9 +50,13 @@ export default function VehicleDetailsTabsNav() {
     const navEl = navRef.current;
     if (!el || !navEl) return;
 
+    // Determine extra gap dynamically based on screen width (768px threshold)
+    const isMobile = window.innerWidth < 768;
+    const extraGap = isMobile ? 70 : -10;
+
     // Total space the fixed header + sticky nav occupy at the top of the viewport
     const navHeight = navEl.getBoundingClientRect().height;
-    const offset = headerHeight + navHeight + EXTRA_GAP;
+    const offset = headerHeight + navHeight + extraGap;
 
     // Apply scroll-margin-top right on the target so scrollIntoView lands correctly
     el.style.scrollMarginTop = `${offset}px`;
