@@ -7,7 +7,7 @@ const TABS = [
   { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
-const EXTRA_GAP = 64; // breathing room below the nav
+const EXTRA_GAP = -10; // breathing room below the nav
 
 export default function VehicleDetailsTabsNav() {
   const [activeTab, setActiveTab] = useState<string>('details');
@@ -76,7 +76,7 @@ export default function VehicleDetailsTabsNav() {
               key={tab.id}
               type="button"
               onClick={() => handleTabClick(tab.id, tab.target)}
-              className={`px-8 py-3 text-[16px] font-semibold rounded-full cursor-pointer transition-all duration-200 whitespace-nowrap ${
+              className={`px-4 lg:px-8 py-3 text-[16px] font-semibold rounded-full cursor-pointer transition-all duration-200 whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-[#eaf4ff] text-[#0d2238] shadow-sm'
                   : 'bg-transparent text-gray-700 hover:text-gray-900 hover:bg-gray-50'

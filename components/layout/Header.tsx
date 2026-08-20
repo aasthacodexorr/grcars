@@ -1,13 +1,3 @@
-/* =========================
-   Header Component (Layout)
-   Renders the site-wide navigation header.
-   - Desktop: logo, nav links, call-us button
-   - Mobile: logo, social icons, action bar (call/directions/menu),
-     and a slide-down nav drawer
-   Closes mobile menu on route change and locks body scroll
-   while the drawer is open.
-========================= */
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -25,16 +15,19 @@ import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
 import { useDrawer } from "@/context/DrawerContext";
 
-
-/*  Component */
+/* Component */
 const Header = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG, PHONE_NUMBER, PHONE_HREF } = getConstants(appConfig);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { wishlist, isHydrated } = useWishlist();
-  const { openWishlistDrawer, isWishlistDrawerOpen } = useDrawer();
+  const { openWishlistDrawer } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
+
+  // Check if current page is a VDP (matches /inventory/<slug>)
+  const isVdpPage = /^\/inventory\/[^\/]+$/.test(pathname || "");
+  const positionClass = isVdpPage ? "relative" : "fixed top-0";
 
   // Close mobile menu whenever the route changes
   useEffect(() => {
@@ -51,8 +44,8 @@ const Header = () => {
 
   return (
     <>
-      {/*  Desktop Header */}
-      <header className={`hidden lg:block fixed top-0 z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
+      {/* Desktop Header */}
+      <header className={`hidden lg:block ${positionClass} z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
         <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[18px]">
 
           {/* Logo */}
@@ -62,7 +55,6 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Primary Navigation */}
           {/* Primary Navigation */}
           <nav className="flex-[0.6] flex justify-start items-center gap-0">
             {NAV_ITEMS.map((item, index) => {
@@ -113,7 +105,7 @@ const Header = () => {
               </svg>
               <span>Favourites</span>
               {isHydrated && (
-                <span className="text-black text-[18px]  flex items-center justify-center">
+                <span className="text-black text-[18px] flex items-center justify-center">
                   ({wishlistCount})
                 </span>
               )}
@@ -123,8 +115,8 @@ const Header = () => {
         </div>
       </header>
 
-      {/*  Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 w-full z-50 bg-neutral-offWhite shadow-none">
+      {/* Mobile Header */}
+      <header className={`lg:hidden ${positionClass} left-0 w-full z-50 bg-neutral-offWhite shadow-none`}>
 
         {/* Top bar: logo + social icons */}
         <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full ">
@@ -189,7 +181,6 @@ const Header = () => {
             {/* Directions */}
             <a
               href={"/contact-us"}
-              // target="_blank"
               rel="noreferrer"
               className={`flex flex-col items-center justify-center gap-1 group text-white bg-brand-green rounded-[5px] w-[181px] max-[537px]:w-[150px] max-[480px]:w-[100px] max-[397px]:w-[90px] py-[13px] px-[10px]`}
             >
@@ -217,8 +208,6 @@ const Header = () => {
               )}
             </button>
           </div>
-
-          {/* Vertical divider before menu button */}
         </div>
 
         {/* Slide-down nav drawer */}

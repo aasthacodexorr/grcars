@@ -8,6 +8,7 @@ import pc1 from "@/assets/cars/PC1.jpg"
 import pc2 from "@/assets/cars/PC2.jpg"
 import pc3 from "@/assets/cars/PC3.jpg"
 import { motion, AnimatePresence } from 'framer-motion';
+import FaqAccordion from '@/components/common/FaqAccordion';
 
 const steps = [
     {
@@ -64,40 +65,43 @@ const faqs = [
     }
 ];
 
+const ESSENTIAL_PACKAGE_PRICES: Record<'A' | 'B', number> = {
+    A: 1799,
+    B: 2499,
+};
+
+
 export default function PaymentCalculator() {
     const appConfig = useAppConfig();
     // Input States
     const [vehiclePrice, setVehiclePrice] = useState<number>(appConfig?.payment_calculator?.vehicle_price);
     const [downPayment, setDownPayment] = useState<number>(appConfig?.payment_calculator?.downpayment);
-    const [additionalFees, setAdditionalFees] = useState<number>(appConfig?.payment_calculator?.additional_fees);
-    const [financeFee, setFinanceFee] = useState<number>(999);
-    const [gapFee, setGapFee] = useState<number>(1999);
+    const [additionalFees, setAdditionalFees] = useState<number>(appConfig?.payment_calculator?.additional_fees ?? 0);
+    const [packageClass, setPackageClass] = useState<'A' | 'B' | null>('A');
+    const [gapFee, setGapFee] = useState<number>(0);
     const [warrantyCost, setWarrantyCost] = useState<number>(0);
     const [term, setTerm] = useState<number>(84);
     const [tradeInValue, setTradeInValue] = useState<number>(0);
     const [loanBalance, setLoanBalance] = useState<number>(0);
-    const [creditScore, setCreditScore] = useState<string>('Excellent');
     const [apr, setApr] = useState<number>(7.99);
     const [includeTax, setIncludeTax] = useState<boolean>(false);
-    const [openFaq, setOpenFaq] = useState<number | null>(0);
     const [includeSecureGard, setIncludeSecureGard] = useState<boolean>(false);
     const [includeTireGard, setIncludeTireGard] = useState<boolean>(false);
-
     // Output State
     const [biWeeklyPayment, setBiWeeklyPayment] = useState<string>('0.00');
     const [desiredPayment, setDesiredPayment] = useState<string>('');
 
     // Loan Calculation Logic
     useEffect(() => {
-        // Standard addon fee estimates (adjust fixed dollar amounts if needed)
+        // Essential Package = Class A or Class B (if selected) + any manually entered additional fee
+        const essentialPackageCost = (packageClass ? ESSENTIAL_PACKAGE_PRICES[packageClass] : 0) + additionalFees;
+
         const secureGardFee = includeSecureGard ? 499 : 0;
         const tireGardFee = includeTireGard ? 399 : 0;
-
-        // Total Principal = Vehicle Price + Fees + Add-ons + Existing Loan Balance - Down Payment - Trade-in
+        // Total Principal = Vehicle Price + Essential Package + Gap Protection + Extended Warranty + Existing Loan Balance - Down Payment - Trade-in
         const basePrincipal =
             vehiclePrice +
-            additionalFees +
-            financeFee +
+            essentialPackageCost +
             gapFee +
             warrantyCost +
             secureGardFee +
@@ -106,7 +110,7 @@ export default function PaymentCalculator() {
             downPayment -
             tradeInValue;
 
-        // Simulate simple 13% tax add-on if checked
+        // Simulate simple 13% tax add-on if checked (adjust rate as per your specific region)
         const totalPrincipal = includeTax ? basePrincipal * 1.13 : basePrincipal;
 
         if (totalPrincipal <= 0 || term <= 0) {
@@ -115,44 +119,35 @@ export default function PaymentCalculator() {
         }
 
         // Convert Annual APR to a Bi-Weekly Interest Rate
+        // There are 26 bi-weekly periods in a year
         const annualRate = apr / 100;
         const biWeeklyRate = annualRate / 26;
 
         // Convert Month term to total number of bi-weekly payments
+        // Approximation: (Months * 12) / 26 periods a year -> or roughly Months * 2.166
         const totalPayments = (term / 12) * 26;
 
         let payment = 0;
         if (biWeeklyRate === 0) {
             payment = totalPrincipal / totalPayments;
         } else {
+            // Standard Amortization Formula: P * (r(1+r)^n) / ((1+r)^n - 1)
             payment =
                 (totalPrincipal * biWeeklyRate * Math.pow(1 + biWeeklyRate, totalPayments)) /
                 (Math.pow(1 + biWeeklyRate, totalPayments) - 1);
         }
 
         setBiWeeklyPayment(payment.toFixed(2));
-    }, [
-        vehiclePrice,
-        downPayment,
-        additionalFees,
-        financeFee,
-        gapFee,
-        warrantyCost,
-        term,
-        tradeInValue,
-        loanBalance,
-        apr,
-        includeTax,
-        includeSecureGard,
-        includeTireGard
-    ]);
+    }, [vehiclePrice, downPayment, additionalFees, packageClass, gapFee, warrantyCost, term, tradeInValue, loanBalance, apr, includeTax, includeSecureGard, includeTireGard]);
+
 
     return (
         <>
             <Header />
             <div className='bg-gray-400/20 lg:px-44 mt-36 lg:mt-0'>
-                <div className="lg:mt-20 mx-auto px-5 lg:px-0 py-8 lg:py-12 font-sans text-gray-700">
-                    <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Car Payment Calculator</h1>
+                <div className="lg:mt-20 mx-auto px-5 lg:px-16 py-8 lg:py-12 shadow-sm font-sans text-gray-700 bg-light-gray2">
+                    <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Payment Calculator</h1>
+
                     <div className=' bg-white'>
                         <div className="grid grid-cols-1 md:grid-cols-3">
 
@@ -186,8 +181,29 @@ export default function PaymentCalculator() {
                                     </div>
                                 </div>
 
+                                {/* Essential Package - Class A / Class B toggle */}
                                 <div>
-                                    <label className="block text-black text-base font-lg mb-1">Additional Fees</label>
+                                    <label className="block text-black text-base font-lg mb-2">Essential Package</label>
+                                    <div className="flex gap-2 flex-wrap">
+                                        {(['A', 'B'] as const).map((cls) => (
+                                            <button
+                                                key={cls}
+                                                type="button"
+                                                onClick={() => setPackageClass(packageClass === cls ? null : cls)}
+                                                className={`flex items-center justify-between gap-6 min-w-[160px] px-4 lg:px-6 py-3 border rounded-xl text-sm font-medium transition-colors duration-200 cursor-pointer ${packageClass === cls
+                                                    ? 'text-white border-none bg-brand-gradient'
+                                                    : 'bg-white text-gray-700 border-slate-300 hover:bg-brand-gradient hover:text-white hover:border-transparent'
+                                                    }`}
+                                            >
+                                                <span>Class {cls}</span>
+                                                <span>$ {ESSENTIAL_PACKAGE_PRICES[cls].toLocaleString()}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-black text-base font-lg mb-1">Additional Package</label>
                                     <div className="relative">
                                         <span className="absolute left-3 top-[12px] text-xl font-light text-input-text">$</span>
                                         <input
@@ -201,21 +217,7 @@ export default function PaymentCalculator() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-black text-base font-lg mb-1">Finance Fee</label>
-                                    <div className="relative">
-                                        <span className="absolute left-3 top-[12px] text-xl font-light text-input-text">$</span>
-                                        <input
-                                            type="number"
-                                            value={financeFee || ''}
-                                            placeholder="0.00"
-                                            onChange={(e) => setFinanceFee(Number(e.target.value))}
-                                            className="w-full pl-8 pr-3 py-3 rounded-xl border border-border-lightGray focus:outline-none focus:ring-1  focus:ring-4 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-black text-base font-lg mb-1">Gap Fee</label>
+                                    <label className="block text-black text-base font-lg mb-1">Gap Protection</label>
                                     <div className="relative">
                                         <span className="absolute left-3 top-[12px] text-xl font-light text-input-text">$</span>
                                         <input
@@ -223,12 +225,13 @@ export default function PaymentCalculator() {
                                             value={gapFee || ''}
                                             onChange={(e) => setGapFee(Number(e.target.value))}
                                             className="w-full pl-8 pr-3 py-3 rounded-xl border border-border-lightGray focus:outline-none focus:ring-1  focus:ring-4 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            placeholder="0.00"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-black text-base font-lg mb-1">Warranty Cost</label>
+                                    <label className="block text-black text-base font-lg mb-1">Extended Warranty</label>
                                     <div className="relative">
                                         <span className="absolute left-3 top-[12px] text-xl font-light text-input-text">$</span>
                                         <input
@@ -241,9 +244,23 @@ export default function PaymentCalculator() {
                                     </div>
                                 </div>
 
+                                <div>
+                                    <label className="block text-black text-base font-lg mb-1">Estimated APR</label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            value={apr}
+                                            onChange={(e) => setApr(Number(e.target.value))}
+                                            className="w-full pl-8 pr-3 py-3 rounded-xl border border-border-lightGray focus:outline-none focus:ring-1  focus:ring-4 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                        <span className="absolute right-3 top-[12px] text-input-text">%</span>
+                                    </div>
+                                </div>
+
                                 {/* Term Radio Toggle Buttons */}
                                 <div className="sm:col-span-2">
-                                    <label className="block text-black text-base font-medium mb-3 text-slate-700">Term (Months)</label>
+                                    <label className="block text-black text-base font-medium mb-3 text-black">Term (Months)</label>
                                     <div className="flex flex-wrap gap-1 p-1">
                                         {[12, 24, 36, 48, 60, 72, 84, 96].map((m) => {
                                             return (
@@ -251,9 +268,9 @@ export default function PaymentCalculator() {
                                                     key={m}
                                                     type="button"
                                                     onClick={() => setTerm(m)}
-                                                    className={`px-7 py-3 text-sm font-medium rounded-xl cursor-pointer border transition-all duration-200 ${term === m
-                                                        ? 'text-white border-brand bg-brand-gradient shadow-[0_4px_0_0_var(--color-primary-green)]'
-                                                        : 'border-slate-300 text-gray-700 hover:shadow-[0_4px_0_0_var(--color-primary-green)] shadow-[0_0_10px_rgba(0,0,0,0.1)]'
+                                                    className={`px-7 py-3 text-sm font-medium rounded-xl cursor-pointer border transition-colors duration-200 ${term === m
+                                                        ? 'text-white border-brand bg-brand-gradient'
+                                                        : 'border-slate-300 text-gray-700 hover:bg-brand-gradient hover:text-white hover:border-transparent'
                                                         }`}
                                                 >
                                                     {m}
@@ -291,89 +308,46 @@ export default function PaymentCalculator() {
                                     </div>
                                 </div>
 
-                                {/* Credit Score Toggles */}
-                                <div className="sm:col-span-2">
-                                    <label className="block text-black text-base font-lg mb-2">Approx. Credit Score</label>
-                                    <div className="flex gap-2 w-[50%]">
-                                        {['Poor', 'Fair', 'Good', 'Excellent'].map((score) => (
-                                            <button
-                                                key={score}
-                                                type="button"
-                                                onClick={() => {
-                                                    setCreditScore(score);
-                                                    // Match estimated APR shifts based on credit tir
-                                                    if (score === 'Excellent') setApr(4.99);
-                                                    if (score === 'Good') setApr(5.99);
-                                                    if (score === 'Fair') setApr(9.99);
-                                                    if (score === 'Poor') setApr(14.99);
-                                                }}
-                                                className={`px-4 lg:px-6 py-2 border rounded-xl text-sm font-medium transition-colors cursor-pointer ${creditScore === score
-                                                    ? 'text-white border-none bg-brand-gradient shadow-[0_4px_0_0_var(--color-primary-green)]'
-                                                    : 'bg-white text-gray-700 hover:bg-gray-50 border-slate-300 hover:shadow-[0_4px_0_0_var(--color-primary-green)]'
-                                                    }`}
-                                            >
-                                                {score}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-black text-base font-lg mb-1">Estimated APR</label>
-                                    <div className="relative">
+                                <div className="sm:col-span-2 flex items-center mt-2 gap-3">
+                                    <div className='flex justify-center items-center'>
                                         <input
-                                            type="number"
-                                            step="0.01"
-                                            value={apr}
-                                            onChange={(e) => setApr(Number(e.target.value))}
-                                            className="w-full pr-8 pl-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-1  focus:ring-4 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                        />
-                                        <span className="absolute right-3 top-[9px] text-input-text">%</span>
-                                    </div>
-                                </div>
-
-                                <div className="sm:col-span-2 flex flex-wrap items-center gap-x-6 gap-y-3 mt-2">
-                                    {/* Include Sales Tax */}
-                                    <div className="flex items-center">
-                                        <input
-                                            id="sales-tax"
-                                            type="checkbox"
-                                            checked={includeTax}
-                                            onChange={(e) => setIncludeTax(e.target.checked)}
-                                            className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
-                                        />
-                                        <label htmlFor="sales-tax" className="ml-2 text-base font-medium text-gray-700 select-none cursor-pointer">
-                                            Include Sales Tax
-                                        </label>
+                                        id="sales-tax"
+                                        type="checkbox"
+                                        checked={includeTax}
+                                        onChange={(e) => setIncludeTax(e.target.checked)}
+                                        className="h-4 w-4 text-emerald-600 "
+                                    />
+                                    <label htmlFor="sales-tax" className="ml-2 text-base font-medium text-gray-700 select-none">
+                                        Include Sales Tax
+                                    </label>
                                     </div>
 
-                                    {/* Include Secure-Gard */}
-                                    <div className="flex items-center">
+                                    <div className='flex justify-center items-center'>
                                         <input
-                                            id="secure-gard"
-                                            type="checkbox"
-                                            checked={includeSecureGard}
-                                            onChange={(e) => setIncludeSecureGard(e.target.checked)}
-                                            className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
-                                        />
-                                        <label htmlFor="secure-gard" className="ml-2 text-base font-medium text-gray-700 select-none cursor-pointer">
-                                            Include Secure-Gard
-                                        </label>
+                                        id="secure-gard"
+                                        type="checkbox"
+                                        checked={includeSecureGard}
+                                        onChange={(e) => setIncludeSecureGard(e.target.checked)}
+                                        className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                                    />
+                                    <label htmlFor="secure-gard" className="ml-2 text-base font-medium text-gray-700 select-none cursor-pointer">
+                                        Include Secure-Gard
+                                    </label>
                                     </div>
 
-                                    {/* Include Tire-Gard */}
-                                    <div className="flex items-center">
+                                    <div className='flex justify-center items-center'>
                                         <input
-                                            id="tire-gard"
-                                            type="checkbox"
-                                            checked={includeTireGard}
-                                            onChange={(e) => setIncludeTireGard(e.target.checked)}
-                                            className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
-                                        />
-                                        <label htmlFor="tire-gard" className="ml-2 text-base font-medium text-gray-700 select-none cursor-pointer">
-                                            Include Tire-Gard
-                                        </label>
+                                        id="tire-gard"
+                                        type="checkbox"
+                                        checked={includeTireGard}
+                                        onChange={(e) => setIncludeTireGard(e.target.checked)}
+                                        className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                                    />
+                                    <label htmlFor="tire-gard" className="ml-2 text-base font-medium text-gray-700 select-none cursor-pointer">
+                                        Include Tire-Gard
+                                    </label>
                                     </div>
+
                                 </div>
 
                             </div>
@@ -389,7 +363,7 @@ export default function PaymentCalculator() {
 
                                     <Link href={"/finance"}>
 
-                                        <button className="w-full cursor-pointer text-white font-semibold py-3 px-4 rounded-full transition-colors shadow-sm mb-6 hover:brightness-95 bg-brand-gradient">
+                                        <button className="w-full cursor-pointer text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-sm mb-6 hover:brightness-95 bg-brand-gradient">
                                             Get pre-approved
                                         </button>
 
@@ -421,16 +395,17 @@ export default function PaymentCalculator() {
                         </div>
 
                         {/* Disclosures Section */}
-                        <div className="px-6 lg:pt-6 pb-14">
-                            <p className="font-semibold mb-1 mt-6 lg:mt-0 text-gray-700 text-base">Estimate Your Monthly Car Payments</p>
-                            <p className='text-base leading-relaxed'>
-                                Buying a car is easier when you know exactly what to expect. Our car payment calculator in Ontario helps you plan your purchase by giving a quick estimate of your monthly payments based on your preferred vehicle price, down payment, and loan term.
-                                At Gedi Route Cars, we want you to feel confident about your next car purchase. This tool lets you explore payment options for any vehicle in our inventory so you can choose what best fits your budget before applying for financing.
+                        <div className="px-6 pt-4 lg:pt-6 pb-14">
+                            <p className="font-semibold mb-1 text-gray-700 text-base">Finance disclosures</p>
+                            <p className='text-sm leading-relaxed'>
+                                The payment estimator is not an advertisement or offer for specific terms of credit and actual terms may vary. Payment amounts presented are for illustrative purposes only and may not be available. Actual vehicle price may vary by Dealer. The Estimated Monthly Payment amount calculated is based on the variables entered, the price of the vehicle you entered, the term you select, the down payment you enter, the Annual Percentage Rate (APR) you select, and any net trade-in amount. The payment estimate displayed does not include taxes, title, license and/or registration fees. Payment amount is for illustrative purposes only. Actual prices may vary by Dealer. Payment amounts may be different due to various factors such as fees, specials, rebates, term, down payment, APR, net trade-in, and applicable tax rate. Actual APR is based on available finance programs and the creditworthiness of the customer. Not all customers will qualify for credit or for the lowest rate. Please contact an authorized dealer for actual rates, program details and actual terms.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+
             {/* New Sections */}
             <div className="mt-16 max-w-[1400px] mx-auto space-y-20 bg-white p-6 md:p-12 text-gray-800 ">
 
@@ -585,45 +560,7 @@ export default function PaymentCalculator() {
                         Frequently Asked Questions About the Car Payment Calculator in Ontario
                     </h2>
                     <div className="space-y-2">
-                        {faqs.map((faq, idx) => {
-                            const isOpen = openFaq === idx;
-                            return (
-                                <div
-                                    key={idx}
-                                    className={`rounded-lg transition-colors border ${isOpen
-                                        ? "bg-[#F0F4FA] border-sky-100"
-                                        : " border-gray-200/60"
-                                        }`}
-                                >
-                                    <button
-                                        onClick={() => setOpenFaq(idx)}
-                                        className="w-full flex cursor-pointer items-center justify-between p-5 text-left text-base md:text-2xl text-slate-800"
-                                    >
-                                        <span className={isOpen ? "text-blue-600" : "text-slate-800"}>
-                                            {faq.q}
-                                        </span>
-                                        {!isOpen && (
-                                            <Plus className="w-5 h-5 bg-gray-300 p-1 rounded-full text-white text-2xl flex-shrink-0 ml-4" />
-                                        )}
-                                    </button>
-                                    <AnimatePresence>
-                                        {isOpen && (
-                                            <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="overflow-hidden"
-                                            >
-                                                <div className="px-5 pb-5 text-base  md:text-lg text-black leading-relaxed">
-                                                    {faq.a}
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            );
-                        })}
+                        <FaqAccordion faqs={faqs} />
                     </div>
                 </div>
             </section>
