@@ -25,9 +25,11 @@ const Header = () => {
   const { openWishlistDrawer } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
 
-  // Check if current page is a VDP (matches /inventory/<slug>)
-  const isVdpPage = /^\/inventory\/[^\/]+$/.test(pathname || "");
-  const positionClass = isVdpPage ? "relative" : "fixed top-0";
+  // Matches routes starting with /inventory/ followed by digits (e.g., /inventory/2564 or /inventory/2564-honda-civic)
+  const hasVehicleId = /^\/inventory\/\d+(-[^\/]+)?$/.test(pathname || "");
+  
+  // Relative only if vehicle ID exists; fixed for all other paths (including sub-routes like /inventory/search)
+  const positionClass = hasVehicleId ? "relative" : "fixed top-0";
 
   // Close mobile menu whenever the route changes
   useEffect(() => {
