@@ -46,14 +46,20 @@ export default function VehicleDetailsTabsNav() {
   }, []);
 
   const handleTabClick = (tabId: string, targetId: string) => {
-  setActiveTab(tabId);
+    setActiveTab(tabId);
 
-  const el = document.getElementById(targetId);
-  if (!el) return;
+    const el = document.getElementById(targetId);
+    const navEl = navRef.current;
+    if (!el || !navEl) return;
 
-  // Modern browser-native smooth scroll using CSS scroll-margin-top
-  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-};
+    // Total space the fixed header + sticky nav occupy at the top of the viewport
+    const navHeight = navEl.getBoundingClientRect().height;
+    const offset = headerHeight + navHeight + EXTRA_GAP;
+
+    // Apply scroll-margin-top right on the target so scrollIntoView lands correctly
+    el.style.scrollMarginTop = `${offset}px`;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   if (!showTabs) return null;
 
@@ -70,7 +76,7 @@ export default function VehicleDetailsTabsNav() {
               key={tab.id}
               type="button"
               onClick={() => handleTabClick(tab.id, tab.target)}
-              className={`px-8 py-3 text-[16px] font-semibold rounded-full cursor-pointer transition-all duration-200 whitespace-nowrap ${
+              className={`px-4 lg:px-8 py-3 text-[16px] font-semibold rounded-full cursor-pointer transition-all duration-200 whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-[#eaf4ff] text-[#0d2238] shadow-sm'
                   : 'bg-transparent text-gray-700 hover:text-gray-900 hover:bg-gray-50'
