@@ -38,29 +38,29 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
   // gallery) is scrolled out of view / hidden under the header. Only then do
   // we show the alternative save button on this card.
   useEffect(() => {
-  const topWishlistEl = document.getElementById("vdp-top-wishlist");
-  if (!topWishlistEl) return;
+    const topWishlistEl = document.getElementById("vdp-top-wishlist");
+    if (!topWishlistEl) return;
 
-  // Measure the actual fixed header so this works for both mobile (mt-36)
-  // and desktop (lg:mt-24) without hardcoding pixel values.
-  const headerEl = document.querySelector("header"); // adjust selector/id to match your Header component
-  const headerHeight = headerEl?.getBoundingClientRect().height ?? 0;
+    // Measure the actual fixed header so this works for both mobile (mt-36)
+    // and desktop (lg:mt-24) without hardcoding pixel values.
+    const headerEl = document.querySelector("header"); // adjust selector/id to match your Header component
+    const headerHeight = headerEl?.getBoundingClientRect().height ?? 0;
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      setShowCardWishlist(!entry.isIntersecting);
-    },
-    {
-      root: null,
-      threshold: 0,
-      rootMargin: `-${headerHeight}px 0px 0px 0px`,
-    }
-  );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowCardWishlist(!entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0,
+        rootMargin: `-${headerHeight}px 0px 0px 0px`,
+      }
+    );
 
-  observer.observe(topWishlistEl);
+    observer.observe(topWishlistEl);
 
-  return () => observer.disconnect();
-}, []);
+    return () => observer.disconnect();
+  }, []);
   // 2. Tooltip outside click handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -80,8 +80,8 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
 
   // Format Odometer
   const formattedOdometer = vehicle?.odometer
-    ? `${Number(vehicle?.odometer).toLocaleString("en-US")} miles`
-    : "96,773 miles";
+    ? `${Number(vehicle?.odometer).toLocaleString("en-US")} KM`
+    : "96,773 KM";
 
   // Subtitle Details Line
   const subtitleDetails = [
@@ -220,10 +220,10 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
           </button>
         </div>
         {showCardWishlist && (
-            <div className="flex justify-center bg-gray-200">
-              <VDPWishlistButton vehicle={vehicle} showLabel />
-            </div>
-          )}
+          <div className="flex justify-center bg-gray-200">
+            <VDPWishlistButton vehicle={vehicle} showLabel />
+          </div>
+        )}
       </div>
 
       {/* Dynamic Sticky Mobile Action Bar */}
@@ -261,22 +261,59 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
   const inventoryId = vehicle?.id || vehicle?.inventory_id;
 
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [iframeHeight, setIframeHeight] = useState(870);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
-    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const body = document.body;
+    const html = document.documentElement;
+
+    const originalBodyOverflow = body.style.overflow;
+    const originalBodyTouchAction = body.style.touchAction;
+    const originalHtmlOverflow = html.style.overflow;
+
+    body.style.overflow = "hidden";
+    body.style.touchAction = "none";
+    html.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = "";
-      document.body.style.touchAction = "";
+      body.style.overflow = originalBodyOverflow;
+      body.style.touchAction = originalBodyTouchAction;
+      html.style.overflow = originalHtmlOverflow;
     };
   }, [isOpen]);
+  // Listen for iframe height
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      // Only accept messages from the iframe source
+      if (event.origin !== "https://gediroute.zopsoftware.com") {
+        return;
+      }
+
+      const data = event.data;
+
+      if (
+        data &&
+        typeof data === "object" &&
+        data.type === "css" &&
+        data.element_id === "contact_us" &&
+        typeof data.value === "number"
+      ) {
+        setIframeHeight(Math.ceil(data.value));
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
 
   if (!isOpen || !mounted) return null;
 
@@ -289,18 +326,36 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
           className="absolute right-5 top-5 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors z-10"
           type="button"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
-        <h2 className="text-[24px] font-bold text-gray-900 mb-5 text-center">Request Information</h2>
-        <div className="w-full">
+        <h2 className="text-[24px] font-bold text-gray-900 mb-5 text-center">
+          Request Information
+        </h2>
+
+        <div className="w-full overflow-hidden">
           <iframe
+            id="contact_us"
             src={`${SITE_CONFIG?.urls.vehiclePageContactUsBaseUrl}?inventory_id=${inventoryId}`}
-            className="w-full rounded-2xl h-[600px] border-0"
+            className="w-full rounded-2xl border-0 block transition-[height] duration-300 ease-out"
             title="Contact Us"
             allow="payment"
+            scrolling="no"
+            style={{
+              height: `${iframeHeight}px`,
+            }}
           />
         </div>
       </div>

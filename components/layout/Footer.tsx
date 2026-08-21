@@ -135,7 +135,7 @@ const Footer = () => {
               {col.sections.map((sec, secIdx) => (
                 <div key={secIdx}>
                   <h3 className="text-xl font-bold text-white mb-3 tracking-wide">{sec.title}</h3>
-                  <ul className="space-y-2.5 text-[13px]">
+                  <ul className="space-y-3 text-[15px] font-sans">
                     {sec.links.map((link, linkIdx) => (
                       <li key={linkIdx}>
                         <Link
@@ -189,18 +189,18 @@ const Footer = () => {
         </div>
 
         {/* Copyright and Legal Terms */}
-        <div className="pt-6 space-y-3 text-[12px] text-gray-400">
+        <div className="pt-6 space-y-3 text-[15px] text-white">
           <div className="flex flex-col items-start justify-between gap-1">
             <p>Copyright © {new Date().getFullYear()} {safeD.dealership_name}, LLC. All Rights Reserved.</p>
             <div className="flex gap-1">
               <span>Powered by</span>
               <a href="https://www.zopdealer.com/" target="_blank" rel="noopener noreferrer">
-                <Image src={zlogo} alt="Zop Dealer" width={18} height={18} className="w-auto h-3.5 object-contain brightness-200" />
+                <Image src={zlogo} alt="Zop Dealer" width={18} height={18} className="w-auto h-3.5 mt-1 object-contain brightness-200" />
               </a>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-2 text-gray-300 font-medium">
+          <div className="flex flex-wrap items-center gap-x-2 text-white font-medium text-[15px]">
             <Link href="/privacy-policy" className="hover:underline hover:text-white">Privacy Policy</Link>
             <span className="text-gray-600">|</span>
             <Link href="/terms-conditions/" className="hover:underline hover:text-white">Terms & Conditions</Link>

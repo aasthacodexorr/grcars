@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
+@theme {
+  --font-sans: "Inter", sans-serif;
+}
+
 /* ════════════════════════════════════════════════════════════════
    CSS Variables for Global Colors
    These map to lib/colors.ts for centralized color management
