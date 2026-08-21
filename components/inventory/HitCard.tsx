@@ -164,7 +164,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
         </>
       ) : (
         /* Call for Price */
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-start gap-2">
           <svg
             className="w-4 h-4"
             fill="none"
