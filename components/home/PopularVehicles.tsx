@@ -4,12 +4,14 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import rivian from "@/assets/cars/rivian.webp";
+import nissan from "@/assets/cars/nissan-car.webp";
 import tesla from "@/assets/cars/tesla.webp";
-import equinox from "@/assets/cars/equinox.webp";
-import rogue from "@/assets/cars/rogue.webp";
-import escape from "@/assets/cars/escape.webp";
-import explorer from "@/assets/cars/explorer.webp";
+import camry from "@/assets/cars/toyota-camry.webp";
+import jeep from "@/assets/cars/jeep-grand-cherokee.webp";
+import hondaCivic from "@/assets/cars/honda-civic.webp";
+import nissanAltima from "@/assets/cars/nissan-altima.webp";
+import ford from "@/assets/cars/ford-f150.webp";
+import hondaAccord from "@/assets/cars/honda-accord.webp";
 import { getInventoryUrlByModel } from "@/lib/inventoryUrls";
 
 interface ModelCard {
@@ -21,13 +23,13 @@ interface ModelCard {
 
 const MODELS: ModelCard[] = [
   { make: "Tesla", model: "Model 3", image: tesla?.src, href: getInventoryUrlByModel("Tesla", "Model 3") },
-  { make: "Nissan", model: "Rogue", image: rivian?.src, href: getInventoryUrlByModel("Nissan", "Rogue") },
-  { make: "Toyota", model: "Camry", image: equinox?.src, href: getInventoryUrlByModel("Toyota", "Camry") },
-  { make: "Honda", model: "Civic", image: escape?.src, href: getInventoryUrlByModel("Honda", "Civic") },
-  { make: "Nissan", model: "Altima", image: rivian?.src, href: getInventoryUrlByModel("Nissan", "Altima") },
-  { make: "Jeep", model: "Grand Cherokee", image: rogue?.src, href: getInventoryUrlByModel("Jeep", "Grand Cherokee") },
-  { make: "Ford", model: "F-150 SuperCrew", image: escape?.src, href: getInventoryUrlByModel("Ford", "F-150 SuperCrew") },
-  { make: "Honda", model: "Accord", image: explorer?.src, href: getInventoryUrlByModel("Honda", "Accord") },
+  { make: "Nissan", model: "Rogue", image: nissan?.src, href: getInventoryUrlByModel("Nissan", "Rogue") },
+  { make: "Toyota", model: "Camry", image: camry?.src, href: getInventoryUrlByModel("Toyota", "Camry") },
+  { make: "Honda", model: "Civic", image: hondaCivic?.src, href: getInventoryUrlByModel("Honda", "Civic") },
+  { make: "Nissan", model: "Altima", image: nissanAltima?.src, href: getInventoryUrlByModel("Nissan", "Altima") },
+  { make: "Jeep", model: "Grand Cherokee", image: jeep?.src, href: getInventoryUrlByModel("Jeep", "Grand Cherokee") },
+  { make: "Ford", model: "F-150 SuperCrew", image: ford?.src, href: getInventoryUrlByModel("Ford", "F-150 SuperCrew") },
+  { make: "Honda", model: "Accord", image: hondaAccord?.src, href: getInventoryUrlByModel("Honda", "Accord") },
 ];
 
 // Number of cards shown per "page" on mobile — drives the dot pagination
@@ -160,7 +162,7 @@ const PopularModels = () => {
               </div>
 
               {/* Vehicle Image */}
-              <div className="relative w-full h-20 md:h-32 flex items-center justify-center mt-auto">
+              <div className="relative w-full flex items-center justify-center mt-auto">
                 <Image
                   src={item?.image}
                   alt={`${item.make} ${item.model}`}
