@@ -80,8 +80,8 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
 
   // Format Odometer
   const formattedOdometer = vehicle?.odometer
-    ? `${Number(vehicle?.odometer).toLocaleString("en-US")} miles`
-    : "96,773 miles";
+    ? `${Number(vehicle?.odometer).toLocaleString("en-US")} KM`
+    : "96,773 KM";
 
   // Subtitle Details Line
   const subtitleDetails = [
