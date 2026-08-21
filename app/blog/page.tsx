@@ -177,14 +177,14 @@ export default function BlogPage() {
             </div>
 
             {/* Older Entries Pagination Link */}
-            <div className="pt-6">
+            {/* <div className="pt-6">
               <Link
                 href="/blog/page/2"
                 className="text-xs font-semibold text-blue-500 hover:text-blue-700 hover:underline"
               >
                 « Older Entries
               </Link>
-            </div>
+            </div> */}
           </section>
 
           {/* Sidebar Area (1 Column) */}
