@@ -82,4 +82,5 @@ declare module 'lucide-react' {
   export const Share:Icon;
   export const ArrowDownCircle:Icon;
   export const Grid:Icon;
+  export const LayoutGrid:Icon;
 }
