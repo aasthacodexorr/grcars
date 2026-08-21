@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, LayoutGrid } from "lucide-react";
+import { useState, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -30,16 +30,12 @@ type ImageGalleryProps = {
   centered?: boolean;
 };
 
-// How many thumbnails show in the strip beneath the main image.
-// If there are more photos than this, the last visible thumb becomes
-// a "+N photos" overlay that opens the full lightbox.
-const THUMBS_VISIBLE = 4;
-
 export const ImageGallery = ({ images, title, isSold = false, centered }: ImageGalleryProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
   const lightboxRef = useRef<LightGalleryInstance | null>(null);
+  const thumbContainerRef = useRef<HTMLDivElement | null>(null);
 
   const goTo = (index: number) => {
     if (images.length === 0) return;
@@ -56,6 +52,15 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
     }
   };
 
+  const scrollThumbs = (dir: "left" | "right") => {
+    if (!thumbContainerRef.current) return;
+    const containerWidth = thumbContainerRef.current.clientWidth;
+    thumbContainerRef.current.scrollBy({
+      left: dir === "left" ? -containerWidth : containerWidth,
+      behavior: "smooth",
+    });
+  };
+
   if (!images || images.length === 0) return null;
 
   const dynamicEl = images.map((img) => ({
@@ -69,9 +74,6 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
     center: { x: 0, opacity: 1 },
     exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
   };
-
-  const extraCount = images.length - THUMBS_VISIBLE;
-  const visibleThumbs = images.slice(0, THUMBS_VISIBLE);
 
   return (
     <div className={`flex flex-col w-full max-w-full gap-2 ${centered ? "items-center" : "items-start"}`}>
@@ -154,69 +156,55 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
             </motion.div>
           </AnimatePresence>
         </div>
-
-        {/* {images.length > 1 && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              goTo(activeIndex - 1);
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer bg-white/60 hover:bg-white rounded-full p-1 shadow-xl z-10"
-          >
-            <ChevronLeft className="w-9 h-9 text-gray-500/60" strokeWidth={3} />
-          </button>
-        )}
-
-        {images.length > 1 && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              goTo(activeIndex + 1);
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer bg-white/60 hover:bg-white rounded-full p-1 shadow-xl z-0"
-          >
-            <ChevronRight className="w-9 h-9 text-gray-500/60" strokeWidth={3} />
-          </button>
-        )} */}
       </div>
 
-      {/* Thumbnail strip — same width as main image, always fully visible (no scroll, no cropping) */}
+      {/* Thumbnail strip — strictly displays 4 items at once */}
       {images.length > 1 ? (
-        <div
-          className="grid w-full gap-3"
-          style={{ gridTemplateColumns: `repeat(${THUMBS_VISIBLE}, minmax(0, 1fr))` }}
-        >
-          {visibleThumbs.map((img, idx) => {
-            const isLastVisible = idx === THUMBS_VISIBLE - 1;
-            const showOverlay = isLastVisible && extraCount > 0;
+        <div className="relative w-full flex items-center">
+          {images.length > 4 && (
+            <button
+              type="button"
+              onClick={() => scrollThumbs("left")}
+              className="absolute -left-3 z-10 p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md transition-all cursor-pointer border border-gray-200"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+          )}
 
-            return (
+          <div
+            ref={thumbContainerRef}
+            className="flex w-full gap-3 overflow-x-auto scrollbar-none scroll-smooth snap-x snap-mandatory py-1"
+          >
+            {images.map((img, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => lightboxRef.current?.openGallery(idx)}
-                className={`relative aspect-[4/3] w-full rounded-xl cursor-pointer overflow-hidden border-none transition-all duration-200`}
+                className={`relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200`}
               >
                 <Image
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
                   fill
-                  className=""
+                  className="object-cover"
                 />
-                {showOverlay && (
-                  <div className="absolute  right-0 bottom-0 w-full bg-black/55 flex py-2 items-center justify-center gap-1 text-white">
-                    <LayoutGrid className="w-4 h-4" />
-                    <span className="text-sm font-semibold">{images.length} photos</span>
-                  </div>
-                )}
               </button>
-            );
-          })}
+            ))}
+          </div>
+
+          {images.length > 4 && (
+            <button
+              type="button"
+              onClick={() => scrollThumbs("right")}
+              className="absolute -right-3 z-10 p-1.5 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md transition-all cursor-pointer border border-gray-200"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       ) : (
-
         <div className="hidden md:block w-[165px] 2xl:w-[200px]">
           <Image
             src={images[0]}
@@ -226,8 +214,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
             className="w-full object-cover rounded-lg cursor-pointer"
           />
         </div>
-      )
-      }
+      )}
     </div>
   );
 };
