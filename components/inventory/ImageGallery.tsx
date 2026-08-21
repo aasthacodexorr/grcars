@@ -149,7 +149,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
                 alt={`${title} - Image ${activeIndex + 1}`}
                 fill
                 priority
-                className={`object-cover ${isSold ? "grayscale opacity-90" : ""}`}
+                className={` ${isSold ? "grayscale opacity-90 object-contain" : "object-cover"}`}
               />
             </motion.div>
           </AnimatePresence>

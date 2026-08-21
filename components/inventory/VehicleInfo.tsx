@@ -92,9 +92,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
     .join(" · ");
 
   // Prices calculation
-  const currentPrice = vehicle?.selling_price || vehicle?.price || 15590;
+  const currentPrice = vehicle?.selling_price || vehicle?.price || 0;
   const originalPrice =
-    vehicle?.original_price || (vehicle?.selling_price ? vehicle?.price : 15990);
+    vehicle?.original_price || (vehicle?.selling_price ? vehicle?.price : 0);
   const hasPriceDrop = originalPrice && originalPrice > currentPrice;
 
   const isSold = vehicle.status && vehicle.status.toLowerCase() !== "instock";
@@ -119,85 +119,58 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
         </p>
 
         {/* Pricing & Tooltip Section */}
-        {
-          !isSold ? (
-            <div className="flex flex-col gap-2 mb-3 px-6">
-              {/* Cash Price */}
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-1.5">
-                  {/* <ArrowDownCircle className="w-5 h-5 text-[#00874e] fill-[#00874e] stroke-white shrink-0" /> */}
+        {!isSold ? (
+  <div className="flex flex-col gap-2 mb-3 px-6">
+    {Number(currentPrice) > 0 ? (
+      <>
+        
 
-                  <span className="text-lg font-semibold text-[#0d2238]">
-                    Cash Price
-                  </span>
-                </div>
-
-                <span className="text-lg font-semibold text-[#0d2238]">
-                  ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
-                </span>
-              </div>
-
-              {/* Finance Price */}
-              <div className="flex items-center justify-between w-full">
-                <span className="text-lg font-semibold text-[#0d2238]">
-                  Finance Price
-                </span>
-
-                <span className="text-lg font-semibold text-[#0d2238]">
-                  ${Number(currentPrice).toLocaleString("en-US")}
-                </span>
-              </div>
-
-              {/* Original Price + Tooltip */}
-              {/* {hasPriceDrop && (
-        <div className="flex items-center justify-end gap-2 text-sm text-slate-500">
-          <span>
-            was{" "}
-            <span className="line-through">
-              ${Number(originalPrice).toLocaleString("en-US")}
-            </span>
+        {/* Finance Price */}
+        <div className="flex items-center justify-between w-full">
+          <span className="text-lg font-semibold text-[#0d2238]">
+            Finance Price
           </span>
 
-          <div
-            ref={tooltipRef}
-            className="relative inline-flex items-center group"
-          >
-            <button
-              type="button"
-              onClick={() => setShowTooltip(!showTooltip)}
-              className="flex items-center focus:outline-none"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-4 h-4 text-gray-400 hover:text-gray-600 cursor-pointer"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 100-2 1 1 0 000 2zm1 8a1 1 0 10-2 0 1 1 0 002 0zm-1-6a1 1 0 00-1 1v3a1 1 0 102 0v-3a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-
-            <div
-              className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[220px] bg-black text-white text-xs px-3 py-2 rounded-md shadow-lg z-50 transition-all duration-200 ${
-                showTooltip
-                  ? "opacity-100 visible"
-                  : "opacity-0 invisible"
-              } md:group-hover:opacity-100 md:group-hover:visible`}
-            >
-              Listed price does not include taxes and licensing fees.
-
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] w-2.5 h-2.5 bg-black rotate-45" />
-            </div>
-          </div>
+          <span className="text-lg font-semibold text-[#0d2238]">
+            ${Number(currentPrice).toLocaleString("en-US")}
+          </span>
         </div>
-      )} */}
-            </div>
-          ) : null
-        }
+
+        {/* Cash Price */}
+        <div className="flex items-center justify-between w-full">
+          <span className="text-lg font-semibold text-[#0d2238]">
+            Cash Price
+          </span>
+
+          <span className="text-lg font-semibold text-[#0d2238]">
+            ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
+          </span>
+        </div>
+      </>
+    ) : (
+      /* Call for Price */
+      <div className="flex items-center justify-center gap-2 py-1">
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+          />
+        </svg>
+
+        <span className="text-lg font-semibold text-[#0d2238]">
+          Call for price
+        </span>
+      </div>
+    )}
+  </div>
+) : null}
 
 
         {/* Buttons Action Group */}
