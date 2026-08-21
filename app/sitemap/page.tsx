@@ -5,12 +5,6 @@ import Link from 'next/link';
 import { GetInTouch } from '@/components/common';
 import { Footer, Header } from '@/components/layout';
 import { useAppConfig } from '@/app/providers';
-import {
-  POPULAR_MAKES,
-  POPULAR_CAR_TYPES,
-  getMakeUrl,
-  getInventoryUrlByRefinement
-} from '@/lib/inventoryUrls';
 
 interface SitemapUrl {
   loc: string;
@@ -152,7 +146,7 @@ export default function SitemapPage() {
                   href="/inventory"
                   className="w-fit transition-colors hover:text-gray-600"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Inventory</h2>
+                  <h2 className="text-[20px] font-semibold text-gray-900">Search Cars</h2>
                 </Link>
 
                 <Link
@@ -163,10 +157,25 @@ export default function SitemapPage() {
                 </Link>
 
                 <Link
+                  href="https://www.grwheels.ca/"
+                  className="w-fit transition-colors hover:text-gray-600"
+                >
+                  <h2 className="text-[20px] font-semibold text-gray-900">Tire & Rims</h2>
+                </Link>
+
+                <Link
+                  href="/blog"
+                  target="_blank"
+                  className="w-fit transition-colors hover:text-gray-600"
+                >
+                  <h2 className="text-[20px] font-semibold text-gray-900">Blog</h2>
+                </Link>
+
+                <Link
                   href="/financing"
                   className="w-fit transition-colors hover:text-gray-600"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Finance</h2>
+                  <h2 className="text-[20px] font-semibold text-gray-900">Financing</h2>
                 </Link>
 
                 <Link
@@ -176,50 +185,7 @@ export default function SitemapPage() {
                   <h2 className="text-[20px] font-semibold text-gray-900">Payment Calculator</h2>
                 </Link>
 
-                <Link
-                  href="/skip-the-dealership"
-                  className="w-fit transition-colors hover:text-gray-600"
-                >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Skip the Dealership</h2>
-                </Link>
-              </div>
-            </section>
-
-            {/* Shop By Make */}
-            <section>
-              <h2 className="text-[20px] font-semibold text-gray-900 mb-6">
-                Shop by Make
-              </h2>
-
-              <div className="flex flex-col space-y-3">
-                {POPULAR_MAKES.map((item) => (
-                  <Link
-                    key={item.make}
-                    href={getMakeUrl(item.make, appConfig)}
-                    className="text-lg text-brand-green hover:text-green-800 transition-colors w-fit"
-                  >
-                    <h3 className="font-normal text-lg">{item.label}</h3>
-                  </Link>
-                ))}
-              </div>
-            </section>
-
-            {/* Shop By Car Type */}
-            <section>
-              <h2 className=" text-[20px] font-semibold text-gray-900 mb-6">
-                Shop by Car Type
-              </h2>
-
-              <div className="flex flex-col space-y-3">
-                {POPULAR_CAR_TYPES.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={getInventoryUrlByRefinement('body_type', item.bodyType, appConfig)}
-                    className="text-lg text-brand-green hover:text-green-800 transition-colors w-fit"
-                  >
-                    <h3 className="font-normal text-lg">{item.label}</h3>
-                  </Link>
-                ))}
+                
               </div>
             </section>
 
@@ -270,8 +236,6 @@ export default function SitemapPage() {
           </div>
         </div>
       </main>
-
-      <GetInTouch />
       <Footer />
     </>
   );
