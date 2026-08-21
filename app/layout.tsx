@@ -6,6 +6,12 @@ import { getAppConfig, getSafeDealershipConfig, getSafeSchemaOrgConfig } from "@
 import { generateMetadata as generateMetadataHelper } from "@/lib/metadataHelper";
 import { CSS_VARIABLES } from "@/lib/colors";
 import { headers } from "next/headers";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const appConfig = await getAppConfig();
@@ -62,7 +68,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className="h-full antialiased"
+      className={`h-full antialiased ${inter.variable}`}
       style={CSS_VARIABLES as React.CSSProperties}
     >
       <head>
