@@ -4,11 +4,39 @@ import { Footer, Header } from '@/components/layout';
 import supportImg from "@/assets/cars/supportContact.jpg"
 import { useAppConfig } from '../providers';
 import { getConstants } from '@/constants';
+import { useEffect, useState } from 'react';
 
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
-    
+    const [iframeHeight, setIframeHeight] = useState(640);
+
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            if (event.origin !== "https://gediroute.zopsoftware.com") {
+                return;
+            }
+
+            const data = event.data;
+
+            if (
+                data &&
+                typeof data === "object" &&
+                data.type === "css" &&
+                data.element_id === "contact_us" &&
+                typeof data.value === "number"
+            ) {
+                setIframeHeight(Math.ceil(data.value));
+            }
+        };
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, []);
+
     const locations = [
         {
             id: 'Brampton',
@@ -144,13 +172,17 @@ export default function ContactUs() {
                             <p className="text-xl text-black mb-6">
                                 Submit a question through our contact form below and we’ll get back to you as soon as possible.
                             </p>
-                            <div className="w-full min-h-[640px] bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                            <div
+                                className="w-full bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm"
+                                style={{ height: `${iframeHeight}px` }}
+                            >
                                 <iframe
-                                    id="finance_form"
+                                    id="contact_us"
                                     src={`${SITE_CONFIG?.urls.contactUsBaseUrl}`}
                                     name="iframe_a"
-                                    className="w-full min-h-[640px] border-none"
+                                    className="w-full h-full border-none block"
                                     title="Contact Form"
+                                    scrolling="no"
                                 />
                             </div>
                         </div>
