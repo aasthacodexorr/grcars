@@ -120,7 +120,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
         ]}
       />
 
-      {/* Main image — fixed aspect ratio so height/width is predictable and never overflows the viewport */}
+      {/* Main image */}
       <div
         onClick={() => lightboxRef.current?.openGallery(activeIndex)}
         className="relative w-full aspect-[16/9] sm:aspect-[16/8] rounded-2xl overflow-hidden bg-gray-100 shadow-sm cursor-zoom-in"
@@ -158,7 +158,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
         </div>
       </div>
 
-      {/* Thumbnail strip — strictly displays 4 items at once */}
+      {/* Thumbnail strip */}
       {images.length > 1 ? (
         <div className="relative w-full flex items-center">
           {images.length > 4 && (
@@ -181,13 +181,13 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
                 key={idx}
                 type="button"
                 onClick={() => lightboxRef.current?.openGallery(idx)}
-                className={`relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] border border-brand-green shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200`}
+                className="relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200 bg-gray-100 p-1 flex items-center justify-center"
               >
                 <Image
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
                   fill
-                  className="object-cover"
+                  className="object-contai rounded-xl"
                 />
               </button>
             ))}
@@ -211,7 +211,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
             alt={`Thumbnail`}
             width={168}
             height={136}
-            className="w-full object-cover rounded-lg cursor-pointer"
+            className="w-full object-contain rounded-lg cursor-pointer bg-gray-100 p-1"
           />
         </div>
       )}

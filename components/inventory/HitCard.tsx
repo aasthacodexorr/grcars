@@ -8,7 +8,6 @@ import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
 import { MessageModal } from "./VehicleInfo";
 
-
 /* =========================
    HitCard Component (Inventory)
 ========================= */
@@ -70,15 +69,16 @@ export const HitCard = ({ hit }: { hit: any }) => {
         >
           {/* Vehicle image with heart overlay */}
           <div className="relative overflow-hidden rounded-t-[19px] p-3">
-            <Image
-              src={imageSrc}
-              alt={title}
-              width={600}
-              height={400}
-              className={`w-full object-cover h-[240px] min-h-[240px] 2xl:h-[260px] 2xl:min-h-[260px] rounded-xl transition-transform duration-500 ${
-                isSold || isDealPending ? "grayscale opacity-80" : ""
-              }`}
-            />
+            <div className="w-full aspect-[16/10] rounded-xl relative flex items-center justify-center overflow-hidde">
+              <Image
+                src={imageSrc}
+                alt={title}
+                fill
+                className={`w-full h-full object-contai rounded-xl transition-transform duration-500 ${
+                  isSold || isDealPending ? "grayscale opacity-80" : ""
+                }`}
+              />
+            </div>
 
             {/* SOLD Ribbon */}
             {isSold && (
@@ -87,9 +87,9 @@ export const HitCard = ({ hit }: { hit: any }) => {
               </div>
             )}
 
-            {/* DEAL PENDING Ribbon */}
+            {/* DEAL PENDING Ribbon (Centered) */}
             {isDealPending && (
-              <div className="absolute uppercase top-4 left-36 text-white text-[11px] font-semibold shadow-lg text-center py-[6px] px-3 rounded-md z-10 bg-brand-green">
+              <div className="absolute uppercase top-5 left-1/2 -translate-x-1/2 text-white text-[11px] font-semibold shadow-lg text-center py-[6px] px-4 rounded-md z-10 bg-brand-green whitespace-nowrap">
                 Deal Pending
               </div>
             )}
@@ -120,7 +120,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
                     });
                   }
                 }}
-                className="absolute top-[12px] right-[12px] p-1 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
+                className="absolute top-[20px] right-[20px] p-1 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
                 aria-label={isInWishlist(hit.inventory_id) ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
@@ -143,53 +143,50 @@ export const HitCard = ({ hit }: { hit: any }) => {
             <hr className="border-gray-200 mt-[4px]" />
 
             {/* Price and mileage */}
-         <div>
-  {!isSold ? (
-    <div className="text-[17px] w-full font-semibold text-foreground leading-6 mt-2 py-[3px] flex flex-col gap-1">
-      {Number(price) > 0 ? (
-        <>
-        {/* Finance Price */}
-         <div className="flex justify-between items-center w-full">
-            <span>Finance Price</span>
-            <span>${Number(price).toLocaleString()}.00</span>
-          </div>
-          {/* Cash Price */}
-          <div className="flex justify-between items-center w-full">
-            <span>Cash Price</span>
-            <span>${(Number(price) + 2000).toLocaleString()}.00</span>
-          </div>
+            <div>
+              {!isSold ? (
+                <div className="text-[17px] w-full font-semibold text-foreground leading-6 mt-2 py-[3px] flex flex-col gap-1">
+                  {Number(price) > 0 ? (
+                    <>
+                      {/* Finance Price */}
+                      <div className="flex justify-between items-center w-full">
+                        <span>Finance Price</span>
+                        <span>${Number(price).toLocaleString()}.00</span>
+                      </div>
+                      {/* Cash Price */}
+                      <div className="flex justify-between items-center w-full">
+                        <span>Cash Price</span>
+                        <span>${(Number(price) + 2000).toLocaleString()}.00</span>
+                      </div>
+                    </>
+                  ) : (
+                    /* Call for Price */
+                    <div className="flex items-center justify-start gap-2">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        />
+                      </svg>
 
-          
-         
-        </>
-      ) : (
-        /* Call for Price */
-        <div className="flex items-center justify-start gap-2">
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-            />
-          </svg>
+                      <span>Call for price</span>
+                    </div>
+                  )}
+                </div>
+              ) : null}
 
-          <span>Call for price</span>
-        </div>
-      )}
-    </div>
-  ) : null}
-
-  <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[10px] flex-1">
-    {km.toLocaleString()} KM
-    {drivetrain && drivetrain !== "N/A" && <> &bull; {drivetrain}</>}
-  </p>
-</div>
+              <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[10px] flex-1">
+                {km.toLocaleString()} KM
+                {drivetrain && drivetrain !== "N/A" && <> &bull; {drivetrain}</>}
+              </p>
+            </div>
 
             <hr className="border-gray-200 my-2" />
 
