@@ -181,7 +181,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
                 key={idx}
                 type="button"
                 onClick={() => lightboxRef.current?.openGallery(idx)}
-                className={`relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200`}
+                className={`relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] border border-brand-green shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200`}
               >
                 <Image
                   src={img}
