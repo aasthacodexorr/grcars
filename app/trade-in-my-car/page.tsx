@@ -14,6 +14,7 @@ import { useAppConfig } from "../providers";
 import { getConstants } from "@/constants";
 import Link from "next/link";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import CarfaxTradeIn from "@/components/trade-in/CarfaxTradeIn";
 
 interface Step {
   icon: ReactNode;  
@@ -274,80 +275,15 @@ const TradeIn = () => {
           </div>
 
           <div className="justify-self-center lg:justify-start w-full max-w-[320px]">
-            <div className="bg-white text-slate-900 rounded-lg p-8 shadow-2xl min-h-80 text-center border border-gray-100">
-              <div className="flex justify-center mb-4">
-                <div className="flex items-center">
-                  {["C", "A", "R", "F", "A", "X"].map((letter, index) => (
-                    <span
-                      key={index}
-                      className="bg-black text-white font-extrabold text-[15px] leading-none w-[20px] h-[20px] flex items-center justify-center mr-[2px]"
-                    >
-                      {letter}
-                    </span>
-                  ))}
-
-                  <span className="text-red-900 text-[20px] font-bold ml-[2px] leading-none">
-                    🍁
-                  </span>
-                </div>
-              </div>
-              <h3 className="text-3xl font-bold mb-6 text-slate-800 leading-snug">
-                Find out what your trade-in is worth.
-              </h3>
-              <button 
-                onClick={() => setIsModalOpen(true)}
-                className="w-full bg-[#1877F2] hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-full text-base transition-colors shadow"
-              >
-                Get Started
-              </button>
-            </div>
+              <CarfaxTradeIn />
           </div>
         </div>
       </section>
 
+     
+
       {/* CARFAX / Trade-in Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Dark Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            />
-
-            {/* Modal Box */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full max-w-xl bg-white rounded-xl shadow-2xl overflow-hidden z-10 min-h-[500px] flex flex-col"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 z-20 text-gray-500 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100 transition-colors"
-                aria-label="Close modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              {/* Iframe or Embedded Form Container */}
-              <div className="w-full h-full flex-1">
-                <iframe
-                  src={SITE_CONFIG?.urls?.tradeFormByVin}
-                  title="Trade-in Estimator Widget"
-                  className="w-full h-full min-h-[500px] border-none"
-                  allow="geolocation"
-                />
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+       
 
       {/* 2. Sub-Hero Announcement Bar */}
       <section className="bg-black text-white text-center py-12 px-4 lg:px-72">
