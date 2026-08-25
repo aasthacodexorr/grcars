@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Footer, Header } from '@/components/layout';
 import aboutHeroBg from "@/assets/pages/abt.png";
 import Image from 'next/image';
+
 export default function LowestPriceGuarantee() {
     const criteriaList = [
         'The lower-priced vehicle must be listed online and currently available for purchase.',
@@ -22,35 +23,35 @@ export default function LowestPriceGuarantee() {
     ];
 
     return (
-        <div className="min-h-screen text-white font-sans flex flex-col justify-between">
+        <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans text-neutral-900 overflow-x-hidden">
             {/* Header */}
             <Header />
 
             <main className="flex-1 w-full pt-36 md:pt-20">
                 {/* Hero Section */}
-                <section className="relative w-full h-[220px] sm:h-[280px] md:h-[220px] flex items-center overflow-hidden">
+                <section className="relative w-full h-[220px] sm:h-[280px] md:h-[220px] flex items-center overflow-hidden bg-black/70">
                     {/* Background Image with Dark Overlay */}
-                    <div className="absolute inset-0 z-0 bg-black/60">
+                    <div className="absolute inset-0 z-0">
                         <Image
                             src={aboutHeroBg}
-                            alt={`Showroom`}
+                            alt="Showroom"
                             fill
                             className="object-cover object-center opacity-40"
                             priority
                         />
                     </div>
 
-                    {/* Banner Content */}
-                    <div className="relative z-10 w-full max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
-                        <h1 className="inline-block text-3xl sm:text-4xl tracking-tight">
+                    {/* Banner Content - Aligned with About page */}
+                    <div className="relative z-10 w-full max-w-[1240px] mx-auto px-6 md:px-0 text-white">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
                             Lowest Price Guaranteed on Used Cars
                         </h1>
                     </div>
                 </section>
 
-                {/* Content Section */}
-                <div className="bg-white text-black py-12 sm:py-14">
-                    <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-sm sm:text-base leading-relaxed">
+                {/* Content Section - Aligned with About page */}
+                <section className="py-16 md:py-12 px-6 md:px-0 max-w-[1240px] mx-auto text-black">
+                    <div className="space-y-6 text-sm sm:text-base leading-relaxed">
                         <p>
                             At GR Cars, where your satisfaction is our priority. We understand that finding the perfect vehicle at the right price is crucial, which is why we offer the lowest prices in GTA.
                         </p>
@@ -70,7 +71,7 @@ export default function LowestPriceGuarantee() {
                             Kindly be aware that GR Car’s Lowest Price Guarantee is contingent upon the dealer’s discretion in evaluating the suitability of the vehicle for price matching. The outlined guidelines serve as the criteria used to assess the compatibility of other vehicles for this purpose.
                         </p>
                     </div>
-                </div>
+                </section>
             </main>
             <Footer />
         </div>
