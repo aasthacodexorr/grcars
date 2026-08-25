@@ -37,7 +37,7 @@ const About = () => {
         {/* =========================================
             1. HERO SECTION WITH IMAGE OVERLAY
            ========================================= */}
-        <section className="relative w-full h-[220px] sm:h-[280px] md:h-[340px] flex items-center overflow-hidden bg-black/70">
+        <section className="relative w-full h-[220px] sm:h-[280px] md:h-[220px] flex items-center overflow-hidden bg-black/70">
           {/* Background Image with Dark Overlay */}
           <div className="absolute inset-0 z-0">
             <Image
@@ -50,11 +50,11 @@ const About = () => {
           </div>
 
           {/* Banner Content */}
-          <div className="relative z-10 max-w-[1240px] text-white px-6 md:px-12 lg:px-52">
+          <div className="relative z-10 w-full max-w-[1240px] mx-auto px-4 md:px-0 text-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
               About {dealershipName}
             </h1>
-            <p className="mt-3 text-sm sm:text-base md:text-lg font-light text-neutral-200 max-w-2xl mx-auto">
+            <p className="mt-3 text-sm sm:text-base md:text-lg font-light text-neutral-200 max-w-2xl">
               A fast and convenient way to research and find a vehicle that is right for you.
             </p>
           </div>
