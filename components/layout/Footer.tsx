@@ -206,7 +206,8 @@ const Footer = () => {
             <Link href="/terms-conditions/" className="hover:underline hover:text-white">Terms & Conditions</Link>
             <span className="text-gray-600">|</span>
             <Link target="_blank" href="/sitemap" className="hover:underline hover:text-white">Site Map</Link>
-
+            <span className="text-gray-600">|</span>
+            <Link target="_blank" href="/lowest-price-guaranteed" className="hover:underline hover:text-white">Lowest Price Guaranteed</Link>
           </div>
         </div>
 
