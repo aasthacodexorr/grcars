@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import zlogo from "@/assets/brand/zlogo.png";
 import { useAppConfig } from "@/app/providers";
 import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
-import logo from "@/assets/brand/logo_black.png";
+import logo from "@/assets/brand/logo_white.png";
 import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
 
