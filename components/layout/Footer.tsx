@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import zlogo from "@/assets/brand/zlogo.png";
 import { useAppConfig } from "@/app/providers";
 import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
-import logo from "@/assets/pages/grcarslogofooter.png";
+import logo from "@/assets/brand/logo_black.png";
 import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
 
@@ -122,7 +122,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block">
               {(
-                <div className=" rounded-full -mt-4 flex items-center justify-center shadow-md">
+                <div className=" rounded-full -mt-4 flex items-center justify-center -ml-4">
                   <img src={logo?.src} />
                 </div>
               )}
