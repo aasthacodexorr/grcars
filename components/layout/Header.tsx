@@ -168,7 +168,7 @@ const Header = () => {
 
         {/* Green action bar: call, directions, menu toggle */}
         <div className={`text-white flex items-center justify-between py-2 relative border-t border-b border-neutral-mediumGray`}>
-          <div className="flex items-center gap-5 px-3 top-0">
+          <div className="flex items-center gap-5 px-8 top-0">
 
             {/* Call */}
             <a
