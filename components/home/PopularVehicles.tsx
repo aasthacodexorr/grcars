@@ -168,7 +168,7 @@ const PopularModels = () => {
                   alt={`${item.make} ${item.model}`}
                   width={200}
                   height={120}
-                  className="object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
+                  className="object-contain scale-125 translate-y-2 drop-shadow-sm group-hover:scale-[1.2] transition-transform duration-300"
                 />
               </div>
             </Link>
