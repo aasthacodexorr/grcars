@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import { safeParseVehicleJson } from '@/utils/vehicleSpecs';
 
@@ -13,6 +13,9 @@ interface Props {
 export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, optionalJson }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState<'features' | 'specs'>('features');
+  
+  // Ref for the scrollable content container
+  const contentContainerRef = useRef<HTMLDivElement>(null);
 
   // Lock background scroll while the modal is open
   useEffect(() => {
@@ -25,6 +28,13 @@ export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, opt
       document.body.style.overflow = originalOverflow;
     };
   }, [isOpen]);
+
+  // Reset scroll position to top whenever activeModalTab changes
+  useEffect(() => {
+    if (contentContainerRef.current) {
+      contentContainerRef.current.scrollTop = 0;
+    }
+  }, [activeModalTab]);
 
   const standard = safeParseVehicleJson(standardJson);
   const optional = safeParseVehicleJson(optionalJson);
@@ -116,8 +126,8 @@ export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, opt
               </button>
             </div>
 
-            {/* Content area */}
-            <div className="px-6 py-5 overflow-y-auto space-y-5">
+            {/* Content area with ref added */}
+            <div ref={contentContainerRef} className="px-6 py-5 overflow-y-auto space-y-5">
               {activeModalTab === 'features'
                 ? renderList(features, 'No features listed for this vehicle.')
                 : renderList(specs, 'No specifications listed for this vehicle.')}
