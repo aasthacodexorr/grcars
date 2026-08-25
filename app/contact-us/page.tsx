@@ -86,7 +86,7 @@ export default function ContactUs() {
                 </div> */}
 
                 {/* Hero / Contact Overview */}
-                <section className="max-w-[1280px] mx-auto px-6 lg:px-2 py-12">
+                <section className="max-w-[1280px] mx-auto px-8 lg:px-2 py-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
                         <div>
                             <span className="text-base lg:text-xl font-bold uppercase text-gray-400 block mb-2">
@@ -197,7 +197,7 @@ export default function ContactUs() {
                             id={loc.id}
                             className="scroll-mt-36" /* Offsets sticky headers during scroll */
                         >
-                            <div className="max-w-[1280px] pb-12 border-b border-gray-200 mx-auto px-6 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div className="max-w-[1280px] pb-12 border-b border-gray-200 mx-auto px-8 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div className="space-y-4">
                                     <h3 className="text-2xl font-extrabold text-gray-900">{loc.name}</h3>
                                     <p className="text-xl text-gray-600 whitespace-pre-line leading-relaxed">

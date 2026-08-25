@@ -37,24 +37,26 @@ const About = () => {
         {/* =========================================
             1. HERO SECTION WITH IMAGE OVERLAY
            ========================================= */}
-        <section className="relative w-full h-[220px] sm:h-[280px] md:h-[220px] flex items-center overflow-hidden bg-black/70">
-          {/* Background Image with Dark Overlay */}
+        <section className="relative w-full min-h-[300px] sm:min-h-[280px] md:min-h-[220px] flex items-center overflow-hidden py-10">
+          {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <Image
               src={aboutHeroBg}
               alt={`${dealershipName} Showroom`}
               fill
-              className="object-cover object-center opacity-40"
+              className="object-cover object-center scale-100"
               priority
             />
+            {/* Clean, controllable dark overlay */}
+            <div className="absolute inset-0 bg-black/20 " />
           </div>
 
           {/* Banner Content */}
-          <div className="relative z-10 w-full max-w-[1240px] mx-auto px-4 md:px-0 text-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
-              About {dealershipName}
+          <div className="relative z-10 w-full max-w-[1240px] mx-auto px-12 sm:px-8 md:px-0 text-white">
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
+              About Gedi Route Cars
             </h1>
-            <p className="mt-3 text-sm sm:text-base md:text-lg font-light text-neutral-200 max-w-2xl">
+            <p className="mt-3 text-base md:text-lg text-white max-w-2xl">
               A fast and convenient way to research and find a vehicle that is right for you.
             </p>
           </div>
@@ -63,7 +65,7 @@ const About = () => {
         {/* =========================================
             2. WHO WE ARE SECTION
            ========================================= */}
-        <section className="py-16 md:py-10 px-6 md:px-0 max-w-[1240px] mx-auto">
+        <section className="py-16 md:py-10 px-12 md:px-0 max-w-[1240px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
             {/* Left Content */}
@@ -72,12 +74,12 @@ const About = () => {
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
               variants={fadeInUp}
-              className="space-y-4 mt-6 lg:mt-28"
+              className="space-y-4 mt-1 lg:mt-28"
             >
               <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-black">
                 Who We Are
               </h2>
-              <p className="text-black leading-relaxed text-sm sm:text-base max-w-xl">
+              <p className="text-black leading-relaxed text-base max-w-xl">
                 At {dealershipName}, we have only one standard when it comes to the quality of our cars—the highest. That means you can purchase with supreme confidence when shopping our inventory for the right car for you.
               </p>
             </motion.div>
@@ -106,7 +108,7 @@ const About = () => {
         {/* =========================================
             3. OUR VEHICLES SECTION
            ========================================= */}
-        <section className="py-12 md:py-0 px-6 md:px-1 max-w-[1300px] mx-auto">
+        <section className="py-12 md:py-0 px-14 md:px-1 max-w-[1300px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-28">
 
             {/* Left Graphic */}
@@ -140,7 +142,7 @@ const About = () => {
               <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-black">
                 Our Vehicles
               </h2>
-              <p className="text-black leading-relaxed text-sm sm:text-base max-w-xl">
+              <p className="text-black leading-relaxed text-base max-w-xl">
                 Our vehicles are hand-selected for top quality and then each vehicle is sent to the reconditioning centers for inspection before being delivered to the dealership. Once on the lot, our no-haggle pricing model and belief in transparency provide a pressure-free sales environment for every customer.
               </p>
             </motion.div>
@@ -151,7 +153,7 @@ const About = () => {
         {/* =========================================
             4. OUR CUSTOMERS SECTION
            ========================================= */}
-        <section className="py-16 md:py-28 px-6 md:px-1 max-w-[1300px] mx-auto lg:mb-10">
+        <section className="py-16 md:py-28 px-14 md:px-1 max-w-[1300px] mx-auto lg:mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
 
             {/* Left Content */}
@@ -165,7 +167,7 @@ const About = () => {
               <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-black">
                 Our Customers
               </h2>
-              <p className="text-black leading-relaxed text-sm sm:text-base max-w-xl">
+              <p className="text-black leading-relaxed text-base max-w-xl">
                 We put integrity and transparency at the heart of every interaction with you, whether that interaction is online, on the phone, or in person. We are committed to bringing clarity to each decision you make so you can feel confident about buying the car you love — and enjoy the ride while you do it.
               </p>
             </motion.div>
