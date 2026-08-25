@@ -22,7 +22,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[420px] md:min-h-[550px] lg:min-h-[600px] flex flex-col justify-between px-6 py-10  md:px-12 md:py-8 lg:py-10 overflow-hidden">
+    <section className="relative w-full min-h-[420px] md:min-h-[550px] lg:min-h-[600px] flex flex-col justify-between px-6 pt-10 pb-7 md:px-12 md:py-8 lg:py-10 overflow-hidden">
       {/* Background image layer */}
       <picture className="absolute inset-0 z-0 block w-full h-full">
         <source media="(min-width: 1024px)" srcSet={src(HeroDesktop)} />
@@ -106,7 +106,7 @@ const Hero = () => {
         </div>
 
         {/* Mobile CTA rows */}
-        <div className="md:hidden pb-3">
+        <div className="md:hidden ">
           <div className="bg-grey-900/80 backdrop-blur-md text-white rounded-2xl p-2 border border-white/10">
 
             {/* Row 1 */}
