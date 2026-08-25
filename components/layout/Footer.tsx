@@ -83,7 +83,7 @@ const Footer = () => {
               href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
             },
             {
-              label: "BRAMPTON, ON,",
+              label: "BRAMPTON ON,",
               href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
             },
             {
@@ -158,7 +158,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-end  gap-4 pb-6 border-b border-gray-800/80 text-sm font-semibold">
 
           {/* Social Icons */}
-          <div className="flex items-center justify-end  gap-5 text-gray-200">
+          <div className="flex items-center lg:justify-end mt-3 lg:mt-0 gap-5 text-gray-200">
             <a href={safeD.social_media_facebook || "#"} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Facebook">
               <Image
                 src={facebook}
@@ -190,23 +190,24 @@ const Footer = () => {
 
         {/* Copyright and Legal Terms */}
         <div className="pt-6 space-y-3 text-[15px] text-white">
-          <div className="flex flex-col items-start justify-between gap-1">
-            <p>Copyright © {new Date().getFullYear()} {safeD.dealership_name}, LLC. All Rights Reserved.</p>
-            <div className="flex gap-1">
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-white">
+            <p>Copyright © {new Date().getFullYear()} Gedi Route Cars Inc. All Rights Reserved.</p>
+            <div className="flex items-center gap-1">
               <span>Powered by</span>
               <a href="https://www.zopdealer.com/" target="_blank" rel="noopener noreferrer">
-                <Image src={zlogo} alt="Zop Dealer" width={18} height={18} className="w-auto h-3.5 mt-1 object-contain brightness-200" />
+                <Image src={zlogo} alt="Zop Dealer" width={18} height={18} className="w-auto h-3.5 object-contain brightness-200" />
               </a>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-2 text-white font-medium text-[15px]">
+          <div className="flex flex-wrap items-center gap-x-2 text-white font-medium text-sm">
             <Link href="/privacy-policy" className="hover:underline hover:text-white">Privacy Policy</Link>
             <span className="text-gray-600">|</span>
             <Link href="/terms-conditions/" className="hover:underline hover:text-white">Terms & Conditions</Link>
             <span className="text-gray-600">|</span>
             <Link target="_blank" href="/sitemap" className="hover:underline hover:text-white">Site Map</Link>
-
+            <span className="text-gray-600">|</span>
+            <Link target="_blank" href="/lowest-price-guaranteed" className="hover:underline hover:text-white">Lowest Price Guaranteed</Link>
           </div>
         </div>
 

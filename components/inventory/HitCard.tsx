@@ -68,15 +68,14 @@ export const HitCard = ({ hit }: { hit: any }) => {
           }}
         >
           {/* Vehicle image with heart overlay */}
-          <div className="relative overflow-hidden rounded-t-[19px] p-3">
-            <div className="w-full aspect-[16/10] rounded-xl relative flex items-center justify-center overflow-hidde">
+          <div className="relative overflow-hidden rounded-[19px] p-3">
+            <div className="w-full aspect-[16/9] rounded-xl relative flex items-center justify-center overflow-hidden">
               <Image
                 src={imageSrc}
                 alt={title}
                 fill
-                className={`w-full h-full object-contai rounded-xl transition-transform duration-500 ${
-                  isSold || isDealPending ? "grayscale opacity-80" : ""
-                }`}
+                className={`object-contain rounded-xl transition-transform duration-500 ${isSold || isDealPending ? "grayscale opacity-80" : ""
+                  }`}
               />
             </div>
 

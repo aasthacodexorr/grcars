@@ -161,7 +161,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
       {/* Thumbnail strip */}
       {images.length > 1 ? (
         <div className="relative w-full flex items-center">
-          {images.length > 4 && (
+          {images.length > 5 && (
             <button
               type="button"
               onClick={() => scrollThumbs("left")}
@@ -176,24 +176,31 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
             ref={thumbContainerRef}
             className="flex w-full gap-3 overflow-x-auto scrollbar-none scroll-smooth snap-x snap-mandatory py-1"
           >
-            {images.map((img, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => lightboxRef.current?.openGallery(idx)}
-                className="relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200 bg-gray-100 p-1 flex items-center justify-center"
-              >
-                <Image
-                  src={img}
-                  alt={`Thumbnail ${idx + 1}`}
-                  fill
-                  className="object-contai rounded-xl"
-                />
-              </button>
-            ))}
+            {images.slice(1).map((img, idx) => {
+              // Compute original index (Thumbnail 0 in UI corresponds to Index 1 in LightGallery)
+              const originalIndex = idx + 1;
+
+              return (
+                <button
+                  key={originalIndex}
+                  type="button"
+                  onClick={() => {
+                    lightboxRef.current?.openGallery(originalIndex);
+                  }}
+                  className="relative aspect-[4/3] w-[calc((100%-2.25rem)/4)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200 bg-gray-10 flex items-center justify-center"
+                >
+                  <Image
+                    src={img}
+                    alt={`Thumbnail ${originalIndex + 1}`}
+                    fill
+                    className="object-contain scale-125 rounded-xl"
+                  />
+                </button>
+              );
+            })}
           </div>
 
-          {images.length > 4 && (
+          {images.length > 5 && (
             <button
               type="button"
               onClick={() => scrollThumbs("right")}

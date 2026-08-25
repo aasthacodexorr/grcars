@@ -253,7 +253,7 @@ const TradeIn = () => {
       <Header />
 
       {/* 1. Hero Section */}
-      <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-10 px-6 lg:px-20 py-16 overflow-hidden mt-24">
+      <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-20 px-6 lg:px-20 py-16 overflow-hidden mt-24">
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
             src={sell}
@@ -274,7 +274,7 @@ const TradeIn = () => {
             </p>
           </div>
 
-          <div className="justify-self-center lg:justify-start w-full max-w-[320px]">
+          <div className="justify-self-center lg:justify-start w-full max-w-[360px]">
               <CarfaxTradeIn />
           </div>
         </div>

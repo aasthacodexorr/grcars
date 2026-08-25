@@ -174,7 +174,7 @@ export default function BudgetCards() {
                     </h2>
                     <div className="flex flex-row gap-5 items-stretch justify-start">
                         {/* Card 1: Cars under $20K */}
-                        <article className="card-item snap-center w-[300px] flex-none h-[340px] rounded-[18px] p-4.5 flex flex-col shadow-[0_12px_28px_rgba(0,44,95,0.1)] bg-[#a8d4fc]">
+                        <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col  bg-[#a8d4fc]">
                             <h2 className="text-[#003366] text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em]">
                                 Cars under $20K
                             </h2>
@@ -205,7 +205,7 @@ export default function BudgetCards() {
                         </article>
 
                         {/* Card 2: Discover Great Deals */}
-                        <article className="card-item snap-center w-[300px] flex-none h-[340px] rounded-[18px] p-4.5 flex flex-col shadow-[0_12px_28px_rgba(0,44,95,0.1)] bg-[#c5d4e0]">
+                        <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col  bg-[#c5d4e0]">
                             <h2 className="text-[#003366] text-[21px] font-extrabold leading-[1.2] tracking-[-0.02em] text-left">
                                 Discover Great Deals!
                             </h2>
@@ -252,7 +252,7 @@ export default function BudgetCards() {
                         </article>
 
                         {/* Card 3: Need it fast? */}
-                        <article className="card-item snap-center w-[300px] flex-none h-[340px] rounded-[18px] p-4.5 flex flex-col shadow-[0_12px_28px_rgba(0,44,95,0.1)] bg-[#0b2e53] overflow-hidden">
+                        <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col bg-[#0b2e53] overflow-hidden">
                             <h2 className="relative z-[2] text-white text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em]">
                                 Need it fast?
                             </h2>
@@ -331,7 +331,7 @@ export default function BudgetCards() {
                         </article>
 
                         {/* Card 4: Go the distance */}
-                        <article className="card-item snap-center w-[300px] flex-none h-[340px] rounded-[18px] p-4.5 flex flex-col shadow-[0_12px_28px_rgba(0,44,95,0.1)] bg-[#121212] overflow-hidden">
+                        <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col bg-[#121212] overflow-hidden">
                             <h2 className="text-white text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em]">
                                 Go the distance
                             </h2>
