@@ -28,7 +28,7 @@ export default function LowestPriceGuarantee() {
 
             <main className="flex-1 w-full pt-36 md:pt-20">
                 {/* Hero Section */}
-                <section className="relative w-full h-[220px] sm:h-[280px] md:h-[340px] flex items-center overflow-hidden">
+                <section className="relative w-full h-[220px] sm:h-[280px] md:h-[220px] flex items-center overflow-hidden">
                     {/* Background Image with Dark Overlay */}
                     <div className="absolute inset-0 z-0 bg-black/60">
                         <Image
@@ -41,16 +41,15 @@ export default function LowestPriceGuarantee() {
                     </div>
 
                     {/* Banner Content */}
-                    <div className="relative z-10 max-w-[1240px] text-white px-6 md:px-12 lg:px-48">
-                        <h1 className="text-3xl sm:text-4xl tracking-tight">
+                    <div className="relative z-10 w-full max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8">
+                        <h1 className="inline-block text-3xl sm:text-4xl tracking-tight">
                             Lowest Price Guaranteed on Used Cars
                         </h1>
-
                     </div>
                 </section>
 
                 {/* Content Section */}
-                <div className="bg-white text-black py-12 sm:py-16">
+                <div className="bg-white text-black py-12 sm:py-14">
                     <div className="max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-sm sm:text-base leading-relaxed">
                         <p>
                             At GR Cars, where your satisfaction is our priority. We understand that finding the perfect vehicle at the right price is crucial, which is why we offer the lowest prices in GTA.
