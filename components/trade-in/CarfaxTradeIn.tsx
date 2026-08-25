@@ -18,16 +18,6 @@ export default function CarfaxTradeIn({
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
-    return (
-      <div className={`w-full flex items-center justify-center p-8 min-h-[200px] ${className}`}>
-        <div className="animate-pulse text-slate-500 font-medium text-sm">
-          Loading CARFAX Trade-In Estimator...
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={`w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
       <Script

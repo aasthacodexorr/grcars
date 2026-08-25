@@ -269,7 +269,7 @@ const Reviews = () => {
                   <article className="rounded-xl bg-white p-6 shadow-xs border border-gray-100 flex flex-col h-full min-h-[220px] justify-between">
                     <div>
                       {/* Rating Stars */}
-                      <div className="flex gap-1 mb-8">
+                      <div className="flex gap-1 mb-6">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <Star
                             key={i}
@@ -283,14 +283,14 @@ const Reviews = () => {
                         {r.text}
                       </p>
 
-                      {/* Read More Link */}
+                      {/* Read More Link
                       <button className="mt-2 text-base font-semibold text-[#0088FF] hover:underline focus:outline-none block">
                         Read More
-                      </button>
+                      </button> */}
                     </div>
 
                     {/* Footer Author & Date Details */}
-                    <div className="mt-6 pt-2">
+                    <div className="pt-2">
                       <div className="text-base font-bold text-gray-900">
                         {r.name}{" "}
                         <span className="font-normal text-gray-500">

@@ -213,7 +213,7 @@ export default function SitemapPage() {
                     <Link
                       key={`${item.url}-${index}`}
                       href={item.url}
-                      className="text-lg text-brand-green hover:text-green-800 transition-colors w-fit"
+                      className="text-lg text-brand-green hover:text-blue-800 transition-colors w-fit"
                       title={
                         item.lastmod
                           ? `Updated: ${new Date(item.lastmod).toLocaleDateString()}`
