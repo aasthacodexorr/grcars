@@ -196,8 +196,20 @@ const Header = () => {
             <span className={`border-r border-neutral-mediumGray`}></span>
           </div>
 
-          {/* Menu toggle */}
-          <div className="flex items-start w-full justify-end mr-3">
+          {/* Menu toggle and Favorites Icon */}
+          <div className="flex items-center w-full justify-end gap-3 mr-3">
+            {/* Favorites Icon */}
+            <button
+              onClick={openWishlistDrawer}
+              className="flex flex-col items-center justify-center gap-1 relative"
+              aria-label="Wishlist"
+            >
+              <svg className="w-[24px] h-[24px]" fill="none" viewBox="0 0 24 24" stroke="black">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </button>
+
+            {/* Menu toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="flex flex-col items-center justify-center gap-1 mx-[7%] max-[537px]:mx-[6%] max-[397px]:mx-[4%]"
@@ -220,19 +232,6 @@ const Header = () => {
             }`}
         >
           <nav className="flex flex-col px-6 pt-4 pb-6">
-            <button
-              onClick={openWishlistDrawer}
-              className={`text-[17px] cursor-pointer flex items-center gap-[5px] text-gray-800 hover:opacity-80 transition-opacity relative`}
-              aria-label="Wishlist"
-            >
-              <span>Favourites</span>
-              {isHydrated && (
-                <span className="text-gray-800 text-[18px] flex items-center justify-center">
-                  ({wishlistCount})
-                </span>
-              )}
-            </button>
-
             {NAV_ITEMS.map((item) => {
               const isActive =
                 pathname === item.to || pathname?.startsWith(item.to + "/");
