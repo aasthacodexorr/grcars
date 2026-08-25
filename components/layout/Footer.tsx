@@ -83,7 +83,7 @@ const Footer = () => {
               href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
             },
             {
-              label: "BRAMPTON, ON,",
+              label: "BRAMPTON ON,",
               href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
             },
             {
