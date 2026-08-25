@@ -253,7 +253,7 @@ const TradeIn = () => {
       <Header />
 
       {/* 1. Hero Section */}
-      <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-20 px-6 lg:px-20 py-16 overflow-hidden mt-24">
+      <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-20 px-8 lg:px-20 py-16 overflow-hidden mt-44">
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
             src={sell}
@@ -286,14 +286,14 @@ const TradeIn = () => {
        
 
       {/* 2. Sub-Hero Announcement Bar */}
-      <section className="bg-black text-white text-center py-12 px-4 lg:px-72">
+      <section className="bg-black text-white text-center py-12 px-8 lg:px-72">
         <p className="text-base md:text-4xl tracking-wide">
           Firm trade-in offer in minutes and cash in your pocket—no haggling, no waiting.
         </p>
       </section>
 
       {/* 3. How to Trade In Section */}
-      <section className="max-w-7xl mx-auto px-3 py-28 bg-white font-sans">
+      <section className="max-w-7xl mx-auto px-8 py-28 bg-white font-sans">
       {/* Title */}
       <div className="mb-10 text-left">
         <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
@@ -332,7 +332,7 @@ const TradeIn = () => {
     </section>
 
       {/* 4. Why Choose Us / Comparison Section */}
-      <section className="bg-[#F0F4FA] py-24 px-6">
+      <section className="bg-[#F0F4FA] py-24 px-8">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-2xl md:text-4xl font-bold text-center text-slate-900 mb-12">
             Why Choose Gedi Route Cars for Used Car Trade-In?
@@ -415,7 +415,7 @@ const TradeIn = () => {
       </section> */}
 
       {/* 6. FAQ Accordion Section */}
-      <section className="bg-white py-16 px-6 md:py-16">
+      <section className="bg-white py-16 px-8 md:py-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
         
         {/* Left Column: Heading, Subtitle & CTA */}
