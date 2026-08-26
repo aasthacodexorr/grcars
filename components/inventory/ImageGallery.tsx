@@ -114,8 +114,9 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
             generateLink: () => {
               const url = encodeURIComponent(window.location.href);
               const text = encodeURIComponent(`Check out this ${title}`);
-              return `https://wa.me/?text=${text}%20${url}`;
-            },
+
+              return `https://api.whatsapp.com/send?text=${text}%20${url}`;
+            }
           },
         ]}
       />
