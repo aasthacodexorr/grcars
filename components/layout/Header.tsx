@@ -122,7 +122,7 @@ const Header = () => {
 
         {/* Top bar: logo + social icons */}
         <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full ">
-          <Link href="/" aria-label="GrCars home" className="[&_img]:max-w-[125px] [&_img]:h-auto">
+          <Link href="/" aria-label="GrCars home" className="[&_img]:max-w-[200px] [&_img]:h-auto">
             <GrCarsLogo />
           </Link>
 
