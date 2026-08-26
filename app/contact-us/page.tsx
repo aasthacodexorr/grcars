@@ -133,10 +133,10 @@ export default function ContactUs() {
                                     </li>
                                 </ul>
                                 <a
-                                    href="tel:9052478040"
+                                    href="tel:+19052478040"
                                     className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
                                 >
-                                    (905) 247-8040
+                                    +1 (905) 247-8040
                                 </a>
                             </div>
 
