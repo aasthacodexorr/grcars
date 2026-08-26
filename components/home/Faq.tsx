@@ -74,7 +74,7 @@ const FaqSection = () => {
       <div className="max-w-[1400px] mx-auto px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         {/* Left Column: Heading & Subtitle */}
         <div className="lg:col-span-5 space-y-4= lg:sticky lg:top-24">
-          <h2 className="text-3xl sm:text-2xl lg:text-[40px] font-semibold text-[#0e1726] tracking-tight leading-[1.15]">
+          <h2 className="text-2xl sm:text-2xl lg:text-[40px] font-semibold text-[#0e1726] tracking-tight leading-[1.15]">
             Frequently Asked Questions
           </h2>
           <p className="text-base mt-2 sm:text-base text-gray-900 max-w-xl leading-relaxed">
