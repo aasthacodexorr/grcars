@@ -253,7 +253,7 @@ const TradeIn = () => {
       <Header />
 
       {/* 1. Hero Section */}
-      <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-20 px-8 lg:px-20 py-16 overflow-hidden mt-44">
+      <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-20 px-10 lg:px-20 pt-24 pb-10 lg:pt-1 overflow-hidden mt-32">
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
             src={sell}
@@ -269,7 +269,7 @@ const TradeIn = () => {
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight text-white mb-4">
               Sell Your Car The <br /> Smart Way
             </h1>
-            <p className="text-sm md:text-base text-white font-bold max-w-2xl leading-relaxed">
+            <p className="text-base text-white font-bold max-w-2xl leading-relaxed">
               Want to know what your trade-in is worth? Our trade-in value estimator helps you get the best deal in Ontario. We make it easy to drive off in your next vehicle.
             </p>
           </div>
@@ -286,30 +286,30 @@ const TradeIn = () => {
        
 
       {/* 2. Sub-Hero Announcement Bar */}
-      <section className="bg-black text-white text-center py-12 px-8 lg:px-72">
-        <p className="text-base md:text-4xl tracking-wide">
+      <section className="bg-black text-white text-center py-12 px-12 lg:px-72">
+        <p className="text-2xl md:text-4xl tracking-wide">
           Firm trade-in offer in minutes and cash in your pocket—no haggling, no waiting.
         </p>
       </section>
 
       {/* 3. How to Trade In Section */}
-      <section className="max-w-7xl mx-auto px-8 py-28 bg-white font-sans">
+      <section className="max-w-7xl mx-auto px-10 lg:px-0 lg:py-28 py-10 bg-white font-sans">
       {/* Title */}
       <div className="mb-10 text-left">
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+        <h2 className="text-[28px] md:text-3xl font-bold text-slate-900">
           How to Trade In a Car?
         </h2>
         <p className="text-base my-1 text-gray-500">Trade in or sell your vehicle to GrCars in just a few easy steps.</p>
       </div>
 
       {/* Grid Layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-8">
         {steps.map((step, idx) => {
           return (
             <Link 
               href={"/inventory"}
               key={idx}
-              className="flex items-start gap-4 group cursor-pointer"
+              className="flex items-start gap-4  group cursor-pointer"
             >
               {/* Left Icon Container */}
               <div className="shrink-0 text-blue-600 transition-transform duration-200 group-hover:scale-105">
@@ -317,11 +317,11 @@ const TradeIn = () => {
               </div>
 
               {/* Text Content */}
-              <div>
-                <h3 className="text-base md:text-xl font-bold text-slate-900 mb-3">
+              <div className="text-start">
+                <h3 className="text-xl font-bold text-slate-900 mb-3">
                   {step.title}
                 </h3>
-                <p className="text-xs md:text-base text-gray-500 leading-relaxed">
+                <p className="text-base text-gray-500 leading-relaxed">
                   {step.description}
                 </p>
               </div>
@@ -332,16 +332,16 @@ const TradeIn = () => {
     </section>
 
       {/* 4. Why Choose Us / Comparison Section */}
-      <section className="bg-[#F0F4FA] py-24 px-8">
+      <section className="bg-[#F0F4FA] lg:py-24 pt-8 pb-16 px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl md:text-4xl font-bold text-center text-slate-900 mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold lg:text-center text-slate-900 mb-12">
             Why Choose Gedi Route Cars for Used Car Trade-In?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             {comparisonData.map((col, idx) => (
               <div
                 key={idx}
-                className={`bg-white rounded-xl p-8 shadow-sm flex flex-col`}
+                className={`bg-white rounded-xl p-6 lg:p-8 shadow-sm flex flex-col`}
               >
                 <Link href={"/inventory"} className="text-center hover:text-brand-green cursor-pointer text-lg lg:text-2xl text-slate-900 mb-8 border-b border-gray-100 pb-4">
                   {col.title}
@@ -358,7 +358,7 @@ const TradeIn = () => {
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                         </span>
                       )}
-                      <span className="text-black text-lg">{item.text}</span>
+                      <span className="text-black text-base lg:text-lg">{item.text}</span>
                     </li>
                   ))}
                 </ul>
@@ -416,14 +416,14 @@ const TradeIn = () => {
 
       {/* 6. FAQ Accordion Section */}
       <section className="bg-white py-16 px-8 md:py-16">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      <div className="max-w-7xl  mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-16">
         
         {/* Left Column: Heading, Subtitle & CTA */}
-        <div className="lg:col-span-5 flex flex-col items-start justify-start py-6">
+        <div className="lg:col-span-5 flex flex-col items-start justify-start lg:py-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] tracking-tight mb-4">
             Frequently asked questions
           </h2>
-          <p className="text-slate-600 text-base md:text-lg mb-8 max-w-md leading-relaxed">
+          <p className="text-slate-600 text-lg lg:mb-8 max-w-md leading-relaxed">
             Have questions about selling or trading your car? We’ve got you covered.
           </p>
          
@@ -440,21 +440,21 @@ const TradeIn = () => {
     </section>
 
 
-    <section className="max-w-[1300px] mx-auto py-12">
+    <section className="max-w-[1300px] mx-auto py-12 px-6">
       <div className="bg-[#0b3b60] rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
         {/* Left Content Side */}
         <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-start text-white">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight">
             Trade in and save on your purchase
           </h2>
           
-          <p className="text-sm sm:text-base text-gray-200 mb-8 max-w-md font-light leading-relaxed">
+          <p className="text-base text-gray-200 mb-8 max-w-md font-light leading-relaxed">
             Save more when you trade in the car you have for the car you want. It's easy and all online.
           </p>
 
           <Link
             href="/get-started"
-            className="inline-block px-7 py-3 rounded-full border border-white text-white font-medium hover:bg-white hover:text-[#0b3b60] transition-colors duration-200 text-sm"
+            className="inline-block px-7 py-3 rounded-full border border-white text-white font-medium hover:bg-white hover:text-[#0b3b60] transition-colors duration-200 text-base"
           >
             Get Started
           </Link>
