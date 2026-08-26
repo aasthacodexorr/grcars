@@ -20,7 +20,7 @@ const NextRide = () => {
   };
 
   return (
-    <section className="w-full bg-white py-12 px-6 md:px-12">
+    <section className="w-full bg-white py-12 px-8 md:px-12">
       <div className="max-w-[1280px] mx-auto">
     
 {/* Header & Controls */}

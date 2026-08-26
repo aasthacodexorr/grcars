@@ -35,7 +35,7 @@ const PreQualify = () => {
   }
 
   return (
-    <section className="w-full bg-[#f8f9fa] py-12 md:py-12 px-5 sm:px-6 lg:px-12">
+    <section className="w-full bg-[#f8f9fa] py-12 md:py-12 px-8 lg:px-12">
       <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         {/* Left Column: Heading, Subtitle & Car Image */}

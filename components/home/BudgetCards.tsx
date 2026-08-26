@@ -165,7 +165,7 @@ export default function BudgetCards() {
             {/* Slider */}
             <div
                 ref={sliderRef}
-                className="w-full max-w-[100vw] overflow-x-auto px-6 md:px-0 overflow-y-hidden snap-x snap-mandatory pt-3 pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                className="w-full max-w-[100vw] overflow-x-auto px-8 md:px-0 overflow-y-hidden snap-x snap-mandatory pt-3 pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             >
 
                 <div className="flex flex-col max-w-[1280px] mx-auto min-w-[min(100%,max-content)]">

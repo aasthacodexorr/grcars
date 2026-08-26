@@ -193,7 +193,7 @@ const Reviews = () => {
 
   return (
     <section className="w-full bg-[#f8f9fa] py-12 mt-4 lg:mt-0 lg:py-16">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+      <div className="mx-auto max-w-[1400px] px-8 lg:px-12">
         {/* Title Section */}
         <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#0e1726] tracking-tight leading-tight">
           What our customers are saying

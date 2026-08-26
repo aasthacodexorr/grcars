@@ -52,7 +52,7 @@ const About = () => {
           </div>
 
           {/* Banner Content */}
-          <div className="relative z-10 w-full max-w-[1240px] mx-auto px-12 sm:px-8 md:px-0 text-white">
+          <div className="relative z-10 w-full max-w-[1240px] mx-auto px-7 sm:px-8 md:px-0 text-white">
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
               About Gedi Route Cars
             </h1>
@@ -65,7 +65,7 @@ const About = () => {
         {/* =========================================
             2. WHO WE ARE SECTION
            ========================================= */}
-        <section className="py-16 md:py-10 px-12 md:px-0 max-w-[1240px] mx-auto">
+        <section className="py-16 md:py-10 px-7 md:px-0 max-w-[1240px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
             {/* Left Content */}
@@ -108,7 +108,7 @@ const About = () => {
         {/* =========================================
             3. OUR VEHICLES SECTION
            ========================================= */}
-        <section className="py-12 md:py-0 px-14 md:px-1 max-w-[1300px] mx-auto">
+        <section className="py-12 md:py-0 px-7 md:px-1 max-w-[1300px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-28">
 
             {/* Left Graphic */}
@@ -153,7 +153,7 @@ const About = () => {
         {/* =========================================
             4. OUR CUSTOMERS SECTION
            ========================================= */}
-        <section className="py-16 md:py-28 px-14 md:px-1 max-w-[1300px] mx-auto lg:mb-10">
+        <section className="py-16 md:py-28 px-7 md:px-1 max-w-[1300px] mx-auto lg:mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
 
             {/* Left Content */}

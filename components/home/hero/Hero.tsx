@@ -22,7 +22,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative w-full min-h-[420px] md:min-h-[550px] lg:min-h-[600px] flex flex-col justify-between px-6 pt-10 pb-7 md:px-12 md:py-8 lg:py-10 overflow-hidden">
+    <section className="relative w-full min-h-[420px] md:min-h-[550px] lg:min-h-[600px] flex flex-col justify-between px-7 pt-10 pb-7 md:px-12 md:py-8 lg:py-10 overflow-hidden">
       {/* Background image layer */}
       <picture className="absolute inset-0 z-0 block w-full h-full">
         <source media="(min-width: 1024px)" srcSet={src(HeroDesktop)} />

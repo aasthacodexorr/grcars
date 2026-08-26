@@ -175,7 +175,7 @@ export default async function VehicleDetailsPage({
                 <div className="w-full pt-[2px] flex-1 mx-auto">
 
                     {/* CONTAINER WRAPPER */}
-                    <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-5 md:px-18 lg:px-20 w-full">
+                    <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-7 md:px-18 lg:px-20 w-full">
 
                         {/* SECTION ROW: Grid containing both columns */}
                         <div className="flex flex-col gap-8 lg:flex-row items-stretch relative w-full">

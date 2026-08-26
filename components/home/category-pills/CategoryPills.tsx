@@ -77,7 +77,7 @@ const CategoryPills = () => {
   };
 
   return (
-    <section className="w-full bg-white py-10 px-6 md:px-12 mt-2">
+    <section className="w-full bg-white py-10 px-8 md:px-12 mt-2">
       <div className="max-w-[1280px] mx-auto">
         {/* Header & Controls */}
         <div className="flex items-center justify-between mb-6">

@@ -126,12 +126,12 @@ const Finance = () => {
           </div>
 
           {/* Content */}
-          <div className="absolute top-9 w-full z-10 flex flex-col lg:px-64 py-20 text-start mx-auto">
+          <div className="absolute top-9 w-full z-10 flex flex-col lg:px-64 px-6 py-20 text-start mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
               Welcome to Gedi Route
             </h2>
 
-            <p className="text-sm md:text-base leading-relaxed text-white max-w-3xl">
+            <p className="text-base leading-relaxed text-white max-w-3xl">
               Gedi Route is an OMVIC licensed dealer and a proud member of the
               Used Car Dealers Association (UCDA) so you can buy your next
               vehicle with confidence. At Gedi Route we proudly sell used
@@ -143,8 +143,8 @@ const Finance = () => {
         </div>
         <Reviews />
 
-       <div className="mx-auto max-w-[1280px] px-4 md:px-0 py-20 flex flex-col justify-center items-center">
-        <h1 className="text-5xl font-bold text-start mb-5">
+       <div className="mx-auto max-w-[1280px] px-8 md:px-0 py-20 flex flex-col justify-center items-center">
+        <h1 className="text-2xl lg:text-5xl font-bold text-start mb-5">
           Frequently Asked Questions About Used Car Financing in Brampton
         </h1>
          <FaqAccordion faqs={faqs} />

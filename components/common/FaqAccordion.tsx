@@ -35,7 +35,7 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
           >
             <button
               onClick={() => handleToggle(index)}
-              className="w-full px-6 py-7 cursor-pointer flex items-center justify-between text-left"
+              className="w-full lg:px-6  py-7 cursor-pointer flex items-center justify-between text-left"
             >
               <span className="flex-1 text-xl font-lg ">
                 {questionText}
@@ -58,7 +58,7 @@ export default function FaqAccordion({ faqs }: { faqs: FAQItem[] }) {
               }`}
             >
               <div className="overflow-hidden">
-                <div className="px-6 pb-4 text-base leading-relaxed text-[#475569]">
+                <div className="lg:px-6 pb-4 text-lg leading-relaxed text-[#475569]">
                   {answerText}
                 </div>
               </div>
