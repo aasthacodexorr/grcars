@@ -456,7 +456,7 @@ const PageFooter = () => {
   if (!shouldShowFooter) return null;
 
   return (
-    <div className="mt-12 transition-opacity duration-300 ease-in">
+    <div className="transition-opacity duration-300 ease-in">
       
       <Footer />
     </div>
@@ -1300,13 +1300,10 @@ useEffect(() => {
               </div>
             </div>
           </div>
-
-          {/* ── Common footer — spans the full width beneath BOTH the sidebar
-              and the results column, once results have finished loading. ── */}
-          <div className="max-w-[1550px] mx-auto">
+        </div>
+        <div className="max-w-[1800px] mx-auto">
             <PageFooter />
           </div>
-        </div>
 
         {/* ── Mobile filter slide-in overlay ── */}
         <div className={`fixed inset-0 z-50 flex lg:hidden transition-opacity duration-300 ${isMobileFilterOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>

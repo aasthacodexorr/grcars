@@ -113,7 +113,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full font-sans">
-      <div className="max-w-[1550px] mx-auto bg-[#101827] text-white rounded-[32px] p-8 sm:p-12 lg:px-28 py-16">
+      <div className="max-w-[1550px] mx-auto bg-[#101827] text-white p-8 sm:p-12 lg:px-28 py-16">
 
         {/* Main Grid: Logo + Nav Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-1">
