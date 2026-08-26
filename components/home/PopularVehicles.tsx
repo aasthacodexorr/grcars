@@ -91,7 +91,7 @@ const PopularModels = () => {
   };
 
   return (
-    <section className="w-full bg-white py-10 px-6 md:px-12">
+    <section className="w-full bg-white py-10 px-8 md:px-12">
       <div className="max-w-[1280px] mx-auto">
         {/* Header Section */}
         <div className="flex items-center justify-between mb-6">
@@ -162,7 +162,7 @@ const PopularModels = () => {
                   alt={`${item.make} ${item.model}`}
                   width={200}
                   height={120}
-                  className="object-contain scale-110 translate-y-2 drop-shadow-sm group-hover:scale-125 transition-transform duration-300"
+                  className="object-contain scale-130 lg:scale-110 translate-y-2 drop-shadow-sm group-hover:scale-125 transition-transform duration-300"
                 />
               </div>
             </Link>
@@ -178,7 +178,7 @@ const PopularModels = () => {
               aria-label={`Go to page ${index + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ease-in-out ${
                 activeIndex === index
-                  ? "w-4 bg-black"
+                  ? "w-2 bg-brand-green"
                   : "w-2 bg-gray-200 hover:bg-gray-300"
               }`}
             />
