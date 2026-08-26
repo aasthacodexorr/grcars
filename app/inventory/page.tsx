@@ -1199,7 +1199,7 @@ useEffect(() => {
         </div>
 
         {/* ── Two-column layout (sidebar sits outside results bg so it slides under header) ── */}
-        <div className="bg-light-gray lg:-mt-4 min-h-screen lg:px-14 py-[20px] overflow-visible">
+        <div className="bg-light-gray lg:-mt-4 min-h-screen lg:px-14 px-2 py-[20px] overflow-visible">
           <div className="flex flex-col lg:flex-row items-start max-w-[1550px] mx-auto gap-5 overflow-visible">
             <aside
               className={[
@@ -1259,7 +1259,7 @@ useEffect(() => {
               </button>
 
               {/* ── Search + Sort bar (sticky below header) ── */}
-              <div className="sticky z-40 px-4 py-2 bg-light-gray">
+              <div className="sticky z-40 px-5 pt-4 pb-2 lg:pt-2 bg-light-gray">
                 <div className="flex flex-col lg:flex-row lg:items-center items-end justify-between gap-4">
 
                   {/* Search Input Box */}
