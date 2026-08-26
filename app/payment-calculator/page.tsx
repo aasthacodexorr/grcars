@@ -145,7 +145,7 @@ export default function PaymentCalculator() {
         <>
             <Header />
             <div className='bg-gray-400/20 lg:px-44 mt-36 lg:mt-10'>
-                <div className="lg:mt-20 mx-auto px-5 lg:px-0 py-8 lg:py-12 font-sans text-gray-700">
+                <div className="lg:mt-20 mx-auto px-7 lg:px-0 py-16 lg:py-12 font-sans text-gray-700">
                     <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Payment Calculator</h1>
 
                     <div className=' bg-white'>
@@ -308,7 +308,7 @@ export default function PaymentCalculator() {
                                     </div>
                                 </div>
 
-                                <div className="sm:col-span-2 flex items-center mt-2 gap-3">
+                                <div className="sm:col-span-2 flex lg:flex-row lg:items-center flex-col items-start mt-2 gap-3">
                                     <div className='flex justify-center items-center'>
                                         <input
                                         id="sales-tax"
@@ -407,10 +407,10 @@ export default function PaymentCalculator() {
 
 
             {/* New Sections */}
-            <div className="mt-16 max-w-[1400px] mx-auto space-y-20 bg-white p-6 md:p-12 text-gray-800 ">
+            <div className="mt-16 max-w-[1400px] mx-auto space-y-20 bg-white p-8 md:p-12 text-gray-800 ">
 
                 {/* Section 1: How Our Car Payment Calculator Works */}
-                <section className="text-center">
+                <section className="text-start lg:text-center">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
                         How Our Car Payment Calculator Works
                     </h2>
@@ -421,9 +421,9 @@ export default function PaymentCalculator() {
                                 <Link
                                     href={"/inventory"}
                                     key={idx}
-                                    className={`bg-white rounded-xl p-8 text-center transition-all duration-200 cursor-pointer hover:border-2 hover:border-blue-500 shadow-sm border border-gray-200/80 hover:shadow-md`}
+                                    className={`bg-white rounded-xl p-8 lg:text-center text-start  transition-all duration-200 cursor-pointer hover:border-2 hover:border-blue-500 shadow-sm border border-gray-200/80 hover:shadow-md`}
                                 >
-                                    <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center lg:mx-auto mb-6">
                                         <IconComponent className="w-6 h-6 text-white" />
                                     </div>
                                     <h3 className="text-base md:text-xl text-slate-900 mb-3 px-2">
@@ -439,7 +439,7 @@ export default function PaymentCalculator() {
                 </section>
 
                 {/* Section 2: Your Financing Options */}
-                <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mt-36">
+                <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center lg:mt-36 px-1 lg:px-0">
                     <div>
                         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Your Financing Options</h2>
                         <p className="text-base text-black leading-relaxed mb-4">
@@ -492,7 +492,7 @@ export default function PaymentCalculator() {
                     </div>
 
                     <div className="order-1 lg:order-2">
-                        <h2 className="text-3xl font-bold text-black mb-4">Plan Ahead With Confidence</h2>
+                        <h2 className=" text-2xl lg:text-3xl font-bold text-black mb-4">Plan Ahead With Confidence</h2>
                         <p className="text-base leading-relaxed mb-4">
                             The car payment calculator is designed to help you make informed decisions before you visit our indoor showroom.
                         </p>
@@ -508,7 +508,7 @@ export default function PaymentCalculator() {
                 {/* Section 4: Explore Vehicles to Calculate Payments On */}
                 <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div>
-                        <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                        <h2 className="text-2xl lg:text-4xl font-bold text-gray-900 mb-6">
                             Explore Vehicles to Calculate Payments On
                         </h2>
                         <p className="text-base text-black leading-relaxed mb-6">
@@ -554,7 +554,7 @@ export default function PaymentCalculator() {
             </div>
 
             {/* 6. FAQ Accordion Section */}
-            <section className="bg-[#F0F4FA] py-24 px-6">
+            <section className="bg-[#F0F4FA] py-24 px-7">
                 <div className="max-w-4xl mx-auto">
                     <h2 className="text-2xl md:text-4xl font-bold text-center text-slate-900 mb-12">
                         Frequently Asked Questions About the Car Payment Calculator in Ontario
