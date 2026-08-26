@@ -160,7 +160,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
                     </>
                   ) : (
                     /* Call for Price */
-                    <div className="flex items-center justify-start gap-2">
+                    <a  href={phoneNumber ? `tel:${phoneNumber}` : "#"} className="flex items-center justify-start gap-2">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -176,7 +176,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
                       </svg>
 
                       <span>Call for price</span>
-                    </div>
+                    </a>
                   )}
                 </div>
               ) : null}

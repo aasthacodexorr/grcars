@@ -31,7 +31,7 @@ export const defaultAppConfig = defineAppConfig({
     address_map_url_3: "",
     toll_free_number_1: "1-888-879-0000",
     toll_free_number_2: "",
-    sales_number_1: "416-840-6606",
+    sales_number_1: "+19052478040",
     sales_number_2: "",
     cell_phone_1: "",
     cell_phone_2: "",

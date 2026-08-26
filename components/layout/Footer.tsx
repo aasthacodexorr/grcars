@@ -12,7 +12,6 @@ import logo from "@/assets/brand/logo_white.png";
 import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
 
-
 const Footer = () => {
   const appConfig = useAppConfig();
   const defaultD = defaultAppConfig.dealership;
@@ -35,8 +34,22 @@ const Footer = () => {
     }
   };
 
-  // Structured columns array for dynamic mapping
-  const footerColumns = [
+  const googleMapsUrl = "https://www.google.com/maps/place/Gedi+Route+Cars/@43.7055262,-79.6938153,4367m/data=!3m1!1e3!4m6!3m5!1s0x882b3f18084db7a7:0x703d924801f6b7fa!8m2!3d43.7016063!4d-79.702997!16s%2Fg%2F11kr86czzy?entry=ttu&g_ep=EgoyMDI2MDgyMy4wIKXMDSoASAFQAw%3D%3D";
+
+  // Define an interface for the section objects
+  interface FooterSection {
+    title: string;
+    links: { label: string; href: string; forceReload?: boolean }[];
+    hasUnderline?: boolean;
+    hasDirectionButton?: boolean;
+  }
+
+  interface FooterColumn {
+    sections: FooterSection[];
+  }
+
+  // Structured columns array for dynamic mapping with explicit type annotation
+  const footerColumns: FooterColumn[] = [
     {
       sections: [
         {
@@ -77,20 +90,13 @@ const Footer = () => {
       sections: [
         {
           title: "CONTACT INFO",
+          hasUnderline: true,
           links: [
-            {
-              label: "316 ORENDA RD,",
-              href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
-            },
-            {
-              label: "BRAMPTON ON,",
-              href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
-            },
-            {
-              label: "L6T 1G1",
-              href: "https://www.google.com/maps/search/?api=1&query=316+Orenda+Rd+Brampton+ON+L6T+1G1",
-            },
+            { label: "316 ORENDA RD,", href: googleMapsUrl },
+            { label: "BRAMPTON ON,", href: googleMapsUrl },
+            { label: "L6T 1G1", href: googleMapsUrl },
           ],
+          hasDirectionButton: true,
         },
       ],
     },
@@ -106,14 +112,13 @@ const Footer = () => {
             },
           ],
         },
-
       ],
     },
   ];
 
   return (
     <footer className="w-full font-sans">
-      <div className="max-w-[1550px] mx-auto bg-[#101827] text-white rounded-[32px] p-8 sm:p-12 lg:px-28 py-16">
+      <div className="max-w-[1550px] mx-auto bg-[#101827] text-white p-8 sm:p-12 lg:px-28 py-16">
 
         {/* Main Grid: Logo + Nav Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-1">
@@ -121,11 +126,9 @@ const Footer = () => {
           {/* Logo Column */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block">
-              {(
-                <div className=" rounded-full -mt-4 flex items-center justify-center -ml-4">
-                  <img src={logo?.src} />
-                </div>
-              )}
+              <div className="rounded-full -mt-4 flex items-center justify-center -ml-4">
+                <img src={logo?.src} alt="Logo" />
+              </div>
             </Link>
           </div>
 
@@ -134,7 +137,14 @@ const Footer = () => {
             <div key={colIdx} className="space-y-8">
               {col.sections.map((sec, secIdx) => (
                 <div key={secIdx}>
-                  <h3 className="text-xl font-bold text-white mb-3 tracking-wide">{sec.title}</h3>
+                  <div className="mb-3">
+                    <h3 className="text-xl font-bold text-white tracking-wide inline-block">
+                      {sec.title}
+                    </h3>
+                    {sec.hasUnderline && (
+                      <div className="w-12 h-[2px] bg-blue-500 mt-1" />
+                    )}
+                  </div>
                   <ul className="space-y-3 text-[15px] font-sans">
                     {sec.links.map((link, linkIdx) => (
                       <li key={linkIdx}>
@@ -148,6 +158,20 @@ const Footer = () => {
                       </li>
                     ))}
                   </ul>
+
+                  {/* Get Direction Button */}
+                  {sec.hasDirectionButton && (
+                    <div className="mt-5">
+                      <a
+                        href={googleMapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block bg-[#0080ff] hover:bg-blue-600 text-white font-medium px-6 py-2.5 rounded-full text-sm transition-colors"
+                      >
+                        Get Direction
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -155,7 +179,7 @@ const Footer = () => {
         </div>
 
         {/* Links Bar & Social Media Icons */}
-        <div className="flex flex-col md:flex-row md:items-end justify-end  gap-4 pb-6 border-b border-gray-800/80 text-sm font-semibold">
+        <div className="flex flex-col md:flex-row md:items-end justify-end gap-4 pb-6 border-b border-gray-800/80 text-sm font-semibold">
 
           {/* Social Icons */}
           <div className="flex items-center lg:justify-end mt-3 lg:mt-0 gap-5 text-gray-200">
