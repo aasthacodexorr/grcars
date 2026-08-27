@@ -183,21 +183,24 @@ export default async function VehicleDetailsPage({
                             {/* Left column: Breadcrumbs + Gallery + Specs */}
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
 
-                                {/* BREADCRUMBS: Aligned to top-left of gallery */}
-                                <nav className="flex items-center justify-between w-full text-sm text-gray-500 -mb-4">
-                                    <div className="flex items-center w-full text-sm text-gray-500 gap-1 -mb-4">
-                                        <Link href="/inventory" className="hover:underline hover:text-black transition-colors ml-2.5">
-                                        All Cars
-                                    </Link>
-                                    <span>/</span>
-                                    <Link href={`/inventory/${vehicle.make}`} className="hover:underline hover:text-black transition-colors">
-                                        {vehicle.make}
-                                    </Link>
-                                    <span>/</span>
-                                    <span className="text-gray-900 font-medium">{vehicle.model}</span>
+                      
+                                {/* BREADCRUMBS */}
+                                <nav className="flex items-center justify-between w-full -mb-4 px-2.5">
+                                    <div className="flex items-center min-w-0 flex-1 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
+                                        <Link href="/inventory" className="hover:underline hover:text-black transition-colors shrink-0">
+                                            All Cars
+                                        </Link>
+                                        <span className="shrink-0">/</span>
+                                        <Link href={`/inventory/${vehicle.make}`} className="hover:underline hover:text-black transition-colors truncate min-w-0">
+                                            {vehicle.make}
+                                        </Link>
+                                        <span className="shrink-0">/</span>
+                                        <span className="text-gray-900 font-medium truncate min-w-0">
+                                            {vehicle.model}
+                                        </span>
                                     </div>
 
-                                    <div id="vdp-top-wishlist-mobile" className="lg:hidden flex justify-end w-full max-w-[410px]">
+                                    <div id="vdp-top-wishlist-mobile" className="lg:hidden shrink-0 ml-3">
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
                                 </nav>
