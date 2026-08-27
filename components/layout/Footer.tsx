@@ -161,7 +161,7 @@ const Footer = () => {
 
                   {/* Get Direction Button */}
                   {sec.hasDirectionButton && (
-                    <div className="mt-5">
+                    <div className="mt-5 hidden lg:block">
                       <a
                         href={googleMapsUrl}
                         target="_blank"
