@@ -128,7 +128,7 @@ export default function SitemapPage() {
       <Header />
 
       <main className="min-h-screen bg-gray-50">
-        <div className="max-w-[1300px] mx-auto px-4 lg:px-0 py-10 md:py-14 lg:mt-18">
+        <div className="max-w-[1300px] mx-auto px-4 lg:px-0 py-10 md:py-14 lg:mt-18 mt-40">
 
           {/* Main H1 Page Heading */}
           <div className="mb-4">
