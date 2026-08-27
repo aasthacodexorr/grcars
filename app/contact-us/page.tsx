@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
-    const [iframeHeight, setIframeHeight] = useState(640);
+    const [iframeHeight, setIframeHeight] = useState(700);
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
@@ -41,7 +41,7 @@ export default function ContactUs() {
         {
             id: 'Brampton',
             name: 'Brampton',
-            address: '316 Orenda Rd\nBrampton, ON\nL6T 1G1',
+            address: '316 Orenda Rd\nBrampton ON,\nL6T 1G1',
             phone: '1-855-895-9800',
             mapSrc:
                 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.4300984651895!2d-79.70557192332906!3d43.70161014929783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b3e7bd56f8457%3A0xcf19d3086ece63bf!2s316%20Orenda%20Rd%2C%20Brampton%2C%20ON%20L6T%201G1%2C%20Canada!5e0!3m2!1sen!2sin!4v1713623875572!5m2!1sen!2sin',
@@ -108,20 +108,20 @@ export default function ContactUs() {
                     </div>
 
                     {/* Contact Methods & Form Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-b lg:pb-12 border-gray-100 lg:pt-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:border-t border-b lg:pb-12 border-gray-100 lg:pt-12">
                         {/* Left Column: Call / Text & Chat */}
                         <div className="space-y-10">
                             {/* Call Section */}
                             <div className="space-y-3">
                                 <h3 className="text-xl font-bold text-gray-900">Call or text us</h3>
-                                <p className="text-xl text-gray-600 leading-relaxed">
+                                <p className="text-lg text-gray-600 leading-relaxed mb-8">
                                     Our Customer Support team is available via telephone 7 days a week. You can also check out our{' '}
                                     <a href="#" className="underline font-medium hover:text-black">
                                         FAQ Page
                                     </a>{' '}
                                     for more information.
                                 </p>
-                                <ul className="text-lg text-gray-600 space-y-1 py-1">
+                                <ul className="text-lg text-gray-600 space-y-1 py-1 mb-8">
                                     <li>
                                         <strong className="text-gray-800">Monday – Friday:</strong> 10am – 8pm
                                     </li>
@@ -200,11 +200,11 @@ export default function ContactUs() {
                             <div className="max-w-[1280px] pb-12 border-b border-gray-200 mx-auto px-8 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div className="space-y-4">
                                     <h3 className="text-2xl font-extrabold text-gray-900">{loc.name}</h3>
-                                    <p className="text-xl text-gray-600 whitespace-pre-line leading-relaxed">
+                                    <p className="text-lg text-gray-600 whitespace-pre-line leading-relaxed">
                                         {loc.address}
                                     </p>
-                                    <p className="text-xl text-gray-800">
-                                        phone:{' '}
+                                    <p className="text-xl text-gray-800 my-6">
+                                        Phone:{' '}
                                         <a
                                             href={`tel:${loc.phone}`}
                                             className="font-bold hover:underline"
