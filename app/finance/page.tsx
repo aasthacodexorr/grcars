@@ -27,7 +27,7 @@ const FinanceContent = () => {
   return (
     <>
     <Header/>
-    <main className="bg-background  my-18 mx-5 xl:mx-36  lg:mt-40">
+    <main className="bg-background  my-18 mx-5 xl:mx-36  lg:mt-40 mt-52">
       <section className="flex-1 w-full min-h-[200vh] lg:min-h-[100vh]">
         <div className="mx-auto">
           <iframe
