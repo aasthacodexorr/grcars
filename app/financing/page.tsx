@@ -78,7 +78,7 @@ const Finance = () => {
         data.element_id === "financing_form" &&
         typeof data.value === "number"
       ) {
-        setHeight(Math.max(MIN_HEIGHT, Math.ceil(data.value) + 24));
+        setHeight(Math.max(MIN_HEIGHT, Math.ceil(data.value)));
       }
     };
 
