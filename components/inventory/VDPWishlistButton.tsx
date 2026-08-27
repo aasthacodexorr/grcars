@@ -48,7 +48,7 @@ export default function VDPWishlistButton({ vehicle, showLabel = false }: VDPWis
     <>
       <button
         onClick={handleClick}
-        className={`flex items-center gap-2 px-4 cursor-pointer py-3 rounded-lg font-semibold transition-all duration-300 ${
+        className={`flex items-center gap-2 lg:px-4 cursor-pointer py-3 rounded-lg font-semibold transition-all duration-300 ${
           showLabel ? "text-[#0d2238] hover:text-[#06c]" : ""
         }`}
         aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}

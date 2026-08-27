@@ -9,7 +9,7 @@ import { ChevronRight, ArrowDownCircle } from 'lucide-react';
 import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
 
 
-export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
+export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-desktop", }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
@@ -38,12 +38,10 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
   // gallery) is scrolled out of view / hidden under the header. Only then do
   // we show the alternative save button on this card.
   useEffect(() => {
-    const topWishlistEl = document.getElementById("vdp-top-wishlist");
+    const topWishlistEl = document.getElementById(topWishlistId);
     if (!topWishlistEl) return;
 
-    // Measure the actual fixed header so this works for both mobile (mt-36)
-    // and desktop (lg:mt-24) without hardcoding pixel values.
-    const headerEl = document.querySelector("header"); // adjust selector/id to match your Header component
+    const headerEl = document.querySelector("header");
     const headerHeight = headerEl?.getBoundingClientRect().height ?? 0;
 
     const observer = new IntersectionObserver(
@@ -58,9 +56,9 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
     );
 
     observer.observe(topWishlistEl);
-
     return () => observer.disconnect();
-  }, []);
+  }, [topWishlistId]);
+  
   // 2. Tooltip outside click handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -105,22 +103,22 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
       {/* Primary Card Container (Observed for sticky bar) */}
       <div
         ref={inlineContainerRef}
-        className="w-full bg-white rounded-3xl font-sans text-center relative"
+        className="w-full bg-white rounded-3xl font-sans text-start relative pt-5 lg:pt-0"
       >
         {/* Vehicle Title */}
-        <h1 className="text-2xl sm:text-[26px] p-6 font-extrabold text-[#0d2238] tracking-tight leading-tight mb-1">
+        <h1 className="text-2xl sm:text-[26px] px-6 font-extrabold text-[#0d2238] tracking-tight leading-tight">
           {vehicle?.year || "2016"} {vehicle?.make || "INFINITI"}{" "}
           {vehicle?.model || "Q50"}
         </h1>
 
         {/* Vehicle Subtitle Details */}
-        <p className="text-base font-normal text-slate-500 mb-4">
+        <p className="text-base font-normal text-slate-500 mb-4 px-6">
           {subtitleDetails}
         </p>
 
         {/* Pricing & Tooltip Section */}
         {!isSold ? (
-  <div className="flex flex-col gap-2 mb-3 px-6">
+  <div className="flex flex-col gap-2 mb-3 px-6 pb-5">
     {Number(currentPrice) > 0 ? (
       <>
         
@@ -174,7 +172,7 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
 
 
         {/* Buttons Action Group */}
-        <div className="space-y-2.5 px-6 mb-5">
+        <div className="hidden lg:block space-y-2.5 px-6 mb-5 text-center">
           {/* Button 1: Get Pre-Approved */}
           <a href="/vehicle-financing/" className="block w-full">
             <button className="w-full cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-4 rounded-full transition-colors text-base shadow-sm">

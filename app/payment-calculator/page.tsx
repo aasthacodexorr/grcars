@@ -353,7 +353,7 @@ export default function PaymentCalculator() {
                             </div>
 
                             {/* Right Output Sidebar Box */}
-                            <div className="bg-white px-2 lg:px-6 lg:py-9 flex flex-col justify-between h-fit text-center">
+                            <div className="bg-white px-8 lg:px-6 lg:py-9 flex flex-col justify-between h-fit text-center">
                                 <div>
                                     <p className="text-xl lg:text-sm tracking-wider mb-4">
                                         Based on your input, your estimated payment:
