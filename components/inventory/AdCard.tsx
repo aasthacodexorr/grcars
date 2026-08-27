@@ -25,7 +25,7 @@ const CardShell = ({
    1) Finance ad — GrCars-style wordmark, green theme, links to Finance page
 ------------------------------------------------------------------------- */
 export const FinanceAdCard = () => {
-  const financeUrl = `/financing`;
+  const financeUrl = `/finance`;
 
   return (
     <CardShell

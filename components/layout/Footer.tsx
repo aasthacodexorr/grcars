@@ -57,7 +57,7 @@ const Footer = () => {
           links: [
             { label: "INVENTORY", href: "/inventory" },
             { label: "SELL / TRADE", href: "/trade-in-my-car" },
-            { label: "APPLY FOR FINANCING", href: "/financing" },
+            { label: "APPLY FOR FINANCING", href: "/finance" },
             { label: "TIRE & RIMS", href: "https://www.grwheels.ca/" },
             { label: "PAYMENT CALCULATOR", href: "/payment-calculator" },
             { label: "ABOUT US", href: "/about-us" },

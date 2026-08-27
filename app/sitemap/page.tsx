@@ -172,7 +172,7 @@ export default function SitemapPage() {
                 </Link>
 
                 <Link
-                  href="/financing"
+                  href="/finance"
                   className="w-fit transition-colors hover:text-gray-600"
                 >
                   <h2 className="text-[20px] font-semibold text-gray-900">Financing</h2>

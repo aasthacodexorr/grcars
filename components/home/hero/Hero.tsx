@@ -82,7 +82,7 @@ const Hero = () => {
               </p>
             </div>
             <Link
-              href={"/financing"}
+              href={"/finance"}
               className="ml-4 cursor-pointer shrink-0 bg-white text-blue-900 hover:bg-gray-100 font-semibold px-4 py-2.5 rounded-full text-xs md:text-sm transition-all shadow-md"
             >
               Get Pre-Qualified
@@ -110,7 +110,7 @@ const Hero = () => {
           <div className="bg-grey-900/80 backdrop-blur-md text-white rounded-2xl p-2 border border-white/10">
 
             {/* Row 1 */}
-            <Link href={"/financing"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-full">
+            <Link href={"/finance"} className="w-full flex items-center justify-between p-3.5 hover:bg-white/5 transition-colors rounded-t-full">
               <div className="flex items-center gap-3">
                 <Wallet className="w-5 h-5" />
                 <span className="font-semibold text-base">Financing made easy</span>

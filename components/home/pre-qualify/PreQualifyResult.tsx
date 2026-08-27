@@ -60,7 +60,7 @@ const PreQualifyResult = ({ biWeeklyPayment, rate, loanAmount }: PreQualifyResul
       <motion.a
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        href="/financing"
+        href="/finance"
         className="mt-7 sm:mt-[10px] w-full min-w-full block text-center rounded-full text-white py-[12px] sm:py-[10px] text-[18px] sm:text-[16px] font-medium hover:opacity-90 transition-opacity bg-brand-btn-gradient border border-brand-green2">
         Get pre-qualified
       </motion.a>
