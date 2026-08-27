@@ -14,6 +14,7 @@ import { getConstants, NAV_ITEMS } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
 import { useDrawer } from "@/context/DrawerContext";
+const googleMapsUrl = "https://www.google.com/maps/place/Gedi+Route+Cars/@43.7055262,-79.6938153,4367m/data=!3m1!1e3!4m6!3m5!1s0x882b3f18084db7a7:0x703d924801f6b7fa!8m2!3d43.7016063!4d-79.702997!16s%2Fg%2F11kr86czzy?entry=ttu&g_ep=EgoyMDI2MDgyMy4wIKXMDSoASAFQAw%3D%3D";
 
 /* Component */
 const Header = () => {
@@ -182,8 +183,9 @@ const Header = () => {
 
             {/* Directions */}
             <a
-              href={"/contact-us"}
+              href={googleMapsUrl}
               rel="noreferrer"
+              target="_blank"
               className={`flex flex-col items-center justify-center gap-1 group text-white bg-brand-green rounded-[5px] w-[181px] max-[537px]:w-[150px] max-[480px]:w-[100px] max-[397px]:w-[90px] py-[13px] px-[10px]`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="h-4 w-4 fill-white text-white">
