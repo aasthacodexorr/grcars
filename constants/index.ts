@@ -18,7 +18,7 @@ export const NAV_ITEMS = [
   { label: "Search Cars", to: "/inventory" , icon:Search },
   { label: "Sell/Trade", to: "/trade-in-my-car" },
   { label: "Tire & Rims", to: "https://www.grwheels.ca/" },
-  { label: "Financing", to: "/financing" },
+  { label: "Financing", to: "/finance" },
   { label: "Contact", to: "/contact-us" }, 
 ] as const;
 

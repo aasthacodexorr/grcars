@@ -50,7 +50,7 @@ export default function FaqAccordion({ faqs = [] }: { faqs?: FAQItem[] }) {
           <motion.div
             key={index}
             layout
-            className="border-b border-slate-200 rounded-lg overflow-hidden bg-white"
+            className="border-b px-4 border-slate-200 rounded-lg overflow-hidden bg-white"
           >
             <button
               ref={(el) => {

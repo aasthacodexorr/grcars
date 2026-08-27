@@ -415,7 +415,7 @@ const TradeIn = () => {
       </section> */}
 
       {/* 6. FAQ Accordion Section */}
-      <section className="bg-white py-16 px-8 md:py-16">
+      <section className="bg-white py-10 px-8 md:py-16">
       <div className="max-w-7xl  mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-16">
         
         {/* Left Column: Heading, Subtitle & CTA */}
@@ -440,9 +440,8 @@ const TradeIn = () => {
     </section>
 
 
-    <section className="max-w-[1300px] mx-auto py-12 px-6">
+    {/* <section className="max-w-[1300px] mx-auto py-12 px-6">
       <div className="bg-[#0b3b60] rounded-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
-        {/* Left Content Side */}
         <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-start text-white">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4 leading-tight">
             Trade in and save on your purchase
@@ -460,7 +459,6 @@ const TradeIn = () => {
           </Link>
         </div>
 
-        {/* Right Image Side */}
         <div className="relative min-h-[300px] md:min-h-full">
           <img
             src={happyfam?.src}
@@ -469,7 +467,7 @@ const TradeIn = () => {
           />
         </div>
       </div>
-    </section>
+    </section> */}
 
       <Footer />
     </div>

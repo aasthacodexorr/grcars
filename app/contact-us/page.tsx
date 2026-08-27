@@ -92,7 +92,7 @@ export default function ContactUs() {
                             <span className="text-base lg:text-xl font-bold uppercase text-gray-400 block mb-2">
                                 CONTACT US
                             </span>
-                            <h1 className="text-3xl font-semibold text-gray-900 leading-tight">
+                            <h1 className="text-4xl font-semibold text-gray-900 leading-tight">
                                 Got a question? We’re
                                 <br />
                                 here to help.
@@ -108,7 +108,7 @@ export default function ContactUs() {
                     </div>
 
                     {/* Contact Methods & Form Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-b pb-12 border-gray-100 pt-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-b lg:pb-12 border-gray-100 lg:pt-12">
                         {/* Left Column: Call / Text & Chat */}
                         <div className="space-y-10">
                             {/* Call Section */}

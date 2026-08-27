@@ -114,7 +114,7 @@ export const VehicleHeaderAndCTA = ({ vehicle }: any) => {
         </h1>
 
         {/* Vehicle Subtitle Details */}
-        <p className="text-xs sm:text-sm font-normal text-slate-500 mb-4">
+        <p className="text-base font-normal text-slate-500 mb-4">
           {subtitleDetails}
         </p>
 

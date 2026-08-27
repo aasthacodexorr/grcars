@@ -37,7 +37,7 @@ const HeroSearchPanelContent = () => {
       const searchKey = appConfig.site.inventory_search_only_key;
       const collection = appConfig.site.collection;
       
-      const searchUrl = `${protocol}://${host}:${port}/collections/${collection}/documents/search?q=${encodeURIComponent(query)}&query_by=make,model,trim&facet_by=make,model&limit=20&per_page=5`;
+      const searchUrl = `${protocol}://${host}:${port}/collections/${collection}/documents/search?q=${encodeURIComponent(query)}&query_by=make,model,year_search,trim,vin,stock_no,exterior_color&num_typos=0&facet_by=make,model&limit=20&per_page=5`;
       
       const response = await fetch(searchUrl, {
         headers: {
@@ -174,7 +174,7 @@ const HeroSearchPanelContent = () => {
         {/* Sell / valuation CTA */}
         <p className="text-center mt-2 mb-3 text-base text-black p-0 bg-transparent cursor-pointer">
           <Link
-            href="/financing"
+            href="/finance"
             className="cursor-pointer text-black bg-transparent p-2 text-[14.5px] transition-colors hover:text-brand-green"
           >
             Looking to sell your car? Get a valuation

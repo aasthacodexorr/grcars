@@ -70,7 +70,7 @@ const FaqSection = () => {
   };
 
   return (
-    <section className="w-full bg-white py-16 md:py-24">
+    <section className="w-full bg-white py-10 md:py-24">
       <div className="max-w-[1400px] mx-auto px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         {/* Left Column: Heading & Subtitle */}
         <div className="lg:col-span-5 space-y-4= lg:sticky lg:top-24">

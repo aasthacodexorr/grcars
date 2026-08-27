@@ -25,7 +25,7 @@ export async function getFeaturedVehicles(appConfig: AppConfig): Promise<Feature
       throw new Error("Missing Typesense configuration");
     }
 
-    const url = `${typesense_protocol}://${typesense_host}:${typesense_port}/collections/${collection}/documents/search?q=*&query_by=make,model,trim&sort_by=created_at:desc&limit=8`;
+    const url = `${typesense_protocol}://${typesense_host}:${typesense_port}/collections/${collection}/documents/search?q=*&query_by=make,model,year_search,trim,vin,stock_no,exterior_color&sort_by=created_at:desc&limit=8`;
 
     const response = await fetch(url, {
       headers: { "X-TYPESENSE-API-KEY": feature_inventory_key },

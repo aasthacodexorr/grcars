@@ -153,7 +153,7 @@ export const SITE_POSTS_2026 = [
 export const SITE_POSTS_2025 = [
   '/ac-compressor-issues-symptoms-causes-and-solutions/',
   '/how-temperature-changes-affect-your-tire-pressure/',
-  '/financing-options-for-part-time-workers-or-gig-workers/',
+  '/finance-options-for-part-time-workers-or-gig-workers/',
   '/how-to-finance-a-used-car-as-a-single-parent/',
   '/top-5-used-jaguar-sedans-you-can-still-afford/',
   '/everything-you-need-to-know-about-buying-a-used-hatchback/',

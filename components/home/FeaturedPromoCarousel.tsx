@@ -31,7 +31,7 @@ const SLIDES: CarouselSlide[] = [
     subtitle:
       "Get pre-qualified instantly to shop 100% online with personalized terms. No hit to your credit.",
     buttonText: "Get Your Terms",
-    buttonHref: "/financing",
+    buttonHref: "/finance",
     image: "/images/promo/shaq-promo.jpg",
   },
   {
