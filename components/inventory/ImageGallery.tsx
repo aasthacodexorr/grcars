@@ -188,7 +188,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
                   onClick={() => {
                     lightboxRef.current?.openGallery(originalIndex);
                   }}
-                  className="relative aspect-[4/3] w-[calc((100%-2.25rem)/3)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200 bg-gray-10 flex items-center justify-center"
+                  className="relative aspect-[4/3] w-[calc((100%-2.25rem)/3)] lg:w-[calc((100%-2.25rem)/4)] shrink-0 snap-start rounded-xl cursor-pointer overflow-hidden transition-all duration-200 bg-gray-10 flex items-center justify-center"
                 >
                   <Image
                     src={img}

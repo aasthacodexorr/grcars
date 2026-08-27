@@ -215,7 +215,7 @@ export default async function VehicleDetailsPage({
                                 </div>
 
                                 {/* Tab header */}
-                                <div className="hidden  lg:sticky top-4 z-50 w-full mb-12 bg-white">
+                                <div className="hidden lg:block sticky top-4 z-50 w-full mb-12 bg-white">
                                     <VehicleDetailsTabsNav />
                                 </div>
 
