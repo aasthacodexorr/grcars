@@ -64,7 +64,7 @@ export default function ContactUs() {
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-white text-gray-800 font-sans lg:mt-32 mt-36">
+            <div className="min-h-screen bg-white text-gray-800 font-sans lg:mt-32 mt-40">
                 {/* Locations Header Nav */}
                 {/* <div id="top-back" className="py-8 text-center border-b border-gray-100">
                     <div className="flex items-center justify-center gap-2 mb-4 text-xl font-semibold tracking-wide uppercase text-black">
