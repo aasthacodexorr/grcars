@@ -184,8 +184,9 @@ export default async function VehicleDetailsPage({
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
 
                                 {/* BREADCRUMBS: Aligned to top-left of gallery */}
-                                <nav className="flex items-center text-sm text-gray-500 gap-1.5 -mb-4">
-                                    <Link href="/inventory" className="hover:underline hover:text-black transition-colors ml-2.5">
+                                <nav className="flex items-center justify-between w-full text-sm text-gray-500 -mb-4">
+                                    <div className="flex items-center w-full text-sm text-gray-500 gap-1 -mb-4">
+                                        <Link href="/inventory" className="hover:underline hover:text-black transition-colors ml-2.5">
                                         All Cars
                                     </Link>
                                     <span>/</span>
@@ -194,6 +195,11 @@ export default async function VehicleDetailsPage({
                                     </Link>
                                     <span>/</span>
                                     <span className="text-gray-900 font-medium">{vehicle.model}</span>
+                                    </div>
+
+                                    <div id="vdp-top-wishlist-mobile" className="lg:hidden flex justify-end w-full max-w-[410px]">
+                                        <VDPWishlistButton vehicle={vehicle} />
+                                    </div>
                                 </nav>
 
                                 {/* Image gallery */}
@@ -203,13 +209,13 @@ export default async function VehicleDetailsPage({
                                 <div className={`flex justify-center w-full lg:hidden -mt-4`}>
                                     <div className="w-full">
                                         <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
-                                            <VehicleHeaderAndCTA vehicle={vehicle} />
+                                            <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-mobile" />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Tab header */}
-                                <div className="sticky top-4 z-50 w-full mb-12 bg-white">
+                                <div className="hidden  lg:sticky top-4 z-50 w-full mb-12 bg-white">
                                     <VehicleDetailsTabsNav />
                                 </div>
 
@@ -225,7 +231,7 @@ export default async function VehicleDetailsPage({
                                     {vehicle.vehicle_description && (
                                         <div
                                             id="vehicle-description-section"
-                                            className="bg-card border-none rounded-xl p-0 mt-20 scroll-mt-44 flex-wrap"
+                                            className="bg-card border-none rounded-xl p-0 mt-10 lg:mt-20 scroll-mt-44 flex-wrap"
                                         >
                                             <h2 className="text-[30px] text-center font-semibold text-black mb-[25px]">
                                                 Vehicle Description
@@ -244,18 +250,20 @@ export default async function VehicleDetailsPage({
                             {showSidebar && (
                                 <div className="hidden lg:block lg:w-[450px] xl:w-[450px] 2xl:w-[520px]">
                                     {/* NON-STICKY WISHLIST: Scrolls up naturally with the page */}
-                                    <div id="vdp-top-wishlist" className="flex justify-end w-full max-w-[410px] mb-3">
+                                    <div id="vdp-top-wishlist-desktop" className="flex justify-end w-full max-w-[410px] mb-3">
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
 
                                     {/* STICKY CTA CARD: Stays pinned while scrolling */}
                                     <div className="sticky top-6 h-fit space-y-3">
                                         <div className="max-w-[400px] shadow-xl rounded-xl bg-white overflow-hidden">
-                                            <VehicleHeaderAndCTA vehicle={vehicle} />
+                                            <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop"/>
                                         </div>
                                     </div>
                                 </div>
                             )}
+
+                            
                         </div>
                     </div>
                 </div>
