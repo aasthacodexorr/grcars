@@ -143,7 +143,7 @@ const Finance = () => {
         </div>
         <Reviews />
 
-       <div className="mx-auto max-w-[1280px] px-8 md:px-0 py-20 flex flex-col justify-center items-center">
+       <div className="mx-auto max-w-[1280px] px-8 md:px-0 py-10 flex flex-col justify-center items-center">
         <h1 className="text-2xl lg:text-5xl font-bold text-start mb-5">
           Frequently Asked Questions About Used Car Financing in Brampton
         </h1>
