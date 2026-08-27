@@ -185,8 +185,8 @@ export default async function VehicleDetailsPage({
 
                       
                                 {/* BREADCRUMBS */}
-                                <nav className="flex items-center justify-between w-full -mb-4 px-2.5">
-                                    <div className="flex items-center min-w-0 flex-1 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
+                                <nav className="flex items-center w-full h-8 -mb-4">
+                                    <div className="flex items-center min-w-0 flex-1 pr-6 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
                                         <Link href="/inventory" className="hover:underline hover:text-black transition-colors shrink-0">
                                             All Cars
                                         </Link>
@@ -200,7 +200,7 @@ export default async function VehicleDetailsPage({
                                         </span>
                                     </div>
 
-                                    <div id="vdp-top-wishlist-mobile" className="lg:hidden shrink-0 ml-3">
+                                    <div id="vdp-top-wishlist-mobile" className="lg:hidden shrink-0 flex items-center justify-center">
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
                                 </nav>
