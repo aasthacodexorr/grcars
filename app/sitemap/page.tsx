@@ -141,51 +141,64 @@ export default function SitemapPage() {
 
             {/* Top Inventory Links Section */}
             <section>
-              <div className="flex flex-col space-y-3">
+              <div className="flex flex-col space-y-3 text-gray-900">
+
                 <Link
                   href="/inventory"
-                  className="w-fit transition-colors hover:text-gray-600"
+                  className="w-fit transition-colors hover:text-gray-400"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Search Cars</h2>
+                  <span className="text-[16px] font-semibold uppercase">Search Cars</span>
                 </Link>
 
                 <Link
                   href="/trade-in-my-car"
-                  className="w-fit transition-colors hover:text-gray-600"
+                  className="w-fit transition-colors hover:text-gray-400"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Sell / Trade</h2>
+                  <span className="text-[16px] font-semibold uppercase">Sell / Trade</span>
+                </Link>
+
+                <Link
+                  href="/finance"
+                  className="w-fit transition-colors hover:text-gray-400"
+                >
+                  <span className="text-[16px] font-semibold uppercase">Apply for Financing</span>
                 </Link>
 
                 <Link
                   href="https://www.grwheels.ca/"
-                  className="w-fit transition-colors hover:text-gray-600"
+                  className="w-fit transition-colors hover:text-gray-400"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Tire & Rims</h2>
+                  <span className="text-[16px] font-semibold uppercase">Tire & Rims</span>
+                </Link>
+
+                <Link
+                  href="/payment-calculator"
+                  className="w-fit transition-colors hover:text-gray-400"
+                >
+                  <span className="text-[16px] font-semibold uppercase">Payment Calculator</span>
+                </Link>
+
+                <Link
+                  href="/about-us"
+                  className="w-fit transition-colors hover:text-gray-400"
+                >
+                  <span className="text-[16px] font-semibold uppercase">About Us</span>
                 </Link>
 
                 <Link
                   href="/blog"
                   target="_blank"
-                  className="w-fit transition-colors hover:text-gray-600"
+                  className="w-fit transition-colors hover:text-gray-400"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Blog</h2>
+                  <span className="text-[16px] font-semibold uppercase">Blog</span>
                 </Link>
 
                 <Link
-                  href="/finance"
-                  className="w-fit transition-colors hover:text-gray-600"
+                  href="/contact"
+                  className="w-fit transition-colors hover:text-gray-400"
                 >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Financing</h2>
+                  <span className="text-[16px] font-semibold uppercase">Contact</span>
                 </Link>
-
-                <Link
-                  href="/payment-calculator"
-                  className="w-fit transition-colors hover:text-gray-600"
-                >
-                  <h2 className="text-[20px] font-semibold text-gray-900">Payment Calculator</h2>
-                </Link>
-
-                
               </div>
             </section>
 
