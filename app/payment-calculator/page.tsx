@@ -144,8 +144,8 @@ export default function PaymentCalculator() {
     return (
         <>
             <Header />
-            <div className='bg-gray-400/20 lg:px-44 mt-36 lg:mt-10'>
-                <div className="lg:mt-20 mx-auto px-7 lg:px-0 py-16 lg:py-12 font-sans text-gray-700">
+            <div className='bg-gray-400/20 lg:px-28 mt-36 lg:mt-10'>
+                <div className="lg:mt-20 mx-auto px-7 max-w-[1440px] lg:px-0 py-16 lg:py-12 font-sans text-gray-700">
                     <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Payment Calculator</h1>
 
                     <div className=' bg-white'>
@@ -358,7 +358,7 @@ export default function PaymentCalculator() {
                                     <p className="text-xl lg:text-sm tracking-wider mb-4">
                                         Based on your input, your estimated payment:
                                     </p>
-                                    <h4 className="text-md font-semibold text-gray-600 my-8">Bi-Weekly Payment</h4>
+                                    <h4 className="text-md font-semibold text-gray-600 mt-6 mb-1">Bi-Weekly Payment</h4>
                                     <h3 className="text-4xl font-bold text-gray-900 mb-8">${biWeeklyPayment}</h3>
 
                                     <Link href={"/finance"}>
