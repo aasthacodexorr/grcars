@@ -170,7 +170,7 @@ const PopularModels = () => {
         </div>
 
         {/* Mobile Pagination Dots */}
-        <div className="flex md:hidden items-center justify-center gap-2 mt-6">
+        <div className="flex md:hidden items-center justify-center gap-2 my-6">
           {Array.from({ length: totalMobilePages }).map((_, index) => (
             <button
               key={index}

@@ -41,6 +41,15 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  async rewrites() {
+    return [
+      {
+        source: '/:seoUrl(used-[a-zA-Z0-9-]+)',
+        destination: '/inventory',
+      },
+    ];
+  },
+
   // eslint: {
   //   ignoreDuringBuilds: true,
   // },

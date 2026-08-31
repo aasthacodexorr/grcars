@@ -14,6 +14,59 @@ export function setModelMakeMap(entries: Iterable<[string, string]>) {
 export function getModelMakeMap() {
   return MODEL_TO_MAKE;
 }
+
+export function parseInventorySeoUrl(pathname: string) {
+  const cleanPath = pathname.replace(/^\/|\/$/g, "").toLowerCase();
+  
+  if (!cleanPath.startsWith("used-")) return null;
+  
+  const rest = cleanPath.slice(5); 
+  
+  const makes = [
+    "mercedes-benz", "aston-martin", "land-rover", "volkswagen", 
+    "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", 
+    "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", 
+    "tesla", "rivian", "acura", "audi", "bmw", "buick", "dodge", 
+    "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", 
+    "ram", "volvo", "alfa-romeo"
+  ];
+  
+  let matchedMake = "";
+  for (const m of makes) {
+    if (rest.startsWith(m + "-") && m.length > matchedMake.length) {
+      matchedMake = m;
+    }
+  }
+  
+  if (matchedMake) {
+    const rawLocation = rest.slice(matchedMake.length + 1);
+    if (rawLocation) {
+      return {
+        make: titleCase(matchedMake),
+        location: titleCase(rawLocation)
+      };
+    }
+  }
+  
+  const lastHyphenIndex = rest.lastIndexOf("-");
+  if (lastHyphenIndex !== -1) {
+    return {
+      make: titleCase(rest.slice(0, lastHyphenIndex)),
+      location: titleCase(rest.slice(lastHyphenIndex + 1))
+    };
+  }
+  
+  return null;
+}
+
+const titleCase = (value: string) => value
+  .split("-")
+  .filter(Boolean)
+  .map((part) => {
+    const acronyms: Record<string, string> = { bmw: "BMW", gmc: "GMC", ram: "RAM", suv: "SUV" };
+    return acronyms[part.toLowerCase()] || `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
+  })
+  .join(" ");
  
 export const FILTER_KEYS: Record<string, string> = {
   location: "locations",
@@ -105,6 +158,8 @@ const PATH_ATTRIBUTES = [
 type PathFilters = Partial<Record<(typeof PATH_ATTRIBUTES)[number], string[]>>;
 
 function isInventoryListingPath(pathname: string) {
+  if (parseInventorySeoUrl(pathname)) return true;
+
   const segments = pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean);
   if (!segments.length) return pathname === "/inventory" || pathname === "/inventory/";
 
@@ -114,15 +169,6 @@ function isInventoryListingPath(pathname: string) {
   const numericValue = Number(firstToken);
   return !/^\d+$/.test(firstToken) || (numericValue >= 1900 && numericValue <= 2100);
 }
-
-const titleCase = (value: string) => value
-  .split("-")
-  .filter(Boolean)
-  .map((part) => {
-    const acronyms: Record<string, string> = { bmw: "BMW", gmc: "GMC", ram: "RAM", suv: "SUV" };
-    return acronyms[part.toLowerCase()] || `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
-  })
-  .join(" ");
 
 function readPathOnlyFilters(segments: string[], refinementList: PlainObject) {
   const set = (attribute: keyof PathFilters, value: string) => {
@@ -237,6 +283,19 @@ function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
   const params: string[] = [];
   const appended = new Set<string>();
   
+  let isSeoUrl = false;
+  let seoData: { make: string, location: string } | null = null;
+  if (typeof window !== "undefined") {
+    seoData = parseInventorySeoUrl(window.location.pathname);
+    if (seoData) {
+      const currentMakes = route.refinementList?.make || [];
+      const hasSeoMake = currentMakes.some((m: string) => m.toLowerCase() === seoData!.make.toLowerCase());
+      if (hasSeoMake) {
+        isSeoUrl = true;
+      }
+    }
+  }
+  
   // Get the currently selected makes from the route
   const selectedMakes = new Set<string>(route.refinementList?.make || []);
   
@@ -263,17 +322,25 @@ function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
   
   const appendFacet = (attribute: string) => {
     const values: string[] = route.refinementList?.[attribute] || [];
-    if (!values.length || pathFilters[attribute as keyof PathFilters]?.length) return;
+    let activeValues = values;
+    
+    if (isSeoUrl && seoData) {
+      if (attribute === "make") {
+        activeValues = values.filter(v => v.toLowerCase() !== seoData!.make.toLowerCase());
+      } else if (attribute === "location") {
+        activeValues = values.filter(v => v.toLowerCase() !== seoData!.location.toLowerCase());
+      }
+    }
+    
+    if (!activeValues.length && (!isSeoUrl && pathFilters[attribute as keyof PathFilters]?.length)) return;
+    if (!activeValues.length) return;
 
     let serializedValues: string[];
     if (attribute === "model") {
       // Filter models to only include those whose make is in selectedMakes
-      serializedValues = values
+      serializedValues = activeValues
         .filter((model) => {
           const make = modelMakeAssociations.get(model);
-          // Keep the model if:
-          // 1. Its make is in selectedMakes, OR
-          // 2. Its make is unknown (not yet in map - will be resolved when data loads)
           const isValid = !make || selectedMakes.has(make);
           if (!isValid) {
             console.log(`[serializePublicUrl] filtering out orphaned model: ${model} (make: ${make}, selected: ${Array.from(selectedMakes).join(",")})`);
@@ -287,7 +354,7 @@ function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
       // If no valid models remain, don't add the parameter at all
       if (!serializedValues.length) return;
     } else {
-      serializedValues = values.map(queryValue);
+      serializedValues = activeValues.map(queryValue);
     }
     
     params.push(`${FILTER_KEYS[attribute]}=${serializedValues.join(",")}`);
@@ -319,17 +386,23 @@ function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
     params.push(`sortBy=status_rank:asc,${sort.field}:${sort.direction.toLowerCase()}`);
   }
   
-  const pathValues = (attributes: readonly (keyof PathFilters)[]) =>
-    attributes
-      .map((attribute) => pathFilters[attribute]?.map(routeValue).join(","))
-      .filter((value): value is string => Boolean(value));
-  const vehicleSegments = pathValues(["year", "make", "model", "body_type"]);
-  const detailSegments = pathValues(["vehicle_type", "exterior_color", "fuel_type", "location"]);
-  const path = vehicleSegments.length
-    ? `/inventory/${vehicleSegments.join("-")}${detailSegments.length ? `/${detailSegments.join("-")}` : ""}`
-    : detailSegments.length
-      ? `/inventory/${detailSegments.join("-")}`
-      : "/inventory";
+  let path = "";
+  if (isSeoUrl && typeof window !== "undefined") {
+    path = window.location.pathname;
+  } else {
+    const pathValues = (attributes: readonly (keyof PathFilters)[]) =>
+      attributes
+        .map((attribute) => pathFilters[attribute]?.map(routeValue).join(","))
+        .filter((value): value is string => Boolean(value));
+    const vehicleSegments = pathValues(["year", "make", "model", "body_type"]);
+    const detailSegments = pathValues(["vehicle_type", "exterior_color", "fuel_type", "location"]);
+    path = vehicleSegments.length
+      ? `/inventory/${vehicleSegments.join("-")}${detailSegments.length ? `/${detailSegments.join("-")}` : ""}`
+      : detailSegments.length
+        ? `/inventory/${detailSegments.join("-")}`
+        : "/inventory";
+  }
+  
   return params.length ? `${path}?${params.join("&")}` : path;
 }
 
@@ -436,7 +509,18 @@ function readRouteState(): PlainObject {
   // A fresh request has no history state. Decode the canonical path values
   // for any refinements not already supplied in the (non-path) query string.
   const segments = window.location.pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean);
-  if (!pathFilters && isInventoryListingPath(window.location.pathname)) {
+  const seoData = parseInventorySeoUrl(window.location.pathname);
+  if (seoData) {
+    if (!refinementList.make) refinementList.make = [];
+    if (!refinementList.make.includes(seoData.make)) {
+      refinementList.make.push(seoData.make);
+    }
+    
+    if (!refinementList.location) refinementList.location = [];
+    if (!refinementList.location.includes(seoData.location)) {
+       refinementList.location.push(seoData.location);
+    }
+  } else if (!pathFilters && isInventoryListingPath(window.location.pathname)) {
     readPathOnlyFilters(segments, refinementList);
   }
 
