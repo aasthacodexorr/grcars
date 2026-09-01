@@ -148,13 +148,13 @@ const Footer = () => {
                   <ul className="space-y-3 text-[15px] font-sans">
                     {sec.links.map((link, linkIdx) => (
                       <li key={linkIdx}>
-                        <Link
+                        <a
                           href={link.href}
                           onClick={(e) => ("forceReload" in link && link.forceReload) && handleInventoryClick(e, link.href)}
                           className="hover:text-white transition-colors flex items-center"
                         >
                           {link.label}
-                        </Link>
+                        </a>
                       </li>
                     ))}
                   </ul>
