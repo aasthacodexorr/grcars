@@ -152,6 +152,7 @@ const PATH_ATTRIBUTES = [
   "body_type",
   "vehicle_type",
   "exterior_color",
+  "transmission",
   "fuel_type",
   "location",
 ] as const;
@@ -237,6 +238,15 @@ function readPathOnlyFilters(segments: string[], refinementList: PlainObject) {
     remainingDetail = remainingDetail.slice(0, cardoraLocationStart).replace(/-$/, "");
   }
 
+  const transmissions = ["automatic", "manual"];
+  const transmission = transmissions.find((value) => remainingDetail === value || remainingDetail.endsWith(`-${value}`));
+  if (transmission) {
+    set("transmission", transmission);
+    remainingDetail = remainingDetail === transmission
+      ? ""
+      : remainingDetail.slice(0, -transmission.length).replace(/-$/, "");
+  }
+
   const fuelTypes = ["gasoline-fuel", "diesel-fuel", "plug-in-hybrid", "flex-fuel", "hybrid", "electric"];
   const fuelType = fuelTypes.find((value) => remainingDetail === value || remainingDetail.endsWith(`-${value}`));
   if (fuelType) {
@@ -281,10 +291,24 @@ function getRangeBounds(value: unknown): [unknown, unknown] {
 
 function getPathFilters(route: PlainObject): PathFilters {
   const filters: PathFilters = {};
-  PATH_ATTRIBUTES.forEach((attribute) => {
+  // Include all attributes that can be path filters when they have exactly 1 value
+  const pathFilterAttributes = [
+    "year",
+    "make",
+    "model",
+    "body_type",
+    "vehicle_type",
+    "exterior_color",
+    "fuel_type",
+    "location",
+    "transmission",
+  ] as const;
+  
+  pathFilterAttributes.forEach((attribute) => {
     const values = route.refinementList?.[attribute] || [];
     if (values.length === 1) filters[attribute] = values;
   });
+  
   if (filters.model && !filters.make) delete filters.model;
   return filters;
 }
@@ -367,8 +391,12 @@ function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
       serializedValues = activeValues.map(queryValue);
     }
     
-    params.push(`${FILTER_KEYS[attribute]}=${serializedValues.join(",")}`);
-    appended.add(attribute);
+    // Only add to query string if more than 1 value is selected
+    // Single values are handled by path filters
+    if (serializedValues.length > 1) {
+      params.push(`${FILTER_KEYS[attribute]}=${serializedValues.join(",")}`);
+      appended.add(attribute);
+    }
   };
   const appendRange = (attribute: keyof typeof RANGE_KEYS, index: 0 | 1) => {
     const [low, high] = getRangeBounds(route.range?.[attribute]);
@@ -405,7 +433,7 @@ function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
         .map((attribute) => pathFilters[attribute]?.map(routeValue).join(","))
         .filter((value): value is string => Boolean(value));
     const vehicleSegments = pathValues(["year", "make", "model", "body_type"]);
-    const detailSegments = pathValues(["vehicle_type", "exterior_color", "fuel_type", "location"]);
+    const detailSegments = pathValues(["vehicle_type", "exterior_color", "transmission", "fuel_type", "location"]);
     path = vehicleSegments.length
       ? `/inventory/${vehicleSegments.join("-")}${detailSegments.length ? `/${detailSegments.join("-")}` : ""}`
       : detailSegments.length
