@@ -60,9 +60,19 @@ export const getInventoryUrlByRange = (attribute: string, range: string, _appCon
 
 export function isVehicleDetailSlug(slug: string[] | undefined | null): boolean {
   if (!slug || slug.length !== 1) return false;
-  const leadingToken = slug[0].split("-", 1)[0] || "";
+  const segment = slug[0];
+  const leadingToken = segment.split("-", 1)[0] || "";
+  if (!/^\d+$/.test(leadingToken)) return false;
   const leadingNumber = Number(leadingToken);
-  return /^\d+$/.test(leadingToken) && (leadingNumber < 1900 || leadingNumber > 2100);
+  // IDs clearly outside the vehicle-year range (1900–2100) are unambiguously vehicle IDs.
+  if (leadingNumber < 1900 || leadingNumber > 2100) return true;
+  // For IDs that fall inside the year range (e.g. 1909), confirm by checking whether
+  // the part after the numeric prefix starts with another 4-digit year (the VDP slug
+  // format is "{id}-{year}-{make}-{model}", e.g. "1909-2019-nissan-sentra-sv").
+  const afterId = segment.slice(leadingToken.length + 1); // skip "{id}-"
+  const nextToken = afterId.split("-", 1)[0] || "";
+  const nextNumber = Number(nextToken);
+  return /^\d{4}$/.test(nextToken) && nextNumber >= 1900 && nextNumber <= 2100;
 }
 
 export async function getVehicleById(id: string, appConfig: AppConfig): Promise<Record<string, any> | null> {

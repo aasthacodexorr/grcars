@@ -165,9 +165,19 @@ function isInventoryListingPath(pathname: string) {
 
   // Vehicle detail links begin with an inventory ID (for example 3019-...);
   // listing paths may begin with a four-digit vehicle year.
-  const firstToken = segments[0].split("-", 1)[0];
+  const firstSegment = segments[0];
+  const firstToken = firstSegment.split("-", 1)[0];
   const numericValue = Number(firstToken);
-  return !/^\d+$/.test(firstToken) || (numericValue >= 1900 && numericValue <= 2100);
+  if (!/^\d+$/.test(firstToken)) return true; // non-numeric → listing path
+  // IDs clearly outside the year range are vehicle detail pages.
+  if (numericValue < 1900 || numericValue > 2100) return false;
+  // Ambiguous: the number is in the year range. Check if the next dash-token is
+  // also a 4-digit year — that pattern ({id}-{year}-...) signals a VDP slug.
+  const afterFirst = firstSegment.slice(firstToken.length + 1);
+  const nextToken = afterFirst.split("-", 1)[0] || "";
+  const nextNum = Number(nextToken);
+  if (/^\d{4}$/.test(nextToken) && nextNum >= 1900 && nextNum <= 2100) return false; // VDP
+  return true; // treat as listing path (year filter)
 }
 
 function readPathOnlyFilters(segments: string[], refinementList: PlainObject) {
