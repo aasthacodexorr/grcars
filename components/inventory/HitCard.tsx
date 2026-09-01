@@ -88,7 +88,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
 
             {/* DEAL PENDING Ribbon (Centered) */}
             {isDealPending && (
-              <div className="absolute uppercase top-5 left-1/2 -translate-x-1/2 text-white text-[11px] font-semibold shadow-lg text-center py-[6px] px-4 rounded-md z-10 bg-brand-green whitespace-nowrap">
+              <div className="absolute uppercase top-2 left-1/2 -translate-x-1/2 text-white text-[11px] font-semibold shadow-lg text-center py-[6px] px-4 rounded-md z-10 bg-brand-green whitespace-nowrap">
                 Deal Pending
               </div>
             )}
@@ -119,7 +119,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
                     });
                   }
                 }}
-                className="absolute top-[20px] right-[20px] p-1 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
+                className="absolute top-[7px] right-[7px] p-1 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
                 aria-label={isInWishlist(hit.inventory_id) ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
