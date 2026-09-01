@@ -43,7 +43,7 @@ export default function LowestPriceGuarantee() {
 
                     {/* Banner Content - Aligned with About page */}
                     <div className="relative z-10 w-full max-w-[1240px] mx-auto px-6 md:px-0 text-white">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
+                        <h1 className="text-3xl font-semibold sm:text-4xl md:text-5xl tracking-tight">
                             Lowest Price Guaranteed on Used Cars
                         </h1>
                     </div>
