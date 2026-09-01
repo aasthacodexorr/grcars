@@ -83,4 +83,5 @@ declare module 'lucide-react' {
   export const ArrowDownCircle:Icon;
   export const Grid:Icon;
   export const LayoutGrid:Icon;
+  export const CircleArrowUp:Icon;
 }

@@ -38,6 +38,7 @@ import { useAppConfig } from "@/app/providers";
 import { InventoryGridSkeleton, InventoryLoadMoreSkeleton } from "@/components/inventory/HitCardSkeleton";
 import { AD_CARDS } from "@/components/inventory/AdCard";
 import { useDrawer } from "@/context/DrawerContext";
+import { CircleArrowUp } from "lucide-react";
 
 const AD_BLOCK_CYCLE = 6 + 7 + 8;
 const AD_SLOT_TO_INDEX: Record<number, number> = { 6: 0, 13: 1, 0: 2 };
@@ -1255,7 +1256,7 @@ useEffect(() => {
                 ].join(" ")}
                 title="Scroll to top"
               >
-                <ChevronUp className="h-5 w-5" />
+                <CircleArrowUp className="h-7 w-7" />
               </button>
 
               {/* ── Search + Sort bar (sticky below header) ── */}
