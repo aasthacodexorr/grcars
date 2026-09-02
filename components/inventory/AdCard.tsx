@@ -1,7 +1,10 @@
 "use client";
+import { useAppConfig } from '@/app/providers';
 import AdCard1 from '@/assets/icons/ad-card-1.jpg'
 import AdCard2 from '@/assets/icons/ad-card-2.jpg'
 import AdCard3 from '@/assets/icons/ad-card-3.jpg'
+import { getConstants } from '@/constants';
+import { defaultAppConfig } from '@/lib/appConfig';
 
 
 const CardShell = ({
@@ -116,7 +119,7 @@ export const GreatDealsAdCard = () => {
 
       {/* Heading with Info Icon */}
       <h3 className="text-[22px] font-bold tracking-tight text-[#051329] leading-7 flex items-center justify-center gap-1.5 flex-wrap">
-        <span>Every vehicle you see is GrCars Certified.</span>
+        <span>Every vehicle you see is {defaultAppConfig.dealership.dealership_name} Certified.</span>
 
       </h3>
 
