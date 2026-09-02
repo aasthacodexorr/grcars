@@ -113,7 +113,7 @@ export const GreatDealsAdCard = () => {
         <img
           src={AdCard3?.src}
           alt="GrCars Certified"
-          className="w-72 h-auto object-contain transform -rotate-12 bg-white transition-transform duration-300"
+          className="w-72 h-auto object-contain transform bg-white transition-transform duration-300"
         />
       </div>
 
