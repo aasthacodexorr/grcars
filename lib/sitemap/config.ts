@@ -3,8 +3,8 @@ export type SitemapIndexItem = {
   lastmod?: string;
 };
 
-export const SITE_BASE_URL = 'https://gediroute.zopsoftware.com';
-export const CARDORA_POSTS_BASE_URL = 'https://gediroute.zopsoftware.com';
+// URLs are now environment-aware via getSitemapBaseUrl()
+// These constants are kept for reference but should not be used directly in URL generation
 
 export const SITEMAP_INDEX: SitemapIndexItem[] = [
   {
