@@ -247,7 +247,7 @@ export default function BudgetCards() {
             </div>
 
             <a
-              href="/inventory"
+              href="/inventory?priceHigh=20000"
               className="mt-auto block w-full rounded-full bg-[#0062bd] hover:bg-[#0052a0] text-white text-[14px] font-bold leading-none py-3 px-3.5 text-center no-underline transition-colors"
             >
               Explore Budget Options
