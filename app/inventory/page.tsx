@@ -1252,7 +1252,7 @@ useEffect(() => {
                 onClick={scrollToTop}
                 className={[
                   "fixed bottom-6 right-6 z-40 pointer-events-auto cursor-pointer",
-                  "w-12 h-12 rounded-tl-2xl rounded-br-2xl bg-black hover:bg-gray-900",
+                  "w-12 h-12 rounded-full bg-black hover:bg-gray-900",
                   "flex items-center justify-center text-white shadow-lg active:scale-95",
                   "transition-all duration-200 border-2 border-black shadow-xl",
                   showScrollTop

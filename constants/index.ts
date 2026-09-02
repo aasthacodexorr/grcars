@@ -149,13 +149,18 @@ export const getConstants = (appConfig: AppConfig) => {
         googleMapsUrl: safeD.address_map_url_1 || safeD.address_1_bar,
         tradeFormByVehicle: `${appConfig.site.saas_api}/api/templates/render/17`,
         tradeFormByVin: `https://truetrade.carfax.ca/?token=6e815089-b095-4c90-899f-af19e3390145`,
-        bookAppointment:`${appConfig.site.saas_api}/api/templates/render/23`,
+        bookAppointment:`${appConfig.site.saas_api}/api/templates/render/3`,
         contactUsBaseUrl:`${appConfig.site.saas_api}/api/templates/render/2`,
         vehiclePageContactUsBaseUrl:`${appConfig.site.saas_api}/api/templates/render/7`,
         tradeInMyCarVehicle:`${appConfig.site.saas_api}/api/templates/render/20?`,
         thankYouTradeIn:`${appConfig.site.saas_api}/api/templates/render/25`,
         thankYouFinance:`${appConfig.site.saas_api}/api/templates/render/19`,
-        scheduleAnAppointmentWithExpert:`${appConfig.site.saas_api}/api/templates/render/24`
+        scheduleAnAppointmentWithExpert:`${appConfig.site.saas_api}/api/templates/render/24`,
+        bookTestDrive:`${appConfig.site.saas_api}/api/templates/render/6`,
+        completeCredit:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=1`,
+        internalTrade:`https://forms.zohopublic.com/grcars/form/TradeForm/formperma/0h5KDqn5SYh-JfKpu9dc6MWQGOwcUPx5t78YEq6jVCY?zf_lang=en`,
+        testForm:`https://form.jotform.com/241084659336260?parentURL=https%3A%2F%2Fwww.grcars.ca%2Ftest-form%2F&jsForm=true`,
+
       },
       api: {
         saasApi: appConfig.site.saas_api,

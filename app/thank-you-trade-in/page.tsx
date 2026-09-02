@@ -5,6 +5,7 @@ import { Footer, Header } from "@/components/layout";
 import { useAppConfig } from "../providers";
 import { getConstants } from "@/constants";
 import { Lock, Mail, Smartphone } from "lucide-react";
+import { defaultAppConfig } from "@/lib/appConfig";
 
 export default function ThankYouTradeIn() {
     const appConfig = useAppConfig();
@@ -23,7 +24,7 @@ export default function ThankYouTradeIn() {
 
                 <p className="text-center font-medium max-w-xl text-[17px] mt-4">
                     Our smart pricing system is analyzing your vehicle details and
-                    matching them with real-time market data. A GrCars specialist will
+                    matching them with real-time market data. A {defaultAppConfig?.dealership?.dealership_name} specialist will
                     contact you shortly to review your offer and next steps.
                 </p>
             </div>
@@ -51,7 +52,7 @@ export default function ThankYouTradeIn() {
 
                     <li className="inline-flex items-center gap-[4px]">
                         <Smartphone size={14} strokeWidth={2} />
-                        <span>One of our GrCars specialists will reach out shortly with the next steps.</span>
+                        <span>One of our {defaultAppConfig?.dealership?.dealership_name} specialists will reach out shortly with the next steps.</span>
                     </li>
                 </ul>
             </div>

@@ -15,6 +15,7 @@ import { getConstants } from "@/constants";
 import Link from "next/link";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import CarfaxTradeIn from "@/components/trade-in/CarfaxTradeIn";
+import { defaultAppConfig } from "@/lib/appConfig";
 
 interface Step {
   icon: ReactNode;  
@@ -299,7 +300,7 @@ const TradeIn = () => {
         <h2 className="text-[28px] md:text-3xl font-bold text-slate-900">
           How to Trade In a Car?
         </h2>
-        <p className="text-base my-1 text-gray-500">Trade in or sell your vehicle to GrCars in just a few easy steps.</p>
+        <p className="text-base my-1 text-gray-500">Trade in or sell your vehicle to {defaultAppConfig?.dealership?.dealership_name} in just a few easy steps.</p>
       </div>
 
       {/* Grid Layout */}

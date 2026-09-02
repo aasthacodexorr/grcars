@@ -3,8 +3,8 @@ export type SitemapIndexItem = {
   lastmod?: string;
 };
 
-export const SITE_BASE_URL = 'https://gediroute.zopsoftware.com';
-export const CARDORA_POSTS_BASE_URL = 'https://gediroute.zopsoftware.com';
+// URLs are now environment-aware via getSitemapBaseUrl()
+// These constants are kept for reference but should not be used directly in URL generation
 
 export const SITEMAP_INDEX: SitemapIndexItem[] = [
   {
@@ -40,6 +40,12 @@ export const SITE_PAGES = [
   '/used-dodge-brampton/',
   '/used-chrysler-brampton/',
   '/used-toyota-brampton/',
+  '/used-honda-brampton/',
+  '/internal-trade',
+  '/test-form',
+  '/complete-credit-application/',
+  '/book-a-test-drive',
+  '/vehicle-financing/',
   '/about-us/',
   '/payment-calculator/',
   '/thank-you/',
@@ -48,8 +54,10 @@ export const SITE_PAGES = [
   '/terms-conditions/',
   '/contact-us/',
   '/book-an-appointment/',
+  '/trade-in-my-car',
   '/finance/',
   '/inventory/',
+  '/lowest-price-guaranteed/'
 ];
 
 export const SITE_POSTS_2026 = [
