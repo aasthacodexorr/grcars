@@ -240,9 +240,9 @@ export default function BlogPage() {
             </span>
             <Link
               href="/finance"
-              className="w-full sm:w-auto px-6 py-2.5 bg-white hover:bg-gray-100 text-[#0066cc] font-semibold text-xs tracking-wider uppercase transition-colors"
+              className="w-full capitalize sm:w-auto px-6 py-2.5 bg-white hover:bg-gray-100 text-[#0066cc] font-semibold text-xs tracking-wider uppercase transition-colors"
             >
-              GET PRE-APPROVED
+              GET pre-qualified
             </Link>
           </div>
         </div>

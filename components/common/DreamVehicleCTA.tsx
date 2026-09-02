@@ -34,7 +34,7 @@ const DreamVehicleCTA = () => {
             href="/finance"
             className="inline-flex items-center gap-2 rounded-full border-2 border-foreground/80 text-foreground px-7 py-4 font-semibold text-[16px] hover:bg-foreground hover:text-background transition-colors"
           >
-            Get pre-qualified
+            Get Pre-Qualified
           </a>
         </div>
       </div>
