@@ -14,6 +14,7 @@ import { getConstants, NAV_ITEMS } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { useWishlist } from "@/context/WishlistContext";
 import { useDrawer } from "@/context/DrawerContext";
+import { isVehicleDetailSlug } from "@/lib/inventoryUrls";
 const googleMapsUrl = "https://www.google.com/maps/place/Gedi+Route+Cars/@43.7055262,-79.6938153,4367m/data=!3m1!1e3!4m6!3m5!1s0x882b3f18084db7a7:0x703d924801f6b7fa!8m2!3d43.7016063!4d-79.702997!16s%2Fg%2F11kr86czzy?entry=ttu&g_ep=EgoyMDI2MDgyMy4wIKXMDSoASAFQAw%3D%3D";
 
 /* Component */
@@ -26,9 +27,12 @@ const Header = () => {
   const { openWishlistDrawer } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
 
-  // Matches routes starting with /inventory/ followed by digits (e.g., /inventory/2564 or /inventory/2564-honda-civic)
-  const hasVehicleId = /^\/inventory\/\d+(-[^\/]+)?$/.test(pathname || "");
-  
+ 
+  const inventorySlug = pathname?.startsWith("/inventory/")
+    ? pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean)
+    : [];
+  const hasVehicleId = isVehicleDetailSlug(inventorySlug);
+
   // Relative only if vehicle ID exists; fixed for all other paths (including sub-routes like /inventory/search)
   const positionClass = hasVehicleId ? "relative" : "fixed top-0";
 
