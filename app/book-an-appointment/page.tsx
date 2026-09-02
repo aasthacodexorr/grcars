@@ -1,29 +1,72 @@
+ 
 "use client"
 
 import { GetInTouch } from '@/components/common';
 import { Footer, Header } from '@/components/layout';
 import { getConstants } from '@/constants';
 import { useAppConfig } from '@/app/providers';
+import { useEffect, useState } from 'react';
 
 const VehicleForm = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
+
+  const [iframeHeight, setIframeHeight] = useState(1650);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== 'https://gediroute.zopsoftware.com') return;
+
+      const { data } = event;
+
+      if (
+        data?.element_id === 'service_appointment' &&
+        data?.type === 'css' &&
+        data?.value
+      ) {
+        const height = Number(data.value);
+
+        if (!Number.isNaN(height) && height > 0) {
+          setIframeHeight(height);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   return (
     <>
       <Header />
-      <div className="bg-white mx-auto w-full px-5  lg:px-64 flex justify-center mt-3 tracking-wider lg:mt-32">
-        <iframe
-          src={SITE_CONFIG.urls.bookAppointment}
-          title="Vehicle Trade Form"
-          className='w-[900px] h-[140vh] "[&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar-track]:hidden",
-                "lg:[scrollbar-width:none] lg:[-ms-overflow-style:none]"'
-        />
-      </div>
-      
+
+      <main className='lg:mt-36 mt-56 mb-10'>
+        <section className="container mx-auto">
+          <h1 className="text-3xl font-bold">Book A Service Appointment</h1>
+
+          <p className="mt-3">
+            Please complete the form below and one of our representatives will contact you as soon as possible to confirm the availability of your appointment date and time.
+          </p>
+
+          <div className="w-full overflow-hidden">
+            <iframe
+              id="service_appointment"
+              src={SITE_CONFIG.urls.bookAppointment}
+              title="Book A Service Appointment"
+              className="w-full border-0"
+              style={{ height: `${iframeHeight}px` }}
+            />
+          </div>
+        </section>
+      </main>
+
       <Footer />
     </>
-
   );
 };
 
 export default VehicleForm;
+ 

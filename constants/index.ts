@@ -149,7 +149,7 @@ export const getConstants = (appConfig: AppConfig) => {
         googleMapsUrl: safeD.address_map_url_1 || safeD.address_1_bar,
         tradeFormByVehicle: `${appConfig.site.saas_api}/api/templates/render/17`,
         tradeFormByVin: `https://truetrade.carfax.ca/?token=6e815089-b095-4c90-899f-af19e3390145`,
-        bookAppointment:`${appConfig.site.saas_api}/api/templates/render/23`,
+        bookAppointment:`${appConfig.site.saas_api}/api/templates/render/3`,
         contactUsBaseUrl:`${appConfig.site.saas_api}/api/templates/render/2`,
         vehiclePageContactUsBaseUrl:`${appConfig.site.saas_api}/api/templates/render/7`,
         tradeInMyCarVehicle:`${appConfig.site.saas_api}/api/templates/render/20?`,
