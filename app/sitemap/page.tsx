@@ -27,8 +27,13 @@ function extractVehicleTitle(url: string): string {
     const slug = match[1];
     const parts = slug.split('-');
 
-    // Remove numeric ID if it exists
-    const titleParts = parts.filter((part) => !/^\d+$/.test(part));
+    // Handle new format: {id}-{year}-{make}-{model}-{trim}
+    // Example: 2578-2025-toyota-camry-hybrid-se-upgrade-awd
+    // Remove the first part if it's a numeric ID
+    let titleParts = parts;
+    if (parts.length > 0 && /^\d+$/.test(parts[0])) {
+      titleParts = parts.slice(1);
+    }
 
     if (!titleParts.length) return '';
 
