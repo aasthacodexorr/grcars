@@ -89,7 +89,7 @@ export default function ContactUs() {
                 <section className="max-w-[1280px] mx-auto px-8 lg:px-2 py-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
                         <div>
-                            <span className="text-base lg:text-xl font-bold uppercase text-gray-400 block mb-2">
+                            <span className="text-base lg:text-xl font-semibold uppercase text-gray-900 mb-2 ml-1   ">
                                 CONTACT US
                             </span>
                             <h1 className="text-4xl font-semibold text-gray-900 leading-tight">
@@ -108,19 +108,12 @@ export default function ContactUs() {
                     </div>
 
                     {/* Contact Methods & Form Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:border-t border-b lg:pb-12 border-gray-100 lg:pt-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:pb-12 border-gray-100 lg:pt-12">
                         {/* Left Column: Call / Text & Chat */}
                         <div className="space-y-10">
                             {/* Call Section */}
                             <div className="space-y-3">
                                 <h3 className="text-xl font-bold text-gray-900">Call or text us</h3>
-                                <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                                    Our Customer Support team is available via telephone 7 days a week. You can also check out our{' '}
-                                    <a href="#" className="underline font-medium hover:text-black">
-                                        FAQ Page
-                                    </a>{' '}
-                                    for more information.
-                                </p>
                                 <ul className="text-lg text-gray-600 space-y-1 py-1 mb-8">
                                     <li>
                                         <strong className="text-gray-800">Monday – Friday:</strong> 10am – 8pm
@@ -197,7 +190,7 @@ export default function ContactUs() {
                             id={loc.id}
                             className="scroll-mt-36" /* Offsets sticky headers during scroll */
                         >
-                            <div className="max-w-[1280px] pb-12 border-b border-gray-200 mx-auto px-8 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            <div className="max-w-[1280px] pb-12 mx-auto px-8 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div className="space-y-4">
                                     <h3 className="text-2xl font-extrabold text-gray-900">{loc.name}</h3>
                                     <p className="text-lg text-gray-600 whitespace-pre-line leading-relaxed">
@@ -214,7 +207,7 @@ export default function ContactUs() {
                                     </p>
                                     <button
                                         onClick={scrollToTop}
-                                        className="inline-block bg-black text-white cursor-pointer text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors mt-2"
+                                        className="hidden lg:inline-block bg-black text-white cursor-pointer text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors mt-2"
                                     >
                                         Back to top
                                     </button>
