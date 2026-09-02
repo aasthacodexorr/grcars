@@ -40,6 +40,8 @@ export const SITE_PAGES = [
   '/used-dodge-brampton/',
   '/used-chrysler-brampton/',
   '/used-toyota-brampton/',
+  '/used-honda-brampton/',
+  '/vehicle-financing/',
   '/about-us/',
   '/payment-calculator/',
   '/thank-you/',
@@ -50,6 +52,7 @@ export const SITE_PAGES = [
   '/book-an-appointment/',
   '/finance/',
   '/inventory/',
+  '/lowest-price-guaranteed/'
 ];
 
 export const SITE_POSTS_2026 = [
