@@ -42,6 +42,17 @@ export async function GET_WEBSITE_SITEMAP() {
     for (const host of INVENTORY_HOST_REWRITES) {
       xml = xml.replaceAll(host, baseUrl);
     }
+
+    // Reformat inventory URLs from /inventory/{slug}/{id}/ to /inventory/{id}-{slug}
+    // This changes URLs like: /inventory/2025-toyota-camry-hybrid-se-upgrade-awd/2578/
+    // To: /inventory/2578-2025-toyota-camry-hybrid-se-upgrade-awd
+    xml = xml.replace(
+      /<loc>(.*?\/inventory\/)([^\/]+)\/(\d+)\/<\/loc>/g,
+      (_match, baseWithPath, slug, id) => {
+        return `<loc>${baseWithPath}${id}-${slug}</loc>`;
+      }
+    );
+
     const xslHeader = `<?xml-stylesheet type="text/xsl" href="${baseUrl}/sitemap.xsl"?>`;
 
     if (!xml.includes('xml-stylesheet')) {
