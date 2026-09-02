@@ -155,7 +155,10 @@ export const getConstants = (appConfig: AppConfig) => {
         tradeInMyCarVehicle:`${appConfig.site.saas_api}/api/templates/render/20?`,
         thankYouTradeIn:`${appConfig.site.saas_api}/api/templates/render/25`,
         thankYouFinance:`${appConfig.site.saas_api}/api/templates/render/19`,
-        scheduleAnAppointmentWithExpert:`${appConfig.site.saas_api}/api/templates/render/24`
+        scheduleAnAppointmentWithExpert:`${appConfig.site.saas_api}/api/templates/render/24`,
+        internalTrade:`https://forms.zohopublic.com/grcars/form/TradeForm/formperma/0h5KDqn5SYh-JfKpu9dc6MWQGOwcUPx5t78YEq6jVCY?zf_lang=en
+`,
+
       },
       api: {
         saasApi: appConfig.site.saas_api,

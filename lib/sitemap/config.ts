@@ -41,6 +41,7 @@ export const SITE_PAGES = [
   '/used-chrysler-brampton/',
   '/used-toyota-brampton/',
   '/used-honda-brampton/',
+  '/internal-trade',
   '/vehicle-financing/',
   '/about-us/',
   '/payment-calculator/',
