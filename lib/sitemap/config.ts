@@ -43,6 +43,7 @@ export const SITE_PAGES = [
   '/used-honda-brampton/',
   '/internal-trade',
   '/test-form',
+  '/book-a-test-drive',
   '/vehicle-financing/',
   '/about-us/',
   '/payment-calculator/',
