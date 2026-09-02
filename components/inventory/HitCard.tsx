@@ -216,7 +216,7 @@ export const HitCard = ({ hit }: { hit: any }) => {
                 e.stopPropagation();
                 setIsModalOpen(true);
               }}
-              className="cursor-pointer w-44 text-center rounded-full text-white py-[10px] text-[14px] sm:text-[15px] font-medium hover:opacity-90 transition-opacity bg-brand border border-brand-green2"
+              className="cursor-pointer w-44 capitalize text-center rounded-full text-white py-[10px] text-[14px] sm:text-[15px] font-medium hover:opacity-90 transition-opacity bg-brand border border-brand-green2"
             >
               Check availability
             </button>

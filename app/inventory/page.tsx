@@ -820,7 +820,6 @@ const PriceRangeFilter = () => {
           min={dynamicMin}
           max={dynamicMax}
           onChange={(e) => handleInputChange("min", e.target.value)}
-          onBlur={handleApply}
           onKeyDown={handleKeyDown}
           className="w-full h-[40px] px-3 border border-border-lightGray rounded-[6px] text-[14px] font-medium outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
@@ -832,10 +831,16 @@ const PriceRangeFilter = () => {
           min={dynamicMin}
           max={dynamicMax}
           onChange={(e) => handleInputChange("max", e.target.value)}
-          onBlur={handleApply}
           onKeyDown={handleKeyDown}
           className="w-full h-[40px] px-3 border border-border-lightGray rounded-[6px] text-[14px] font-medium outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
+        <button
+          type="button"
+          onClick={handleApply}
+          className="h-[40px] px-4 shrink-0 text-white rounded-[6px] cursor-pointer bg-brand text-[14px] font-bold"
+        >
+          Go
+        </button>
       </div>
 
       {/* Slider Bars Track */}

@@ -173,10 +173,10 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
 
         {/* Buttons Action Group */}
         <div className="hidden lg:block space-y-2.5 px-6 mb-5 text-center">
-          {/* Button 1: Get Pre-Approved */}
+          {/* Button 1: Get pre-qualified */}
           <a href="/vehicle-financing/" className="block w-full">
-            <button className="w-full cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-4 rounded-full transition-colors text-base shadow-sm">
-              Get Pre-Approved
+            <button className="w-full capitalize cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-4 rounded-full transition-colors text-base shadow-sm">
+              Get pre-qualified
             </button>
           </a>
 
@@ -203,8 +203,8 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
           }`}
       >
         <a href="/vehicle-financing/" className="flex-1">
-          <button className="w-full cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-3 rounded-full text-sm shadow-md">
-            Get Pre-Approved
+          <button className="w-full capitalize cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-3 rounded-full text-sm shadow-md">
+            Get pre-qualified
           </button>
         </a>
         <button

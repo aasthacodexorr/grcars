@@ -363,8 +363,8 @@ export default function PaymentCalculator() {
 
                                     <Link href={"/finance"}>
 
-                                        <button className="w-full cursor-pointer text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-sm mb-6 hover:brightness-95 bg-brand-gradient">
-                                            Get pre-approved
+                                        <button className="w-full capitalize cursor-pointer text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-sm mb-6 hover:brightness-95 bg-brand-gradient">
+                                            Get pre-qualified
                                         </button>
 
 

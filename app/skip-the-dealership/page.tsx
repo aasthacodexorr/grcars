@@ -78,9 +78,9 @@ export default function SkipTheDealership() {
                             </Link>
                             <Link
                                 href="/finance"
-                                className="bg-white px-8 py-3 rounded-full shadow-sm hover:shadow-md transition-all duration-200 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
+                                className="bg-white capitalize px-8 py-3 rounded-full shadow-sm hover:shadow-md transition-all duration-200 border border-brand2 text-brand2 hover:bg-brand-btn-gradient hover:text-white"
                             >
-                                Get Pre-Approved
+                                Get pre-qualified
                             </Link>
                         </motion.div>
                     </div>
