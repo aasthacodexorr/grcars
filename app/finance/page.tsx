@@ -110,38 +110,37 @@ const Finance = () => {
           </div>
         </div>
         {/* Welcome Banner Section */}
-       {/* Welcome Banner Section */}
-<div className="relative overflow-hidden text-white w-full left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] max-w-screen">
-  {/* Background Image Container */}
-  <div className="relative w-full min-h-[400px] md:min-h-[70vh]">
-    <Image
-      src={finImg}
-      alt="Gedi Route Dealership"
-      fill
-      priority
-      className="object-cover"
-    />
+        <div className="relative overflow-hidden text-white w-full left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] max-w-screen">
+          {/* Background Image Container */}
+          <div className="relative w-full min-h-[400px] md:min-h-[70vh]">
+            <Image
+              src={finImg}
+              alt="Gedi Route Dealership"
+              fill
+              priority
+              className="object-cover"
+            />
 
-    {/* Dark Overlay */}
-    <div className="absolute inset-0 bg-black/40" />
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-black/40" />
 
-    {/* Content Container aligned with site width */}
-    <div className="absolute inset-0 z-10 mx-auto max-w-[1280px] px-8 md:px-0 flex flex-col justify-center items-start text-left">
-      <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight mb-4">
-        Welcome to Gedi Route
-      </h2>
+            {/* Content Container aligned with site width */}
+            <div className="absolute inset-0 z-10 mx-auto max-w-[1280px] px-8 md:px-0 flex flex-col justify-center items-start text-left">
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight mb-4">
+                Welcome to Gedi Route
+              </h2>
 
-      <p className="text-base text-white font-bold max-w-2xl leading-relaxed">
-        Gedi Route is an OMVIC licensed dealer and a proud member of the
-        Used Car Dealers Association (UCDA) so you can buy your next
-        vehicle with confidence. At Gedi Route we proudly sell used
-        cars to customers from Brampton, Ontario including Toronto,
-        Mississauga, Etobicoke, Milton, Caledon, Oakville, Bolton,
-        Guelph, Kitchener, Burlington, Waterloo and surrounding areas.
-      </p>
-    </div>
-  </div>
-</div>
+              <p className="text-base text-white font-bold max-w-2xl leading-relaxed">
+                Gedi Route is an OMVIC licensed dealer and a proud member of the
+                Used Car Dealers Association (UCDA) so you can buy your next
+                vehicle with confidence. At Gedi Route we proudly sell used
+                cars to customers from Brampton, Ontario including Toronto,
+                Mississauga, Etobicoke, Milton, Caledon, Oakville, Bolton,
+                Guelph, Kitchener, Burlington, Waterloo and surrounding areas.
+              </p>
+            </div>
+          </div>
+        </div>
         <Reviews />
 
        <div className="mx-auto max-w-[1280px] px-8 md:px-0 py-10 flex flex-col justify-center items-center">
