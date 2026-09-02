@@ -54,6 +54,7 @@ export const SITE_PAGES = [
   '/terms-conditions/',
   '/contact-us/',
   '/book-an-appointment/',
+  '/trade-in-my-car',
   '/finance/',
   '/inventory/',
   '/lowest-price-guaranteed/'
