@@ -7,7 +7,6 @@ import { useAppConfig } from "@/app/providers";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-// Number of pills shown per "page" on mobile — drives the dot pagination
 const MOBILE_PILLS_PER_PAGE = 3;
 
 const CategoryPills = () => {
@@ -19,21 +18,15 @@ const CategoryPills = () => {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Show ALL categories on both mobile and desktop now
   const displayedCategories = allCategories;
+  const totalMobilePages = Math.ceil(displayedCategories.length / MOBILE_PILLS_PER_PAGE);
 
-  // Mobile pages: groups of MOBILE_PILLS_PER_PAGE pills, plus one final page for "Shop All"
-  const totalMobilePages =
-    Math.ceil(displayedCategories.length / MOBILE_PILLS_PER_PAGE);
-
-  // Check scroll position to update arrow disabled states & active dot indicator
   const checkScrollBounds = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
       setCanScrollLeft(scrollLeft > 5);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
 
-      // Each mobile "page" is exactly one container width wide
       const pageIndex = clientWidth > 0 ? Math.round(scrollLeft / clientWidth) : 0;
       setActiveIndex(Math.min(Math.max(pageIndex, 0), totalMobilePages - 1));
     }
@@ -50,7 +43,6 @@ const CategoryPills = () => {
       if (container) container.removeEventListener("scroll", checkScrollBounds);
       window.removeEventListener("resize", checkScrollBounds);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalMobilePages]);
 
   const handleScroll = (direction: "left" | "right") => {
@@ -65,7 +57,6 @@ const CategoryPills = () => {
     }
   };
 
-  // Scrolls to a given mobile "page" (group of 3 pills, or the Shop All page)
   const scrollToIndex = (index: number) => {
     if (scrollContainerRef.current) {
       const { clientWidth } = scrollContainerRef.current;
@@ -77,14 +68,13 @@ const CategoryPills = () => {
   };
 
   return (
-    <section className="w-full bg-white py-10 px-8 md:px-12 mt-2">
+    <section className="w-full bg-white py-10 px-3 md:px-12 mt-2 overflow-hidden">
       <div className="max-w-[1280px] mx-auto">
         {/* Header & Controls */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 px-6">
           <h2 className="text-[20px] md:text-[28px] font-bold text-[#0F2942]">
             Popular vehicle styles
           </h2>
-          {/* Arrow navigation: Hidden on mobile, visible on desktop */}
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => handleScroll("left")}
@@ -113,35 +103,39 @@ const CategoryPills = () => {
           </div>
         </div>
 
-        {/* Scrollable Cards Grid */}
+        {/* Scrollable Container */}
         <div
           ref={scrollContainerRef}
-          className="flex items-center gap-8 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
+          className="flex items-center overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory py-2 scroll-smooth"
         >
-          {displayedCategories.map(({ id, label, image, href }) => (
-            <div
-              key={id}
-              className="snap-start shrink-0 flex items-center justify-center
-                         w-[calc((100%-4rem)/3)] min-w-[calc((100%-4rem)/3)]
-                         md:w-auto md:min-w-0"
-            >
-              <CategoryPill label={label} image={image} href={href} />
-            </div>
-          ))}
+          {displayedCategories.map(({ id, label, image, href }, index) => {
+            // Apply snap-start to the first item of each 3-item page group
+            const isPageStart = index % MOBILE_PILLS_PER_PAGE === 0;
+            return (
+              <div
+                key={id}
+                className={`shrink-0 flex items-center justify-center w-1/3 md:w-auto md:min-w-[140px] ${
+                  isPageStart ? "snap-start" : ""
+                }`}
+              >
+                <CategoryPill label={label} image={image} href={href} />
+              </div>
+            );
+          })}
 
           {/* End of list: Shop All Link */}
-          <div className="snap-start flex-shrink-0 flex items-center justify-center pl-4 pr-8">
+          <div className="snap-start shrink-0 flex items-center justify-center px-6 min-w-[120px]">
             <Link
               href="/inventory"
-              className="flex items-center gap-2 text-[#0F2942] font-semibold text-lg hover:underline whitespace-nowrap"
+              className="flex items-center gap-1 text-[#0F2942] font-semibold text-base hover:underline whitespace-nowrap"
             >
               Shop All
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
 
-        {/* Mobile Pagination Dots: one dot per group of 3 pills, plus one for Shop All */}
+        {/* Mobile Pagination Dots */}
         <div className="flex md:hidden items-center justify-center gap-2 mt-6">
           {Array.from({ length: totalMobilePages }).map((_, index) => (
             <button
