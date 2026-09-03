@@ -71,7 +71,7 @@ const CategoryPills = () => {
     <section className="w-full bg-white py-10 px-3 md:px-12 mt-2 overflow-hidden">
       <div className="max-w-[1280px] mx-auto">
         {/* Header & Controls */}
-        <div className="flex items-center justify-between mb-6 px-6">
+        <div className="flex items-center justify-between mb-6 px-6 lg:px-0">
           <h2 className="text-[20px] md:text-[28px] font-bold text-[#0F2942]">
             Popular vehicle styles
           </h2>
