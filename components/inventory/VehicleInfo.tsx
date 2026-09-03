@@ -232,7 +232,7 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
   const inventoryId = vehicle?.id || vehicle?.inventory_id;
 
   const [mounted, setMounted] = useState(false);
-  const [iframeHeight, setIframeHeight] = useState(870);
+  const [iframeHeight, setIframeHeight] = useState(640);
 
   useEffect(() => {
     setMounted(true);

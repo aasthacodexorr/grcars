@@ -147,10 +147,9 @@ export default function BudgetCards() {
       {/* 2. HORIZONTALLY SCROLLABLE CARDS CONTAINER */}
       <div
         ref={sliderRef}
-        className="w-full max-w-[100vw] overflow-x-auto px-8 md:px-0 overflow-y-hidden snap-x snap-mandatory pt-3 pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="w-full max-w-[100vw] overflow-x-auto px-6 md:px-0 overflow-y-hidden snap-x snap-mandatory pt-3 pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
-        <div className="flex flex-row gap-5 items-stretch justify-start max-w-[1280px] mx-auto min-w-[min(100%,max-content)]">
-          {/* Card 1: Cars under $20K */}
+<div className="flex flex-row gap-5 items-stretch justify-start max-w-[1280px] mx-auto min-w-[min(100%,max-content)] px-3 md:px-8 after:content-[''] after:w-[1px] after:flex-none">          {/* Card 1: Cars under $20K */}
           <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col bg-[#a8d4fc]">
             <h2 className="text-[#003366] text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em]">
               Cars under $20K
@@ -380,7 +379,7 @@ export default function BudgetCards() {
           </article>
 
           {/* Card 4: Go the distance */}
-          <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col bg-[#121212] overflow-hidden">
+          <article className="card-item snap-center w-[300px] flex-none h-[350px]  rounded-[18px] p-4.5 flex flex-col bg-[#121212] overflow-hidden">
             <h2 className="text-white text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em]">
               Go the distance
             </h2>
