@@ -20,22 +20,16 @@ export default function FaqAccordion({ faqs = [] }: { faqs?: FAQItem[] }) {
     setOpenIndex(isOpening ? index : null);
 
     if (isOpening) {
+      // Delay scroll until after accordion finish opening & height calculation completes
       setTimeout(() => {
         const targetButton = buttonRefs.current[index];
         if (targetButton) {
-          // Adjust this offset to match your sticky header height + desired padding gap
-          const TOP_SPACING_OFFSET = 120; 
-
-          const elementTop = targetButton.getBoundingClientRect().top;
-          const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const targetY = elementTop + currentScrollTop - TOP_SPACING_OFFSET;
-
-          window.scrollTo({
-            top: Math.max(0, targetY),
+          targetButton.scrollIntoView({
             behavior: 'smooth',
+            block: 'start',
           });
         }
-      }, 80);
+      }, 150);
     }
   };
 
@@ -57,7 +51,8 @@ export default function FaqAccordion({ faqs = [] }: { faqs?: FAQItem[] }) {
                 buttonRefs.current[index] = el;
               }}
               onClick={() => handleToggle(index)}
-              className="w-full lg:px-6 py-7 cursor-pointer flex items-center justify-between text-left"
+              /* Added scroll-mt-[200px] (or adjust to match header height) to prevent hiding under header */
+              className="w-full lg:px-6 py-7 cursor-pointer flex items-center justify-between text-left scroll-mt-[200px]"
             >
               <span className="flex-1 text-xl font-lg">{questionText}</span>
 
