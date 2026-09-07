@@ -127,7 +127,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block">
               <div className="rounded-full -mt-4 flex items-center justify-center -ml-4">
-                <img src={logo?.src} alt="Logo" />
+                <img src={logo?.src} alt="Logo" width={"240"} />
               </div>
             </Link>
           </div>
