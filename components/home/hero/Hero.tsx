@@ -61,7 +61,7 @@ const Hero = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Make, model, or keyword"
-              className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-sm md:text-lg"
+              className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-base md:text-lg"
             />
             <button
               type="submit"
