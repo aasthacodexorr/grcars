@@ -15,11 +15,20 @@ const inter = Inter({
 
 export async function generateMetadata(): Promise<Metadata> {
   const appConfig = await getAppConfig();
-  return generateMetadataHelper({
-    title: appConfig.site.home_page_title,
-    description: appConfig.site.home_page_description,
-    canonicalPath: "",
-  });
+  return {
+    ...await generateMetadataHelper({
+      title: appConfig.site.home_page_title,
+      description: appConfig.site.home_page_description,
+      canonicalPath: "",
+    }),
+    icons: {
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+      ],
+      shortcut: "/favicon.svg",
+      apple: "/favicon.svg",
+    },
+  };
 }
 
 export default async function RootLayout({
@@ -72,6 +81,8 @@ export default async function RootLayout({
       style={CSS_VARIABLES as React.CSSProperties}
     >
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/favicon.svg" />
         {/* Load form validation script before any interactive content */}
         <ScriptLoader />
         <script

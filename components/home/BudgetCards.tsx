@@ -444,7 +444,7 @@ export default function BudgetCards() {
             </div>
 
             <a
-              href="/inventory"
+              href="/inventory?fuelTypes=HEV,Electric-Battery,Hybrid"
               className="mt-auto block w-full rounded-full bg-white hover:bg-[#f0f6fc] text-[#0062bd] text-[14px] font-bold leading-none py-3 px-3.5 text-center no-underline transition-colors"
             >
               Shop Fuel Efficient
