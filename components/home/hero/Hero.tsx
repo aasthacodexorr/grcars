@@ -28,7 +28,7 @@ const Hero = () => {
         <source media="(min-width: 1024px)" srcSet={src(HeroDesktop)} />
         <source media="(min-width: 768px)" srcSet={src(HeroMobile)} />
         <img
-          src={src(HeroMobile)}
+          src={src(HeroDesktop)}
           alt="Neighborhood background"
           className="h-full w-full object-cover object-start"
           fetchPriority="high"
