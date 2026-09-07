@@ -16,6 +16,11 @@ export const HitCard = ({ hit }: { hit: any }) => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG, PHONE_NUMBER, DEFAULT_PLACEHOLDER_IMAGE } = getConstants(appConfig);
   const { isInWishlist, addToWishlist, removeFromWishlist, isHydrated } = useWishlist();
+  const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+
+  const toggleTooltip = (tooltip: string) => {
+    setActiveTooltip((prev) => (prev === tooltip ? null : tooltip));
+  };
 
   // Phone number fallback strategy
   const phoneNumber = PHONE_NUMBER || "";
@@ -123,11 +128,10 @@ export const HitCard = ({ hit }: { hit: any }) => {
                 aria-label={isInWishlist(hit.inventory_id) ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
-                  className={`w-5 h-5 ${
-                    isInWishlist(hit.inventory_id)
-                      ? "fill-brand-green stroke-none"
-                      : "stroke-gray-600"
-                  } transition-colors`}
+                  className={`w-5 h-5 ${isInWishlist(hit.inventory_id)
+                    ? "fill-brand-green stroke-none"
+                    : "stroke-gray-600"
+                    } transition-colors`}
                 />
               </button>
             )}
@@ -150,17 +154,99 @@ export const HitCard = ({ hit }: { hit: any }) => {
                       {/* Finance Price */}
                       <div className="flex justify-between items-center w-full">
                         <span>Finance Price</span>
-                        <span>${Number(price).toLocaleString()}.00</span>
+                        <div className="flex justify-center items-center gap-1 ">
+                          <span>${Number(price).toLocaleString()}.00</span>
+
+                          <div data-price-tooltip className="relative inline-flex items-center group">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleTooltip("finance");
+                              }}
+                              aria-label="Finance price information"
+                              className="flex items-center justify-center"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-4 h-4 text-gray-400 cursor-pointer"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+
+                            <div
+                              className={`absolute bottom-full right-0 mb-2 w-[240px] max-w-[calc(100vw-32px)] bg-black text-white text-xs sm:text-sm px-3 py-2 rounded-md shadow-xl z-[9999] transition-all duration-200 pointer-events-none ${activeTooltip === "finance"
+                                ? "opacity-100 visible translate-y-0"
+                                : "opacity-0 invisible translate-y-1"
+                                } lg:group-hover:opacity-100 lg:group-hover:visible lg:group-hover:translate-y-0`}
+                            >
+                              Finance price does not include taxes and licensing fees.
+                              {/* Arrow */}
+                              <div className="absolute right-[7px] bottom-[-6px] w-3 h-3 bg-black rotate-45" />
+                            </div>
+                          </div>
+                        </div>
+
+
                       </div>
+
                       {/* Cash Price */}
                       <div className="flex justify-between items-center w-full">
                         <span>Cash Price</span>
-                        <span>${(Number(price) + 2000).toLocaleString()}.00</span>
+                        <div className="flex justify-center items-center gap-1">
+                          <span>${(Number(price) + 2000).toLocaleString()}.00</span>
+
+                          <div data-price-tooltip className="relative inline-flex items-center group">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleTooltip("cash");
+                              }}
+                              aria-label="Cash price information"
+                              className="flex items-center justify-center"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-4 h-4 text-gray-400 cursor-pointer"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+
+                            <div
+                              className={`absolute bottom-full right-0 mb-2 w-[240px] max-w-[calc(100vw-32px)] bg-black text-white text-xs sm:text-sm px-3 py-2 rounded-md shadow-xl z-[9999] transition-all duration-200 pointer-events-none ${activeTooltip === "cash"
+                                ? "opacity-100 visible translate-y-0"
+                                : "opacity-0 invisible translate-y-1"
+                                } lg:group-hover:opacity-100 lg:group-hover:visible lg:group-hover:translate-y-0`}
+                            >
+                              Cash price does not include taxes and licensing fees.
+
+                              {/* Arrow */}
+                              <div className="absolute right-[7px] bottom-[-6px] w-3 h-3 bg-black rotate-45" />
+                            </div>
+                          </div>
+                        </div>
+
+
                       </div>
                     </>
                   ) : (
                     /* Call for Price */
-                    <a  href={phoneNumber ? `tel:${phoneNumber}` : "#"} className="flex items-center justify-start gap-2">
+                    <a href={phoneNumber ? `tel:${phoneNumber}` : "#"} className="flex items-center justify-start gap-2">
                       <svg
                         className="w-4 h-4"
                         fill="none"

@@ -5,13 +5,17 @@ import { useState, useEffect, useRef } from "react";
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { createPortal } from "react-dom";
-import { ChevronRight, ArrowDownCircle } from 'lucide-react';
+import { ChevronRight, ArrowDownCircle } from "lucide-react";
 import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
 
-
-export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-desktop", }: any) => {
+export const VehicleHeaderAndCTA = ({
+  vehicle,
+  topWishlistId = "vdp-top-wishlist-desktop",
+}: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [activeTooltip, setActiveTooltip] = useState<
+    "finance" | "cash" | null
+  >(null);
   const [showSticky, setShowSticky] = useState(false);
   const [showCardWishlist, setShowCardWishlist] = useState(false);
 
@@ -56,9 +60,10 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
     );
 
     observer.observe(topWishlistEl);
+
     return () => observer.disconnect();
   }, [topWishlistId]);
-  
+
   // 2. Tooltip outside click handler
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,11 +71,12 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
         tooltipRef.current &&
         !tooltipRef.current.contains(event.target as Node)
       ) {
-        setShowTooltip(false);
+        setActiveTooltip(null);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -91,12 +97,15 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
 
   // Prices calculation
   const currentPrice = vehicle?.selling_price || vehicle?.price || 0;
+
   const originalPrice =
-    vehicle?.original_price || (vehicle?.selling_price ? vehicle?.price : 0);
+    vehicle?.original_price ||
+    (vehicle?.selling_price ? vehicle?.price : 0);
+
   const hasPriceDrop = originalPrice && originalPrice > currentPrice;
 
-  const isSold = vehicle.status && vehicle.status.toLowerCase() !== "instock";
-
+  const isSold =
+    vehicle.status && vehicle.status.toLowerCase() !== "instock";
 
   return (
     <>
@@ -118,58 +127,146 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
 
         {/* Pricing & Tooltip Section */}
         {!isSold ? (
-  <div className="flex flex-col gap-2 mb-3 px-6 pb-5">
-    {Number(currentPrice) > 0 ? (
-      <>
-        
+          <div
+            ref={tooltipRef}
+            className="flex flex-col gap-2 mb-3 px-6 pb-5"
+          >
+            {Number(currentPrice) > 0 ? (
+              <>
+                {/* Finance Price */}
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-lg font-semibold text-[#0d2238]">
+                    Finance Price
+                  </span>
 
-        {/* Finance Price */}
-        <div className="flex items-center justify-between w-full">
-          <span className="text-lg font-semibold text-[#0d2238]">
-            Finance Price
-          </span>
+                  <div className="relative inline-flex items-center gap-1">
+                    <span className="text-lg font-semibold text-[#0d2238]">
+                      ${Number(currentPrice).toLocaleString("en-US")}
+                    </span>
 
-          <span className="text-lg font-semibold text-[#0d2238]">
-            ${Number(currentPrice).toLocaleString("en-US")}
-          </span>
-        </div>
+                    <div className="relative group">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveTooltip((prev) =>
+                            prev === "finance" ? null : "finance"
+                          );
+                        }}
+                        aria-label="Finance price information"
+                        className="flex items-center justify-center p-0.5"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4 text-gray-400 cursor-pointer"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
 
-        {/* Cash Price */}
-        <div className="flex items-center justify-between w-full">
-          <span className="text-lg font-semibold text-[#0d2238]">
-            Cash Price
-          </span>
+                      <div
+                        className={`absolute bottom-full right-0 mb-2 w-[250px] max-w-[calc(100vw-32px)] 
+      bg-black text-white text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl 
+      z-[9999] transition-opacity duration-150
+      ${activeTooltip === "finance"
+                            ? "opacity-100 visible"
+                            : "opacity-0 invisible"
+                          }
+      group-hover:opacity-100 group-hover:visible`}
+                      >
+                        Finance price does not include taxes and licensing fees.
 
-          <span className="text-lg font-semibold text-[#0d2238]">
-            ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
-          </span>
-        </div>
-      </>
-    ) : (
-      /* Call for Price */
-      <div className="flex items-center justify-center gap-2 py-1">
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-          />
-        </svg>
+                        <div className="absolute right-2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-        <span className="text-lg font-semibold text-[#0d2238]">
-          Call for price
-        </span>
-      </div>
-    )}
-  </div>
-) : null}
+                {/* Cash Price */}
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-lg font-semibold text-[#0d2238]">
+                    Cash Price
+                  </span>
 
+                  <div className="relative inline-flex items-center gap-1">
+                    <span className="text-lg font-semibold text-[#0d2238]">
+                      ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
+                    </span>
+
+                    <div className="relative group">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveTooltip((prev) =>
+                            prev === "cash" ? null : "cash"
+                          );
+                        }}
+                        aria-label="Cash price information"
+                        className="flex items-center justify-center p-0.5"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4 text-gray-400 cursor-pointer"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+
+                      <div
+                        className={`absolute bottom-full right-0 mb-2 w-[250px] max-w-[calc(100vw-32px)] 
+      bg-black text-white text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl 
+      z-[9999] transition-opacity duration-150
+      ${activeTooltip === "cash"
+                            ? "opacity-100 visible"
+                            : "opacity-0 invisible"
+                          }
+      group-hover:opacity-100 group-hover:visible`}
+                      >
+                        Cash price does not include taxes and licensing fees.
+
+                        <div className="absolute right-2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* Call for Price */
+              <div className="flex items-center justify-center gap-2 py-1">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+
+                <span className="text-lg font-semibold text-[#0d2238]">
+                  Call for price
+                </span>
+              </div>
+            )}
+          </div>
+        ) : null}
 
         {/* Buttons Action Group */}
         <div className="hidden lg:block space-y-2.5 px-6 mb-5 text-center">
@@ -185,11 +282,12 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
           {/* Button 2: Request Information */}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full cursor-pointer  bg-white hover:bg-brand-green text-brand-green hover:text-white border-2 border-brand-green font-bold py-4 rounded-full transition-colors text-base"
+            className="w-full cursor-pointer bg-white hover:bg-brand-green text-brand-green hover:text-white border-2 border-brand-green font-bold py-4 rounded-full transition-colors text-base"
           >
             Request Information
           </button>
         </div>
+
         {showCardWishlist && (
           <div className="flex justify-center bg-gray-200">
             <VDPWishlistButton vehicle={vehicle} showLabel />
@@ -207,6 +305,7 @@ export const VehicleHeaderAndCTA = ({ vehicle,topWishlistId = "vdp-top-wishlist-
             Get pre-qualified
           </button>
         </a>
+
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex-1 w-full cursor-pointer bg-white hover:bg-brand-green text-brand-green hover:text-white border-2 border-brand-green font-bold py-3 rounded-full text-sm"
@@ -258,6 +357,7 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
       html.style.overflow = originalHtmlOverflow;
     };
   }, [isOpen]);
+
   // Listen for iframe height
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -291,7 +391,6 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
   return createPortal(
     <div className="fixed inset-0 bg-black/50 z-[9999] overflow-y-auto p-4 sm:p-6 flex min-h-full items-center justify-center">
       <div className="bg-white rounded-2xl w-full max-w-[520px] relative p-6 lg:p-8 flex flex-col my-auto shadow-xl">
-
         <button
           onClick={onClose}
           className="absolute right-5 top-5 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors z-10"
