@@ -37,7 +37,7 @@ const Hero = () => {
 
       {/* Dark overlay gradients for contrast */}
       <div className="absolute inset-0 hidden md:block bg-gradient-to-l from-black/10 via-transparent to-slate-900/50 pointer-events-none z-[1]" />
-      <div className="absolute inset-x-0 top-0 h-28 md:hidden bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none z-[1]" />
+        <div className="absolute inset-0 md:hidden bg-black/30 pointer-events-none z-[1]" />
 
       {/* Main Hero Content Container */}
       <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-16 lg:mt-24 mx-auto flex flex-col justify-between h-full min-h-[450px] md:min-h-[480px]">
@@ -61,7 +61,7 @@ const Hero = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Make, model, or keyword"
-              className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-sm md:text-lg"
+              className="w-full bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none text-base md:text-lg"
             />
             <button
               type="submit"
