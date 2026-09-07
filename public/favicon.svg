@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Outer circle ring -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#ffffff" stroke-width="12"/>
+  <!-- G letter - bold angular style -->
+  <path d="M38 78 C38 56 55 42 76 42 C92 42 103 49 108 60 L97 65 C94 58 87 53 76 53 C61 53 51 62 51 74 L51 126 C51 138 61 147 76 147 C87 147 95 142 98 134 L98 118 L78 118 L78 107 L110 107 L110 147 L101 147 L99 139 C95 144 87 148 76 148 C55 148 38 134 38 126 Z" fill="#ffffff"/>
+  <!-- R letter - bold angular style -->
+  <path d="M120 42 L148 42 C163 42 172 51 172 64 C172 74 167 81 158 85 L174 126 L161 126 L147 88 L133 88 L133 126 L120 126 Z M133 53 L133 77 L147 77 C154 77 158 73 158 65 C158 57 154 53 147 53 Z" fill="#ffffff"/>
+</svg>
