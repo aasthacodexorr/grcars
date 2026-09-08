@@ -1,3 +1,4 @@
+
 /* =========================
 Vehicle Detail Page (VDP)
 Server component that fetches a single vehicle
@@ -65,7 +66,6 @@ export async function generateMetadata({
             },
         });
     } catch (error) {
-        // Fallback to default VDP metadata from config
         const appConfig = await getAppConfig();
         return generateMetadataHelper({
             title: appConfig.site.vdp_page_title_template,
@@ -90,7 +90,6 @@ export default async function VehicleDetailsPage({
 
     const id = vehicleParam.substring(0, firstDash);
 
-    // Use the shared utility to fetch vehicle by ID
     const vehicle = await getVehicleById(id, appConfig);
     if (!vehicle) return null;
 
@@ -166,7 +165,6 @@ export default async function VehicleDetailsPage({
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(carSchema) }}
             />
-            {/* Header spanning 100% viewport, inside contents are usually centered natively */}
             <div className="w-full bg-hero-bg">
                 <Header />
             </div>
@@ -183,7 +181,6 @@ export default async function VehicleDetailsPage({
                             {/* Left column: Breadcrumbs + Gallery + Specs */}
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
 
-                      
                                 {/* BREADCRUMBS */}
                                 <nav className="flex items-center w-full h-8 -mb-4">
                                     <div className="flex items-center min-w-0 flex-1 pr-6 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
@@ -223,41 +220,113 @@ export default async function VehicleDetailsPage({
                                 </div>
 
                                 {/* Specs grid & Extended Coverage */}
-                                <div className="w-full max-w-[925px] mb-10 lg:mb-0">
+                                <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
                                     <AboutVehicle vehicle={vehicle} />
                                     <ViewAllFeaturesButton
                                         standardJson={vehicle.standard}
                                         techSpecsJson={vehicle.technical_specification}
                                         optionalJson={vehicle.optional}
                                     />
-
-                                    {vehicle.vehicle_description && (
-                                        <div
-                                            id="vehicle-description-section"
-                                            className="bg-card border-none rounded-xl p-0 mt-10 lg:mt-20 scroll-mt-44 flex-wrap"
-                                        >
-                                            <h2 className="text-[30px] text-center font-semibold text-black mb-[25px]">
-                                                Vehicle Description
-                                            </h2>
-                                            <div
-                                                className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-foreground/80 leading-relaxed"
-                                                dangerouslySetInnerHTML={{ __html: description }}
-                                            />
-                                        </div>
-                                    )}
                                 </div>
+
+                                {/* Pricing Section */}
+                                <div id="vehicle-pricing-section" className="w-full max-w-[925px] bg-card border border-gray-200 rounded-xl p-6 lg:p-8 scroll-mt-44 mb-10">
+                                    <h2 className="text-[30px] font-semibold text-black mb-6 text-center lg:text-start">Pricing</h2>
+                                    <div className="space-y-6">
+                                        <div>
+                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">Cash Price</h3>
+                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-1">
+                                                ${((vehicle.selling_price || vehicle.price || 28690)+2000).toLocaleString()}
+                                            </div>
+                                            <p className="text-sm text-gray-600">Cash price does not include taxes and licensing fees.</p>
+                                            
+                                        </div>
+
+                                        <hr className="border-gray-200" />
+
+                                        <div>
+                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">Finance Price</h3>
+                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-1">
+                                                 ${(vehicle.selling_price || vehicle.price).toLocaleString()}
+                                            </div>
+                                            <p className="text-sm text-gray-600">Finance price does not include taxes and licensing fees.</p>
+                                             
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Protection Section */}
+                                <div id="vehicle-protection-section" className="w-full max-w-[925px] bg-card border border-gray-200 rounded-xl p-4 lg:p-8 scroll-mt-44 mb-10">
+                                    <div className="text-center mb-8">
+                                        <h2 className="text-[30px] font-semibold text-black mb-2">Affordable Protection</h2>
+                                        <p className="text-gray-600 max-w-xl mx-auto text-sm lg:text-base">
+                                            We offer protection plans, GAP coverage and insurance to help when life happens. Easily add what you need during checkout.
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-6">
+                                        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <h3 className="text-xl font-bold text-gray-900">Essential Care</h3>
+                                            </div>
+                                            <p className="text-gray-700 mb-4 text-sm font-bold">
+                                                Extended coverage to protect your vehicle against breakdowns and costly repairs.
+                                            </p>
+                                            <ul className="space-y-2 text-sm text-gray-600 mb-4">
+                                                <li className="flex items-start gap-2">
+                                                    <span className="text-primary font-bold">•</span>
+                                                    <span>Additional coverage past your manufacturer&apos;s warranty, including roadside assistance</span>
+                                                </li>
+                                                 
+                                            </ul>
+                                            
+                                        </div>
+
+                                        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
+                                            <h3 className="text-xl font-bold text-gray-900 mb-2">GAP Coverage</h3>
+                                            <p className="text-gray-700 mb-4 text-sm">
+                                                Protects your wallet in the event of total loss or theft.
+                                            </p>
+                                            <ul className="space-y-2 text-sm text-gray-600 mb-4">
+                                                <li className="flex items-start gap-2">
+                                                    <span className="text-primary font-bold">•</span>
+                                                    <span>Helps cover the remaining amount owed on your vehicle after an insurance payout</span>
+                                                </li>
+                                                <li className="flex items-start gap-2">
+                                                    <span className="text-primary font-bold">•</span>
+                                                    <span>Available when you finance with GrCars</span>
+                                                </li>
+                                                
+                                            </ul>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Vehicle Description Section */}
+                                {vehicle.vehicle_description && (
+                                    <div
+                                        id="vehicle-description-section"
+                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44"
+                                    >
+                                        <h2 className="text-[30px] text-center font-semibold text-black mb-[25px]">
+                                            Vehicle Description
+                                        </h2>
+                                        <div
+                                            className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-foreground/80 leading-relaxed"
+                                            dangerouslySetInnerHTML={{ __html: description }}
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             {/* Right column: Sticky Sidebar + Right Aligned Wishlist */}
-                            {/* Right column: Sticky Sidebar + Right Aligned Wishlist */}
                             {showSidebar && (
                                 <div className="hidden lg:block lg:w-[450px] xl:w-[450px] 2xl:w-[520px]">
-                                    {/* NON-STICKY WISHLIST: Scrolls up naturally with the page */}
                                     <div id="vdp-top-wishlist-desktop" className="flex justify-end w-full max-w-[410px] mb-3">
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
 
-                                    {/* STICKY CTA CARD: Stays pinned while scrolling */}
                                     <div className="sticky top-6 h-fit space-y-3">
                                         <div className="max-w-[400px] shadow-xl rounded-xl bg-white overflow-hidden">
                                             <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop"/>
@@ -265,8 +334,6 @@ export default async function VehicleDetailsPage({
                                     </div>
                                 </div>
                             )}
-
-                            
                         </div>
                     </div>
                 </div>

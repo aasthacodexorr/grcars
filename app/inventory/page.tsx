@@ -39,6 +39,7 @@ import { InventoryGridSkeleton, InventoryLoadMoreSkeleton } from "@/components/i
 import { AD_CARDS } from "@/components/inventory/AdCard";
 import { useDrawer } from "@/context/DrawerContext";
 import { CircleArrowUp } from "lucide-react";
+import { AIChatSidebar, AIResultsPanel, useAISearch } from "@/components/inventory/AISearch/AISearchPanel";
 
 const AD_BLOCK_CYCLE = 6 + 7 + 8;
 const AD_SLOT_TO_INDEX: Record<number, number> = { 6: 0, 13: 1, 0: 2 };
@@ -202,9 +203,8 @@ const MobileControlsBar = ({
 
   return (
     <div
-      className={`w-full lg:w-auto items-center justify-between sm:justify-end gap-2 mt-1 lg:mt-0 ${
-        isLoading ? "hidden lg:flex" : "flex"
-      }`}
+      className={`w-full lg:w-auto items-center justify-between sm:justify-end gap-2 mt-1 lg:mt-0 ${isLoading ? "hidden lg:flex" : "flex"
+        }`}
     >
       <button
         type="button"
@@ -458,7 +458,7 @@ const PageFooter = () => {
 
   return (
     <div className="transition-opacity duration-300 ease-in">
-      
+
       <Footer />
     </div>
   );
@@ -1068,39 +1068,42 @@ const InventoryContent = () => {
 
   const [openFilter, setOpenFilter] = useState<string | null>("");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [isAISearchActive, setIsAISearchActive] = useState(false);
   const headerHeight = useHeaderHeight();
+
+  const ai = useAISearch();
 
   const sidebarTop = headerHeight + 21;
   const sidebarMaxHeight = `calc(100vh - ${headerHeight + 50}px)`;
 
   // ── Scroll Management State ──
   // ── Scroll Management State ──
-const [showScrollTop, setShowScrollTop] = useState(false);
-const lastScrollY = useRef(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const lastScrollY = useRef(0);
 
-useEffect(() => {
-  const handleScroll = () => {
-    const current = window.scrollY;
-    const previous = lastScrollY.current;
+  useEffect(() => {
+    const handleScroll = () => {
+      const current = window.scrollY;
+      const previous = lastScrollY.current;
 
-    if (current <= 0) {
-      // At the very top, nothing to scroll back to
-      setShowScrollTop(false);
-    } else if (current < previous) {
-      // Scrolling up → show button
-      setShowScrollTop(true);
-    } else if (current > previous) {
-      // Scrolling down → hide button
-      setShowScrollTop(false);
-    }
+      if (current <= 0) {
+        // At the very top, nothing to scroll back to
+        setShowScrollTop(false);
+      } else if (current < previous) {
+        // Scrolling up → show button
+        setShowScrollTop(true);
+      } else if (current > previous) {
+        // Scrolling down → hide button
+        setShowScrollTop(false);
+      }
 
-    lastScrollY.current = current;
-  };
+      lastScrollY.current = current;
+    };
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  handleScroll(); // set correct state on mount too
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // set correct state on mount too
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -1152,12 +1155,12 @@ useEffect(() => {
       <FilterGroup title="MODEL" isOpen={openFilter === "MODEL"} onToggle={() => setOpenFilter(openFilter === "MODEL" ? null : "MODEL")}>
         <ModelRefinementList />
       </FilterGroup>
-      
-     
+
+
       <FilterGroup title="YEAR" isOpen={openFilter === "YEAR"} onToggle={() => setOpenFilter(openFilter === "YEAR" ? null : "YEAR")}>
         <RefinementList attribute="year" sortBy={["name:desc"]} classNames={refinementListClassNames} />
       </FilterGroup>
-       <FilterGroup title="PRICE" isOpen={openFilter === "PRICE"} onToggle={() => setOpenFilter(openFilter === "PRICE" ? null : "PRICE")}>
+      <FilterGroup title="PRICE" isOpen={openFilter === "PRICE"} onToggle={() => setOpenFilter(openFilter === "PRICE" ? null : "PRICE")}>
         <PriceRangeFilter />
       </FilterGroup>
       <FilterGroup title="ODOMETER" isOpen={openFilter === "ODOMETER"} onToggle={() => setOpenFilter(openFilter === "ODOMETER" ? null : "ODOMETER")}>
@@ -1206,6 +1209,8 @@ useEffect(() => {
 
         {/* ── Two-column layout (sidebar sits outside results bg so it slides under header) ── */}
         <div className="bg-light-gray lg:-mt-4 min-h-screen lg:px-14 px-2 py-[20px] overflow-visible">
+
+
           <div className="flex flex-col lg:flex-row items-start max-w-[1550px] mx-auto gap-5 overflow-visible">
             <aside
               className={[
@@ -1218,11 +1223,58 @@ useEffect(() => {
             >
               <div
                 className="flex flex-col bg-white rounded-[15px] border border-border-standard overflow-hidden w-full"
-                style={{ maxHeight: sidebarMaxHeight }}
+                style={{ height: sidebarMaxHeight }}
               >
+                {/* ── Search / AI Search Tab Toggle — hidden on desktop when AI mode is active ── */}
+                <div className="flex shrink-0 items-center gap-1 p-[10px] border-b border-gray-100 bg-gray-50/60">
+                  <button
+                    onClick={() => {
+                      setIsAISearchActive(false);
+                    }}
+                    className={[
+                      "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[7px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                      !isAISearchActive
+                        ? "bg-white shadow-sm text-black border border-gray-200"
+                        : "text-gray-500 hover:bg-white/60",
+                    ].join(" ")}
+                  >
+                    <Search className="w-3.5 h-3.5" />
+                    Search
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsAISearchActive(true);
+                    }}
+                    className={[
+                      "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[7px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                      isAISearchActive
+                        ? "bg-brand text-white shadow-sm"
+                        : "text-gray-500 hover:bg-white/60",
+                    ].join(" ")}
+                  >
+                    <span className="text-[11px]">✦</span>
+                    AI Search
+                  </button>
+                </div>
+
+                <AIChatSidebar
+                  messages={ai.messages}
+                  input={ai.input}
+                  loading={ai.loading}
+                  loadingMore={ai.loadingMore}
+                  hasSearched={ai.hasSearched}
+                  activeMessageId={ai.activeMessageId}
+                  onInputChange={ai.setInput}
+                  onSubmit={ai.handleSubmit}
+                  onViewMessage={ai.viewMessage}
+                  onSuggestionClick={ai.handleSuggestion}
+                  onLoadMore={ai.loadMore}
+                  className={isAISearchActive ? "flex" : "hidden"}
+                />
                 <div
                   className={[
-                    "flex-1 min-h-0 overflow-y-auto overscroll-contain px-[15px] pt-[15px] pb-[15px]",
+                    isAISearchActive ? "hidden" : "flex-1 min-h-0 overflow-y-auto overscroll-contain",
+                    "px-[15px] pt-[15px] pb-[15px]",
                     // visible thin scrollbar instead of the hidden one
                     "[&::-webkit-scrollbar]:w-[6px]",
                     "[&::-webkit-scrollbar-track]:bg-transparent",
@@ -1230,11 +1282,11 @@ useEffect(() => {
                     "lg:[scrollbar-width:thin]",
                   ].join(" ")}
                 >
-                  <div className="flex flex-col items-center gap-4 pb-0 ">
-                    <div className="text-white text-center py-3 px-4 rounded-full font-bold text-[14px] w-full shadow-sm bg-brand">
+                  <div className="flex flex-col items-center gap-4 pb-0">
+                    <div className="text-white text-center py-3 px-4 rounded-xl font-bold text-[14px] w-full shadow-sm bg-brand">
                       <CustomHitsCount />
                     </div>
-                    <div className="w-full flex justify-center border-b border-gray-200">
+                    <div className="w-full border-b border-border text-center">
                       <ClearFiltersButton />
                     </div>
                   </div>
@@ -1264,52 +1316,154 @@ useEffect(() => {
                 <CircleArrowUp className="h-7 w-7" />
               </button>
 
-              {/* ── Search + Sort bar (sticky below header) ── */}
-              <div className="sticky z-40 px-5 pt-4 pb-2 lg:pt-2 bg-light-gray">
-                <div className="flex flex-col lg:flex-row lg:items-center items-end justify-between gap-4">
 
-                  {/* Search Input Box */}
-                  <div className="relative w-full lg:max-w-[440px]">
-                    <SearchBox
-                      classNames={{
-                        root: "w-full",
-                        form: "relative flex items-center",
-                        input: "w-full pl-[36px] tracking-wide pr-4 py-[10px] rounded-[12px] shadow-none bg-white text-[14px] outline-none transition-all focus:border-gray-400",
-                        submitIcon: "hidden",
-                        resetIcon: "hidden",
-                        loadingIcon: "hidden",
-                      }}
-                      placeholder="Search for Anything"
-                      autoFocus={false}
+
+              {isAISearchActive ? (
+                /* ── AI Search results area ── */
+                <>
+                  {/* Mobile: Search/AI toggle stays visible above the chat overlay */}
+                  <div className="lg:hidden sticky z-40 px-2 pt-0 mt-8 pb-2 bg-light-gray">
+                    <div className="flex items-center gap-1 p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
+                      <button
+                        type="button"
+                        onClick={() => setIsAISearchActive(false)}
+                        className={[
+                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                          !isAISearchActive
+                            ? "bg-white shadow-sm text-black border border-gray-200"
+                            : "text-gray-500",
+                        ].join(" ")}
+                      >
+                        <Search className="w-3.5 h-3.5" />
+                        Search
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsAISearchActive(true)}
+                        className={[
+                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                          isAISearchActive
+                            ? "bg-brand text-white shadow-sm"
+                            : "text-gray-500",
+                        ].join(" ")}
+                      >
+                        <span className="text-[11px]">✦</span>
+                        AI Search
+                      </button>
+                    </div>
+                  </div>
+                  {/* Mobile: chat + results merged into a single scrollable card — fixed modal overlay */}
+                  <div className="fixed inset-x-0 bottom-0 mt-7 top-[230px] flex h-[calc(100dvh-260px)] lg:hidden flex-col overflow-hidden bg-white mx-3 rounded-xl lg:mx-0 shadow-sm pb-[env(safe-area-inset-bottom)]">
+                    <AIChatSidebar
+                      messages={ai.messages}
+                      input={ai.input}
+                      loading={ai.loading}
+                      loadingMore={ai.loadingMore}
+                      hasSearched={ai.hasSearched}
+                      activeMessageId={ai.activeMessageId}
+                      onInputChange={ai.setInput}
+                      onSubmit={ai.handleSubmit}
+                      onViewMessage={ai.viewMessage}
+                      onSuggestionClick={ai.handleSuggestion}
+                      onLoadMore={ai.loadMore}
                     />
-                    <Search className="h-[20px] w-[18px] absolute left-2 top-1/2 -translate-y-1/2 text-black pointer-events-none" />
                   </div>
 
-                  <MobileControlsBar
-                    onOpenFilters={() => setIsMobileFilterOpen(true)}
-                    sortItems={getSortItems(TYPESENSE_COLLECTION_NAME)}
-                  />
+                  {/* Desktop: results grid to the right of the sidebar chat */}
+                  <div className="hidden lg:block">
+                    <AIResultsPanel
+                      results={ai.results}
+                      filters={ai.filters}
+                      hasSearched={ai.hasSearched}
+                      loading={ai.loading}
+                      hasMore={ai.hasMore}
+                      loadingMore={ai.loadingMore}
+                      total={ai.total}
+                      onSuggestionClick={ai.handleSuggestion}
+                      onRemoveFilter={ai.removeFilter}
+                      onLoadMore={ai.loadMore}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* ── Search + Sort bar (sticky below header) ── */}
+                  <div className="sticky z-40 px-2 lg:px-4 pt-8 pb-2 lg:pt-2 bg-light-gray">
+                    {/* Mobile-only Search / AI Search toggle */}
+                    <div className="flex lg:hidden items-center gap-1 mb-3 p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
+                      <button
+                        type="button"
+                        onClick={() => setIsAISearchActive(false)}
+                        className={[
+                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                          !isAISearchActive
+                            ? "bg-white shadow-sm text-black border border-gray-200"
+                            : "text-gray-500",
+                        ].join(" ")}
+                      >
+                        <Search className="w-3.5 h-3.5" />
+                        Search
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsAISearchActive(true)}
+                        className={[
+                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                          isAISearchActive
+                            ? "bg-brand text-white shadow-sm"
+                            : "text-gray-500",
+                        ].join(" ")}
+                      >
+                        <span className="text-[11px]">✦</span>
+                        AI Search
+                      </button>
+                    </div>
+                    <div className="flex flex-col lg:flex-row lg:items-center items-end justify-between gap-2">
 
-                </div>
-              </div>
+                      {/* Search Input Box */}
+                      <div className="relative w-full lg:max-w-[440px]">
+                        <SearchBox
+                          classNames={{
+                            root: "w-full",
+                            form: "relative flex items-center",
+                            input: "w-full pl-[36px] tracking-wide pr-4 py-[10px] rounded-[12px] shadow-none bg-white text-[14px] outline-none transition-all focus:border-gray-400",
+                            submitIcon: "hidden",
+                            resetIcon: "hidden",
+                            loadingIcon: "hidden",
+                          }}
+                          placeholder="Search for Anything"
+                          autoFocus={false}
+                        />
+                        <Search className="h-[20px] w-[18px] absolute left-2 top-1/2 -translate-y-1/2 text-black pointer-events-none" />
+                      </div>
 
-              <div className="px-4">
-                <GroupedCurrentRefinements />
-              </div>
+                      <MobileControlsBar
+                        onOpenFilters={() => setIsMobileFilterOpen(true)}
+                        sortItems={getSortItems(TYPESENSE_COLLECTION_NAME)}
+                      />
 
-              <div className="mb-4  px-2">
-                <SearchResultsWrapper>
-                  <NoResultsHandler>
-                    <CustomInfiniteHits hitComponent={HitCard} />
-                  </NoResultsHandler>
-                </SearchResultsWrapper>
-              </div>
+                    </div>
+                  </div>
+
+                  <div className="px-2 lg:px-4">
+                    <GroupedCurrentRefinements />
+                  </div>
+
+                  <div className="mb-4  lg:px-2">
+                    <SearchResultsWrapper>
+                      <NoResultsHandler>
+                        <CustomInfiniteHits hitComponent={HitCard} />
+                      </NoResultsHandler>
+                    </SearchResultsWrapper>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
         <div className="max-w-[1800px] mx-auto">
-            <PageFooter />
-          </div>
+          <PageFooter />
+        </div>
 
         {/* ── Mobile filter slide-in overlay ── */}
         <div className={`fixed inset-0 z-50 flex lg:hidden transition-opacity duration-300 ${isMobileFilterOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
