@@ -61,6 +61,7 @@ export const SITE_PAGES = [
   '/credit-application',
   '/pre-approval',
   '/vehicle-inquiry',
+  '/r-credit-app'
 
 ];
 
