@@ -64,7 +64,7 @@ const SUGGESTIONS: SuggestionChip[] = [
   },
   {
     label: "Fuel-Efficient Hybrid",
-    filters: { fuel_type: ["Hybrid","hev","hybrid-gas-electric","electric-battery"] },
+    filters: { fuel_type: ["Hybrid","hev","hybrid-gas-electric"] },
     followUp: "Would you like me to also filter for a lower mileage — say, under 30,000 km?",
   },
   {
@@ -460,7 +460,7 @@ export const AIResultsPanel = ({
           <img src={logo?.src} />
         </div>
 
-        <h2 className="text-5xl font-bold text-gray-900 mb-3 tracking-tight">
+        <h2 className="text-5xl font-bold text-gray-900 my-3 tracking-tight">
           Let me help you find a car.
         </h2>
         <p className="text-gray-500 text-md mb-8">
