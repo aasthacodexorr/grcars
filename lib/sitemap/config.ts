@@ -60,6 +60,7 @@ export const SITE_PAGES = [
   '/lowest-price-guaranteed/',
   '/credit-application',
   '/pre-approval',
+  '/vehicle-inquiry',
 
 ];
 
