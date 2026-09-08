@@ -108,98 +108,182 @@ const MobileResultsCarousel = ({
   const trackRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
- 
+
+  // Reset carousel when results change.
   useEffect(() => {
     setActiveIndex(0);
-    trackRef.current?.scrollTo({ left: 0 });
+
+    const track = trackRef.current;
+    if (track) {
+      track.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: "auto",
+      });
+    }
   }, [results]);
 
-  // Figure out which card is centered as the user swipes.
+  // Detect the currently visible card.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+
     let raf = 0;
+
     const handleScroll = () => {
       cancelAnimationFrame(raf);
+
       raf = requestAnimationFrame(() => {
         const { scrollLeft, clientWidth } = track;
+
         if (!clientWidth) return;
+
         const idx = Math.round(scrollLeft / clientWidth);
+
         setActiveIndex((prev) => {
-          const next = Math.max(0, Math.min(idx, results.length - 1));
+          const next = Math.max(
+            0,
+            Math.min(idx, results.length - 1)
+          );
+
           return prev === next ? prev : next;
         });
       });
     };
-    track.addEventListener("scroll", handleScroll, { passive: true });
+
+    track.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
     return () => {
       track.removeEventListener("scroll", handleScroll);
       cancelAnimationFrame(raf);
     };
   }, [results.length]);
 
-  // Prefetch more results as the user approaches the end of the carousel.
+  // Load more when approaching the end.
   useEffect(() => {
-    if (hasMore && !loadingMore && results.length > 0 && activeIndex >= results.length - 2) {
+    if (
+      hasMore &&
+      !loadingMore &&
+      results.length > 0 &&
+      activeIndex >= results.length - 2
+    ) {
       onLoadMore();
     }
-  }, [activeIndex, results.length, hasMore, loadingMore, onLoadMore]);
+  }, [
+    activeIndex,
+    results.length,
+    hasMore,
+    loadingMore,
+    onLoadMore,
+  ]);
 
-  // Keep the active dot scrolled into the visible dot window.
+  // IMPORTANT:
+  // Do NOT use scrollIntoView().
+  // It can scroll the vertical parent/window.
+  // Only scroll the dots container horizontally.
   useEffect(() => {
-    const dot = dotsRef.current?.children[activeIndex] as HTMLElement | undefined;
-    dot?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const container = dotsRef.current;
+    const dot = container?.children[
+      activeIndex
+    ] as HTMLElement | undefined;
+
+    if (!container || !dot) return;
+
+    const targetLeft =
+      dot.offsetLeft -
+      container.clientWidth / 2 +
+      dot.offsetWidth / 2;
+
+    container.scrollTo({
+      left: Math.max(0, targetLeft),
+      behavior: "smooth",
+    });
   }, [activeIndex]);
 
-  const goToIndex = (i: number) => {
+  const goToIndex = (index: number) => {
     const track = trackRef.current;
+
     if (!track) return;
-    track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
+
+    track.scrollTo({
+      left: index * track.clientWidth,
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   if (results.length === 0) return null;
 
   return (
     <div className="sm:hidden">
-      {/* Card track — one full-width card per swipe, native scroll-snap */}
+      {/* Horizontal card carousel */}
       <div
         ref={trackRef}
         className={[
-          "flex overflow-x-auto snap-x snap-mandatory scroll-smooth",
-          "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+          "flex w-full",
+          "overflow-x-auto overflow-y-hidden",
+          "snap-x snap-mandatory",
+          "scroll-smooth",
+          "touch-pan-x",
+          "overscroll-x-contain",
+          "[&::-webkit-scrollbar]:hidden",
+          "[-ms-overflow-style:none]",
+          "[scrollbar-width:none]",
         ].join(" ")}
       >
         {results.map((vehicle) => (
-          <div key={vehicle.id} className="shrink-0 w-full snap-center px-[9px]">
+          <div
+            key={vehicle.id}
+            className="shrink-0 w-full snap-start px-[9px]"
+          >
             <HitCard hit={vehicle} />
           </div>
         ))}
 
         {loadingMore && (
-          <div className="shrink-0 w-full snap-center px-[9px]">
+          <div className="shrink-0 w-full snap-start px-[9px]">
             <InventoryLoadMoreSkeleton />
           </div>
         )}
       </div>
- 
+
+      {/* Dots */}
       {results.length > 1 && (
         <div
           ref={dotsRef}
           className={[
-            "flex items-center gap-1.5 overflow-x-auto py-3 mx-auto",
-            "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+            "flex items-center gap-1.5",
+            "overflow-x-auto",
+            "py-3 mx-auto",
+            "[&::-webkit-scrollbar]:hidden",
+            "[-ms-overflow-style:none]",
+            "[scrollbar-width:none]",
+            "touch-pan-x",
+            "overscroll-x-contain",
           ].join(" ")}
-          style={{ maxWidth: CAROUSEL_VISIBLE_DOTS * CAROUSEL_DOT_SLOT }}
+          style={{
+            maxWidth:
+              CAROUSEL_VISIBLE_DOTS *
+              CAROUSEL_DOT_SLOT,
+          }}
         >
           {results.map((vehicle, i) => (
             <button
               key={vehicle.id}
               type="button"
-              aria-label={`Go to result ${i + 1} of ${results.length}`}
+              aria-label={`Go to result ${
+                i + 1
+              } of ${results.length}`}
               onClick={() => goToIndex(i)}
               className={[
-                "shrink-0 rounded-full cursor-pointer transition-all duration-200",
-                i === activeIndex ? "w-2.5 h-2.5 bg-brand" : "w-1.5 h-1.5 bg-gray-300",
+                "shrink-0 rounded-full",
+                "cursor-pointer",
+                "transition-all duration-200",
+                i === activeIndex
+                  ? "w-2.5 h-2.5 bg-brand"
+                  : "w-1.5 h-1.5 bg-gray-300",
               ].join(" ")}
             />
           ))}
@@ -512,8 +596,8 @@ export const AIResultsPanel = ({
           {/* Results */}
           {results.length > 0 && (
             <>
-              <div className="hidden lg:flex items-center px-5 py-3 text-base font-medium text-gray-700">
-                <span>{total} matching vehicles found</span>
+              <div className="hidden lg:flex items-center px-5 pb-3 pt-5 text-base font-medium text-gray-700">
+                <span> {total} matching vehicle{total === 1 ? "" : "s"} found</span>
               </div>
 
               <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:gap-0 lg:gap-y-[1px]">
