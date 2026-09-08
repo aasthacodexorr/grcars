@@ -57,7 +57,12 @@ export const SITE_PAGES = [
   '/trade-in-my-car',
   '/finance/',
   '/inventory/',
-  '/lowest-price-guaranteed/'
+  '/lowest-price-guaranteed/',
+  '/credit-application',
+  '/pre-approval',
+  '/vehicle-inquiry',
+  '/r-credit-app'
+
 ];
 
 export const SITE_POSTS_2026 = [
