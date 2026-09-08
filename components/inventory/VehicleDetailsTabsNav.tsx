@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 const TABS = [
   { id: 'details', label: 'Vehicle Details', target: 'vehicle-details-section' },
+  { id: 'pricing', label: 'Pricing', target: 'vehicle-pricing-section' },
+  { id: 'protection', label: 'Protection', target: 'vehicle-protection-section' },
   { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
@@ -43,6 +45,40 @@ export default function VehicleDetailsTabsNav() {
     return () => observer.disconnect();
   }, []);
 
+  // Robust scroll-position listener to update active tab accurately
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200;
+
+      for (const tab of TABS) {
+        const el = document.getElementById(tab.target);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveTab(tab.id);
+            break;
+          }
+        }
+      }
+
+      // Fallback for when scrolled past the very last section
+      const lastTab = TABS[TABS.length - 1];
+      const lastEl = document.getElementById(lastTab.target);
+      if (lastEl) {
+        const rect = lastEl.getBoundingClientRect();
+        if (rect.top <= 300) {
+          setActiveTab(lastTab.id);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleTabClick = (tabId: string, targetId: string) => {
     setActiveTab(tabId);
 
@@ -50,15 +86,12 @@ export default function VehicleDetailsTabsNav() {
     const navEl = navRef.current;
     if (!el || !navEl) return;
 
-    // Determine extra gap dynamically based on screen width (768px threshold)
     const isMobile = window.innerWidth < 768;
-    const extraGap = isMobile ? 70 : -10;
+    const extraGap = isMobile ? 70 : 10;
 
-    // Total space the fixed header + sticky nav occupy at the top of the viewport
     const navHeight = navEl.getBoundingClientRect().height;
     const offset = headerHeight + navHeight + extraGap;
 
-    // Apply scroll-margin-top right on the target so scrollIntoView lands correctly
     el.style.scrollMarginTop = `${offset}px`;
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -72,7 +105,7 @@ export default function VehicleDetailsTabsNav() {
       className="w-full bg-white shadow-lg border-b border-gray-200 rounded-full sticky z-50"
     >
       <div className="w-full flex items-center justify-start py-3 px-3">
-        <div className="inline-flex items-center gap-1 bg-white rounded-full p-1.5">
+        <div className="inline-flex items-center gap-1 bg-white rounded-full p-1.5 overflow-x-auto max-w-full">
           {TABS.map((tab) => (
             <button
               key={tab.id}

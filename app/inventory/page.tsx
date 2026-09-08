@@ -1322,7 +1322,7 @@ const InventoryContent = () => {
                 /* ── AI Search results area ── */
                 <>
                   {/* Mobile: Search/AI toggle stays visible above the chat overlay */}
-                  <div className="lg:hidden sticky z-40 px-5 pt-0 mt-8 pb-2 bg-light-gray">
+                  <div className="lg:hidden sticky z-40 px-2 pt-0 mt-8 pb-2 bg-light-gray">
                     <div className="flex items-center gap-1 p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
                       <button
                         type="button"
