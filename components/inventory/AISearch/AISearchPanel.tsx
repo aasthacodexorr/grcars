@@ -256,7 +256,7 @@ export const AIChatSidebar = ({
   }, [messages, loading]);
 
   return (
-    <div className={["flex-col min-h-0 flex-1 mt-5 sm:mt-0", className ?? "flex"].join(" ")}>
+    <div className={["flex-col min-h-0 flex-1 mt-0 sm:mt-0", className ?? "flex"].join(" ")}>
       {/* Fixed Clutch Assistant Header */}
       <div className="shrink-0 bg-white border-b border-gray-200 px-0 py-0">
         <div className="flex items-center">

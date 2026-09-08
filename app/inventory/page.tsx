@@ -1322,7 +1322,7 @@ const InventoryContent = () => {
                 /* ── AI Search results area ── */
                 <>
                   {/* Mobile: Search/AI toggle stays visible above the chat overlay */}
-                  <div className="lg:hidden sticky z-40 px-5 pt-4 pb-2 bg-light-gray">
+                  <div className="lg:hidden sticky z-40 px-5 pt-0 mt-4 pb-2 bg-light-gray">
                     <div className="flex items-center gap-1 p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
                       <button
                         type="button"
@@ -1353,7 +1353,7 @@ const InventoryContent = () => {
                     </div>
                   </div>
                   {/* Mobile: chat + results merged into a single scrollable card — fixed modal overlay */}
-                  <div className="fixed inset-x-0 bottom-0 top-[210px] flex h-[calc(100dvh-218px)] lg:hidden flex-col overflow-hidden bg-white mx-3 rounded-xl lg:mx-0 shadow-sm pb-[env(safe-area-inset-bottom)]">
+                  <div className="fixed inset-x-0 bottom-0 mt-7 top-[210px] flex h-[calc(100dvh-250px)] lg:hidden flex-col overflow-hidden bg-white mx-3 rounded-xl lg:mx-0 shadow-sm pb-[env(safe-area-inset-bottom)]">
                     <AIChatSidebar
                       messages={ai.messages}
                       input={ai.input}
