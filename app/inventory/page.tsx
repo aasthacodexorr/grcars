@@ -432,7 +432,7 @@ const CustomInfiniteHits = ({ hitComponent: HitComponent }: any) => {
               <div
                 key={item.hit.objectID}
                 className={[
-                  "flex flex-col h-full px-0 lg:px-[9px] py-[9px]",
+                  "flex flex-col h-full px-0 lg:px-[9px] py-[6px]",
                   isNew && loadPhase === "revealing" ? "animate-inventory-card-in" : "",
                 ].join(" ")}
               >

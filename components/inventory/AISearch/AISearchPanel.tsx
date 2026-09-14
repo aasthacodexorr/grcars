@@ -258,7 +258,7 @@ const MobileResultsCarousel = ({
                 className={[
                   "shrink-0 rounded-full cursor-pointer transition-all duration-200",
                   isActive
-                    ? "w-2.5 h-2.5 bg-emerald-500"
+                    ? "w-2.5 h-2.5 bg-brand"
                     : "w-1.5 h-1.5 bg-gray-300",
                 ].join(" ")}
               />

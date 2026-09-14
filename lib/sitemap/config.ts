@@ -61,7 +61,32 @@ export const SITE_PAGES = [
   '/credit-application',
   '/pre-approval',
   '/vehicle-inquiry',
-  '/r-credit-app'
+  '/r-credit-app',
+  '/equifax',
+  '/finance-with-anmol/',
+  '/finance-with-oren',
+  '/finance-with-simrandeep',
+  '/finance-with-sam',
+  '/finance-with-vivek',
+  '/finance-with-gursewak',
+  '/finance-with-mayur',
+  '/finance-with-devin',
+  '/finance-with-rishabh',
+  '/online-consent-rishabh',
+  '/online-consent-anmol',
+  '/online-consent-simrandeep',
+  '/online-consent-ramneek-kaur',
+  '/online-consent-gursewak',
+  '/online-consent-mayur',
+  '/online-consent-pranav',
+  '/online-consent-devin',
+
+  '/credit-application-anmol',
+  '/credit-application-simrandeep/',
+  '/credit-application-vivek',
+  '/credit-application-gursewak-2/',
+  '/credit-application-gursewak',
+  
 
 ];
 
