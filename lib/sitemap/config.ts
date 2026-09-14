@@ -77,6 +77,7 @@ export const SITE_PAGES = [
   '/online-consent-simrandeep',
   '/online-consent-ramneek-kaur',
   '/online-consent-gursewak',
+  '/online-consent-mayur',
   
 ];
 

@@ -168,6 +168,7 @@ export const getConstants = (appConfig: AppConfig) => {
         onlineConsentSimran:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=14`,
         onlineConsentRamneek:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=11`,
         onlineConsentgusewak:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=16`,
+        onlineConsentMayur:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=17`,
       },
       api: {
         saasApi: appConfig.site.saas_api,
