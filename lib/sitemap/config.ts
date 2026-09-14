@@ -73,11 +73,8 @@ export const SITE_PAGES = [
   '/finance-with-devin',
   '/finance-with-rishabh',
   '/online-consent-rishabh',
-  '/online-consent-anmol'
-
-
-
-
+  '/online-consent-anmol',
+  '/online-consent-simrandeep',
 ];
 
 export const SITE_POSTS_2026 = [

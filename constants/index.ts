@@ -165,6 +165,7 @@ export const getConstants = (appConfig: AppConfig) => {
         equifax:"https://consumer.autocorp.ai/w/76368f14f806/forms/credit/step1/",
         onlineConsent:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=7`,
         onlineConsentAnmol:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=12`,
+        onlineConsentSimran:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=14`,
         
 
       },
