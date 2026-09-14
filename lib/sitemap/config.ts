@@ -70,7 +70,8 @@ export const SITE_PAGES = [
   '/finance-with-vivek',
   '/finance-with-gursewak',
   '/finance-with-mayur',
-  '/finance-with-devin'
+  '/finance-with-devin',
+  
 
 
 
