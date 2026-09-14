@@ -2,7 +2,7 @@
 import { useAppConfig } from '@/app/providers';
 import AdCard1 from '@/assets/icons/ad-card-1.jpg'
 import AdCard2 from '@/assets/icons/ad-card-2.jpg'
-import AdCard3 from '@/assets/icons/ad-card-3.jpg'
+import AdCard3 from '@/assets/icons/ad-card-3.png'
 import { getConstants } from '@/constants';
 import { defaultAppConfig } from '@/lib/appConfig';
 

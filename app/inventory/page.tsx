@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useLayoutEffect, useRef, useMemo } from "react";
 import { Check, ChevronDown, ChevronUp, Search, Settings2, X } from "lucide-react";
+import { AIChatSidebar, AIResultsPanel, useAISearch } from "@/components/inventory/AISearch/AISearchPanel";
+
 
 // Layout
 import { Header, Footer } from "@/components/layout";
@@ -39,7 +41,6 @@ import { InventoryGridSkeleton, InventoryLoadMoreSkeleton } from "@/components/i
 import { AD_CARDS } from "@/components/inventory/AdCard";
 import { useDrawer } from "@/context/DrawerContext";
 import { CircleArrowUp } from "lucide-react";
-import { AIChatSidebar, AIResultsPanel, useAISearch } from "@/components/inventory/AISearch/AISearchPanel";
 
 const AD_BLOCK_CYCLE = 6 + 7 + 8;
 const AD_SLOT_TO_INDEX: Record<number, number> = { 6: 0, 13: 1, 0: 2 };
@@ -71,11 +72,19 @@ function buildDisplayItems(hits: any[]): DisplayItem[] {
 /* Shared class name configs for InstantSearch widgets */
 const refinementListClassNames = {
   list: "space-y-2 pt-2 pb-4 p-0",
+
   label:
     "flex items-center gap-3 cursor-pointer text-[16px] text-gray-900 transition-colors",
+
   checkbox:
-    "appearance-none h-[18px] w-[18px] rounded-[4px] border border-gray-800 bg-white checked:border-transparent checked:bg-transparent checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22%2300AF66%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.207%204.793a1%201%200%20010%201.414l-5%205a1%201%200%2001-1.414%200l-2-2a1%201%200%20011.414-1.414L6.5%209.086l4.293-4.293a1%201%200%20011.414%200z%22%2F%3E%3C%2Fsvg%3E')] checked:bg-center checked:bg-no-repeat checked:bg-[length:20px_20px] focus:ring-0 cursor-pointer",
+    "appearance-none h-[18px] w-[18px] shrink-0 rounded-[4px] border border-gray-800 bg-white cursor-pointer " +
+    "checked:border-gray-800 checked:bg-white " +
+    "checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M3%208.5l3%203L13%204.5%22%20fill%3D%22none%22%20stroke%3D%22%2300AF66%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] " +
+    "checked:bg-center checked:bg-no-repeat checked:bg-[length:14px_14px] " +
+    "focus:outline-none focus:ring-0",
+
   labelText: "flex-1",
+
   count:
     "text-gray-900 font-bold px-[8px] py-[2px] rounded-md text-[11px] ml-auto",
 };
@@ -147,7 +156,7 @@ type FilterGroupProps = {
 
 const FilterGroup = ({ title, children, isOpen, onToggle }: FilterGroupProps) => {
   return (
-    <div className={`border-b border-border py-[7px] mb-0 last:border-b-0 transition-all duration-300 ${isOpen ? "pb-4" : ""}`}>
+    <div className={`border-b border-border py-[7px] mb-0  transition-all duration-300 ${isOpen ? "pb-4" : ""}`}>
       <button onClick={onToggle} className="w-full cursor-pointer">
         <div className={`flex items-center justify-between rounded-[10px] px-[10px] py-[8px] transition-colors duration-200 hover:bg-gray-50 ${isOpen ? "bg-gray-100" : ""}`}>
           <span className="text-[16px] font-medium tracking-[0.5px] text-left normal-case">
@@ -256,7 +265,7 @@ const SearchResultsWrapper = ({ children }: { children: React.ReactNode }) => {
 const CustomHitsCount = () => {
   const { results } = useHits();
   return (
-    <span className="text-[13px] font-normal  text-white leading-none uppercase p-0 tracking-tight">
+    <span className="text-[13px] font-normal text-white leading-none uppercase p-0 tracking-tight">
       {results?.nbHits || 0} Matching Vehicles Found
     </span>
   );
@@ -423,7 +432,7 @@ const CustomInfiniteHits = ({ hitComponent: HitComponent }: any) => {
               <div
                 key={item.hit.objectID}
                 className={[
-                  "flex flex-col h-full p-[9px]",
+                  "flex flex-col h-full px-0 lg:px-[9px] py-[9px]",
                   isNew && loadPhase === "revealing" ? "animate-inventory-card-in" : "",
                 ].join(" ")}
               >
@@ -482,10 +491,27 @@ const ClearFiltersButton = ({ mobile = false }: { mobile?: boolean }) => {
 
 const GroupedCurrentRefinements = () => {
   const { items, refine } = useCurrentRefinements();
+
   if (items.length === 0) return null;
+
+  // Keep refinement chips in a predictable order.
+  // This is especially important when a user selects a MODEL first:
+  // the automatically selected MAKE should still appear before MODEL.
+  const refinementPriority: Record<string, number> = {
+    make: 0,
+    model: 1,
+  };
+
+  const orderedItems = [...items].sort((a, b) => {
+    const priorityA = refinementPriority[a.attribute] ?? 2;
+    const priorityB = refinementPriority[b.attribute] ?? 2;
+
+    return priorityA - priorityB;
+  });
+
   return (
     <div className="w-full flex flex-wrap gap-y-2 gap-x-2">
-      {items.map((category) => (
+      {orderedItems.map((category) => (
         <div key={category.attribute} className="flex flex-wrap items-center gap-[0.5px] bg-transparent">
           {category.refinements.map((refinement) => (
             <div
@@ -507,8 +533,121 @@ const GroupedCurrentRefinements = () => {
   );
 };
 
+// A RefinementList that keeps all previously-seen options visible even when
+// other filters (e.g. price range) narrow the hit set and Typesense stops
+// returning some facet values. Options that drop to 0 are shown greyed out
+// so the user can still interact with them.
+type RefinementItem = {
+  label: string;
+  value: string;
+  count: number;
+  isRefined: boolean;
+};
+
+const StableRefinementList = ({
+  attribute,
+  sortBy,
+  limit = 200,
+}: {
+  attribute: string;
+  sortBy?: readonly string[];
+  limit?: number;
+}) => {
+  const { items, refine } = useRefinementList({
+    attribute,
+    limit,
+    sortBy: sortBy as any,
+  });
+
+  // Cache every item we've ever seen so they don't vanish when a price
+  // filter narrows the result set.
+  // Key is the EXACT value from Typesense (case-sensitive) so refine() works correctly.
+  const seenItemsRef = useRef<Map<string, RefinementItem>>(new Map());
+
+  // Merge latest items into the cache.
+  // Never overwrite a previously non-zero count with 0 — that happens when a
+  // price/range filter narrows results and Typesense drops facet values entirely.
+  items.forEach((item) => {
+    const key = String(item.value);
+    const existing = seenItemsRef.current.get(key);
+    seenItemsRef.current.set(key, {
+      label: item.label,
+      value: key,
+      count: item.count > 0 ? item.count : (existing?.count ?? 0),
+      isRefined: item.isRefined,
+    });
+  });
+
+  const liveValues = new Map(items.map((i) => [String(i.value), i]));
+
+  // Deduplicate by normalised label so variants like "Black"/"BLACK" or
+  // "Pickup Truck"/"Pickup-Truck" collapse into one row.
+  // Normalise: lowercase + strip all non-alphanumeric characters.
+  const normalizedMap = new Map<string, RefinementItem>();
+  Array.from(seenItemsRef.current.values()).forEach((cached) => {
+    const live = liveValues.get(cached.value);
+    const resolved: RefinementItem = live
+      ? {
+        label: live.label,
+        value: String(live.value),
+        count: live.count > 0 ? live.count : cached.count,
+        isRefined: live.isRefined,
+      }
+      : { ...cached, isRefined: false };
+
+    // Strip case + all non-alphanumeric chars so "Pickup Truck", "Pickup-Truck",
+    // "PICKUP TRUCK" all collapse to the same key "pickuptruck".
+    const normKey = resolved.label.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+    const existing = normalizedMap.get(normKey);
+    if (!existing) {
+      normalizedMap.set(normKey, resolved);
+    } else {
+      // Merge: sum counts, mark refined if either is.
+      // Prefer the label that is NOT all-uppercase; if both are mixed case, keep the longer one.
+      const existingIsAllCaps = existing.label === existing.label.toUpperCase();
+      const resolvedIsAllCaps = resolved.label === resolved.label.toUpperCase();
+      let preferredLabel = existing.label;
+      if (existingIsAllCaps && !resolvedIsAllCaps) preferredLabel = resolved.label;
+      else if (!existingIsAllCaps && resolvedIsAllCaps) preferredLabel = existing.label;
+      else if (resolved.label.length > existing.label.length) preferredLabel = resolved.label;
+
+      normalizedMap.set(normKey, {
+        label: preferredLabel,
+        // Keep the value of whichever variant has the higher count so refine() hits the dominant entry.
+        value: resolved.count >= existing.count ? resolved.value : existing.value,
+        count: existing.count + resolved.count,
+        isRefined: existing.isRefined || resolved.isRefined,
+      });
+    }
+  });
+
+  const visibleItems = Array.from(normalizedMap.values()).sort((a, b) => {
+    if (sortBy?.includes("name:desc")) return b.label.localeCompare(a.label);
+    return a.label.localeCompare(b.label);
+  });
+
+  return (
+    <ul className={refinementListClassNames.list}>
+      {visibleItems.map((item) => (
+        <li key={item.value}>
+          <label className={refinementListClassNames.label}>
+            <input
+              type="checkbox"
+              checked={item.isRefined}
+              onChange={() => refine(item.value)}
+              className={refinementListClassNames.checkbox}
+            />
+            <span className={refinementListClassNames.labelText}>{item.label}</span>
+            <span className={refinementListClassNames.count}>{item.count}</span>
+          </label>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 const MakeRefinementList = () => {
-  const { items: currentRefinements, refine } = useCurrentRefinements();
+  const { items: currentRefinements } = useCurrentRefinements();
 
   const {
     items: makeItems,
@@ -527,46 +666,106 @@ const MakeRefinementList = () => {
     limit: 200,
     sortBy: ["name:asc"],
   });
-  const handleToggle = (item: typeof makeItems[number]) => {
-    const make = item.value as string;
 
-    if (item.isRefined) {
-      // When removing a make, also remove all associated models
-      const modelMakeMap = getModelMakeMap();
+  const [allMakes, setAllMakes] = useState<typeof makeItems>([]);
 
-      // Get all models that are currently refined and belong to this make
-      const modelsToRemove = modelItems.filter(
-        (m) => m.isRefined && modelMakeMap.get(m.value as string) === make
+  useEffect(() => {
+    if (!makeItems.length) return;
+
+    setAllMakes((previous) => {
+      const merged = new Map<string, typeof makeItems[number]>();
+
+      previous.forEach((item) => merged.set(String(item.value), item));
+      makeItems.forEach((item) => merged.set(String(item.value), item));
+
+      const next = Array.from(merged.values()).sort((a, b) =>
+        String(a.label).localeCompare(String(b.label))
       );
 
-      // Remove associated models first
+      // Avoid a state update when InstantSearch gives us an equivalent array
+      // reference on another render.
+      if (
+        previous.length === next.length &&
+        previous.every((item, index) => {
+          const nextItem = next[index];
+          return (
+            String(item.value) === String(nextItem.value) &&
+            String(item.label) === String(nextItem.label) &&
+            item.count === nextItem.count
+          );
+        })
+      ) {
+        return previous;
+      }
+
+      return next;
+    });
+  }, [makeItems]);
+
+  const refinedMakeValues = useMemo(() => {
+    const makeCategory = currentRefinements.find(
+      (category) => category.attribute === "make"
+    );
+
+    return new Set(
+      makeCategory?.refinements.map((refinement) => String(refinement.value)) ?? []
+    );
+  }, [currentRefinements]);
+
+  const visibleMakeItems = useMemo(() => {
+    const merged = new Map<string, typeof makeItems[number]>();
+
+    allMakes.forEach((item) => merged.set(String(item.value), item));
+    makeItems.forEach((item) => merged.set(String(item.value), item));
+
+    return Array.from(merged.values())
+      .map((item) => ({
+        ...item,
+        isRefined: refinedMakeValues.has(String(item.value)),
+      }))
+      .sort((a, b) => String(a.label).localeCompare(String(b.label)));
+  }, [allMakes, makeItems, refinedMakeValues]);
+
+  const handleToggle = (item: typeof makeItems[number]) => {
+    const make = item.value as string;
+    const isCurrentlyRefined = refinedMakeValues.has(make);
+
+    if (isCurrentlyRefined) {
+      const modelMakeMap = getModelMakeMap();
+
+      const modelsToRemove = modelItems.filter(
+        (model) =>
+          model.isRefined &&
+          modelMakeMap.get(model.value as string) === make
+      );
+
       modelsToRemove.forEach((model) => {
         refineModel(model.value as string);
       });
 
-      // Then remove the make
       refineMake(make);
       return;
     }
 
+    // Add this make without clearing any previously selected makes.
     refineMake(make);
   };
 
   return (
     <ul
-      className={`
-    ${refinementListClassNames.list}
-    max-h-[300px]
-    overflow-y-auto
-    pr-2
-    [&::-webkit-scrollbar]:w-[5px]
-    [&::-webkit-scrollbar-track]:bg-transparent
-    [&::-webkit-scrollbar-thumb]:bg-gray-300
-    [&::-webkit-scrollbar-thumb]:rounded-full
-    lg:[scrollbar-width:thin]
-  `}
+      className={[
+        refinementListClassNames.list,
+        "max-h-[300px]",
+        "overflow-y-auto",
+        "pr-2",
+        "[&::-webkit-scrollbar]:w-[5px]",
+        "[&::-webkit-scrollbar-track]:bg-transparent",
+        "[&::-webkit-scrollbar-thumb]:bg-gray-300",
+        "[&::-webkit-scrollbar-thumb]:rounded-full",
+        "lg:[scrollbar-width:thin]",
+      ].join(" ")}
     >
-      {makeItems.map((item) => (
+      {visibleMakeItems.map((item) => (
         <li key={item.value}>
           <label className={refinementListClassNames.label}>
             <input
@@ -590,39 +789,89 @@ const MakeRefinementList = () => {
   );
 };
 
-
 const ModelRefinementList = () => {
-  const {
-    items: makeItems,
-    refine: refineMake,
-  } = useRefinementList({
-    attribute: "make",
-  });
+  const { items: currentRefinements } = useCurrentRefinements();
 
   const {
     items: modelItems,
     refine: refineModel,
   } = useRefinementList({
     attribute: "model",
+    limit: 200,
+    sortBy: ["name:asc"],
   });
 
-  const selectedMakes = useMemo(
-    () =>
-      new Set(
-        makeItems
-          .filter((item) => item.isRefined)
-          .map((item) => item.value as string)
-      ),
-    [makeItems]
-  );
+  const {
+    refine: refineMake,
+  } = useRefinementList({
+    attribute: "make",
+    limit: 200,
+    sortBy: ["name:asc"],
+  });
+
+  const { hits } = useHits();
+
+  const selectedMakeValues = useMemo(() => {
+    const makeCategory = currentRefinements.find(
+      (category) => category.attribute === "make"
+    );
+
+    return new Set(
+      makeCategory?.refinements.map((refinement) => String(refinement.value)) ?? []
+    );
+  }, [currentRefinements]);
+
+  const selectedModelValues = useMemo(() => {
+    const modelCategory = currentRefinements.find(
+      (category) => category.attribute === "model"
+    );
+
+    return new Set(
+      modelCategory?.refinements.map((refinement) => String(refinement.value)) ?? []
+    );
+  }, [currentRefinements]);
+
+  // Always merge the latest hits into the existing model -> make cache.
+  // This makes the relationship update immediately after a make refinement.
+  const modelMakeMap = useMemo(() => {
+    const merged = new Map(getModelMakeMap());
+
+    hits.forEach((hit: any) => {
+      if (hit?.model && hit?.make) {
+        merged.set(String(hit.model), String(hit.make));
+      }
+    });
+
+    return merged;
+  }, [hits]);
+
+  const visibleModelItems = useMemo(() => {
+    // No make selected: show all available models.
+    if (selectedMakeValues.size === 0) {
+      return modelItems;
+    }
+
+    // One or more makes selected: only show models belonging to those makes.
+    // Keep selected models visible during the InstantSearch update.
+    return modelItems.filter((item) => {
+      const model = String(item.value);
+      const make = modelMakeMap.get(model);
+
+      return (
+        selectedModelValues.has(model) ||
+        (make ? selectedMakeValues.has(make) : false)
+      );
+    });
+  }, [modelItems, selectedMakeValues, selectedModelValues, modelMakeMap]);
 
   const handleToggle = (item: typeof modelItems[number]) => {
     const model = item.value as string;
-    const make = getModelMakeMap().get(model);
+    const make = modelMakeMap.get(model);
 
-    // Selecting a model
     if (!item.isRefined) {
-      if (make && !selectedMakes.has(make)) {
+      // Selecting a model automatically selects its make.
+      // Existing makes stay selected.
+      if (make && !selectedMakeValues.has(make)) {
         refineMake(make);
       }
 
@@ -630,13 +879,25 @@ const ModelRefinementList = () => {
       return;
     }
 
-    // Deselecting a model
+    // Deselecting a model does not remove its make.
     refineModel(model);
   };
 
   return (
-    <ul className={refinementListClassNames.list}>
-      {modelItems.map((item) => (
+    <ul
+      className={[
+        refinementListClassNames.list,
+        "max-h-[300px]",
+        "overflow-y-auto",
+        "pr-2",
+        "[&::-webkit-scrollbar]:w-[5px]",
+        "[&::-webkit-scrollbar-track]:bg-transparent",
+        "[&::-webkit-scrollbar-thumb]:bg-gray-300",
+        "[&::-webkit-scrollbar-thumb]:rounded-full",
+        "lg:[scrollbar-width:thin]",
+      ].join(" ")}
+    >
+      {visibleModelItems.map((item) => (
         <li key={item.value}>
           <label className={refinementListClassNames.label}>
             <input
@@ -750,28 +1011,37 @@ const PriceRangeFilter = () => {
   const [selectedMin, setSelectedMin] = useState(dynamicMin);
   const [selectedMax, setSelectedMax] = useState(dynamicMax);
 
-  // ── NEW: Track if the user is actively dragging a slider track ──
+  // ── Track if the user is actively dragging a slider track ──
   const isDragging = useRef(false);
+  // ── Track the previous committed start values to detect real changes ──
+  const prevStartRef = useRef<readonly [number | undefined, number | undefined]>([undefined, undefined]);
 
-  // Sync server changes to local state ONLY if the user isn't touching the slider
+  // Sync server-side committed range (start) to local state.
+  // We deliberately do NOT include dynamicMin/dynamicMax in the deps so that
+  // adding a second filter (which narrows the hit set and shifts range.min/max)
+  // does NOT overwrite a price the user already applied.
   useEffect(() => {
     if (isDragging.current) return;
 
-    const min =
-      typeof start?.[0] === "number" && Number.isFinite(start[0])
-        ? start[0]
-        : dynamicMin;
+    const prevStart = prevStartRef.current;
+    const startMin = typeof start?.[0] === "number" && Number.isFinite(start[0]) ? start[0] : undefined;
+    const startMax = typeof start?.[1] === "number" && Number.isFinite(start[1]) ? start[1] : undefined;
 
-    const max =
-      typeof start?.[1] === "number" && Number.isFinite(start[1])
-        ? start[1]
-        : dynamicMax;
+    // Only update local state when the committed range actually changed
+    // (e.g. user cleared the price filter via the chip, or on initial load).
+    if (startMin === prevStart[0] && startMax === prevStart[1]) return;
+
+    prevStartRef.current = [startMin, startMax];
+
+    const min = startMin ?? dynamicMin;
+    const max = startMax ?? dynamicMax;
 
     setSelectedMin(min);
     setSelectedMax(max);
     setMinInput(String(min));
     setMaxInput(String(max));
-  }, [dynamicMin, dynamicMax, start]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [start]);
 
   const handleApply = () => {
     const minValue = minInput !== "" ? Math.max(Number(minInput), dynamicMin) : dynamicMin;
@@ -820,9 +1090,9 @@ const PriceRangeFilter = () => {
           min={dynamicMin}
           max={dynamicMax}
           onChange={(e) => handleInputChange("min", e.target.value)}
+          onBlur={handleApply}
           onKeyDown={handleKeyDown}
-          className="w-full h-[40px] px-3 border border-border-lightGray rounded-[6px] text-[14px] font-medium outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        />
+          className="w-full h-[40px] px-3 border border-border-lightGray rounded-[6px] text-[16px] lg:text-[14px] font-medium outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
         <span className="text-gray-400 font-medium">—</span>
         <input
           type="number"
@@ -831,6 +1101,7 @@ const PriceRangeFilter = () => {
           min={dynamicMin}
           max={dynamicMax}
           onChange={(e) => handleInputChange("max", e.target.value)}
+          onBlur={handleApply}
           onKeyDown={handleKeyDown}
           className="w-full h-[40px] px-3 border border-border-lightGray rounded-[6px] text-[14px] font-medium outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
@@ -902,32 +1173,56 @@ const PriceRangeFilter = () => {
 
 
 const OdometerRangeFilter = () => {
-  const { start, refine } = useRange({ attribute: "odometer" });
+  const { start, range, refine } = useRange({ attribute: "odometer" });
   const [error, setError] = useState("");
   const [min, setMin] = useState("");
   const [max, setMax] = useState("");
-  const lastAppliedRange = useRef<readonly [number | undefined, number | undefined]>([undefined, undefined]);
+  const prevStartRef = useRef<readonly [number | undefined, number | undefined]>([undefined, undefined]);
 
+  const toFiniteNumber = (value: unknown, fallback: number): number =>
+    typeof value === "number" && Number.isFinite(value) ? value : fallback;
+
+  const dynamicMin = toFiniteNumber(range.min, 0);
+  const dynamicMax = toFiniteNumber(range.max, Infinity);
+
+  // Sync local fields to a real, committed InstantSearch refinement.
   useEffect(() => {
-    const nextMin = start[0] ?? lastAppliedRange.current[0];
-    const nextMax = start[1] ?? lastAppliedRange.current[1];
-    setMin(nextMin === undefined ? "" : String(nextMin));
-    setMax(nextMax === undefined ? "" : String(nextMax));
+    const startMin = typeof start?.[0] === "number" && Number.isFinite(start[0]) ? start[0] : undefined;
+    const startMax = typeof start?.[1] === "number" && Number.isFinite(start[1]) ? start[1] : undefined;
+
+    const prevStart = prevStartRef.current;
+    if (startMin === prevStart[0] && startMax === prevStart[1]) return;
+    prevStartRef.current = [startMin, startMax];
+
+    setMin(startMin === undefined ? "" : String(startMin));
+    setMax(startMax === undefined ? "" : String(startMax));
   }, [start]);
 
+  // One-time autofill: show the real min/max from Typesense as the default
+  // display value when nothing is committed yet and the user hasn't typed.
+  useEffect(() => {
+    const hasCommittedFilter = prevStartRef.current[0] !== undefined || prevStartRef.current[1] !== undefined;
+    if (hasCommittedFilter) return;
+    if (!Number.isFinite(range.min) || !Number.isFinite(range.max)) return;
+    if (min !== "" || max !== "") return;
+
+    setMin(String(range.min));
+    setMax(String(range.max));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [range.min, range.max]);
+
   const handleApply = () => {
-    const minValue = min ? Number(min) : undefined;
-    const maxValue = max ? Number(max) : undefined;
     setError("");
-    if ((minValue !== undefined && minValue < 400) || (maxValue !== undefined && maxValue < 400)) {
-      setError("Odometer values must be at least 400");
-      return;
-    }
+
+    const minValue = min !== "" ? Math.max(Number(min), dynamicMin) : undefined;
+    const maxValue = max !== "" ? Math.min(Number(max), dynamicMax) : undefined;
+
     if (minValue !== undefined && maxValue !== undefined && minValue > maxValue) {
       setError("Minimum odometer cannot be greater than maximum odometer");
       return;
     }
-    lastAppliedRange.current = [minValue, maxValue];
+
+    prevStartRef.current = [minValue, maxValue];
     refine([minValue, maxValue]);
   };
 
@@ -938,15 +1233,13 @@ const OdometerRangeFilter = () => {
   return (
     <div className="pt-2 pb-4 relative">
       <div className="flex items-center gap-2">
-        <input type="number" min={400} value={min} onChange={(e) => setMin(e.target.value)}
-          onKeyDown={handleKeyDown} placeholder="400"
-          className={`w-full h-[36px] px-3 border rounded-[3px] text-[14px] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${error ? 'border-red-500' : 'border-border-lightGray'}`}
-        />
+        <input type="number" min={dynamicMin} value={min} onChange={(e) => setMin(e.target.value)}
+          onKeyDown={handleKeyDown} placeholder={String(dynamicMin)}
+          className={`w-full h-[36px] px-3 border rounded-[3px] text-[16px] lg:text-[14px] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${error ? 'border-red-500' : 'border-border-lightGray'}`} />
         <span className="text-[16px] text-gray-700">To</span>
-        <input type="number" min={400} value={max} onChange={(e) => setMax(e.target.value)}
-          onKeyDown={handleKeyDown} placeholder="Max"
-          className={`w-full h-[36px] px-3 border rounded-[3px] text-[14px] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${error ? 'border-red-500' : 'border-border-lightGray'}`}
-        />
+        <input type="number" min={dynamicMin} value={max} onChange={(e) => setMax(e.target.value)}
+          onKeyDown={handleKeyDown} placeholder={Number.isFinite(dynamicMax) ? String(dynamicMax) : "Max"}
+          className={`w-full h-[36px] px-3 border rounded-[3px] text-[16px] lg:text-[14px] outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${error ? 'border-red-500' : 'border-border-lightGray'}`} />
         <button type="button" onClick={handleApply}
           className="h-[36px] px-4 text-white rounded-[4px] cursor-pointer bg-brand">
           Go
@@ -958,7 +1251,6 @@ const OdometerRangeFilter = () => {
     </div>
   );
 };
-
 // ── CHANGED: measure the Header height dynamically so the two-column layout
 // fills exactly the remaining viewport without hardcoding a pixel offset.
 function useHeaderHeight() {
@@ -1021,44 +1313,83 @@ const SyncModelMakeMap = () => {
   return null;
 };
 
-// Sync component to remove orphaned models when makes change
+// Sync component to remove orphaned models when a make is deselected,
+// and to fill in a model's make once the model -> make mapping becomes known.
+//
+// IMPORTANT: "this model's make isn't currently selected" is NOT the same as
+// "this model's make was just removed". A model selected before its make is
+// known (e.g. a model that hasn't appeared in loaded hits yet) will briefly
+// have no matching selected make — that's expected, not an orphan. We only
+// treat a model as orphaned when a make it belonged to transitions from
+// selected -> not selected (i.e. was actually removed, e.g. via the "X" on
+// a make chip). Conflating the two caused models to unselect themselves
+// right after being selected, requiring a second click to "stick".
 const SyncOrphanedModels = () => {
-  const { items: makeItems } = useRefinementList({
-    attribute: "make",
-  });
+  const { items: currentRefinements } = useCurrentRefinements();
 
   const { items: modelItems, refine: refineModel } = useRefinementList({
     attribute: "model",
+    limit: 200,
   });
 
+  const { refine: refineMake } = useRefinementList({
+    attribute: "make",
+    limit: 200,
+  });
+
+  const previousSelectedMakesRef = useRef<Set<string>>(new Set());
+
   useEffect(() => {
-    const selectedMakes = new Set(
-      makeItems
-        .filter((item) => item.isRefined)
-        .map((item) => item.value as string)
+    const makeCategory = currentRefinements.find(
+      (category) => category.attribute === "make"
     );
 
+    const selectedMakes = new Set(
+      makeCategory?.refinements.map((refinement) => String(refinement.value)) ?? []
+    );
+
+    const previousSelectedMakes = previousSelectedMakesRef.current;
     const modelMakeMap = getModelMakeMap();
 
-    // Check each refined model to see if its make is still selected
-    const modelsToRemove = modelItems.filter((model) => {
-      if (!model.isRefined) return false;
-      const make = modelMakeMap.get(model.value as string);
-      // Remove if make is known but not in selectedMakes
-      return make && !selectedMakes.has(make);
-    });
+    // A make counts as "removed" only if it was selected on the previous
+    // run and is no longer selected now.
+    const removedMakes = new Set(
+      Array.from(previousSelectedMakes).filter((make) => !selectedMakes.has(make))
+    );
 
-    if (modelsToRemove.length > 0) {
+    if (removedMakes.size > 0) {
+      const modelsToRemove = modelItems.filter((model) => {
+        if (!model.isRefined) return false;
+
+        const make = modelMakeMap.get(model.value as string);
+
+        return Boolean(make && removedMakes.has(make));
+      });
+
       modelsToRemove.forEach((model) => {
         refineModel(model.value as string);
       });
     }
-  }, [makeItems, modelItems, refineModel]);
+
+    // Once a selected model's make becomes known (it may not have been at
+    // selection time), make sure the make is selected too — matching the
+    // "selecting a model selects its make" behavior everywhere else.
+    modelItems.forEach((model) => {
+      if (!model.isRefined) return;
+
+      const make = modelMakeMap.get(model.value as string);
+
+      if (make && !selectedMakes.has(make) && !removedMakes.has(make)) {
+        refineMake(make);
+      }
+    });
+
+    previousSelectedMakesRef.current = selectedMakes;
+  }, [currentRefinements, modelItems, refineModel, refineMake]);
 
   return null;
 };
 
-// 2. Your cleaned up, error-free InventoryContent Component
 const InventoryContent = () => {
   const config = useAppConfig();
   const { isWishlistDrawerOpen } = useDrawer();
@@ -1071,12 +1402,38 @@ const InventoryContent = () => {
   const [isAISearchActive, setIsAISearchActive] = useState(false);
   const headerHeight = useHeaderHeight();
 
+  const handleSearchModeChange = (isAI: boolean) => {
+    setIsAISearchActive(isAI);
+  };
+
   const ai = useAISearch();
+
+  useLayoutEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto",
+    });
+
+    // Run again after the Search/AI DOM has finished updating.
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
+    });
+  }, [isAISearchActive]);
+
+  useEffect(() => {
+    if (!ai.loading && ai.hasSearched && ai.results.length === 0) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [ai.loading, ai.hasSearched, ai.results.length]);
 
   const sidebarTop = headerHeight + 21;
   const sidebarMaxHeight = `calc(100vh - ${headerHeight + 50}px)`;
 
-  // ── Scroll Management State ──
   // ── Scroll Management State ──
   const [showScrollTop, setShowScrollTop] = useState(false);
   const lastScrollY = useRef(0);
@@ -1112,14 +1469,6 @@ const InventoryContent = () => {
     });
   };
 
-  useEffect(() => {
-    if (isMobileFilterOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [isMobileFilterOpen]);
 
   // Blur search input when drawer opens
   useEffect(() => {
@@ -1143,6 +1492,26 @@ const InventoryContent = () => {
       searchInput.style.color = "var(--color-text-primary)";
     }
   }, []);
+
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023.98px)"); // below Tailwind's `lg`
+
+    const applyLock = () => {
+      const isMobileViewport = mq.matches;
+      const shouldLockScroll =
+        isMobileViewport && (isMobileFilterOpen || isAISearchActive);
+      document.body.style.overflow = shouldLockScroll ? "hidden" : "";
+    };
+
+    applyLock();
+    mq.addEventListener("change", applyLock);
+
+    return () => {
+      mq.removeEventListener("change", applyLock);
+      document.body.style.overflow = "";
+    };
+  }, [isMobileFilterOpen, isAISearchActive]);
 
   const renderFilterGroups = () => (
     <div className="space-y-[18px]">
@@ -1207,11 +1576,42 @@ const InventoryContent = () => {
           <div className="hidden lg:block" style={{ height: headerHeight }} aria-hidden />
         </div>
 
-        {/* ── Two-column layout (sidebar sits outside results bg so it slides under header) ── */}
-        <div className="bg-light-gray lg:-mt-4 min-h-screen lg:px-14 px-2 py-[20px] overflow-visible">
+        {/* ── Two-column layout ── */}
+        <div className="bg-light-gray mt-40 lg:-mt-4 min-h-screen lg:px-14 px-3 py-[20px] overflow-visible">
 
+          {/* Mobile-only Search / AI Search toggle — desktop keeps its own copy inside the sidebar */}
+          <div className="flex lg:hidden items-center gap-1 max-w-[1550px] mx-auto mb-3  p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
+            <button
+              type="button"
+              onClick={() => handleSearchModeChange(false)}
+              className={[
+                "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                !isAISearchActive
+                  ? "bg-white shadow-sm text-black border border-gray-200"
+                  : "text-gray-500",
+              ].join(" ")}
+            >
+              <Search className="w-3.5 h-3.5" />
+              Search
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSearchModeChange(true)}
+              className={[
+                "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                isAISearchActive
+                  ? "bg-brand text-white shadow-sm"
+                  : "text-gray-500",
+              ].join(" ")}
+            >
+              <span className="text-[11px]">✦</span>
+              AI Search
+            </button>
+          </div>
 
           <div className="flex flex-col lg:flex-row items-start max-w-[1550px] mx-auto gap-5 overflow-visible">
+
+            {/* ── Sidebar ── */}
             <aside
               className={[
                 "hidden",
@@ -1228,9 +1628,7 @@ const InventoryContent = () => {
                 {/* ── Search / AI Search Tab Toggle — hidden on desktop when AI mode is active ── */}
                 <div className="flex shrink-0 items-center gap-1 p-[10px] border-b border-gray-100 bg-gray-50/60">
                   <button
-                    onClick={() => {
-                      setIsAISearchActive(false);
-                    }}
+                    onClick={() => handleSearchModeChange(false)}
                     className={[
                       "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[7px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
                       !isAISearchActive
@@ -1242,9 +1640,7 @@ const InventoryContent = () => {
                     Search
                   </button>
                   <button
-                    onClick={() => {
-                      setIsAISearchActive(true);
-                    }}
+                    onClick={() => handleSearchModeChange(true)}
                     className={[
                       "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[7px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
                       isAISearchActive
@@ -1270,6 +1666,7 @@ const InventoryContent = () => {
                   onSuggestionClick={ai.handleSuggestion}
                   onLoadMore={ai.loadMore}
                   className={isAISearchActive ? "flex" : "hidden"}
+                  onReset={ai.reset}
                 />
                 <div
                   className={[
@@ -1297,63 +1694,36 @@ const InventoryContent = () => {
             </aside>
 
             {/* ── Results Column ── */}
-            <div id="results-column" className="w-full flex-1 mt-36 lg:mt-3 min-w-0 min-h-screen ">
+            <div id="results-column" className="w-full flex-1 mt-0 lg:mt-3 min-w-0 min-h-screen">
 
-              {/* ── Scroll to Top Button (Bottom Left Corner) ── */}
-              <button
-                onClick={scrollToTop}
-                className={[
-                  "fixed bottom-6 right-6 z-40 pointer-events-auto cursor-pointer",
-                  "w-12 h-12 rounded-full bg-black hover:bg-gray-900",
-                  "flex items-center justify-center text-white shadow-lg active:scale-95",
-                  "transition-all duration-200 border-2 border-black shadow-xl",
-                  showScrollTop
-                    ? "opacity-100 scale-100 visible"
-                    : "opacity-0 scale-95 invisible pointer-events-none",
-                ].join(" ")}
-                title="Scroll to top"
-              >
-                <CircleArrowUp className="h-7 w-7" />
-              </button>
-
-
+              {/* Scroll to top */}
+              <div className="fixed inset-x-0 z-50 pointer-events-none" style={{ top: sidebarTop + 26 }}>
+                <div className="max-w-[1550px] mx-auto px-3 lg:px-14">
+                  <div className="flex justify-center lg:pl-[340px] 2xl:pl-[380px]">
+                    <button
+                      onClick={scrollToTop}
+                      className={[
+                        "fixed bottom-6 right-6 z-40 pointer-events-auto cursor-pointer",
+                        "w-12 h-12 rounded-full bg-black hover:bg-gray-900",
+                        "flex items-center justify-center text-white shadow-lg active:scale-95",
+                        "transition-all duration-200 border-2 border-black shadow-xl",
+                        showScrollTop
+                          ? "opacity-100 scale-100 visible"
+                          : "opacity-0 scale-95 invisible pointer-events-none",
+                      ].join(" ")}
+                      title="Scroll to top"
+                    >
+                      <CircleArrowUp className="h-7 w-7" />
+                    </button>
+                  </div>
+                </div>
+              </div>
 
               {isAISearchActive ? (
                 /* ── AI Search results area ── */
                 <>
-                  {/* Mobile: Search/AI toggle stays visible above the chat overlay */}
-                  <div className="lg:hidden sticky z-40 px-2 pt-0 mt-8 pb-2 bg-light-gray">
-                    <div className="flex items-center gap-1 p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
-                      <button
-                        type="button"
-                        onClick={() => setIsAISearchActive(false)}
-                        className={[
-                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
-                          !isAISearchActive
-                            ? "bg-white shadow-sm text-black border border-gray-200"
-                            : "text-gray-500",
-                        ].join(" ")}
-                      >
-                        <Search className="w-3.5 h-3.5" />
-                        Search
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setIsAISearchActive(true)}
-                        className={[
-                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
-                          isAISearchActive
-                            ? "bg-brand text-white shadow-sm"
-                            : "text-gray-500",
-                        ].join(" ")}
-                      >
-                        <span className="text-[11px]">✦</span>
-                        AI Search
-                      </button>
-                    </div>
-                  </div>
                   {/* Mobile: chat + results merged into a single scrollable card — fixed modal overlay */}
-                  <div className="fixed inset-x-0 bottom-0 mt-7 top-[230px] flex h-[calc(100dvh-260px)] lg:hidden flex-col overflow-hidden bg-white mx-3 rounded-xl lg:mx-0 shadow-sm pb-[env(safe-area-inset-bottom)]">
+                  <div className="fixed inset-x-0 bottom-0 top-[242px] flex h-[calc(100dvh-248px)] lg:hidden flex-col overflow-hidden bg-white mx-3 rounded-xl lg:mx-0 shadow-sm pb-[env(safe-area-inset-bottom)]">
                     <AIChatSidebar
                       messages={ai.messages}
                       input={ai.input}
@@ -1366,6 +1736,7 @@ const InventoryContent = () => {
                       onViewMessage={ai.viewMessage}
                       onSuggestionClick={ai.handleSuggestion}
                       onLoadMore={ai.loadMore}
+                      onReset={ai.reset}
                     />
                   </div>
 
@@ -1386,47 +1757,17 @@ const InventoryContent = () => {
                   </div>
                 </>
               ) : (
+                /* ── Normal search results ── */
                 <>
-                  {/* ── Search + Sort bar (sticky below header) ── */}
-                  <div className="sticky z-40 px-2 lg:px-4 pt-8 pb-2 lg:pt-2 bg-light-gray">
-                    {/* Mobile-only Search / AI Search toggle */}
-                    <div className="flex lg:hidden items-center gap-1 mb-3 p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
-                      <button
-                        type="button"
-                        onClick={() => setIsAISearchActive(false)}
-                        className={[
-                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
-                          !isAISearchActive
-                            ? "bg-white shadow-sm text-black border border-gray-200"
-                            : "text-gray-500",
-                        ].join(" ")}
-                      >
-                        <Search className="w-3.5 h-3.5" />
-                        Search
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setIsAISearchActive(true)}
-                        className={[
-                          "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
-                          isAISearchActive
-                            ? "bg-brand text-white shadow-sm"
-                            : "text-gray-500",
-                        ].join(" ")}
-                      >
-                        <span className="text-[11px]">✦</span>
-                        AI Search
-                      </button>
-                    </div>
+                  {/* Search + Sort bar */}
+                  <div className="sticky z-40 lg:px-3 lg:pt-2 bg-light-gray">
                     <div className="flex flex-col lg:flex-row lg:items-center items-end justify-between gap-2">
-
-                      {/* Search Input Box */}
                       <div className="relative w-full lg:max-w-[440px]">
                         <SearchBox
                           classNames={{
                             root: "w-full",
                             form: "relative flex items-center",
-                            input: "w-full pl-[36px] tracking-wide pr-4 py-[10px] rounded-[12px] shadow-none bg-white text-[14px] outline-none transition-all focus:border-gray-400",
+                            input: "w-full pl-[36px] tracking-wide pr-4 py-[10px] rounded-[12px] shadow-none bg-white text-[16px] lg:text-[14px] outline-none transition-all focus:border-gray-400",
                             submitIcon: "hidden",
                             resetIcon: "hidden",
                             loadingIcon: "hidden",
@@ -1436,20 +1777,18 @@ const InventoryContent = () => {
                         />
                         <Search className="h-[20px] w-[18px] absolute left-2 top-1/2 -translate-y-1/2 text-black pointer-events-none" />
                       </div>
-
                       <MobileControlsBar
                         onOpenFilters={() => setIsMobileFilterOpen(true)}
                         sortItems={getSortItems(TYPESENSE_COLLECTION_NAME)}
                       />
-
                     </div>
                   </div>
 
-                  <div className="px-2 lg:px-4">
+                  <div className="lg:px-3 pt-2">
                     <GroupedCurrentRefinements />
                   </div>
 
-                  <div className="mb-4  lg:px-2">
+                  <div className="mb-4">
                     <SearchResultsWrapper>
                       <NoResultsHandler>
                         <CustomInfiniteHits hitComponent={HitCard} />
@@ -1461,8 +1800,9 @@ const InventoryContent = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-[1800px] mx-auto">
-          <PageFooter />
+
+        <div className="max-w-[1550px] mx-auto">
+
         </div>
 
         {/* ── Mobile filter slide-in overlay ── */}

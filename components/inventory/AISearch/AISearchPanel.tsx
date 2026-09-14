@@ -5,7 +5,7 @@ import { Search, X, MessageCircle, Loader, Check } from "lucide-react";
 import { HitCard } from "@/components/inventory";
 import { InventoryLoadMoreSkeleton } from "@/components/inventory/HitCardSkeleton";
 import logo from "@/assets/pages/grcarslogo.png";
-import adlogo from "@/assets/icons/ad-card-3.jpg"
+import adlogo from "@/assets/icons/ad-card-3.png"
 
 // ─────────────────────────────────────────────
 // Types
@@ -25,7 +25,7 @@ type AISearchFilters = {
   fuel_type?: string[];
 };
 
- 
+
 type ResultsSnapshot = {
   results: any[];
   filters: AISearchFilters;
@@ -59,12 +59,12 @@ type SuggestionChip = {
 const SUGGESTIONS: SuggestionChip[] = [
   {
     label: "SUV under $35000",
-    filters: { body_type: ["suv","sport-utility-vehicle"], maxPrice: 35000 },
+    filters: { body_type: ["suv", "sport-utility-vehicle"], maxPrice: 35000 },
     followUp: "Any preferences for lower mileage?",
   },
   {
     label: "Fuel-Efficient Hybrid",
-    filters: { fuel_type: ["Hybrid","hev","hybrid-gas-electric"] },
+    filters: { fuel_type: ["Hybrid", "hev", "phev", "hybrid-gas-electric"] },
     followUp: "Would you like me to also filter for a lower mileage — say, under 30,000 km?",
   },
   {
@@ -74,7 +74,7 @@ const SUGGESTIONS: SuggestionChip[] = [
   },
   {
     label: "A truck that can tow a trailer",
-    filters: { body_type: ["truck","pickup-truck"] },
+    filters: { body_type: ["truck", "pickup-truck"] },
     followUp: "Do you have a budget in mind, or any preference for year and mileage?",
   },
   {
@@ -88,7 +88,7 @@ const SUGGESTIONS: SuggestionChip[] = [
     followUp: "Would you like a mileage limit, such as under 30,000 km?",
   },
 ];
- 
+
 const CAROUSEL_VISIBLE_DOTS = 7;
 const CAROUSEL_DOT_SLOT = 12; // px per dot "slot" (dot + gap), tune to taste
 
@@ -101,197 +101,181 @@ interface MobileResultsCarouselProps {
 
 const MobileResultsCarousel = ({
   results,
-  loadingMore,
   hasMore,
+  loadingMore,
   onLoadMore,
 }: MobileResultsCarouselProps) => {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const dotsRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Reset carousel when results change.
-  useEffect(() => {
-    setActiveIndex(0);
-
-    const track = trackRef.current;
-    if (track) {
-      track.scrollTo({
-        left: 0,
-        top: 0,
-        behavior: "auto",
-      });
-    }
-  }, [results]);
-
-  // Detect the currently visible card.
+  /*
+   * Accurately track active card using card bounding rect intersections.
+   */
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    let raf = 0;
-
     const handleScroll = () => {
-      cancelAnimationFrame(raf);
+      const children = Array.from(track.children) as HTMLElement[];
+      if (children.length === 0) return;
 
-      raf = requestAnimationFrame(() => {
-        const { scrollLeft, clientWidth } = track;
+      const trackRect = track.getBoundingClientRect();
+      let closestIndex = 0;
+      let minDistance = Infinity;
 
-        if (!clientWidth) return;
-
-        const idx = Math.round(scrollLeft / clientWidth);
-
-        setActiveIndex((prev) => {
-          const next = Math.max(
-            0,
-            Math.min(idx, results.length - 1)
-          );
-
-          return prev === next ? prev : next;
-        });
+      children.forEach((child, index) => {
+        const childRect = child.getBoundingClientRect();
+        const distance = Math.abs(childRect.left - trackRect.left);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
       });
+
+      setActiveIndex((prev) => (prev === closestIndex ? prev : closestIndex));
     };
 
-    track.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
+    track.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       track.removeEventListener("scroll", handleScroll);
-      cancelAnimationFrame(raf);
     };
   }, [results.length]);
 
-  // Load more when approaching the end.
+  /*
+   * Load more when reaching the last couple of cards.
+   */
   useEffect(() => {
-    if (
-      hasMore &&
-      !loadingMore &&
-      results.length > 0 &&
-      activeIndex >= results.length - 2
-    ) {
+    if (!hasMore || loadingMore || results.length === 0) {
+      return;
+    }
+
+    if (activeIndex >= results.length - 2) {
       onLoadMore();
     }
-  }, [
-    activeIndex,
-    results.length,
-    hasMore,
-    loadingMore,
-    onLoadMore,
-  ]);
+  }, [activeIndex, results.length, hasMore, loadingMore, onLoadMore]);
 
-  // IMPORTANT:
-  // Do NOT use scrollIntoView().
-  // It can scroll the vertical parent/window.
-  // Only scroll the dots container horizontally.
+  /*
+   * Reset carousel when a new result set arrives.
+   */
   useEffect(() => {
-    const container = dotsRef.current;
-    const dot = container?.children[
-      activeIndex
-    ] as HTMLElement | undefined;
-
-    if (!container || !dot) return;
-
-    const targetLeft =
-      dot.offsetLeft -
-      container.clientWidth / 2 +
-      dot.offsetWidth / 2;
-
-    container.scrollTo({
-      left: Math.max(0, targetLeft),
-      behavior: "smooth",
-    });
-  }, [activeIndex]);
-
-  const goToIndex = (index: number) => {
     const track = trackRef.current;
-
     if (!track) return;
 
     track.scrollTo({
-      left: index * track.clientWidth,
-      top: 0,
+      left: 0,
+      behavior: "auto",
+    });
+
+    setActiveIndex(0);
+  }, [results[0]?.objectID, results[0]?.inventory_id]);
+
+  /*
+   * Navigate using dots.
+   */
+  const goToIndex = (index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const children = Array.from(track.children) as HTMLElement[];
+    const targetChild = children[index];
+    if (!targetChild) return;
+
+    track.scrollTo({
+      left: targetChild.offsetLeft,
       behavior: "smooth",
     });
+
+    setActiveIndex(index);
   };
 
-  if (results.length === 0) return null;
+  /*
+   * Calculate a sliding window of max 7 dots to display.
+   */
+  const maxVisibleDots = 7;
+  const totalResults = results.length;
+  
+  let startDotIndex = Math.max(0, activeIndex - Math.floor(maxVisibleDots / 2));
+  let endDotIndex = startDotIndex + maxVisibleDots;
+
+  if (endDotIndex > totalResults) {
+    endDotIndex = totalResults;
+    startDotIndex = Math.max(0, endDotIndex - maxVisibleDots);
+  }
+
+  const visibleDots = results.slice(startDotIndex, endDotIndex);
+
+  if (!results.length) {
+    return null;
+  }
 
   return (
-    <div className="sm:hidden">
-      {/* Horizontal card carousel */}
+    <div className="w-full overflow-hidden">
+      {/* Native horizontal carousel */}
       <div
         ref={trackRef}
-        className={[
-          "flex w-full",
-          "overflow-x-auto overflow-y-hidden",
-          "snap-x snap-mandatory",
-          "scroll-smooth",
-          "touch-pan-x",
-          "overscroll-x-contain",
-          "[&::-webkit-scrollbar]:hidden",
-          "[-ms-overflow-style:none]",
-          "[scrollbar-width:none]",
-        ].join(" ")}
+        className="
+          flex
+          w-full
+          overflow-x-auto
+          overflow-y-hidden
+          overscroll-x-contain
+          scrollbar-hide
+          [-webkit-overflow-scrolling:touch]
+          [touch-action:pan-x_pan-y]
+        "
       >
-        {results.map((vehicle) => (
+        {results.map((result, index) => (
           <div
-            key={vehicle.id}
-            className="shrink-0 w-full snap-start px-[9px]"
+            key={result.objectID ?? result.inventory_id ?? result.id ?? index}
+            className="
+              w-full
+              min-w-[100%]
+              max-w-[100%]
+              flex-shrink-0
+              snap-start
+              pl-4
+              pr-2
+            "
           >
-            <HitCard hit={vehicle} />
+            <HitCard hit={result} />
           </div>
         ))}
-
-        {loadingMore && (
-          <div className="shrink-0 w-full snap-start px-[9px]">
-            <InventoryLoadMoreSkeleton />
-          </div>
-        )}
       </div>
 
-      {/* Dots */}
-      {results.length > 1 && (
-        <div
-          ref={dotsRef}
-          className={[
-            "flex items-center gap-1.5",
-            "overflow-x-auto",
-            "py-3 mx-auto",
-            "[&::-webkit-scrollbar]:hidden",
-            "[-ms-overflow-style:none]",
-            "[scrollbar-width:none]",
-            "touch-pan-x",
-            "overscroll-x-contain",
-          ].join(" ")}
-          style={{
-            maxWidth:
-              CAROUSEL_VISIBLE_DOTS *
-              CAROUSEL_DOT_SLOT,
-          }}
-        >
-          {results.map((vehicle, i) => (
-            <button
-              key={vehicle.id}
-              type="button"
-              aria-label={`Go to result ${
-                i + 1
-              } of ${results.length}`}
-              onClick={() => goToIndex(i)}
-              className={[
-                "shrink-0 rounded-full",
-                "cursor-pointer",
-                "transition-all duration-200",
-                i === activeIndex
-                  ? "w-2.5 h-2.5 bg-brand"
-                  : "w-1.5 h-1.5 bg-gray-300",
-              ].join(" ")}
-            />
-          ))}
+      {/* WINDOWED DOTS (Max 7 shown at a time) */}
+      {totalResults > 1 && (
+        <div className="flex items-center justify-center gap-1.5 py-3 mx-auto">
+          {visibleDots.map((vehicle, localIdx) => {
+            const actualIdx = startDotIndex + localIdx;
+            const isActive = actualIdx === activeIndex;
+
+            return (
+              <button
+                key={vehicle.id ?? actualIdx}
+                type="button"
+                aria-label={`Go to result ${actualIdx + 1} of ${totalResults}`}
+                onClick={() => goToIndex(actualIdx)}
+                className={[
+                  "shrink-0 rounded-full cursor-pointer transition-all duration-200",
+                  isActive
+                    ? "w-2.5 h-2.5 bg-emerald-500"
+                    : "w-1.5 h-1.5 bg-gray-300",
+                ].join(" ")}
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {loadingMore && (
+        <div className="flex justify-center py-3">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
         </div>
       )}
     </div>
   );
 };
+
 
 // ─────────────────────────────────────────────
 // Sidebar chat (replaces filters when AI mode is on)
@@ -308,6 +292,7 @@ interface AIChatSidebarProps {
   onViewMessage: (messageId: string) => void;
   onSuggestionClick: (chip: SuggestionChip) => void;
   onLoadMore: () => void;
+  onReset: () => void;
   className?: string;
 }
 
@@ -323,35 +308,37 @@ export const AIChatSidebar = ({
   onViewMessage,
   onSuggestionClick,
   onLoadMore,
+  onReset,
   className,
 }: AIChatSidebarProps) => {
-  // Scoped ref to the messages container itself. We deliberately do NOT use
-  // scrollIntoView() here — it walks up every scrollable ancestor (including
-  // window) to bring the target into view, which was causing the whole page
-  // to jump down whenever this sidebar mounted (e.g. switching to the AI tab).
-  // Setting scrollTop directly only ever affects this div.
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const prevMessagesLengthRef = useRef(messages.length);
 
   useEffect(() => {
     const el = scrollContainerRef.current;
-    if (el) {
+    const isNewMessage = messages.length !== prevMessagesLengthRef.current;
+    prevMessagesLengthRef.current = messages.length;
+
+    if (el && isNewMessage) {
       el.scrollTop = el.scrollHeight;
     }
   }, [messages, loading]);
 
   return (
-    <div className={["flex-col min-h-0 flex-1 mt-0 sm:mt-0", className ?? "flex"].join(" ")}>
+    <div className={["flex-col min-h-0 flex-1 mt-0 sm:mb-0", className ?? "flex"].join(" ")}>
       {/* Fixed Clutch Assistant Header */}
       <div className="shrink-0 bg-white border-b border-gray-200 px-0 py-0">
-        <div className="flex items-center">
+        <div className="flex items-center gap-">
           {/* Assistant icon */}
-          <div className="w-20 h-20 flex justify-center items-center">
-            <img src={adlogo?.src} />
+          <div className="w-14 h-14 flex justify-center items-center">
+            <img src={adlogo?.src} className="scale-185" />
           </div>
 
           <div className="min-w-0">
             <h3 className="text-[15px] font-semibold text-gray-900 leading-tight">
-              Dora Assistant
+              GrCars Assistant
             </h3>
 
             <p className="text-[12px] text-gray-500 leading-[12px] mt-0.5">
@@ -366,6 +353,7 @@ export const AIChatSidebar = ({
         ref={scrollContainerRef}
         className={[
           "flex-1 min-h-0 overflow-y-auto overscroll-contain px-[15px] pt-[15px] pb-[15px] space-y-3",
+          "[scrollbar-gutter:stable]",
           "[&::-webkit-scrollbar]:w-[5px]",
           "[&::-webkit-scrollbar-track]:bg-transparent",
           "[&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full",
@@ -413,9 +401,9 @@ export const AIChatSidebar = ({
                   )}
                 </div>
               </div>
- 
+
               {msg.role === "ai" && msg.resultsSnapshot && isActive && (
-                <div className="-mx-[15px]">
+                <div className="-mx-[15px] block lg:hidden">
                   <MobileResultsCarousel
                     results={msg.resultsSnapshot.results}
                     loadingMore={loadingMore}
@@ -427,9 +415,9 @@ export const AIChatSidebar = ({
             </div>
           );
         })}
- 
+
         {messages.length === 1 && !hasSearched && !loading && (
-          <div className="sm:hidden flex flex-col gap-2 mt-5">
+          <div className="sm:hidden flex flex-col gap-2">
             <p className="text-gray-600 font-semibold text-sm">Or search with one of these</p>
             {SUGGESTIONS.map((s) => (
               <button
@@ -455,6 +443,18 @@ export const AIChatSidebar = ({
           </div>
         )}
       </div>
+
+      {messages.length > 1 && !loading && (
+        <div className="shrink-0 px-[15px] pt-2 pb-2 bg-white">
+          <button
+            type="button"
+            onClick={onReset}
+            className="w-full cursor-pointer rounded-[10px] border border-gray-300 bg-white py-2 text-[13px] font-semibold text-gray-700 transition-colors hover:border-brand hover:text-brand"
+          >
+            Clear Search
+          </button>
+        </div>
+      )}
 
       {/* Input — fixed at bottom within the modal */}
       <div className="shrink-0 px-[15px] pt-[15px] pb-[max(15px,env(safe-area-inset-bottom))] border-t border-gray-200 bg-white">
@@ -544,7 +544,7 @@ export const AIResultsPanel = ({
           <img src={logo?.src} />
         </div>
 
-        <h2 className="text-5xl font-bold text-gray-900 my-3 tracking-tight">
+        <h2 className="text-5xl font-bold text-gray-900 mb-3 tracking-tight">
           Let me help you find a car.
         </h2>
         <p className="text-gray-500 text-md mb-8">
@@ -596,8 +596,10 @@ export const AIResultsPanel = ({
           {/* Results */}
           {results.length > 0 && (
             <>
-              <div className="hidden lg:flex items-center px-5 pb-3 pt-5 text-base font-medium text-gray-700">
-                <span> {total} matching vehicle{total === 1 ? "" : "s"} found</span>
+              <div className="hidden lg:flex items-center px-5 pt-5 pb-3 text-base font-medium text-gray-700">
+                <span>
+                  {total} matching vehicle{total === 1 ? "" : "s"} found
+                </span>
               </div>
 
               <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:gap-0 lg:gap-y-[1px]">
@@ -631,7 +633,7 @@ export const AIResultsPanel = ({
 const WELCOME_MESSAGE: Message = {
   id: "init",
   role: "ai",
-  text: "Hi! I’m Dora, the AI assistant of GrCars. I’m here to help you find the perfect car.",
+  text: "Hi! I'm here to help you find the right car. What are you looking for?",
 };
 
 export function useAISearch() {
@@ -713,50 +715,50 @@ export function useAISearch() {
   const total = activeSnapshot?.total ?? 0;
 
   const doDirectSearch = async (label: string, presetFilters: AISearchFilters, followUp?: string) => {
-  const userMessage: Message = { id: Date.now().toString(), role: "user", text: label };
-  const nextMessages = [...messages, userMessage];
-  setMessages(nextMessages);
-  setInput("");
-  setLoading(true);
-  window.scrollTo({ top: 0, behavior: "smooth" });
+    const userMessage: Message = { id: Date.now().toString(), role: "user", text: label };
+    const nextMessages = [...messages, userMessage];
+    setMessages(nextMessages);
+    setInput("");
+    setLoading(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
-  try {
-    const res = await fetch("/api/ai-search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ directFilters: presetFilters }),
-    });
-    if (!res.ok) throw new Error("API error");
+    try {
+      const res = await fetch("/api/ai-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ directFilters: presetFilters }),
+      });
+      if (!res.ok) throw new Error("API error");
 
-    const data = await res.json();
-    const aiMessageId = `${Date.now()}-ai`;
-    const total = data.total || 0;
-    // The backend never appends a generic "want to narrow by X, Y, Z?" tail
-    // for direct-filter (default option) searches — see the ai-search route.
-    // Instead we add exactly one relevant, chip-specific follow-up here, and
-    // only when there's something to refine.
-    const text = total > 0 && followUp ? `${data.message} ${followUp}` : data.message;
-    const aiMessage: Message = {
-      id: aiMessageId,
-      role: "ai",
-      text,
-      resultsSnapshot: {
-        results: data.results || [],
-        filters: data.filters || {},
-        total,
-        page: data.page || 1,
-        hasMore: !!data.hasMore,
-      },
-    };
-    setMessages([...nextMessages, aiMessage]);
-    setHasSearched(true);
-    setActiveMessageId(aiMessageId);
-  } catch {
-    setMessages([...nextMessages, { id: Date.now().toString(), role: "ai", text: "Sorry, something went wrong. Please try again." }]);
-  } finally {
-    setLoading(false);
-  }
-};
+      const data = await res.json();
+      const aiMessageId = `${Date.now()}-ai`;
+      const total = data.total || 0;
+      // The backend never appends a generic "want to narrow by X, Y, Z?" tail
+      // for direct-filter (default option) searches — see the ai-search route.
+      // Instead we add exactly one relevant, chip-specific follow-up here, and
+      // only when there's something to refine.
+      const text = total > 0 && followUp ? `${data.message} ${followUp}` : data.message;
+      const aiMessage: Message = {
+        id: aiMessageId,
+        role: "ai",
+        text,
+        resultsSnapshot: {
+          results: data.results || [],
+          filters: data.filters || {},
+          total,
+          page: data.page || 1,
+          hasMore: !!data.hasMore,
+        },
+      };
+      setMessages([...nextMessages, aiMessage]);
+      setHasSearched(true);
+      setActiveMessageId(aiMessageId);
+    } catch {
+      setMessages([...nextMessages, { id: Date.now().toString(), role: "ai", text: "Sorry, something went wrong. Please try again." }]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const doSearch = async (
     userText: string,
@@ -791,7 +793,7 @@ export function useAISearch() {
 
       const data = await res.json();
       const aiMessageId = `${Date.now()}-ai`;
- 
+
       if (data.isChat) {
         const aiMessage: Message = {
           id: aiMessageId,
