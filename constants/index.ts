@@ -176,7 +176,8 @@ export const getConstants = (appConfig: AppConfig) => {
         creditSimran:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=14`,
         creditVivek:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=18`,
         creditGursewak2:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=12`,
-        
+        creditGursewak:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=24`,
+
 
 
       },
