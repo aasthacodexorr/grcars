@@ -48,7 +48,7 @@ const VehicleForm = () => {
                     <div className="w-full overflow-hidden">
                         <iframe
                             id="service_appointment"
-                            src={SITE_CONFIG.urls.onlineConsentAnmol}
+                            src={SITE_CONFIG.urls.onlineConsentSimran}
                             title="Book A Service Appointment"
                             className="w-full border-0"
                             style={{
