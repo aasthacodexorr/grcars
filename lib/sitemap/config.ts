@@ -75,6 +75,7 @@ export const SITE_PAGES = [
   '/online-consent-rishabh',
   '/online-consent-anmol',
   '/online-consent-simrandeep',
+  '/online-consent-ramneek-kaur',
 ];
 
 export const SITE_POSTS_2026 = [
