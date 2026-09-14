@@ -81,6 +81,9 @@ export const SITE_PAGES = [
   '/online-consent-pranav',
   '/online-consent-devin',
 
+  '/credit-application-anmol',
+  '/credit-application-simrandeep/',
+
 ];
 
 export const SITE_POSTS_2026 = [
