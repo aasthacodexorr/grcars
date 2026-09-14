@@ -162,7 +162,9 @@ export const getConstants = (appConfig: AppConfig) => {
         rCreditApplication:`https://robinsonbos.zopsoftware.com/api/templates/render/3`,
         internalTrade:`https://forms.zohopublic.com/grcars/form/TradeForm/formperma/0h5KDqn5SYh-JfKpu9dc6MWQGOwcUPx5t78YEq6jVCY?zf_lang=en`,
         testForm:`https://form.jotform.com/241084659336260?parentURL=https%3A%2F%2Fwww.grcars.ca%2Ftest-form%2F&jsForm=true`,
-        equifax:"https://consumer.autocorp.ai/w/76368f14f806/forms/credit/step1/"
+        equifax:"https://consumer.autocorp.ai/w/76368f14f806/forms/credit/step1/",
+        onlineConsent:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=7`,
+        
 
       },
       api: {

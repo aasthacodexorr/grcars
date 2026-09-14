@@ -72,7 +72,8 @@ export const SITE_PAGES = [
   '/finance-with-mayur',
   '/finance-with-devin',
   '/finance-with-rishabh',
-  
+  '/online-consent-rishabh'
+
 
 
 
