@@ -164,6 +164,7 @@ export const getConstants = (appConfig: AppConfig) => {
         testForm:`https://form.jotform.com/241084659336260?parentURL=https%3A%2F%2Fwww.grcars.ca%2Ftest-form%2F&jsForm=true`,
         equifax:"https://consumer.autocorp.ai/w/76368f14f806/forms/credit/step1/",
         onlineConsent:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=7`,
+        onlineConsentAnmol:`${appConfig.site.saas_api}/api/templates/render/13?assigneeid=12`,
         
 
       },
