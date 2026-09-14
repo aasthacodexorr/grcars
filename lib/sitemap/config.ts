@@ -71,6 +71,7 @@ export const SITE_PAGES = [
   '/finance-with-gursewak',
   '/finance-with-mayur',
   '/finance-with-devin',
+  '/finance-with-rishabh',
   
 
 
