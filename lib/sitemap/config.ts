@@ -64,6 +64,11 @@ export const SITE_PAGES = [
   '/r-credit-app',
   '/equifax',
   '/finance-with-anmol/',
+  '/finance-with-oren',
+  '/finance-with-simrandeep',
+  '/finance-with-sam',
+  
+
 
 ];
 
