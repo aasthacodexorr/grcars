@@ -1801,8 +1801,8 @@ const InventoryContent = () => {
           </div>
         </div>
 
-        <div className="max-w-[1550px] mx-auto">
-
+        <div className="max-w-[1820px] mx-auto">
+          <PageFooter/>
         </div>
 
         {/* ── Mobile filter slide-in overlay ── */}
