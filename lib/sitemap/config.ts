@@ -67,6 +67,7 @@ export const SITE_PAGES = [
   '/finance-with-oren',
   '/finance-with-simrandeep',
   '/finance-with-sam',
+  '/finance-with-vivek',
   
 
 
