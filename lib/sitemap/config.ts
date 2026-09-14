@@ -63,6 +63,7 @@ export const SITE_PAGES = [
   '/vehicle-inquiry',
   '/r-credit-app',
   '/equifax',
+  '/finance-with-anmol/',
 
 ];
 
