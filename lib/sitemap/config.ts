@@ -90,6 +90,7 @@ export const SITE_PAGES = [
   '/credit-application-pranav',
   '/credit-application-devin',
   '/credit-application-rishabh',
+  '/online-consent'
 
 
 ];

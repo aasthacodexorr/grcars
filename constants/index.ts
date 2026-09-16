@@ -181,6 +181,7 @@ export const getConstants = (appConfig: AppConfig) => {
         creditPranav:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=2`,
         creditDevin:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=4`,
         creditRishabh:`${appConfig.site.saas_api}/api/templates/render/14?assigneeid=7`,
+        onlineConsentPage:`https://form.jotform.com/240407678085260?isIframeEmbed=1`,
 
 
 
