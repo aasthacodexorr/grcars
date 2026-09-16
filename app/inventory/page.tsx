@@ -1494,14 +1494,44 @@ const InventoryContent = () => {
   }, []);
 
 
+  // ── Scroll Lock (iOS-safe) ──
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 1023.98px)"); // below Tailwind's `lg`
+    let lockedScrollY = 0;
+
+    const lock = () => {
+      lockedScrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${lockedScrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+    };
+
+    const unlock = () => {
+      const top = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      if (top) {
+        window.scrollTo(0, parseInt(top || "0", 10) * -1);
+      }
+    };
 
     const applyLock = () => {
       const isMobileViewport = mq.matches;
-      const shouldLockScroll =
-        isMobileViewport && (isMobileFilterOpen || isAISearchActive);
-      document.body.style.overflow = shouldLockScroll ? "hidden" : "";
+      const shouldLockScroll = isMobileViewport && (isMobileFilterOpen || isAISearchActive);
+      const isLocked = document.body.style.position === "fixed";
+
+      if (shouldLockScroll && !isLocked) {
+        lock();
+      } else if (!shouldLockScroll && isLocked) {
+        unlock();
+      }
     };
 
     applyLock();
@@ -1509,7 +1539,9 @@ const InventoryContent = () => {
 
     return () => {
       mq.removeEventListener("change", applyLock);
-      document.body.style.overflow = "";
+      if (document.body.style.position === "fixed") {
+        unlock();
+      }
     };
   }, [isMobileFilterOpen, isAISearchActive]);
 
@@ -1580,33 +1612,47 @@ const InventoryContent = () => {
         <div className="bg-light-gray mt-40 lg:-mt-4 min-h-screen lg:px-14 px-3 py-[20px] overflow-visible">
 
           {/* Mobile-only Search / AI Search toggle — desktop keeps its own copy inside the sidebar */}
-          <div className="flex lg:hidden items-center gap-1 max-w-[1550px] mx-auto mb-3  p-[6px] rounded-[12px] bg-white border border-border-standard shadow-sm">
-            <button
-              type="button"
-              onClick={() => handleSearchModeChange(false)}
-              className={[
-                "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
-                !isAISearchActive
-                  ? "bg-white shadow-sm text-black border border-gray-200"
-                  : "text-gray-500",
-              ].join(" ")}
-            >
-              <Search className="w-3.5 h-3.5" />
-              Search
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSearchModeChange(true)}
-              className={[
-                "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
-                isAISearchActive
-                  ? "bg-brand text-white shadow-sm"
-                  : "text-gray-500",
-              ].join(" ")}
-            >
-              <span className="text-[11px]">✦</span>
-              AI Search
-            </button>
+          <div className="flex lg:hidden items-center gap-1.5 max-w-[1550px] mx-auto mb-3 p-[6px]">
+            <div className="flex w-full rounded-[12px] bg-white border border-border-standard shadow-sm">
+              <button
+                type="button"
+                onClick={() => handleSearchModeChange(false)}
+                className={[
+                  "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                  !isAISearchActive
+                    ? "bg-white shadow-sm text-black border border-gray-200"
+                    : "text-gray-500",
+                ].join(" ")}
+              >
+                <Search className="w-3.5 h-3.5" />
+                Search
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSearchModeChange(true)}
+                className={[
+                  "cursor-pointer flex-1 flex items-center justify-center gap-1.5 py-[8px] px-3 rounded-[9px] text-[13px] font-semibold transition-all",
+                  isAISearchActive
+                    ? "bg-brand text-white shadow-sm"
+                    : "text-gray-500",
+                ].join(" ")}
+              >
+                <span className="text-[11px]">✦</span>
+                AI Search
+              </button>
+            </div>
+
+            {/* Mobile Clear Button: Only shows when on AI Search tab AND a search has been made */}
+            {isAISearchActive && ai.hasSearched && (
+              <button
+                type="button"
+                onClick={ai.reset}
+                className="cursor-pointer inline-flex items-center gap-1 py-[8px] px-3 rounded-[9px] border border-gray-300 bg-white text-[13px] font-semibold text-gray-700 hover:border-brand hover:text-brand transition-all shrink-0"
+              >
+                <X className="w-3.5 h-3.5" />
+                Clear
+              </button>
+            )}
           </div>
 
           <div className="flex flex-col lg:flex-row items-start max-w-[1550px] mx-auto gap-5 overflow-visible">
@@ -1802,7 +1848,7 @@ const InventoryContent = () => {
         </div>
 
         <div className="max-w-[1820px] mx-auto">
-          <PageFooter/>
+          <PageFooter />
         </div>
 
         {/* ── Mobile filter slide-in overlay ── */}

@@ -445,7 +445,7 @@ export const AIChatSidebar = ({
       </div>
 
       {messages.length > 1 && !loading && (
-        <div className="shrink-0 px-[15px] pt-2 pb-2 bg-white">
+        <div className="shrink-0 px-[15px] pt-2 pb-2 bg-white hidden lg:block">
           <button
             type="button"
             onClick={onReset}
