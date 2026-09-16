@@ -86,7 +86,12 @@ export const SITE_PAGES = [
   '/credit-application-vivek',
   '/credit-application-gursewak-2/',
   '/credit-application-gursewak',
-  
+  '/credit-application-mayur',
+  '/credit-application-pranav',
+  '/credit-application-devin',
+  '/credit-application-rishabh',
+  '/online-consent'
+
 
 ];
 
