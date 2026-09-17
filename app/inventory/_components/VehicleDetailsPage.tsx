@@ -230,75 +230,87 @@ export default async function VehicleDetailsPage({
                                 </div>
 
                                 {/* Pricing Section */}
-                                <div id="vehicle-pricing-section" className="w-full max-w-[925px] bg-card border border-gray-200 rounded-xl p-6 lg:p-8 scroll-mt-44 mb-10">
-                                    <h2 className="text-[30px] font-semibold text-black mb-6 text-center lg:text-start">Pricing</h2>
-                                    <div className="space-y-6">
-                                        <div>
-                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">Cash Price</h3>
-                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-1">
-                                                ${((vehicle.selling_price || vehicle.price || 28690)+2000).toLocaleString()}
+                                <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
+                                    <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {/* Cash Price Card */}
+                                        <div className="bg-white border border-gray-200 rounded-lg p-5">
+                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                                                Cash Price
+                                            </h3>
+
+                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+                                                ${((vehicle.selling_price || vehicle.price || 28690) + 2000).toLocaleString()}
                                             </div>
-                                            <p className="text-sm text-gray-600">Cash price does not include taxes and licensing fees.</p>
-                                            
+
+                                            <p className="text-sm text-gray-600">
+                                                Cash price does not include taxes and licensing fees.
+                                            </p>
                                         </div>
 
-                                        <hr className="border-gray-200" />
+                                        {/* Finance Price Card */}
+                                        <div className="bg-white border border-gray-200 rounded-lg p-5">
+                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
+                                                Finance Price
+                                            </h3>
 
-                                        <div>
-                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">Finance Price</h3>
-                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-1">
-                                                 ${(vehicle.selling_price || vehicle.price).toLocaleString()}
+                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+                                                ${(vehicle.selling_price || vehicle.price || 0).toLocaleString()}
                                             </div>
-                                            <p className="text-sm text-gray-600">Finance price does not include taxes and licensing fees.</p>
-                                             
+
+                                            <p className="text-sm text-gray-600">
+                                                Finance price does not include taxes and licensing fees.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Protection Section */}
-                                <div id="vehicle-protection-section" className="w-full max-w-[925px] bg-card border border-gray-200 rounded-xl p-4 lg:p-8 scroll-mt-44 mb-10">
-                                    <div className="text-center mb-8">
-                                        <h2 className="text-[30px] font-semibold text-black mb-2">Affordable Protection</h2>
-                                        <p className="text-gray-600 max-w-xl mx-auto text-sm lg:text-base">
+                                <div id="vehicle-protection-section" className="w-full max-w-[925px] bg-white scroll-mt-44 mb-10 ">
+                                    {/* Section Header */}
+                                    <div className="text-center mb-10 flex flex-col items-center">
+                                        {/* Decorative Top Accent Bar */}
+                                        <h2 className="text-[30px] font-semibold text-black mb-3 text-center">Affordable Protection</h2>
+                                        <p className="text-gray-600 max-w-xl mx-auto text-sm lg:text-base leading-relaxed">
                                             We offer protection plans, GAP coverage and insurance to help when life happens. Easily add what you need during checkout.
                                         </p>
                                     </div>
 
+                                    {/* Cards Container */}
                                     <div className="space-y-6">
-                                        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
-                                            <div className="flex items-center gap-3 mb-3">
+                                        {/* Essential Care Card */}
+                                        <div className="border border-gray-200 rounded-2xl p-6 lg:p-8 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                            <div className="flex items-center gap-3 mb-2">
                                                 <h3 className="text-xl font-bold text-gray-900">Essential Care</h3>
                                             </div>
-                                            <p className="text-gray-700 mb-4 text-sm font-bold">
+                                            <p className="text-gray-700 mb-6 text-sm lg:text-base font-normal">
                                                 Extended coverage to protect your vehicle against breakdowns and costly repairs.
                                             </p>
-                                            <ul className="space-y-2 text-sm text-gray-600 mb-4">
-                                                <li className="flex items-start gap-2">
-                                                    <span className="text-primary font-bold">•</span>
+                                            <ul className="space-y-3 text-sm lg:text-base text-gray-600">
+                                                <li className="flex items-start gap-3">
+                                                    <span className="text-gray-900 font-bold leading-none mt-1">•</span>
                                                     <span>Additional coverage past your manufacturer&apos;s warranty, including roadside assistance</span>
                                                 </li>
-                                                 
                                             </ul>
-                                            
                                         </div>
 
-                                        <div className="border border-gray-200 rounded-xl p-6 bg-white shadow-sm">
+                                        {/* GAP Coverage Card */}
+                                        <div className="border border-gray-200 rounded-2xl p-6 lg:p-8 bg-white shadow-sm hover:shadow-md transition-shadow">
                                             <h3 className="text-xl font-bold text-gray-900 mb-2">GAP Coverage</h3>
-                                            <p className="text-gray-700 mb-4 text-sm">
+                                            <p className="text-gray-700 mb-6 text-sm lg:text-base">
                                                 Protects your wallet in the event of total loss or theft.
                                             </p>
-                                            <ul className="space-y-2 text-sm text-gray-600 mb-4">
-                                                <li className="flex items-start gap-2">
-                                                    <span className="text-primary font-bold">•</span>
+                                            <ul className="space-y-3 text-sm lg:text-base text-gray-600">
+                                                <li className="flex items-start gap-3">
+                                                    <span className="text-gray-900 font-bold leading-none mt-1">•</span>
                                                     <span>Helps cover the remaining amount owed on your vehicle after an insurance payout</span>
                                                 </li>
-                                                <li className="flex items-start gap-2">
-                                                    <span className="text-primary font-bold">•</span>
+                                                <li className="flex items-start gap-3">
+                                                    <span className="text-gray-900 font-bold leading-none mt-1">•</span>
                                                     <span>Available when you finance with GrCars</span>
                                                 </li>
-                                                
                                             </ul>
-                                          
                                         </div>
                                     </div>
                                 </div>
@@ -329,7 +341,7 @@ export default async function VehicleDetailsPage({
 
                                     <div className="sticky top-6 h-fit space-y-3">
                                         <div className="max-w-[400px] shadow-xl rounded-xl bg-white overflow-hidden">
-                                            <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop"/>
+                                            <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop" />
                                         </div>
                                     </div>
                                 </div>
