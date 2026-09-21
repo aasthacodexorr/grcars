@@ -69,6 +69,7 @@ const Header = () => {
                 pathname === item.to || pathname?.startsWith(item.to + "/");
 
               const isLast = index === NAV_ITEMS.length - 1;
+              const isExternal = item.to.startsWith("http");
 
               const Icon = "icon" in item ? item.icon : null;
 
@@ -76,6 +77,8 @@ const Header = () => {
                 <a
                   key={item.label}
                   href={item.to}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
                     if (item.to === "/inventory") {
                       e.preventDefault();
@@ -83,15 +86,15 @@ const Header = () => {
                     }
                   }}
                   className={`relative flex items-center gap-2 text-[16px] font-medium transition-colors whitespace-nowrap capitalize tracking-[0px] mt-2 py-[6px] px-5 leading-normal font-[Lato,sans-serif]
-          ${!isLast
+        ${!isLast
                       ? "after:content-[''] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:h-[22px] after:w-[2px] after:bg-[rgba(181,180,180,0.35)]"
                       : ""
                     }
-          ${isActive
+        ${isActive
                       ? "text-brand-green"
                       : "text-black hover:text-brand-green"
                     }
-        `}
+      `}
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
                   <span className="font-semibold tracking-wide">{item.label}</span>
@@ -257,8 +260,8 @@ const Header = () => {
                     }
                   }}
                   className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${isActive
-                      ? "text-brand-green font-medium"
-                      : "text-gray-900"
+                    ? "text-brand-green font-medium"
+                    : "text-gray-900"
                     }`}
                 >
                   {item.label}
