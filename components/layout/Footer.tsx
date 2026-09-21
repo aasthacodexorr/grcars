@@ -168,7 +168,7 @@ const Footer = () => {
                         rel="noopener noreferrer"
                         className="inline-block bg-[#0080ff] hover:bg-blue-600 text-white font-medium px-6 py-2.5 rounded-full text-sm transition-colors"
                       >
-                        Get Direction
+                        Get Directions
                       </a>
                     </div>
                   )}
