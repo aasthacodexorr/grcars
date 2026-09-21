@@ -27,7 +27,7 @@ const Header = () => {
   const { openWishlistDrawer } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
 
- 
+
   const inventorySlug = pathname?.startsWith("/inventory/")
     ? pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean)
     : [];
@@ -241,17 +241,24 @@ const Header = () => {
             {NAV_ITEMS.map((item) => {
               const isActive =
                 pathname === item.to || pathname?.startsWith(item.to + "/");
+
+              const isExternal = item.to.startsWith("http");
+
               return (
                 <Link
                   key={item.label}
                   href={item.to}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
                     if (item.to === "/inventory") {
                       e.preventDefault();
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${isActive ? "text-brand-green font-medium" : "text-gray-900"
+                  className={`py-4 border-b border-gray-100 text-[17px] capitalize flex items-center justify-between transition-colors ${isActive
+                      ? "text-brand-green font-medium"
+                      : "text-gray-900"
                     }`}
                 >
                   {item.label}
