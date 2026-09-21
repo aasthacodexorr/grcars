@@ -5,6 +5,95 @@
   --font-sans: "Inter", sans-serif;
 }
 
+.blog-content {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.blog-content > :first-child { margin-top: 0; }
+.blog-content > :last-child { margin-bottom: 0; }
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.blog-content p,
+.blog-content ul,
+.blog-content ol,
+.blog-content blockquote,
+.blog-content pre,
+.blog-content table {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.blog-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  border-radius: 0.75rem;
+}
+
+.blog-content a {
+  color: #0f766e;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.blog-content ul,
+.blog-content ol {
+  padding-left: 1.4rem;
+}
+
+.blog-content li + li {
+  margin-top: 0.5rem;
+}
+
+.blog-content blockquote {
+  border-left: 4px solid #16a34a;
+  padding-left: 1rem;
+  color: #475569;
+  font-style: italic;
+}
+
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+}
+
+.blog-content th,
+.blog-content td {
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.blog-content th {
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+.blog-content iframe,
+.blog-content video {
+  max-width: 100%;
+  display: block;
+  margin: 1.5rem auto;
+}
+
 /* ════════════════════════════════════════════════════════════════
    CSS Variables for Global Colors
    These map to lib/colors.ts for centralized color management

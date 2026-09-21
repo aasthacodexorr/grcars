@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
+        protocol: "https",
+        hostname: "blog.grcars.ca",
+        pathname: "/**",
+      },
+      {
         protocol: 'https',
         hostname: 'zd-website.b-cdn.net',
         pathname: '/**',
