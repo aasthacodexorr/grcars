@@ -61,7 +61,7 @@ const Footer = () => {
             { label: "TIRE & RIMS", href: "https://www.grwheels.ca/" },
             { label: "PAYMENT CALCULATOR", href: "/payment-calculator" },
             { label: "ABOUT US", href: "/about-us" },
-            { label: "BLOG", href: "/blog" },
+            { label: "BLOG", href: "/blogs" },
             { label: "CONTACT", href: "/contact-us" },
           ],
         },

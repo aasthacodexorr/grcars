@@ -191,7 +191,7 @@ export default function SitemapPage() {
                 </Link>
 
                 <Link
-                  href="/blog"
+                  href="/blogs"
                   target="_blank"
                   className="w-fit transition-colors hover:text-gray-400"
                 >
