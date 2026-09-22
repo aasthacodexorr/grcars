@@ -43,7 +43,7 @@ export default async function BlogsPage({
     <div className="min-h-screen bg-white text-gray-900">
       <Header />
 
-      <main className="mx-auto max-w-[1180px] px-4 pb-16 pt-28 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-[1180px] px-4 pb-16 pt-28 sm:px-6 lg:px-8 mt-24 lg:mt-0">
         <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.22em] text-brand-green">GRCars Insights</p>
