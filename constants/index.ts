@@ -17,8 +17,8 @@ import {Search} from "lucide-react"
 export const NAV_ITEMS = [
   { label: "Search Cars", to: "/inventory" , icon:Search },
   { label: "Sell/Trade", to: "/trade-in-my-car" },
-  { label: "Tire & Rims", to: "https://www.grwheels.ca/" },
   { label: "Financing", to: "/finance" },
+  { label: "Tire & Rims", to: "https://www.grwheels.ca/" },
   { label: "Contact", to: "/contact-us" }, 
 ] as const;
 
