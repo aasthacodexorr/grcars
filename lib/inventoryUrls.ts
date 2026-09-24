@@ -1,5 +1,13 @@
 import { AppConfig } from "@/lib/appConfig";
-import { FILTER_KEYS, RANGE_KEYS, queryValue as friendlyValue } from "@/lib/inventoryRouting";
+import {
+  FILTER_KEYS,
+  RANGE_KEYS,
+  queryValue as friendlyValue,
+  modelToQueryValue,
+  modelMakeAssociations,
+  getModelMakeMap,
+  BASELINE_MODEL_TO_MAKE,
+} from "@/lib/inventoryRouting";
 
 // Helper to turn a make/model/body-type label into a URL path segment,
 // e.g. "Mercedes-Benz" → "mercedes-benz", "Sport Utility Vehicle" → "sport-utility-vehicle".
@@ -11,19 +19,26 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-// Query-param URL builder used for body-type / vehicle-type links (multi-value),
-// which don't have a clean single-segment path representation.
-const inventoryUrl = (key: string, values: readonly string[]) => `/inventory?${key}=${values.map(friendlyValue).join(",")}`;
+// Query-param URL builder: single value uses path, multiple values use /inventory/{key}={values}.
+const inventoryUrl = (key: string, values: readonly string[]) => {
+  if (values.length === 1) {
+    return `/inventory/${friendlyValue(values[0])}`;
+  }
+  return `/inventory/${key}=${values.map(friendlyValue).join(",")}`;
+};
 
-// Make links use the clean path form (/inventory/toyota) so the href already
-// looks like the canonical URL. The router's readPathOnlyFilters parses these
-// on fresh load; the footer's window.location.href redirect triggers a fresh
-// load when already on the inventory page.
-export const getInventoryUrlByMake = (make: string, _appConfig: AppConfig) => `/inventory/${slugify(make)}`;
+// Make links use /inventory/{makename}
+export const getInventoryUrlByMake = (make: string, _appConfig: AppConfig) => `/inventory/${friendlyValue(make)}`;
 export const getInventoryUrlByBodyType = (bodyType: string, _appConfig: AppConfig) => inventoryUrl(FILTER_KEYS.body_type, [bodyType]);
 export const getInventoryUrlByVehicleType = (vehicleType: string, _appConfig: AppConfig) => inventoryUrl(FILTER_KEYS.vehicle_type, [vehicleType]);
+export const getInventoryUrlWithParams = (params: Record<string, string>, _appConfig: AppConfig) => {
+  const query = Object.entries(params).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join("&");
+  return query ? `/inventory/${query}` : "/inventory";
+};
+
 export const getInventoryUrlByModel = (make: string, model: string, _appConfig?: AppConfig) =>
   `/inventory/${slugify(make)}-${slugify(model)}`;
+
 
 
 export const POPULAR_MAKES = [
@@ -45,8 +60,19 @@ export const POPULAR_CAR_TYPES = [
 
 export const getMakeUrl = (make: string, appConfig: AppConfig) => getInventoryUrlByMake(make, appConfig);
 export const getBodyTypeUrl = (bodyType: string, appConfig: AppConfig) => getInventoryUrlByBodyType(bodyType, appConfig);
-export const getInventoryUrlByQuery = (query: string, _appConfig: AppConfig) => `/inventory?q=${encodeURIComponent(query)}`;
+export const getInventoryUrlByQuery = (query: string, _appConfig: AppConfig) => `/inventory/q=${encodeURIComponent(query)}`;
 export const getInventoryUrlByRefinement = (attribute: string, values: readonly string[], _appConfig: AppConfig) => {
+  if (attribute === "model" && values.length === 1) {
+    const model = values[0];
+    const make = modelMakeAssociations.get(model) || getModelMakeMap().get(model) || BASELINE_MODEL_TO_MAKE[model];
+    if (make) {
+      return `/inventory/${friendlyValue(make)}/${modelToQueryValue(model)}`;
+    }
+    return `/inventory/${modelToQueryValue(model)}`;
+  }
+  if (values.length === 1) {
+    return `/inventory/${friendlyValue(values[0])}`;
+  }
   const key = FILTER_KEYS[attribute];
   return key ? inventoryUrl(key, values) : "/inventory";
 };
@@ -55,24 +81,21 @@ export const getInventoryUrlByRange = (attribute: string, range: string, _appCon
   if (!keys) return "/inventory";
   const [low = "", high = ""] = range.split(":", 2);
   const query = [low && `${keys[0]}=${encodeURIComponent(low)}`, high && `${keys[1]}=${encodeURIComponent(high)}`].filter(Boolean).join("&");
-  return query ? `/inventory?${query}` : "/inventory";
+  return query ? `/inventory/${query}` : "/inventory";
 };
 
 export function isVehicleDetailSlug(slug: string[] | undefined | null): boolean {
   if (!slug || slug.length !== 1) return false;
-  const segment = slug[0];
-  const leadingToken = segment.split("-", 1)[0] || "";
-  if (!/^\d+$/.test(leadingToken)) return false;
+  const firstDash = slug[0].indexOf("-");
+  if (firstDash === -1) return false;
+  const leadingToken = slug[0].substring(0, firstDash);
   const leadingNumber = Number(leadingToken);
-  // IDs clearly outside the vehicle-year range (1900–2100) are unambiguously vehicle IDs.
-  if (leadingNumber < 1900 || leadingNumber > 2100) return true;
-  // For IDs that fall inside the year range (e.g. 1909), confirm by checking whether
-  // the part after the numeric prefix starts with another 4-digit year (the VDP slug
-  // format is "{id}-{year}-{make}-{model}", e.g. "1909-2019-nissan-sentra-sv").
-  const afterId = segment.slice(leadingToken.length + 1); // skip "{id}-"
-  const nextToken = afterId.split("-", 1)[0] || "";
-  const nextNumber = Number(nextToken);
-  return /^\d{4}$/.test(nextToken) && nextNumber >= 1900 && nextNumber <= 2100;
+  if (/^\d+$/.test(leadingToken) && (leadingNumber < 1900 || leadingNumber > 2100)) {
+    const lower = slug[0].toLowerCase();
+    if (lower === "1500-classic" || lower === "1500") return false;
+    return true;
+  }
+  return false;
 }
 
 export async function getVehicleById(id: string, appConfig: AppConfig): Promise<Record<string, any> | null> {
@@ -98,7 +121,7 @@ export async function getVehicleById(id: string, appConfig: AppConfig): Promise<
  */
 export async function getVehicleBySlug(slugArray: string[], appConfig: AppConfig): Promise<Record<string, any> | null> {
   if (!slugArray || slugArray.length === 0) return null;
-  
+
   const vehicleParam = slugArray[0];
   const firstDash = vehicleParam.indexOf("-");
   if (firstDash === -1) return null;
