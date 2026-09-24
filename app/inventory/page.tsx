@@ -34,8 +34,17 @@ import {
 
 import { getTypesenseClient } from "@/lib/typesense";
 
-// Custom router/stateMapping that produces the client-required URL format
-import { createInventoryRouter, createInventoryStateMapping, getModelMakeMap, setModelMakeMap } from "@/lib/inventoryRouting";
+import {
+  createInventoryRouter,
+  createInventoryStateMapping,
+  getModelMakeMap,
+  setModelMakeMap,
+  registerKnownModels,
+  modelMakeAssociations,
+  registerFacetValues,
+  formatFacetLabel,
+  getMakeForModel,
+} from "@/lib/inventoryRouting";
 import { useAppConfig } from "@/app/providers";
 import { InventoryGridSkeleton, InventoryLoadMoreSkeleton } from "@/components/inventory/HitCardSkeleton";
 import { AD_CARDS } from "@/components/inventory/AdCard";
@@ -155,6 +164,33 @@ type FilterGroupProps = {
 };
 
 const FilterGroup = ({ title, children, isOpen, onToggle }: FilterGroupProps) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const resetScroll = () => {
+      if (contentRef.current) {
+        const scrollables = contentRef.current.querySelectorAll<HTMLElement>(
+          ".overflow-y-auto, ul, [class*='overflow-y']"
+        );
+        scrollables.forEach((el) => {
+          el.scrollTop = 0;
+          if (typeof el.scrollTo === "function") {
+            el.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+          }
+        });
+        contentRef.current.scrollTop = 0;
+      }
+    };
+
+    resetScroll();
+
+    if (isOpen) {
+      requestAnimationFrame(resetScroll);
+      const timer = setTimeout(resetScroll, 310);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   return (
     <div className={`border-b border-border py-[7px] mb-0  transition-all duration-300 ${isOpen ? "pb-4" : ""}`}>
       <button onClick={onToggle} className="w-full cursor-pointer">
@@ -168,6 +204,7 @@ const FilterGroup = ({ title, children, isOpen, onToggle }: FilterGroupProps) =>
         </div>
       </button>
       <div
+        ref={contentRef}
         className={`grid transition-all duration-300 ease-in-out ${isOpen
           ? "grid-rows-[1fr] opacity-100 mt-3 px-[10px]"
           : "grid-rows-[0fr] opacity-0 mt-0 px-[10px]"
@@ -432,7 +469,7 @@ const CustomInfiniteHits = ({ hitComponent: HitComponent }: any) => {
               <div
                 key={item.hit.objectID}
                 className={[
-                  "flex flex-col h-full px-0 lg:px-[9px] py-[6px]",
+                  "flex flex-col h-full px-0 lg:px-[9px] py-[9px]",
                   isNew && loadPhase === "revealing" ? "animate-inventory-card-in" : "",
                 ].join(" ")}
               >
@@ -491,6 +528,7 @@ const ClearFiltersButton = ({ mobile = false }: { mobile?: boolean }) => {
 
 const GroupedCurrentRefinements = () => {
   const { items, refine } = useCurrentRefinements();
+  const { setIndexUiState } = useInstantSearch();
 
   if (items.length === 0) return null;
 
@@ -509,26 +547,115 @@ const GroupedCurrentRefinements = () => {
     return priorityA - priorityB;
   });
 
+  const handleRemoveRefinement = (
+    category: (typeof items)[number],
+    refinement: (typeof category.refinements)[number]
+  ) => {
+    if (category.attribute === "make") {
+      const makeToRemove = String(refinement.value);
+      setIndexUiState((prevIndexUiState) => {
+        const currentRefinementList = prevIndexUiState.refinementList || {};
+        const currentMakes = (currentRefinementList.make || []).map(String);
+        const currentModels = (currentRefinementList.model || []).map(String);
+
+        const nextMakes = currentMakes.filter(
+          (m) => m !== makeToRemove && m.toLowerCase() !== makeToRemove.toLowerCase()
+        );
+
+        const nextModels = currentModels.filter((modelVal) => {
+          const modelMake = getMakeForModel(modelVal);
+          if (modelMake && modelMake.toLowerCase() === makeToRemove.toLowerCase()) return false;
+          if (nextMakes.length === 0) return false;
+          if (modelMake && !nextMakes.some((m) => m.toLowerCase() === modelMake.toLowerCase())) return false;
+          return true;
+        });
+
+        const nextRefinementList: Record<string, string[]> = {
+          ...currentRefinementList,
+        };
+        if (nextMakes.length > 0) {
+          nextRefinementList.make = nextMakes;
+        } else {
+          delete nextRefinementList.make;
+        }
+        if (nextModels.length > 0) {
+          nextRefinementList.model = nextModels;
+        } else {
+          delete nextRefinementList.model;
+        }
+
+        return {
+          ...prevIndexUiState,
+          page: 1,
+          refinementList: nextRefinementList,
+        };
+      });
+      return;
+    }
+
+    if (category.attribute === "model") {
+      const targetNorm = formatFacetLabel(refinement.label).toLowerCase().replace(/[^a-z0-9]/g, "");
+      setIndexUiState((prevIndexUiState) => {
+        const currentRefinementList = prevIndexUiState.refinementList || {};
+        const currentModels = (currentRefinementList.model || []).map(String);
+        const nextModels = currentModels.filter((m) => {
+          const mNorm = formatFacetLabel(m).toLowerCase().replace(/[^a-z0-9]/g, "");
+          return mNorm !== targetNorm && m !== String(refinement.value);
+        });
+
+        const nextRefinementList: Record<string, string[]> = {
+          ...currentRefinementList,
+        };
+        if (nextModels.length > 0) {
+          nextRefinementList.model = nextModels;
+        } else {
+          delete nextRefinementList.model;
+        }
+
+        return {
+          ...prevIndexUiState,
+          page: 1,
+          refinementList: nextRefinementList,
+        };
+      });
+      return;
+    }
+
+    refine(refinement);
+  };
+
   return (
     <div className="w-full flex flex-wrap gap-y-2 gap-x-2">
-      {orderedItems.map((category) => (
-        <div key={category.attribute} className="flex flex-wrap items-center gap-[0.5px] bg-transparent">
-          {category.refinements.map((refinement) => (
-            <div
-              key={refinement.label}
-              className="flex items-center bg-white rounded-lg px-[12px] py-[6px] border border-gray-200 text-[14px] text-gray-600 font-light shadow-sm"
-            >
-              <span className="cursor-pointer tracking-wider font-light">{refinement.label}</span>
-              <button
-                onClick={() => refine(refinement)}
-                className="ml-2 hover:text-gray-950 focus:outline-none flex items-center justify-center cursor-pointer"
+      {orderedItems.map((category) => {
+        const seenNorms = new Set<string>();
+        const uniqueRefinements = category.refinements.filter((refinement) => {
+          const norm = formatFacetLabel(refinement.label).toLowerCase().replace(/[^a-z0-9]/g, "");
+          if (seenNorms.has(norm)) return false;
+          seenNorms.add(norm);
+          return true;
+        });
+
+        return (
+          <div key={category.attribute} className="flex flex-wrap items-center gap-[0.5px] bg-transparent">
+            {uniqueRefinements.map((refinement) => (
+              <div
+                key={refinement.label}
+                className="flex items-center bg-white rounded-lg px-[12px] py-[6px] border border-gray-200 text-[14px] text-gray-600 font-light shadow-sm"
               >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-        </div>
-      ))}
+                <span className="cursor-pointer tracking-wider font-light">
+                  {formatFacetLabel(refinement.label)}
+                </span>
+                <button
+                  onClick={() => handleRemoveRefinement(category, refinement)}
+                  className="ml-2 hover:text-gray-950 focus:outline-none flex items-center justify-center cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -637,7 +764,9 @@ const StableRefinementList = ({
               onChange={() => refine(item.value)}
               className={refinementListClassNames.checkbox}
             />
-            <span className={refinementListClassNames.labelText}>{item.label}</span>
+            <span className={refinementListClassNames.labelText}>
+              {formatFacetLabel(item.label)}
+            </span>
             <span className={refinementListClassNames.count}>{item.count}</span>
           </label>
         </li>
@@ -648,26 +777,58 @@ const StableRefinementList = ({
 
 const MakeRefinementList = () => {
   const { items: currentRefinements } = useCurrentRefinements();
+  const { setIndexUiState } = useInstantSearch();
 
   const {
     items: makeItems,
-    refine: refineMake,
   } = useRefinementList({
     attribute: "make",
-    limit: 200,
-    sortBy: ["name:asc"],
-  });
-
-  const {
-    items: modelItems,
-    refine: refineModel,
-  } = useRefinementList({
-    attribute: "model",
-    limit: 200,
+    limit: 500,
     sortBy: ["name:asc"],
   });
 
   const [allMakes, setAllMakes] = useState<typeof makeItems>([]);
+  const config = useAppConfig();
+  const [globalMakesFetched, setGlobalMakesFetched] = useState(false);
+
+  useEffect(() => {
+    if (globalMakesFetched) return;
+    const fetchGlobalMakes = async () => {
+      try {
+        const client = getTypesenseClient(config).searchClient;
+        const res = await client.search([{
+          indexName: config.site.collection,
+          params: {
+            facets: ["make"],
+            hitsPerPage: 0,
+            maxValuesPerFacet: 250,
+          }
+        }]);
+
+        const facetsObj = (res as any).results?.[0]?.facets?.make || {};
+        const initialMakes = Object.entries(facetsObj).map(([value, count]) => ({
+          value,
+          label: value,
+          count: count as number,
+          isRefined: false,
+        }));
+
+        registerFacetValues("make", initialMakes.map((m) => String(m.value)));
+
+        setAllMakes((previous) => {
+          const merged = new Map<string, typeof makeItems[number]>();
+          initialMakes.forEach((item) => merged.set(String(item.value), item as any));
+          previous.forEach((item) => merged.set(String(item.value), item));
+          return Array.from(merged.values());
+        });
+      } catch (err) {
+        console.error("Failed to fetch global makes", err);
+      } finally {
+        setGlobalMakesFetched(true);
+      }
+    };
+    fetchGlobalMakes();
+  }, [config, globalMakesFetched]);
 
   useEffect(() => {
     if (!makeItems.length) return;
@@ -731,24 +892,63 @@ const MakeRefinementList = () => {
     const isCurrentlyRefined = refinedMakeValues.has(make);
 
     if (isCurrentlyRefined) {
-      const modelMakeMap = getModelMakeMap();
+      setIndexUiState((prevIndexUiState) => {
+        const currentRefinementList = prevIndexUiState.refinementList || {};
+        const currentMakes = (currentRefinementList.make || []).map(String);
+        const currentModels = (currentRefinementList.model || []).map(String);
 
-      const modelsToRemove = modelItems.filter(
-        (model) =>
-          model.isRefined &&
-          modelMakeMap.get(model.value as string) === make
-      );
+        const nextMakes = currentMakes.filter(
+          (m) => m !== make && m.toLowerCase() !== make.toLowerCase()
+        );
 
-      modelsToRemove.forEach((model) => {
-        refineModel(model.value as string);
+        const nextModels = currentModels.filter((modelVal) => {
+          const modelMake = getMakeForModel(modelVal);
+          if (modelMake && modelMake.toLowerCase() === make.toLowerCase()) return false;
+          if (nextMakes.length === 0) return false;
+          if (modelMake && !nextMakes.some((m) => m.toLowerCase() === modelMake.toLowerCase())) return false;
+          return true;
+        });
+
+        const nextRefinementList: Record<string, string[]> = {
+          ...currentRefinementList,
+        };
+        if (nextMakes.length > 0) {
+          nextRefinementList.make = nextMakes;
+        } else {
+          delete nextRefinementList.make;
+        }
+        if (nextModels.length > 0) {
+          nextRefinementList.model = nextModels;
+        } else {
+          delete nextRefinementList.model;
+        }
+
+        return {
+          ...prevIndexUiState,
+          page: 1,
+          refinementList: nextRefinementList,
+        };
       });
-
-      refineMake(make);
       return;
     }
 
     // Add this make without clearing any previously selected makes.
-    refineMake(make);
+    setIndexUiState((prevIndexUiState) => {
+      const currentRefinementList = prevIndexUiState.refinementList || {};
+      const currentMakes = (currentRefinementList.make || []).map(String);
+      const nextMakes = currentMakes.some((m) => m.toLowerCase() === make.toLowerCase())
+        ? currentMakes
+        : [...currentMakes, make];
+
+      return {
+        ...prevIndexUiState,
+        page: 1,
+        refinementList: {
+          ...currentRefinementList,
+          make: nextMakes,
+        },
+      };
+    });
   };
 
   return (
@@ -776,7 +976,7 @@ const MakeRefinementList = () => {
             />
 
             <span className={refinementListClassNames.labelText}>
-              {item.label}
+              {formatFacetLabel(item.label)}
             </span>
 
             <span className={refinementListClassNames.count}>
@@ -791,6 +991,7 @@ const MakeRefinementList = () => {
 
 const ModelRefinementList = () => {
   const { items: currentRefinements } = useCurrentRefinements();
+  const { setIndexUiState } = useInstantSearch();
 
   const {
     items: modelItems,
@@ -831,56 +1032,164 @@ const ModelRefinementList = () => {
     );
   }, [currentRefinements]);
 
-  // Always merge the latest hits into the existing model -> make cache.
-  // This makes the relationship update immediately after a make refinement.
-  const modelMakeMap = useMemo(() => {
-    const merged = new Map(getModelMakeMap());
+  const [globalModelMakeMap, setGlobalModelMakeMap] = useState<Map<string, string>>(new Map());
+  const config = useAppConfig();
 
+  useEffect(() => {
+    let active = true;
+    const fetchGlobalMap = async () => {
+      try {
+        const url = `${config.site.typesense_protocol}://${config.site.typesense_host}:${config.site.typesense_port || 443}/collections/${config.site.collection}/documents/search?q=*&group_by=model&group_limit=1&per_page=250`;
+        const res = await fetch(url, {
+          headers: { "X-TYPESENSE-API-KEY": config.site.inventory_search_only_key }
+        });
+        const data = await res.json();
+        if (!active) return;
+        const newMap = new Map<string, string>();
+        data.grouped_hits?.forEach((group: any) => {
+          const hit = group.hits?.[0]?.document;
+          if (hit?.model && hit?.make) {
+            newMap.set(String(hit.model), String(hit.make));
+          }
+        });
+        setGlobalModelMakeMap(newMap);
+        setModelMakeMap(newMap.entries());
+        registerKnownModels(newMap.keys());
+        registerFacetValues("model", newMap.keys());
+        registerFacetValues("make", newMap.values());
+      } catch (err) {
+        console.error("Failed to fetch global model map", err);
+      }
+    };
+    fetchGlobalMap();
+    return () => { active = false; };
+  }, [config]);
+
+  const combinedModelMakeMap = useMemo(() => {
+    const merged = new Map(globalModelMakeMap);
+    // Overlay local dynamic hits and URL map just in case
+    getModelMakeMap().forEach((make, model) => merged.set(model, make));
     hits.forEach((hit: any) => {
       if (hit?.model && hit?.make) {
         merged.set(String(hit.model), String(hit.make));
       }
     });
-
     return merged;
-  }, [hits]);
+  }, [globalModelMakeMap, hits]);
 
   const visibleModelItems = useMemo(() => {
-    // No make selected: show all available models.
     if (selectedMakeValues.size === 0) {
       return modelItems;
     }
 
-    // One or more makes selected: only show models belonging to those makes.
-    // Keep selected models visible during the InstantSearch update.
     return modelItems.filter((item) => {
       const model = String(item.value);
-      const make = modelMakeMap.get(model);
+      const make = combinedModelMakeMap.get(model);
 
       return (
         selectedModelValues.has(model) ||
         (make ? selectedMakeValues.has(make) : false)
       );
     });
-  }, [modelItems, selectedMakeValues, selectedModelValues, modelMakeMap]);
+  }, [modelItems, selectedMakeValues, selectedModelValues, combinedModelMakeMap]);
 
-  const handleToggle = (item: typeof modelItems[number]) => {
-    const model = item.value as string;
-    const make = modelMakeMap.get(model);
+  type DedupedModelItem = {
+    label: string;
+    value: string;
+    count: number;
+    isRefined: boolean;
+    allValues: string[];
+  };
+
+  const normalizedModelItems = useMemo<DedupedModelItem[]>(() => {
+    const map = new Map<string, DedupedModelItem>();
+
+    visibleModelItems.forEach((item) => {
+      // Normalise key: lowercase alphanumeric only (e.g. "3 Series" and "3-Series" both become "3series")
+      const normKey = item.label.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+      const existing = map.get(normKey);
+      const isItemRefined = item.isRefined || selectedModelValues.has(String(item.value));
+
+      if (!existing) {
+        map.set(normKey, {
+          label: item.label,
+          value: String(item.value),
+          count: item.count,
+          isRefined: isItemRefined,
+          allValues: [String(item.value)],
+        });
+      } else {
+        // Prefer hyphenated or higher count variant as canonical
+        const preferExisting = existing.count >= item.count;
+        const preferredLabel = preferExisting ? existing.label : item.label;
+        const preferredValue = preferExisting ? existing.value : String(item.value);
+
+        map.set(normKey, {
+          label: preferredLabel,
+          value: preferredValue,
+          count: existing.count + item.count,
+          isRefined: existing.isRefined || isItemRefined,
+          allValues: Array.from(new Set([...existing.allValues, String(item.value)])),
+        });
+      }
+    });
+
+    return Array.from(map.values()).sort((a, b) => a.label.localeCompare(b.label));
+  }, [visibleModelItems, selectedModelValues]);
+
+  const handleToggle = (item: DedupedModelItem) => {
+    const model = item.value;
+    const make = combinedModelMakeMap.get(model) || getMakeForModel(model);
 
     if (!item.isRefined) {
       // Selecting a model automatically selects its make.
       // Existing makes stay selected.
-      if (make && !selectedMakeValues.has(make)) {
-        refineMake(make);
-      }
+      setIndexUiState((prevIndexUiState) => {
+        const currentRefinementList = prevIndexUiState.refinementList || {};
+        const currentMakes = (currentRefinementList.make || []).map(String);
+        const currentModels = (currentRefinementList.model || []).map(String);
 
-      refineModel(model);
+        const nextMakes =
+          make && !currentMakes.some((m) => m.toLowerCase() === make.toLowerCase())
+            ? [...currentMakes, make]
+            : currentMakes;
+        const nextModels = currentModels.includes(model) ? currentModels : [...currentModels, model];
+
+        return {
+          ...prevIndexUiState,
+          page: 1,
+          refinementList: {
+            ...currentRefinementList,
+            make: nextMakes,
+            model: nextModels,
+          },
+        };
+      });
       return;
     }
 
-    // Deselecting a model does not remove its make.
-    refineModel(model);
+    // Deselecting a model: unrefine any variant that was refined
+    setIndexUiState((prevIndexUiState) => {
+      const currentRefinementList = prevIndexUiState.refinementList || {};
+      const currentModels = (currentRefinementList.model || []).map(String);
+      const toRemove = new Set([model, ...item.allValues]);
+      const nextModels = currentModels.filter((m) => !toRemove.has(m));
+
+      const nextRefinementList: Record<string, string[]> = {
+        ...currentRefinementList,
+      };
+      if (nextModels.length > 0) {
+        nextRefinementList.model = nextModels;
+      } else {
+        delete nextRefinementList.model;
+      }
+
+      return {
+        ...prevIndexUiState,
+        page: 1,
+        refinementList: nextRefinementList,
+      };
+    });
   };
 
   return (
@@ -897,7 +1206,7 @@ const ModelRefinementList = () => {
         "lg:[scrollbar-width:thin]",
       ].join(" ")}
     >
-      {visibleModelItems.map((item) => (
+      {normalizedModelItems.map((item) => (
         <li key={item.value}>
           <label className={refinementListClassNames.label}>
             <input
@@ -908,7 +1217,7 @@ const ModelRefinementList = () => {
             />
 
             <span className={refinementListClassNames.labelText}>
-              {item.label}
+              {formatFacetLabel(item.label)}
             </span>
 
             <span className={refinementListClassNames.count}>
@@ -1296,19 +1605,32 @@ const MainLayoutWrapper = ({
 
 const SyncModelMakeMap = () => {
   const { hits } = useHits();
+  const { refresh } = useInstantSearch();
 
   useEffect(() => {
     const existing = getModelMakeMap();
     const merged = new Map(existing);
+    let changed = false;
 
     hits.forEach((hit: any) => {
       if (hit.model && hit.make) {
-        merged.set(hit.model as string, hit.make as string);
+        const model = hit.model as string;
+        const make = hit.make as string;
+        if (merged.get(model) !== make) {
+          merged.set(model, make);
+          changed = true;
+        }
       }
     });
 
-    setModelMakeMap(Array.from(merged.entries()));
-  }, [hits]);
+    if (changed) {
+      setModelMakeMap(Array.from(merged.entries()));
+      registerKnownModels(merged.keys());
+      registerFacetValues("model", merged.keys());
+      registerFacetValues("make", merged.values());
+      refresh();
+    }
+  }, [hits, refresh]);
 
   return null;
 };
@@ -1326,16 +1648,7 @@ const SyncModelMakeMap = () => {
 // right after being selected, requiring a second click to "stick".
 const SyncOrphanedModels = () => {
   const { items: currentRefinements } = useCurrentRefinements();
-
-  const { items: modelItems, refine: refineModel } = useRefinementList({
-    attribute: "model",
-    limit: 200,
-  });
-
-  const { refine: refineMake } = useRefinementList({
-    attribute: "make",
-    limit: 200,
-  });
+  const { setIndexUiState } = useInstantSearch();
 
   const previousSelectedMakesRef = useRef<Set<string>>(new Set());
 
@@ -1343,49 +1656,61 @@ const SyncOrphanedModels = () => {
     const makeCategory = currentRefinements.find(
       (category) => category.attribute === "make"
     );
+    const modelCategory = currentRefinements.find(
+      (category) => category.attribute === "model"
+    );
 
     const selectedMakes = new Set(
-      makeCategory?.refinements.map((refinement) => String(refinement.value)) ?? []
+      makeCategory?.refinements.map((refinement) => String(refinement.value).toLowerCase()) ?? []
     );
 
     const previousSelectedMakes = previousSelectedMakesRef.current;
-    const modelMakeMap = getModelMakeMap();
 
-    // A make counts as "removed" only if it was selected on the previous
-    // run and is no longer selected now.
+    // A make counts as "removed" if it was selected on the previous run and is no longer selected now.
     const removedMakes = new Set(
       Array.from(previousSelectedMakes).filter((make) => !selectedMakes.has(make))
     );
 
-    if (removedMakes.size > 0) {
-      const modelsToRemove = modelItems.filter((model) => {
-        if (!model.isRefined) return false;
+    if (removedMakes.size > 0 || (previousSelectedMakes.size > 0 && selectedMakes.size === 0)) {
+      if (modelCategory?.refinements.length) {
+        const orphanedModels = new Set<string>();
+        modelCategory.refinements.forEach((modelRefinement) => {
+          const modelVal = String(modelRefinement.value);
+          const make = getMakeForModel(modelVal);
 
-        const make = modelMakeMap.get(model.value as string);
+          if (selectedMakes.size === 0 || (make && removedMakes.has(make.toLowerCase()))) {
+            orphanedModels.add(modelVal);
+          }
+        });
 
-        return Boolean(make && removedMakes.has(make));
-      });
+        if (orphanedModels.size > 0) {
+          setIndexUiState((prevState) => {
+            const currentRefinementList = prevState.refinementList || {};
+            const currentModels = (currentRefinementList.model || []).map(String);
+            const nextModels = currentModels.filter((m) => !orphanedModels.has(m));
+            if (nextModels.length === currentModels.length) return prevState;
 
-      modelsToRemove.forEach((model) => {
-        refineModel(model.value as string);
-      });
+            const nextRefinements: Record<string, string[]> = {
+              ...currentRefinementList,
+            };
+            if (nextModels.length > 0) {
+              nextRefinements.model = nextModels;
+            } else {
+              delete nextRefinements.model;
+            }
+
+            return {
+              ...prevState,
+              page: 1,
+              refinementList: nextRefinements,
+            };
+          });
+        }
+      }
     }
 
-    // Once a selected model's make becomes known (it may not have been at
-    // selection time), make sure the make is selected too — matching the
-    // "selecting a model selects its make" behavior everywhere else.
-    modelItems.forEach((model) => {
-      if (!model.isRefined) return;
-
-      const make = modelMakeMap.get(model.value as string);
-
-      if (make && !selectedMakes.has(make) && !removedMakes.has(make)) {
-        refineMake(make);
-      }
-    });
-
     previousSelectedMakesRef.current = selectedMakes;
-  }, [currentRefinements, modelItems, refineModel, refineMake]);
+  }, [currentRefinements, setIndexUiState]);
 
   return null;
 };
@@ -1496,7 +1821,7 @@ const InventoryContent = () => {
 
   // ── Scroll Lock (iOS-safe) ──
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1023.98px)"); // below Tailwind's `lg`
+    const mq = window.matchMedia("(max-width: 1023.98px)");
     let lockedScrollY = 0;
 
     const lock = () => {
@@ -1559,7 +1884,7 @@ const InventoryContent = () => {
 
 
       <FilterGroup title="YEAR" isOpen={openFilter === "YEAR"} onToggle={() => setOpenFilter(openFilter === "YEAR" ? null : "YEAR")}>
-        <RefinementList attribute="year" sortBy={["name:desc"]} classNames={refinementListClassNames} />
+        <StableRefinementList attribute="year" sortBy={["name:desc"]} />
       </FilterGroup>
       <FilterGroup title="PRICE" isOpen={openFilter === "PRICE"} onToggle={() => setOpenFilter(openFilter === "PRICE" ? null : "PRICE")}>
         <PriceRangeFilter />
@@ -1568,19 +1893,19 @@ const InventoryContent = () => {
         <OdometerRangeFilter />
       </FilterGroup>
       <FilterGroup title="VEHICLE TYPE" isOpen={openFilter === "VEHICLE TYPE"} onToggle={() => setOpenFilter(openFilter === "VEHICLE TYPE" ? null : "VEHICLE TYPE")}>
-        <RefinementList attribute="vehicle_type" classNames={refinementListClassNames} />
+        <StableRefinementList attribute="vehicle_type" />
       </FilterGroup>
       <FilterGroup title="EXTERIOR COLOR" isOpen={openFilter === "EXTERIOR COLOR"} onToggle={() => setOpenFilter(openFilter === "EXTERIOR COLOR" ? null : "EXTERIOR COLOR")}>
-        <RefinementList attribute="exterior_color" classNames={refinementListClassNames} />
+        <StableRefinementList attribute="exterior_color" />
       </FilterGroup>
       <FilterGroup title="BODY TYPE" isOpen={openFilter === "BODY TYPE"} onToggle={() => setOpenFilter(openFilter === "BODY TYPE" ? null : "BODY TYPE")}>
-        <RefinementList attribute="body_type" classNames={refinementListClassNames} />
+        <StableRefinementList attribute="body_type" />
       </FilterGroup>
       <FilterGroup title="TRANSMISSION" isOpen={openFilter === "TRANSMISSION"} onToggle={() => setOpenFilter(openFilter === "TRANSMISSION" ? null : "TRANSMISSION")}>
-        <RefinementList attribute="transmission" classNames={refinementListClassNames} />
+        <StableRefinementList attribute="transmission" />
       </FilterGroup>
       <FilterGroup title="FUEL TYPE" isOpen={openFilter === "FUEL TYPE"} onToggle={() => setOpenFilter(openFilter === "FUEL TYPE" ? null : "FUEL TYPE")}>
-        <RefinementList attribute="fuel_type" classNames={refinementListClassNames} />
+        <StableRefinementList attribute="fuel_type" />
       </FilterGroup>
     </div>
   );

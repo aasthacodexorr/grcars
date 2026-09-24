@@ -3,11 +3,333 @@ import type { UiState } from "instantsearch.js";
 
 type PlainObject = Record<string, any>;
 
-const MODEL_TO_MAKE = new Map<string, string>();
+export const BASELINE_MODEL_TO_MAKE: Record<string, string> = {
+  "200": "Chrysler",
+  "300": "Chrysler",
+  "911": "Porsche",
+  "1500": "Ram",
+  "Sierra 1500": "GMC",
+  "Civic": "Honda",
+  "WRX": "Subaru",
+  "Highlander": "Toyota",
+  "Corolla": "Toyota",
+  "Yukon XL": "GMC",
+  "Escape": "Ford",
+  "Taos": "Volkswagen",
+  "C-Class": "Mercedes-Benz",
+  "Charger": "Dodge",
+  "Sonata": "Hyundai",
+  "Qashqai": "Nissan",
+  "Camry": "Toyota",
+  "Corolla Hybrid": "Toyota",
+  "Fusion Energi": "Ford",
+  "Mustang": "Ford",
+  "RAV4": "Toyota",
+  "Durango": "Dodge",
+  "IS 300": "Lexus",
+  "Edge": "Ford",
+  "Acadia": "GMC",
+  "Encore": "Buick",
+  "G70": "Genesis",
+  "Envision": "Buick",
+  "Santa Fe": "Hyundai",
+  "Encore GX": "Buick",
+  "Rogue": "Nissan",
+  "Corvette": "Chevrolet",
+  "KONA": "Hyundai",
+  "Silverado 1500": "Chevrolet",
+  "Grand Caravan": "Chrysler",
+  "Terrain": "GMC",
+  "Enclave": "Buick",
+  "Trax": "Chevrolet",
+  "Grand Cherokee WK": "Jeep",
+  "F-150": "Ford",
+  "Envista": "Buick",
+  "Jetta": "Volkswagen",
+  "Tucson": "Hyundai",
+  "Accord Hybrid": "Honda",
+  "Jetta GLI": "Volkswagen",
+  "A-Class": "Mercedes-Benz",
+  "Challenger": "Dodge",
+  "CLA-Class": "Mercedes-Benz",
+  "Elantra": "Hyundai",
+  "Q3": "Audi",
+  "Grand Cherokee": "Jeep",
+  "Q50": "Infiniti",
+  "Altima": "Nissan",
+  "Versa": "Nissan",
+  "Corsair": "Lincoln",
+  "A4": "Audi",
+  "Wrangler": "Jeep",
+  "S-Class": "Mercedes-Benz",
+  "Malibu": "Chevrolet",
+  "Range Rover Sport": "Land Rover",
+  "3-Series": "BMW",
+  "Gladiator": "Jeep",
+  "Tiguan": "Volkswagen",
+  "E-Class": "Mercedes-Benz",
+  "Accord": "Honda",
+  "Forte": "KIA",
+  "Q5": "Audi",
+  "Suburban": "Chevrolet",
+  "Grand Cherokee L": "Jeep",
+  "Range Rover Velar": "Land Rover",
+  "Wrangler 4XE": "Jeep",
+  "4Runner": "Toyota",
+  "ES": "Lexus",
+  "Sentra": "Nissan",
+  "CR-V": "Honda",
+  "4-Series": "BMW",
+  "SIERRA 2500HD": "GMC",
+  "Defender": "Land Rover",
+  "K4": "Kia",
+  "Venue": "Hyundai",
+  "Carnival": "Kia",
+  "Sorento": "Kia",
+  "Seltos": "Kia",
+  "Compass": "Jeep",
+  "X1": "BMW",
+  "Sportage": "Kia",
+  "Range Rover": "Land Rover",
+  "Yukon": "GMC",
+  "Q7": "Audi",
+  "Odyssey": "Honda",
+  "SUPER DUTY F-250 SRW": "Ford",
+  "GLC-Class": "Mercedes-Benz",
+  "Model 3": "Tesla",
+  "Grecale": "Maserati",
+  "GranTurismo": "Maserati",
+  "Cayenne": "Porsche",
+  "CX-5": "Mazda",
+  "Stinger": "Kia",
+  "Canyon": "GMC",
+  "Tahoe": "Chevrolet",
+  "GR COROLLA": "Toyota",
+  "TT COUPE": "Audi",
+  "Express Cargo Van": "Chevrolet",
+  "Civic Hatchback": "Honda",
+  "RX 350": "Lexus",
+  "1500 Classic": "Ram",
+  "Outlander": "Mitsubishi",
+  "GLE-Class": "Mercedes-Benz",
+  "Atlas": "Volkswagen",
+  "Model Y": "Tesla",
+  "Impreza": "Subaru",
+  "LaCrosse": "Buick",
+  "TrailBlazer": "Chevrolet",
+  "MKX": "Lincoln",
+  "RX": "Lexus",
+  "Ram 1500": "Dodge",
+  "Journey": "Dodge",
+  "SILVERADO 2500HD": "Chevrolet",
+  "Camry Hybrid": "Toyota",
+  "Passat": "Volkswagen",
+  "ZDX": "Acura",
+  "CX-70 MHEV": "Mazda",
+  "TLX": "Acura",
+  "GOLF SPORTWAGEN": "Volkswagen",
+  "Aviator": "Lincoln",
+  "SUPER DUTY F-450 DRW": "Ford",
+  "Explorer": "Ford",
+  "Transit 150": "Ford",
+  "CR-V Hybrid": "Honda",
+};
+
+const MODEL_TO_MAKE = new Map<string, string>(Object.entries(BASELINE_MODEL_TO_MAKE));
+
+const BASELINE_KNOWN_MODELS = [
+  "1500", "1500 Classic", "200", "3-Series", "300", "4-Series", "4Runner", "911",
+  "A-Class", "A4", "Acadia", "Accord", "Accord Hybrid", "Altima", "Atlas", "Aviator",
+  "C-Class", "CLA-Class", "CR-V", "CR-V Hybrid", "CX-5", "CX-70 MHEV", "Camry", "Camry Hybrid",
+  "Canyon", "Carnival", "Cayenne", "Challenger", "Charger", "Civic", "Civic Hatchback", "Compass",
+  "Corolla", "Corolla Hybrid", "Corsair", "Corvette", "Defender", "Durango", "E-Class", "ES",
+  "Edge", "Elantra", "Enclave", "Encore", "Encore GX", "Envision", "Envista", "Escape", "Explorer",
+  "Express Cargo Van", "F-150", "Forte", "Fusion Energi", "G70", "GLC-Class", "GLE-Class",
+  "GOLF SPORTWAGEN", "GR COROLLA", "Gladiator", "GranTurismo", "Grand Caravan", "Grand Cherokee",
+  "Grand Cherokee L", "Grand Cherokee WK", "Grecale", "Highlander", "IS 300", "Impreza", "Jetta",
+  "Jetta GLI", "Journey", "K4", "KONA", "LaCrosse", "MKX", "Malibu", "Model 3", "Model Y", "Mustang",
+  "Odyssey", "Outlander", "Passat", "Q3", "Q5", "Q50", "Q7", "Qashqai", "RAV4", "RX", "RX 350",
+  "Ram 1500", "Range Rover", "Range Rover Sport", "Range Rover Velar", "Rogue", "S-Class",
+  "SIERRA 2500HD", "SILVERADO 2500HD", "SUPER DUTY F-250 SRW", "SUPER DUTY F-450 DRW", "Santa Fe",
+  "Seltos", "Sentra", "Sierra 1500", "Silverado 1500", "Sonata", "Sorento", "Sportage", "Stinger",
+  "Suburban", "TLX", "TT COUPE", "Tahoe", "Taos", "Terrain", "Tiguan", "TrailBlazer", "Transit 150",
+  "Trax", "Tucson", "Venue", "Versa", "WRX", "Wrangler", "Wrangler 4XE", "X1", "Yukon", "Yukon XL", "ZDX"
+];
+
+const KNOWN_MODELS_REGISTRY = new Set<string>();
+const KNOWN_MODELS_BY_LOWER = new Map<string, string>();
+const KNOWN_MODELS_BY_SLUG = new Map<string, string>();
+const KNOWN_MODELS_BY_NORM = new Map<string, string>();
+
+function indexKnownModel(model: string) {
+  if (!model) return;
+  const lower = model.toLowerCase();
+  const norm = lower.replace(/[^a-z0-9]/g, "");
+
+  // If a canonical version of this model is already registered (e.g. "3-Series"),
+  // map this alias (e.g. "3 Series") to that canonical model.
+  if (KNOWN_MODELS_BY_NORM.has(norm)) {
+    const canonical = KNOWN_MODELS_BY_NORM.get(norm)!;
+    KNOWN_MODELS_REGISTRY.add(canonical);
+    KNOWN_MODELS_BY_LOWER.set(lower, canonical);
+    const slug = lower.replace(/\s+/g, "-");
+    KNOWN_MODELS_BY_SLUG.set(slug, canonical);
+    const unhyphenated = lower.replace(/-/g, " ");
+    KNOWN_MODELS_BY_SLUG.set(unhyphenated, canonical);
+    return;
+  }
+
+  KNOWN_MODELS_REGISTRY.add(model);
+  KNOWN_MODELS_BY_NORM.set(norm, model);
+
+  if (!KNOWN_MODELS_BY_LOWER.has(lower)) {
+    KNOWN_MODELS_BY_LOWER.set(lower, model);
+  }
+  const slug = lower.replace(/\s+/g, "-");
+  if (!KNOWN_MODELS_BY_SLUG.has(slug)) {
+    KNOWN_MODELS_BY_SLUG.set(slug, model);
+  }
+  const unhyphenated = lower.replace(/-/g, " ");
+  if (!KNOWN_MODELS_BY_SLUG.has(unhyphenated)) {
+    KNOWN_MODELS_BY_SLUG.set(unhyphenated, model);
+  }
+}
+
+BASELINE_KNOWN_MODELS.forEach(indexKnownModel);
+Object.keys(BASELINE_MODEL_TO_MAKE).forEach(indexKnownModel);
+
+export function registerKnownModels(models: Iterable<string>) {
+  for (const model of models) {
+    if (model) indexKnownModel(model);
+  }
+  initFacetRegistry("model", models);
+}
+
+/**
+ * Returns all variants for a model name (e.g. "3-Series" -> ["3-Series", "3 Series"])
+ * to match database entries that might use hyphens or spaces.
+ */
+export function getModelVariants(model: string): string[] {
+  if (!model || typeof model !== "string") return [];
+  const trimmed = model.trim();
+  const set = new Set<string>();
+  set.add(trimmed);
+
+  const norm = trimmed.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (norm === "3series") {
+    set.add("3-Series");
+    set.add("3 Series");
+  } else if (norm === "4series") {
+    set.add("4-Series");
+    set.add("4 Series");
+  } else if (trimmed.includes("-")) {
+    set.add(trimmed.replace(/-/g, " "));
+  } else if (trimmed.includes(" ")) {
+    set.add(trimmed.replace(/\s+/g, "-"));
+  }
+  return Array.from(set);
+}
+
+const PRESERVE_UPPERCASE_TOKENS = new Set([
+  "BMW", "GMC", "SUV", "CVT", "EV", "HEV", "PHEV", "BEV", "AWD", "4WD", "4X4",
+  "SRW", "DRW", "HD", "GR", "TT", "ZDX", "GLI", "WK", "MKX", "TLX", "WRX", "MHEV",
+  "CR", "CX", "CLA", "GLC", "GLE", "ES", "IS", "RX"
+]);
+
+/**
+ * Formats all-uppercase or uncapitalized facet labels to Title Case for UI display
+ * while preserving standard automotive acronyms (e.g. "ONYX BLACK" -> "Onyx Black",
+ * "SIERRA 2500HD" -> "Sierra 2500HD", "BMW" -> "BMW", "CVT" -> "CVT").
+ */
+export function formatFacetLabel(label: string): string {
+  if (!label || typeof label !== "string") return "";
+  const hasLetters = /[a-zA-Z]/.test(label);
+  if (!hasLetters) return label;
+
+  return label.replace(/[a-zA-Z0-9]+(?:'[a-zA-Z0-9]+)?/g, (word) => {
+    const upper = word.toUpperCase();
+    if (PRESERVE_UPPERCASE_TOKENS.has(upper)) return upper;
+    if (/^\d+HD$/i.test(word)) return word.toUpperCase();
+    if (/^[A-Z]\d+$/i.test(word)) return word.toUpperCase();
+    const isAllCaps = word === word.toUpperCase() && word.length > 1;
+    if (isAllCaps) {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+}
+
+/**
+ * Converts a model name for use in URL query parameter.
+ * Replaces spaces with hyphens (e.g. "1500 Classic" -> "1500-Classic", "3-Series" -> "3-Series")
+ * avoiding %20 in the URL.
+ */
+export function modelToQueryValue(model: string): string {
+  if (!model || typeof model !== "string") return "";
+  return encodeURIComponent(model.trim().replace(/\s+/g, "-"));
+}
+
+/**
+ * Resolves a model query slug (e.g. "3-Series", "3%20Series", "1500-Classic")
+ * back to the canonical database model name ("3-Series", "1500 Classic").
+ */
+export function queryValueToModel(value: string): string {
+  if (!value || typeof value !== "string") return "";
+  const decoded = decodeURIComponent(value).trim();
+  if (!decoded) return "";
+
+  // 1. Check normalized key (handles "3-Series", "3 Series", "3-series" consistently)
+  const norm = decoded.toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (KNOWN_MODELS_BY_NORM.has(norm)) {
+    return KNOWN_MODELS_BY_NORM.get(norm)!;
+  }
+
+  // 2. Direct match in registry (exact case)
+  if (KNOWN_MODELS_REGISTRY.has(decoded)) {
+    return decoded;
+  }
+
+  // 3. Case-insensitive exact match
+  const lower = decoded.toLowerCase();
+  const directMatch = KNOWN_MODELS_BY_LOWER.get(lower);
+  if (directMatch) {
+    return directMatch;
+  }
+
+  // 4. Slug match (e.g. "1500-classic" -> "1500 Classic", "c-class" -> "C-Class")
+  const slugMatch = KNOWN_MODELS_BY_SLUG.get(lower);
+  if (slugMatch) {
+    return slugMatch;
+  }
+
+  // 5. Also check if decoded has hyphens and converting to spaces matches a known model
+  const withSpaces = lower.replace(/-/g, " ");
+  const spaceMatch = KNOWN_MODELS_BY_LOWER.get(withSpaces) || KNOWN_MODELS_BY_SLUG.get(withSpaces);
+  if (spaceMatch) {
+    return spaceMatch;
+  }
+
+  // 6. Fallback for new/unknown models not in registry:
+  // If it matches standard hyphenated format (e.g. F-150, CX-5, C-Class, 3-Series, CR-V, RX-350, AMG-GT), keep the hyphen.
+  if (
+    /^[a-z]{1,4}-\d+$/i.test(decoded) ||
+    /^[a-z0-9]+-class$/i.test(decoded) ||
+    /^\d+-series$/i.test(decoded) ||
+    /^[a-z0-9]+-[a-z0-9]+$/i.test(decoded) ||
+    /^[a-z0-9]+(-[a-z0-9]+)+$/i.test(decoded)
+  ) {
+    return decoded;
+  }
+
+  // Otherwise convert hyphens back to spaces
+  return decoded.replace(/-/g, " ");
+}
 
 export function setModelMakeMap(entries: Iterable<[string, string]>) {
   for (const [model, make] of entries) {
     MODEL_TO_MAKE.set(model, make);
+    modelMakeAssociations.set(model, make);
+    indexKnownModel(model);
   }
 }
 
@@ -15,59 +337,41 @@ export function getModelMakeMap() {
   return MODEL_TO_MAKE;
 }
 
-export function parseInventorySeoUrl(pathname: string) {
-  const cleanPath = pathname.replace(/^\/|\/$/g, "").toLowerCase();
-  
-  if (!cleanPath.startsWith("used-")) return null;
-  
-  const rest = cleanPath.slice(5); 
-  
-  const makes = [
-    "mercedes-benz", "aston-martin", "land-rover", "volkswagen", 
-    "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", 
-    "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", 
-    "tesla", "rivian", "acura", "audi", "bmw", "buick", "dodge", 
-    "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", 
-    "ram", "volvo", "alfa-romeo"
-  ];
-  
-  let matchedMake = "";
-  for (const m of makes) {
-    if (rest.startsWith(m + "-") && m.length > matchedMake.length) {
-      matchedMake = m;
-    }
+export function getMakeForModel(model: string): string | undefined {
+  if (!model || typeof model !== "string") return undefined;
+  const trimmed = model.trim();
+  const modelMakeMap = getModelMakeMap();
+  const direct = modelMakeAssociations.get(trimmed) || modelMakeMap.get(trimmed) || BASELINE_MODEL_TO_MAKE[trimmed];
+  if (direct) return direct;
+
+  const withSpaces = trimmed.replace(/-/g, " ");
+  const fromSpaces = modelMakeAssociations.get(withSpaces) || modelMakeMap.get(withSpaces) || BASELINE_MODEL_TO_MAKE[withSpaces];
+  if (fromSpaces) return fromSpaces;
+
+  const withHyphens = trimmed.replace(/\s+/g, "-");
+  const fromHyphens = modelMakeAssociations.get(withHyphens) || modelMakeMap.get(withHyphens) || BASELINE_MODEL_TO_MAKE[withHyphens];
+  if (fromHyphens) return fromHyphens;
+
+  const canonical = queryValueToModel(trimmed);
+  if (canonical && canonical !== trimmed) {
+    const fromCanonical = modelMakeAssociations.get(canonical) || modelMakeMap.get(canonical) || BASELINE_MODEL_TO_MAKE[canonical];
+    if (fromCanonical) return fromCanonical;
   }
-  
-  if (matchedMake) {
-    const rawLocation = rest.slice(matchedMake.length + 1);
-    if (rawLocation) {
-      return {
-        make: titleCase(matchedMake),
-        location: titleCase(rawLocation)
-      };
-    }
+
+  const lower = trimmed.toLowerCase();
+  for (const [m, mk] of modelMakeMap.entries()) {
+    if (m.toLowerCase() === lower) return mk;
   }
-  
-  const lastHyphenIndex = rest.lastIndexOf("-");
-  if (lastHyphenIndex !== -1) {
-    return {
-      make: titleCase(rest.slice(0, lastHyphenIndex)),
-      location: titleCase(rest.slice(lastHyphenIndex + 1))
-    };
+  for (const [m, mk] of modelMakeAssociations.entries()) {
+    if (m.toLowerCase() === lower) return mk;
   }
-  
-  return null;
+  for (const [m, mk] of Object.entries(BASELINE_MODEL_TO_MAKE)) {
+    if (m.toLowerCase() === lower) return mk;
+  }
+
+  return undefined;
 }
 
-const titleCase = (value: string) => value
-  .split("-")
-  .filter(Boolean)
-  .map((part) => {
-    const acronyms: Record<string, string> = { bmw: "BMW", gmc: "GMC", ram: "RAM", suv: "SUV" };
-    return acronyms[part.toLowerCase()] || `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
-  })
-  .join(" ");
- 
 export const FILTER_KEYS: Record<string, string> = {
   location: "locations",
   vehicle_type: "vehicleTypes",
@@ -79,8 +383,40 @@ export const FILTER_KEYS: Record<string, string> = {
   transmission: "transmissions",
   fuel_type: "fuelTypes",
 };
- 
-export const modelMakeAssociations = new Map<string, string>();
+
+export const modelMakeAssociations = new Map<string, string>(Object.entries(BASELINE_MODEL_TO_MAKE));
+
+export type MakeModelSelection = { make: string; model: string };
+
+export function parseMakeModelSelections(value: string): MakeModelSelection[] {
+  let currentMake = "";
+  return value.split(",").filter(Boolean).flatMap((entry) => {
+    const colonIdx = entry.indexOf(":");
+    const semicolonIdx = entry.indexOf(";");
+    let separator = -1;
+    if (colonIdx > 0 && semicolonIdx > 0) {
+      separator = Math.min(colonIdx, semicolonIdx);
+    } else if (colonIdx > 0) {
+      separator = colonIdx;
+    } else if (semicolonIdx > 0) {
+      separator = semicolonIdx;
+    }
+    if (separator < 1 || separator === entry.length - 1) {
+      const model = queryValueToModel(entry);
+      const make = currentMake || modelMakeAssociations.get(model) || getModelMakeMap().get(model) || BASELINE_MODEL_TO_MAKE[model];
+      if (make) {
+        return [{ make, model }];
+      }
+      return [];
+    }
+    const rawMake = entry.slice(0, separator);
+    const rawModel = entry.slice(separator + 1);
+    const make = parseNamedQueryValue(rawMake, "make");
+    currentMake = make;
+    const model = queryValueToModel(rawModel);
+    return [{ make, model }];
+  });
+}
 
 let activeRouterResync: (() => void) | null = null;
 
@@ -93,7 +429,7 @@ export const RANGE_KEYS: Record<string, readonly [string, string]> = {
   odometer: ["odometerLow", "odometerHigh"],
 };
 
- 
+
 const PUBLIC_SORT_FIELDS: Record<string, string> = {
   selling_price: "price",
 };
@@ -103,7 +439,7 @@ function getPublicSort(sortBy: unknown) {
 
   const sortExpression = sortBy.split("/sort/")[1];
   if (!sortExpression) return null;
- 
+
   const criteria = sortExpression.split(",");
   const primaryCriterion = criteria.find((c) => !c.startsWith("status_rank:")) || criteria[0];
   const [field, direction] = primaryCriterion.split(":", 2);
@@ -146,138 +482,339 @@ function watchExternalUrlChanges() {
 
 const FILTER_ATTRIBUTES = Object.keys(FILTER_KEYS);
 const PATH_ATTRIBUTES = [
-  "year",
   "make",
   "model",
+  "year",
+  "exterior_color",
   "body_type",
   "vehicle_type",
-  "exterior_color",
-  "transmission",
   "fuel_type",
+  "transmission",
   "location",
 ] as const;
 type PathFilters = Partial<Record<(typeof PATH_ATTRIBUTES)[number], string[]>>;
 
 function isInventoryListingPath(pathname: string) {
-  if (parseInventorySeoUrl(pathname)) return true;
-
   const segments = pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean);
   if (!segments.length) return pathname === "/inventory" || pathname === "/inventory/";
 
-  // Vehicle detail links begin with an inventory ID (for example 3019-...);
-  // listing paths may begin with a four-digit vehicle year.
-  const firstSegment = segments[0];
-  const firstToken = firstSegment.split("-", 1)[0];
-  const numericValue = Number(firstToken);
-  if (!/^\d+$/.test(firstToken)) return true; // non-numeric → listing path
-  // IDs clearly outside the year range are vehicle detail pages.
-  if (numericValue < 1900 || numericValue > 2100) return false;
-  // Ambiguous: the number is in the year range. Check if the next dash-token is
-  // also a 4-digit year — that pattern ({id}-{year}-...) signals a VDP slug.
-  const afterFirst = firstSegment.slice(firstToken.length + 1);
-  const nextToken = afterFirst.split("-", 1)[0] || "";
-  const nextNum = Number(nextToken);
-  if (/^\d{4}$/.test(nextToken) && nextNum >= 1900 && nextNum <= 2100) return false; // VDP
-  return true; // treat as listing path (year filter)
+  // Vehicle detail links begin with an inventory ID (for example 3019-2022-honda-civic-lx);
+  // listing paths may begin with a four-digit vehicle year or facet name.
+  if (segments.length === 1) {
+    const firstDash = segments[0].indexOf("-");
+    if (firstDash !== -1) {
+      const firstToken = segments[0].substring(0, firstDash);
+      const numericValue = Number(firstToken);
+      if (/^\d+$/.test(firstToken) && (numericValue < 1900 || numericValue > 2100)) {
+        const lower = segments[0].toLowerCase();
+        if (lower !== "1500-classic" && lower !== "1500") {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 }
 
-function readPathOnlyFilters(segments: string[], refinementList: PlainObject) {
-  const set = (attribute: keyof PathFilters, value: string) => {
-    if (!value || refinementList[attribute]) return;
-    // Tolerate comma-separated values here too, so links generated by the old buggy
-    // serializer (which crammed multiple selections into one path segment) still parse
-    // instead of silently failing.
-    const values = value.split(",").filter(Boolean).map(titleCase);
-    if (values.length) refinementList[attribute] = values;
-  };
-  const [vehicleSegment, detailSegment] = segments.map(decodeURIComponent);
-  if (!vehicleSegment) return;
+const titleCase = (value: string) => value
+  .split("-")
+  .filter(Boolean)
+  .map((part) => {
+    const acronyms: Record<string, string> = { bmw: "BMW", gmc: "GMC", ram: "RAM", suv: "SUV" };
+    return acronyms[part.toLowerCase()] || `${part.charAt(0).toUpperCase()}${part.slice(1)}`;
+  })
+  .join(" ");
 
-  let remainingVehicle = vehicleSegment;
-  const yearMatch = remainingVehicle.match(/^(19\d{2}|20\d{2})(?:-|$)/);
-  if (yearMatch) {
-    set("year", yearMatch[1]);
-    remainingVehicle = remainingVehicle.slice(yearMatch[0].length);
+function readPathSegments(segments: string[], refinementList: PlainObject) {
+  for (const segment of segments) {
+    if (!segment) continue;
+    const decoded = decodeURIComponent(segment).trim();
+    if (!decoded) continue;
+    const tokens = decoded.split(",").filter(Boolean);
+    for (const token of tokens) {
+      resolveUnkeyedQueryToken(token, refinementList);
+    }
   }
-
-  const bodyTypes = ["sport-utility-vehicle", "suv-crossover", "pickup-truck", "hatchback", "convertible", "minivan", "sedan", "coupe", "truck", "van", "suv"];
-  const bodyType = bodyTypes.find((value) => remainingVehicle === value || remainingVehicle.endsWith(`-${value}`));
-  if (bodyType) {
-    set("body_type", bodyType);
-    remainingVehicle = remainingVehicle.slice(0, -bodyType.length).replace(/-$/, "");
-  }
-
-  const makes = ["mercedes-benz", "aston-martin", "land-rover", "volkswagen", "mitsubishi", "chevrolet", "cadillac", "chrysler", "hyundai", "infiniti", "jaguar", "mazda", "nissan", "subaru", "toyota", "tesla", "rivian", "acura", "audi", "bmw", "buick", "dodge", "ford", "gmc", "honda", "jeep", "kia", "lexus", "lincoln", "ram", "volvo"];
-  const make = makes.find((value) => remainingVehicle === value || remainingVehicle.startsWith(`${value}-`));
-  if (make) {
-    set("make", make);
-    set("model", remainingVehicle.slice(make.length).replace(/^-/, ""));
-  } else if (!yearMatch && !detailSegment) {
-    // The established one-segment location form: /inventory/cardora-brampton
-    if (vehicleSegment.toLowerCase().startsWith("cardora-")) set("location", vehicleSegment);
-    else set("make", vehicleSegment);
-  }
-
-  if (!detailSegment) return;
-  let remainingDetail = detailSegment;
-  const vehicleTypes = ["certified-pre-owned", "used", "new"];
-  const vehicleType = vehicleTypes.find((value) => remainingDetail === value || remainingDetail.startsWith(`${value}-`));
-  if (vehicleType) {
-    set("vehicle_type", vehicleType);
-    remainingDetail = remainingDetail.slice(vehicleType.length).replace(/^-/, "");
-  }
-
-  // Locations are serialized last. Cardora locations have a stable prefix,
-  // which lets us separate them even when a colour has multiple words (such
-  // as "Brilliant Red") and is not in a predefined colour list.
-  const cardoraLocationStart = remainingDetail.indexOf("cardora-");
-  const location = cardoraLocationStart >= 0
-    ? remainingDetail.slice(cardoraLocationStart).replace(/^-$/, "")
-    : "";
-  if (cardoraLocationStart >= 0) {
-    remainingDetail = remainingDetail.slice(0, cardoraLocationStart).replace(/-$/, "");
-  }
-
-  const transmissions = ["automatic", "manual"];
-  const transmission = transmissions.find((value) => remainingDetail === value || remainingDetail.endsWith(`-${value}`));
-  if (transmission) {
-    set("transmission", transmission);
-    remainingDetail = remainingDetail === transmission
-      ? ""
-      : remainingDetail.slice(0, -transmission.length).replace(/-$/, "");
-  }
-
-  const fuelTypes = ["gasoline-fuel", "diesel-fuel", "plug-in-hybrid", "flex-fuel", "hybrid", "electric"];
-  const fuelType = fuelTypes.find((value) => remainingDetail === value || remainingDetail.endsWith(`-${value}`));
-  if (fuelType) {
-    set("fuel_type", fuelType);
-    remainingDetail = remainingDetail === fuelType
-      ? ""
-      : remainingDetail.slice(0, -fuelType.length).replace(/-$/, "");
-  }
-  // The remaining prefix is the colour, regardless of how many words it has.
-  set("exterior_color", remainingDetail);
-  set("location", location);
 }
 
-const slugify = (value: string) =>
-  value
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+const BASELINE_FACET_VALUES: Record<string, string[]> = {
+  location: [
+    "Cardora Brampton",
+    "Cardora Guelph",
+    "Cardora Brampton Lot 2",
+  ],
+  make: [
+    "GMC", "Toyota", "Volkswagen", "Dodge", "Honda", "Jeep", "Chevrolet", "Nissan",
+    "Hyundai", "Ford", "Buick", "Mercedes-Benz", "BMW", "Chrysler", "KIA", "Land Rover",
+    "Audi", "Lexus", "Tesla", "Mazda", "Ram", "Porsche", "Lincoln", "Acura", "Subaru",
+    "Genesis", "Maserati", "Infiniti", "Mitsubishi"
+  ],
+  body_type: [
+    "Sedan", "Truck", "SUV-Crossover", "Pickup-Truck", "Sport Utility Vehicle", "SUV",
+    "Other/Don't Know", "Coupe", "Pickup Truck", "Convertible", "Van", "Hatchback",
+    "Minivan", "Minivan-Van"
+  ],
+  vehicle_type: [
+    "Used", "As-is", "Certified Pre-Owned", "New"
+  ],
+  transmission: [
+    "Automatic", "CVT", "Other", "Manual"
+  ],
+  fuel_type: [
+    "Gasoline Fuel", "Gasoline", "Diesel", "Other/Don't Know", "Electric Battery",
+    "HEV", "Hybrid Gas/Electric", "PHEV", "BEV", "Hybrid"
+  ],
+  exterior_color: [
+    "Black", "White", "Grey", "ONYX BLACK", "Silver", "SUMMIT WHITE", "Red", "Blue",
+    "Gray", "MOONSTONE GRAY", "Green", "Orange", "WHITE FROST TRICOAT",
+    "EBONY TWILIGHT METALLIC", "DARK GREEN", "WHITE DIAMOND", "BRILLIANT RED",
+    "GALAXY SILVER M", "QUICKSILVER MET", "THUNDERSTORM GREY", "STERLING METALLIC",
+    "SUMMIT WHITE, EBONY", "CRIMSON RED TIN, JET", "TITANIUM RUSH METALLIC",
+    "MOONSTONE GRAY METALLIC"
+  ],
+};
 
-function routeValue(value: string) {
-  return encodeURIComponent(slugify(value));
+interface FacetRegistry {
+  exact: Set<string>;
+  byLower: Map<string, string>;
+  bySlug: Map<string, string>;
+}
+
+const FACET_REGISTRIES: Record<string, FacetRegistry> = {};
+
+function initFacetRegistry(attribute: string, values: Iterable<string>) {
+  if (!FACET_REGISTRIES[attribute]) {
+    FACET_REGISTRIES[attribute] = {
+      exact: new Set<string>(),
+      byLower: new Map<string, string>(),
+      bySlug: new Map<string, string>(),
+    };
+  }
+  const reg = FACET_REGISTRIES[attribute];
+  for (const v of values) {
+    if (!v) continue;
+    reg.exact.add(v);
+    const lower = v.toLowerCase();
+    if (!reg.byLower.has(lower)) {
+      reg.byLower.set(lower, v);
+    }
+    const slug = lower.replace(/\s+/g, "-");
+    if (!reg.bySlug.has(slug)) {
+      reg.bySlug.set(slug, v);
+    }
+    const unhyphenated = lower.replace(/-/g, " ");
+    if (!reg.bySlug.has(unhyphenated)) {
+      reg.bySlug.set(unhyphenated, v);
+    }
+  }
+}
+
+// Initialize all baseline facets
+for (const [attr, vals] of Object.entries(BASELINE_FACET_VALUES)) {
+  initFacetRegistry(attr, vals);
+}
+initFacetRegistry("model", BASELINE_KNOWN_MODELS);
+
+export function registerFacetValues(attribute: string, values: Iterable<string>) {
+  initFacetRegistry(attribute, values);
 }
 
 export function queryValue(value: string) {
-  return encodeURIComponent(value.replace(/-/g, "--").replace(/ /g, "-"));
+  if (!value || typeof value !== "string") return "";
+  return encodeURIComponent(value.trim().replace(/\s+/g, "-"));
 }
 
 function parseQueryValue(value: string) {
   return value.replace(/--/g, "\u0000").replace(/-/g, " ").replace(/\u0000/g, "-");
+}
+
+export function parseNamedQueryValue(value: string, attribute?: string): string {
+  if (!value || typeof value !== "string") return "";
+  const decoded = decodeURIComponent(value).trim();
+  if (!decoded) return "";
+
+  if (attribute === "model") {
+    return queryValueToModel(decoded);
+  }
+
+  const reg = attribute ? FACET_REGISTRIES[attribute] : undefined;
+  if (reg) {
+    if (reg.exact.has(decoded)) return decoded;
+    const lower = decoded.toLowerCase();
+    if (reg.byLower.has(lower)) return reg.byLower.get(lower)!;
+    if (reg.bySlug.has(lower)) return reg.bySlug.get(lower)!;
+    const withSpaces = lower.replace(/-/g, " ");
+    if (reg.byLower.has(withSpaces)) return reg.byLower.get(withSpaces)!;
+    if (reg.bySlug.has(withSpaces)) return reg.bySlug.get(withSpaces)!;
+  }
+
+  // If attribute wasn't specified, check all registries
+  if (!attribute) {
+    for (const registry of Object.values(FACET_REGISTRIES)) {
+      if (registry.exact.has(decoded)) return decoded;
+      const lower = decoded.toLowerCase();
+      if (registry.byLower.has(lower)) return registry.byLower.get(lower)!;
+      if (registry.bySlug.has(lower)) return registry.bySlug.get(lower)!;
+      const withSpaces = lower.replace(/-/g, " ");
+      if (registry.byLower.has(withSpaces)) return registry.byLower.get(withSpaces)!;
+      if (registry.bySlug.has(withSpaces)) return registry.bySlug.get(withSpaces)!;
+    }
+  }
+
+  // Preserve hyphen for known hyphenated patterns like Mercedes-Benz or As-is
+  if (/^[a-z]+-benz$/i.test(decoded) || /^as-is$/i.test(decoded)) {
+    return decoded;
+  }
+
+  // Fallback: convert hyphens back to spaces
+  return decoded.replace(/-/g, " ");
+}
+
+function setRefinement(refinementList: PlainObject, attribute: string, value: string) {
+  if (!value) return;
+  if (!refinementList[attribute]) {
+    refinementList[attribute] = [value];
+  } else if (!refinementList[attribute].includes(value)) {
+    refinementList[attribute].push(value);
+  }
+}
+
+function resolveUnkeyedQueryToken(token: string, refinementList: PlainObject): boolean {
+  if (!token) return false;
+  const decoded = decodeURIComponent(token).trim();
+  if (!decoded) return false;
+
+  // 1. Year: 4 digits (1900-2100)
+  if (/^(19\d{2}|20\d{2})$/.test(decoded)) {
+    setRefinement(refinementList, "year", decoded);
+    return true;
+  }
+
+  // 1b. Year prefix composite token (e.g. 2022-toyota-camry)
+  const yearPrefixMatch = decoded.match(/^(19\d{2}|20\d{2})-(.+)$/);
+  if (yearPrefixMatch) {
+    setRefinement(refinementList, "year", yearPrefixMatch[1]);
+    return resolveUnkeyedQueryToken(yearPrefixMatch[2], refinementList);
+  }
+
+  const lower = decoded.toLowerCase();
+
+  // 2. Check Make registry
+  const makeReg = FACET_REGISTRIES["make"];
+  const matchedMake =
+    makeReg?.exact.has(decoded) ? decoded :
+      makeReg?.byLower.get(lower) ||
+      makeReg?.bySlug.get(lower) ||
+      makeReg?.bySlug.get(lower.replace(/-/g, " "));
+
+  if (matchedMake) {
+    setRefinement(refinementList, "make", matchedMake);
+    return true;
+  }
+
+  // 3. Check Model (known models or mapped)
+  const matchedModel = queryValueToModel(decoded);
+  const isKnownModel =
+    KNOWN_MODELS_REGISTRY.has(matchedModel) ||
+    KNOWN_MODELS_BY_LOWER.has(matchedModel.toLowerCase()) ||
+    MODEL_TO_MAKE.has(matchedModel) ||
+    modelMakeAssociations.has(matchedModel) ||
+    Boolean(BASELINE_MODEL_TO_MAKE[matchedModel]);
+
+  if (isKnownModel) {
+    setRefinement(refinementList, "model", matchedModel);
+    // User requirement: "for model, the corresponding make should be automatically selected /inventory?{make name} & {model name}"
+    const make = modelMakeAssociations.get(matchedModel) || getModelMakeMap().get(matchedModel) || BASELINE_MODEL_TO_MAKE[matchedModel];
+    if (make) {
+      setRefinement(refinementList, "make", make);
+    }
+    return true;
+  }
+
+  // 4. Check other facet registries in priority order
+  const attributesToCheck: Array<keyof typeof FILTER_KEYS> = [
+    "location",
+    "vehicle_type",
+    "body_type",
+    "transmission",
+    "fuel_type",
+    "exterior_color",
+  ];
+
+  for (const attr of attributesToCheck) {
+    const reg = FACET_REGISTRIES[attr];
+    if (!reg) continue;
+    const matched =
+      reg.exact.has(decoded) ? decoded :
+        reg.byLower.get(lower) ||
+        reg.bySlug.get(lower) ||
+        reg.bySlug.get(lower.replace(/-/g, " "));
+
+    if (matched) {
+      setRefinement(refinementList, attr, matched);
+      return true;
+    }
+  }
+
+  // 5. Cardora location prefix check (e.g. cardora-brampton)
+  if (lower.startsWith("cardora-")) {
+    const formatted = parseNamedQueryValue(decoded, "location");
+    setRefinement(refinementList, "location", formatted);
+    return true;
+  }
+
+  // 6. Check for composite make-model tokens (e.g. "mercedes-benz-c-class" or "toyota-camry")
+  const allKnownMakes = Array.from(FACET_REGISTRIES["make"]?.exact || []);
+  const sortedMakes = allKnownMakes.sort((a, b) => b.length - a.length);
+
+  for (const candidateMake of sortedMakes) {
+    const makeSlug = candidateMake.toLowerCase().replace(/\s+/g, "-");
+    if (lower === makeSlug || lower.startsWith(`${makeSlug}-`)) {
+      setRefinement(refinementList, "make", candidateMake);
+      const remainder = decoded.slice(candidateMake.length).replace(/^-+/, "");
+      if (remainder) {
+        const yearMatch = remainder.match(/-(19\d{2}|20\d{2})$/);
+        let modelPart = remainder;
+        if (yearMatch) {
+          setRefinement(refinementList, "year", yearMatch[1]);
+          modelPart = remainder.slice(0, -yearMatch[0].length);
+        }
+        if (modelPart) {
+          const resolvedModel = queryValueToModel(modelPart);
+          setRefinement(refinementList, "model", resolvedModel);
+          modelMakeAssociations.set(resolvedModel, candidateMake);
+        }
+      }
+      return true;
+    }
+  }
+
+  // 7. If model-like code pattern (e.g. F-150, CX-5, C-Class, 3-Series, CR-V, RX-350, AMG-GT)
+  if (
+    /^[a-z0-9]+-[a-z0-9]+(-[a-z0-9]+)?$/i.test(decoded) ||
+    /^[a-z0-9]+-class$/i.test(decoded) ||
+    /^\d+-series$/i.test(decoded)
+  ) {
+    const resolvedModel = queryValueToModel(decoded);
+    setRefinement(refinementList, "model", resolvedModel);
+    const make = modelMakeAssociations.get(resolvedModel) || getModelMakeMap().get(resolvedModel) || BASELINE_MODEL_TO_MAKE[resolvedModel];
+    if (make) {
+      setRefinement(refinementList, "make", make);
+    }
+    return true;
+  }
+
+  // 8. If make is already present and model is not, treat token as model
+  if (refinementList.make?.length && !refinementList.model?.length) {
+    const resolvedModel = queryValueToModel(decoded);
+    setRefinement(refinementList, "model", resolvedModel);
+    return true;
+  }
+
+  // 9. Fallback: treat as exterior_color
+  const colorVal = parseNamedQueryValue(decoded, "exterior_color");
+  setRefinement(refinementList, "exterior_color", colorVal || decoded);
+  return true;
 }
 
 function getRangeBounds(value: unknown): [unknown, unknown] {
@@ -291,275 +828,498 @@ function getRangeBounds(value: unknown): [unknown, unknown] {
 
 function getPathFilters(route: PlainObject): PathFilters {
   const filters: PathFilters = {};
-  // Include all attributes that can be path filters when they have exactly 1 value
-  const pathFilterAttributes = [
-    "year",
-    "make",
-    "model",
-    "body_type",
-    "vehicle_type",
-    "exterior_color",
-    "fuel_type",
-    "location",
-    "transmission",
-  ] as const;
-  
-  pathFilterAttributes.forEach((attribute) => {
+  PATH_ATTRIBUTES.forEach((attribute) => {
     const values = route.refinementList?.[attribute] || [];
     if (values.length === 1) filters[attribute] = values;
   });
-  
   if (filters.model && !filters.make) delete filters.model;
   return filters;
 }
 
-function serializePublicUrl(route: PlainObject, pathFilters: PathFilters) {
-  const params: string[] = [];
-  const appended = new Set<string>();
-  
-  let isSeoUrl = false;
-  let seoData: { make: string, location: string } | null = null;
-  if (typeof window !== "undefined") {
-    seoData = parseInventorySeoUrl(window.location.pathname);
-    if (seoData) {
-      const currentMakes = route.refinementList?.make || [];
-      const hasSeoMake = currentMakes.some((m: string) => m.toLowerCase() === seoData!.make.toLowerCase());
-      if (hasSeoMake) {
-        isSeoUrl = true;
-      }
-    }
-  }
-  
-  // Get the currently selected makes from the route
-  const selectedMakes = new Set<string>(route.refinementList?.make || []);
-  
-  // Clean up the route state to remove orphaned models BEFORE serialization
-  // This ensures models are always removed when their make is removed
-  if (route.refinementList?.model && route.refinementList.model.length > 0 && selectedMakes.size > 0) {
-    const modelMakeMap = getModelMakeMap();
-    const validModels = route.refinementList.model.filter((model: string) => {
-      const make = modelMakeMap.get(model);
-      // Keep model if its make is in selectedMakes or if make is unknown
-      return !make || selectedMakes.has(make);
-    });
-    
-    // Update the route state in-place to remove orphaned models
-    if (validModels.length !== route.refinementList.model.length) {
-      console.log(`[serializePublicUrl] cleaning up orphaned models from route state. Before: ${route.refinementList.model.join(",")}, After: ${validModels.join(",")}`);
-      if (validModels.length === 0) {
-        delete route.refinementList.model;
-      } else {
-        route.refinementList.model = validModels;
-      }
-    }
-  }
-  
-  const appendFacet = (attribute: string) => {
-    const values: string[] = route.refinementList?.[attribute] || [];
-    let activeValues = values;
-    
-    if (isSeoUrl && seoData) {
-      if (attribute === "make") {
-        activeValues = values.filter(v => v.toLowerCase() !== seoData!.make.toLowerCase());
-      } else if (attribute === "location") {
-        activeValues = values.filter(v => v.toLowerCase() !== seoData!.location.toLowerCase());
-      }
-    }
-    
-    if (!activeValues.length && (!isSeoUrl && pathFilters[attribute as keyof PathFilters]?.length)) return;
-    if (!activeValues.length) return;
+export function serializePublicUrl(route: PlainObject) {
+  const sourceRefinementList = route.refinementList || {};
+  const refinementList: PlainObject = {};
 
-    let serializedValues: string[];
-    if (attribute === "model") {
-      // Filter models to only include those whose make is in selectedMakes
-      serializedValues = activeValues
-        .filter((model) => {
-          const make = modelMakeAssociations.get(model);
-          const isValid = !make || selectedMakes.has(make);
-          if (!isValid) {
-            console.log(`[serializePublicUrl] filtering out orphaned model: ${model} (make: ${make}, selected: ${Array.from(selectedMakes).join(",")})`);
-          }
-          return isValid;
-        })
-        .map((model) => {
-          const make = modelMakeAssociations.get(model);
-          return make ? `${queryValue(make)};${queryValue(model)}` : queryValue(model);
-        });
-      // If no valid models remain, don't add the parameter at all
-      if (!serializedValues.length) return;
-    } else {
-      serializedValues = activeValues.map(queryValue);
-    }
-    
-    // Only add to query string if more than 1 value is selected
-    // Single values are handled by path filters
-    if (serializedValues.length > 1) {
-      params.push(`${FILTER_KEYS[attribute]}=${serializedValues.join(",")}`);
-      appended.add(attribute);
-    }
-  };
-  const appendRange = (attribute: keyof typeof RANGE_KEYS, index: 0 | 1) => {
+  Object.entries(sourceRefinementList).forEach(([attribute, values]) => {
+    if (!Array.isArray(values)) return;
+    refinementList[attribute] = [...new Set(values.map(String))];
+  });
+
+  // A compact token can be misread as a model when it is a body, fuel, or
+  // vehicle value containing hyphens. Do not serialize that duplicate model.
+  const nonModelFacetValues = new Set([
+    ...(refinementList.body_type || []),
+    ...(refinementList.vehicle_type || []),
+    ...(refinementList.fuel_type || []),
+    ...(refinementList.transmission || []),
+  ].map((value: string) => value.toLowerCase()));
+  if (Array.isArray(refinementList.model)) {
+    refinementList.model = refinementList.model.filter(
+      (model: string) => !nonModelFacetValues.has(model.toLowerCase())
+    );
+  }
+
+  const allSelectedMakes: string[] = refinementList.make || [];
+  const allSelectedModels: string[] = refinementList.model || [];
+
+  const modelMakeMap = getModelMakeMap();
+  const validModels = allSelectedModels.filter((model) => {
+    const make = getMakeForModel(model);
+    return make
+      ? allSelectedMakes.some((m) => m.toLowerCase() === make.toLowerCase())
+      : allSelectedMakes.length > 0;
+  });
+
+  const makesWithModels = new Set<string>();
+  validModels.forEach((model) => {
+    const make = getMakeForModel(model);
+    if (make) makesWithModels.add(make);
+  });
+
+  // Standalone makes are makes with NO models selected
+  const standaloneMakes = allSelectedMakes.filter((make) => !makesWithModels.has(make));
+
+  const otherFacetAttributes = [
+    "year",
+    "exterior_color",
+    "body_type",
+    "vehicle_type",
+    "fuel_type",
+    "transmission",
+    "location",
+  ] as const;
+
+  const totalMakesCount = makesWithModels.size + standaloneMakes.length;
+  const hasMultiMakeOrModel = totalMakesCount > 1 || validModels.length > 1;
+  const hasMultiOtherFacets = otherFacetAttributes.some(
+    (attr) => (refinementList[attr] || []).length > 1
+  );
+
+  const isMultiSelect = hasMultiMakeOrModel || hasMultiOtherFacets;
+
+  const hasRanges = Object.keys(RANGE_KEYS).some((attr) => {
+    const [low, high] = getRangeBounds(route.range?.[attr]);
+    return (low !== undefined && low !== "") || (high !== undefined && high !== "");
+  });
+  const hasQuery = Boolean(route.query);
+  const sort = getPublicSort(route.sortBy);
+  const hasSort = Boolean(sort);
+
+  const appendRange = (attribute: keyof typeof RANGE_KEYS, index: 0 | 1, targetParams: string[]) => {
     const [low, high] = getRangeBounds(route.range?.[attribute]);
     const value = index === 0 ? low : high;
     if (value !== undefined && value !== "") {
-      params.push(`${RANGE_KEYS[attribute][index]}=${encodeURIComponent(String(value))}`);
+      targetParams.push(`${RANGE_KEYS[attribute][index]}=${encodeURIComponent(String(value))}`);
     }
   };
 
-  // Canonical query order, independent of the order in which filters were selected.
-  appendRange("selling_price", 0);
-  appendRange("odometer", 0);
-  appendFacet("transmission");
-  appendRange("selling_price", 1);
-  appendRange("odometer", 1);
-  FILTER_ATTRIBUTES.forEach((attribute) => {
-    if (!appended.has(attribute)) appendFacet(attribute);
-  });
-  if (route.query) params.push(`q=${encodeURIComponent(route.query)}`);
-  const sort = getPublicSort(route.sortBy);
-  if (sort) {
-    // field/direction are always safe internal identifiers (letters, digits,
-    // underscores) and ':' / ',' are valid unencoded in a query string, so
-    // this is left un-percent-encoded for a readable URL.
-    params.push(`sortBy=status_rank:asc,${sort.field}:${sort.direction.toLowerCase()}`);
+  // If there are NO multi-selections and NO ranges/query/sort, format as clean path segments:
+  // e.g. /inventory/Ram/1500/Blue or /inventory/Audi or /inventory/Sedan
+  if (!isMultiSelect && !hasRanges && !hasQuery && !hasSort) {
+    const pathSegments: string[] = [];
+
+    // 1. Make and Model: e.g. /inventory/Audi or /inventory/Ford/F-150 or /inventory/Audi/A4
+    if (allSelectedMakes.length === 1 && validModels.length === 1) {
+      pathSegments.push(queryValue(allSelectedMakes[0]));
+      pathSegments.push(modelToQueryValue(validModels[0]));
+    } else if (allSelectedMakes.length === 1 && validModels.length === 0) {
+      pathSegments.push(queryValue(allSelectedMakes[0]));
+    } else if (allSelectedMakes.length === 0 && validModels.length === 1) {
+      pathSegments.push(modelToQueryValue(validModels[0]));
+    }
+
+    // 2. Year:
+    if ((refinementList.year || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.year[0]));
+    }
+
+    // 3. Exterior Color:
+    if ((refinementList.exterior_color || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.exterior_color[0]));
+    }
+
+    // 4. Body Type:
+    if ((refinementList.body_type || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.body_type[0]));
+    }
+
+    // 5. Vehicle Type:
+    if ((refinementList.vehicle_type || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.vehicle_type[0]));
+    }
+
+    // 6. Fuel Type:
+    if ((refinementList.fuel_type || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.fuel_type[0]));
+    }
+
+    // 7. Transmission:
+    if ((refinementList.transmission || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.transmission[0]));
+    }
+
+    // 8. Location:
+    if ((refinementList.location || []).length === 1) {
+      pathSegments.push(queryValue(refinementList.location[0]));
+    }
+
+    return pathSegments.length ? `/inventory/${pathSegments.join("/")}` : "/inventory";
   }
-  
-  let path = "";
-  if (isSeoUrl && typeof window !== "undefined") {
-    path = window.location.pathname;
+
+  // Multi-select or parameters mode: serialized starting with /inventory/
+  // Rule: Only add the key for fields that have MORE THAN ONE value.
+  // Single-value fields should be UNKEYED.
+  let makePrefix = "";
+  const params: string[] = [];
+
+  // 1. Make & Model
+  if (totalMakesCount === 1 && validModels.length === 1) {
+    // Exactly 1 make + 1 model -> Make as path prefix, model as unkeyed parameter
+    const make = getMakeForModel(validModels[0]) || allSelectedMakes[0];
+    if (make) {
+      makePrefix = queryValue(make);
+      params.push(modelToQueryValue(validModels[0]));
+    } else {
+      params.push(modelToQueryValue(validModels[0]));
+    }
+  } else if (totalMakesCount === 1 && validModels.length === 0 && standaloneMakes.length === 1) {
+    // Exactly 1 make, no model -> single value -> unkeyed Make (e.g. Ram or Audi)
+    params.push(queryValue(standaloneMakes[0]));
   } else {
-    const pathValues = (attributes: readonly (keyof PathFilters)[]) =>
-      attributes
-        .map((attribute) => pathFilters[attribute]?.map(routeValue).join(","))
-        .filter((value): value is string => Boolean(value));
-    const vehicleSegments = pathValues(["year", "make", "model", "body_type"]);
-    const detailSegments = pathValues(["vehicle_type", "exterior_color", "transmission", "fuel_type", "location"]);
-    path = vehicleSegments.length
-      ? `/inventory/${vehicleSegments.join("-")}${detailSegments.length ? `/${detailSegments.join("-")}` : ""}`
-      : detailSegments.length
-        ? `/inventory/${detailSegments.join("-")}`
-        : "/inventory";
-  }
-  
-  return params.length ? `${path}?${params.join("&")}` : path;
-}
+    // Multiple makes or multiple models -> KEYED
+    if (standaloneMakes.length > 0) {
+      params.push(`${FILTER_KEYS.make}=${standaloneMakes.map(queryValue).join(",")}`);
+    }
 
-function readRouteState(): PlainObject {
-  if (typeof window === "undefined") return {};
+    if (validModels.length > 0) {
+      const modelsByMake = new Map<string, string[]>();
+      const modelsWithoutMake: string[] = [];
 
-  const params = new URLSearchParams(window.location.search);
-  const refinementList: PlainObject = {};
-  const range: PlainObject = {};
-  
-  let hasExplicitModelEncoding = false;
-
-  for (const [attribute, key] of Object.entries(FILTER_KEYS)) {
-    const value = params.get(key);
-    if (!value) continue;
-
-    if (attribute === "model") {
-      const models: string[] = [];
-      const impliedMakes: string[] = [];
-      value.split(",").filter(Boolean).forEach((entry) => {
-        const [rawMake, rawModel] = entry.includes(";") ? entry.split(";", 2) : [undefined, entry];
-        const model = parseQueryValue(rawModel);
-        models.push(model);
-        if (rawMake) {
-          hasExplicitModelEncoding = true;
-          const make = parseQueryValue(rawMake);
-          impliedMakes.push(make);
-          modelMakeAssociations.set(model, make);
+      validModels.forEach((model) => {
+        const make = modelMakeAssociations.get(model) || modelMakeMap.get(model) || BASELINE_MODEL_TO_MAKE[model];
+        if (make) {
+          if (!modelsByMake.has(make)) modelsByMake.set(make, []);
+          modelsByMake.get(make)!.push(model);
+        } else {
+          modelsWithoutMake.push(model);
         }
       });
-      refinementList.model = models;
-      if (impliedMakes.length) {
-        const existingMakes: string[] = refinementList.make || [];
-        refinementList.make = [...new Set([...existingMakes, ...impliedMakes])];
-      }
-      continue;
-    }
 
-    refinementList[attribute] = value.split(",").filter(Boolean).map(parseQueryValue);
+      const modelTokens: string[] = [];
+      modelsByMake.forEach((models, make) => {
+        const formattedModels = models.map(modelToQueryValue).join(",");
+        modelTokens.push(`${queryValue(make)}:${formattedModels}`);
+      });
+      modelsWithoutMake.forEach((model) => {
+        modelTokens.push(modelToQueryValue(model));
+      });
+
+      params.push(`${FILTER_KEYS.model}=${modelTokens.join(",")}`);
+    }
   }
 
-  for (const [attribute, [lowKey, highKey]] of Object.entries(RANGE_KEYS)) {
-    const low = params.get(lowKey);
-    const high = params.get(highKey);
-    if (low !== null || high !== null) {
-      // React InstantSearch stores a range as "low:high".
-      range[attribute] = `${low || ""}:${high || ""}`;
+  // Helper for other facet attributes:
+  // If 1 value -> UNKEYED (e.g. Blue, 2026, Sedan)
+  // If > 1 values -> KEYED (e.g. colors=Blue,BRILLIANT-RED, year=2026,2025)
+  const appendFacet = (attribute: string) => {
+    const values: string[] = refinementList[attribute] || [];
+    if (!values.length) return;
+    if (values.length === 1) {
+      params.push(queryValue(values[0]));
+    } else {
+      const serializedValues = values.map(queryValue);
+      params.push(`${FILTER_KEYS[attribute]}=${serializedValues.join(",")}`);
     }
+  };
+
+  appendFacet("year");
+  appendRange("selling_price", 0, params);   // priceLow
+  appendFacet("location");
+  appendFacet("exterior_color");
+  appendFacet("body_type");
+  appendFacet("transmission");
+  appendFacet("fuel_type");
+  appendRange("odometer", 0, params);        // odometerLow
+  appendFacet("vehicle_type");
+  appendRange("selling_price", 1, params);   // priceHigh
+  appendRange("odometer", 1, params);        // odometerHigh
+
+  if (route.query) params.push(`q=${encodeURIComponent(route.query)}`);
+  if (sort) {
+    params.push(`sortBy=status_rank:asc,${sort.field}:${sort.direction.toLowerCase()}`);
+  }
+
+  const queryPart = params.join("&");
+  if (makePrefix && queryPart) {
+    return `/inventory/${makePrefix}/${queryPart}`;
+  }
+  if (makePrefix) {
+    return `/inventory/${makePrefix}`;
+  }
+  return queryPart ? `/inventory/${queryPart}` : "/inventory";
+}
+
+export function readRouteState(): PlainObject {
+  if (typeof window === "undefined") return {};
+
+  const refinementList: PlainObject = {};
+  const range: PlainObject = {};
+  let query: string | undefined;
+  let sortField: string | undefined;
+  let sortDirection: string | undefined;
+  let sortBy: string | undefined;
+
+  const processToken = (rawKey: string, rawVal?: string) => {
+    const key = rawKey.trim();
+    if (!key) return;
+
+    if (rawVal !== undefined) {
+      // Keyed parameter: key=value
+      const value = rawVal.trim();
+
+      // Check models
+      if (key === FILTER_KEYS.model || key === "models" || key === "model") {
+        const selections = parseMakeModelSelections(value);
+        if (selections.length > 0) {
+          const models = selections.map((s) => s.model);
+          const makes = selections.map((s) => s.make).filter(Boolean);
+          refinementList.model = [...new Set([...(refinementList.model || []), ...models])];
+          refinementList.make = [...new Set([...(refinementList.make || []), ...makes])];
+          selections.forEach(({ make, model }) => {
+            if (make && model) {
+              modelMakeAssociations.set(model, make);
+              setModelMakeMap([[model, make]]);
+            }
+          });
+        } else {
+          // Fallback splitting by comma
+          const models: string[] = [];
+          const impliedMakes: string[] = [];
+          value.split(",").filter(Boolean).forEach((entry) => {
+            const colonIdx = entry.indexOf(":");
+            if (colonIdx > 0) {
+              const mk = parseNamedQueryValue(entry.slice(0, colonIdx), "make");
+              const md = queryValueToModel(entry.slice(colonIdx + 1));
+              models.push(md);
+              if (mk) {
+                impliedMakes.push(mk);
+                modelMakeAssociations.set(md, mk);
+                setModelMakeMap([[md, mk]]);
+              }
+            } else {
+              const md = queryValueToModel(entry);
+              models.push(md);
+              const mk = modelMakeAssociations.get(md) || getModelMakeMap().get(md) || BASELINE_MODEL_TO_MAKE[md];
+              if (mk) {
+                impliedMakes.push(mk);
+              }
+            }
+          });
+          refinementList.model = [...new Set([...(refinementList.model || []), ...models])];
+          if (impliedMakes.length) {
+            refinementList.make = [...new Set([...(refinementList.make || []), ...impliedMakes])];
+          }
+        }
+        return;
+      }
+
+      // Check other filter keys
+      const matchedAttr = Object.keys(FILTER_KEYS).find(
+        (attr) => FILTER_KEYS[attr] === key || attr === key
+      );
+      if (matchedAttr) {
+        const values = value
+          .split(",")
+          .filter(Boolean)
+          .map((v) => parseNamedQueryValue(v, matchedAttr));
+        refinementList[matchedAttr] = [
+          ...new Set([...(refinementList[matchedAttr] || []), ...values]),
+        ];
+        return;
+      }
+
+      // Check ranges
+      if (key === "priceLow") {
+        const currentHigh = getRangeBounds(range.selling_price)[1] || "";
+        range.selling_price = `${decodeURIComponent(value)}:${currentHigh}`;
+        return;
+      }
+      if (key === "priceHigh") {
+        const currentLow = getRangeBounds(range.selling_price)[0] || "";
+        range.selling_price = `${currentLow}:${decodeURIComponent(value)}`;
+        return;
+      }
+      if (key === "odometerLow") {
+        const currentHigh = getRangeBounds(range.odometer)[1] || "";
+        range.odometer = `${decodeURIComponent(value)}:${currentHigh}`;
+        return;
+      }
+      if (key === "odometerHigh") {
+        const currentLow = getRangeBounds(range.odometer)[0] || "";
+        range.odometer = `${currentLow}:${decodeURIComponent(value)}`;
+        return;
+      }
+      if (key === "price") {
+        range.selling_price = value.includes(":") ? value : `${value}:`;
+        return;
+      }
+      if (key === "odometer") {
+        range.odometer = value.includes(":") ? value : `:${value}`;
+        return;
+      }
+
+      // Check query
+      if (key === "q") {
+        query = decodeURIComponent(value);
+        return;
+      }
+
+      // Check sorting
+      if (key === "sortBy") {
+        const criteria = value.split(",").filter(Boolean);
+        const primaryCriterion = criteria.find((c) => !c.startsWith("status_rank:")) || criteria[0];
+        const [field, direction] = primaryCriterion?.split(":", 2) ?? [];
+        if (field && direction && (direction.toUpperCase() === "ASC" || direction.toUpperCase() === "DESC")) {
+          sortField = field;
+          sortDirection = direction.toUpperCase();
+        }
+        return;
+      }
+      if (key === "sortField") {
+        sortField = value;
+        return;
+      }
+      if (key === "sortDirection" && (value.toUpperCase() === "ASC" || value.toUpperCase() === "DESC")) {
+        sortDirection = value.toUpperCase();
+        return;
+      }
+      if (key === "sort") {
+        sortBy = value;
+        return;
+      }
+    }
+
+    // Unkeyed token: key is the whole string (no '=')
+    const decoded = decodeURIComponent(key).trim();
+    if (!decoded) return;
+
+    // Check if it's Make:Model composite (e.g. Ram:1500 or Audi:A4)
+    const colonIdx = decoded.indexOf(":");
+    const semicolonIdx = decoded.indexOf(";");
+    let separator = -1;
+    if (colonIdx > 0 && semicolonIdx > 0) {
+      separator = Math.min(colonIdx, semicolonIdx);
+    } else if (colonIdx > 0) {
+      separator = colonIdx;
+    } else if (semicolonIdx > 0) {
+      separator = semicolonIdx;
+    }
+
+    if (separator > 0 && separator < decoded.length - 1) {
+      const rawMake = decoded.slice(0, separator);
+      const rawModel = decoded.slice(separator + 1);
+      const make = parseNamedQueryValue(rawMake, "make");
+      const model = queryValueToModel(rawModel);
+      if (make) {
+        setRefinement(refinementList, "make", make);
+        setRefinement(refinementList, "model", model);
+        modelMakeAssociations.set(model, make);
+        setModelMakeMap([[model, make]]);
+        return;
+      }
+    }
+
+    // Otherwise, resolve as generic unkeyed token
+    resolveUnkeyedQueryToken(decoded, refinementList);
+  };
+
+  // 1. Process Pathname tokens (e.g. /inventory/Ram:1500&colors=Blue,BRILLIANT-RED or /inventory/Ram/1500/Blue)
+  if (isInventoryListingPath(window.location.pathname)) {
+    const pathContent = window.location.pathname.replace(/^\/inventory\/?/, "").trim();
+    if (pathContent) {
+      const segments = pathContent.split("/").filter(Boolean);
+      for (const segment of segments) {
+        const tokens = segment.split("&").filter(Boolean);
+        for (const token of tokens) {
+          const eqIdx = token.indexOf("=");
+          if (eqIdx !== -1) {
+            processToken(token.slice(0, eqIdx), token.slice(eqIdx + 1));
+          } else {
+            processToken(token);
+          }
+        }
+      }
+    }
+  }
+
+  // 2. Process Search parameters (e.g. ?priceLow=10000 or legacy ?makes=audi,bmw)
+  if (window.location.search) {
+    const rawSearch = window.location.search.startsWith("?")
+      ? window.location.search.slice(1)
+      : window.location.search;
+    const searchTokens = rawSearch.split("&").filter(Boolean);
+    for (const token of searchTokens) {
+      const eqIdx = token.indexOf("=");
+      if (eqIdx !== -1) {
+        processToken(token.slice(0, eqIdx), token.slice(eqIdx + 1));
+      } else {
+        processToken(token);
+      }
+    }
+  }
+
+  // Ensure for any model present, its corresponding make is automatically selected
+  if (Array.isArray(refinementList.model) && refinementList.model.length > 0) {
+    const modelMakeMap = getModelMakeMap();
+    const impliedMakes: string[] = [];
+    refinementList.model.forEach((model: string) => {
+      const make = modelMakeAssociations.get(model) || modelMakeMap.get(model) || BASELINE_MODEL_TO_MAKE[model];
+      if (make) impliedMakes.push(make);
+    });
+    if (impliedMakes.length > 0) {
+      const existingMakes: string[] = refinementList.make || [];
+      refinementList.make = [...new Set([...existingMakes, ...impliedMakes])];
+    }
+  }
+
+  Object.keys(refinementList).forEach((attribute) => {
+    if (Array.isArray(refinementList[attribute])) {
+      refinementList[attribute] = [...new Set(refinementList[attribute])];
+    }
+  });
+
+  const nonModelFacetValues = new Set([
+    ...(refinementList.body_type || []),
+    ...(refinementList.vehicle_type || []),
+    ...(refinementList.fuel_type || []),
+    ...(refinementList.transmission || []),
+  ].map((value: string) => value.toLowerCase()));
+  if (Array.isArray(refinementList.model)) {
+    refinementList.model = refinementList.model.filter(
+      (model: string) => !nonModelFacetValues.has(model.toLowerCase())
+    );
+    const selectedMakes = new Set<string>(refinementList.make || []);
+    if (selectedMakes.size > 0) {
+      const modelMakeMap = getModelMakeMap();
+      refinementList.model = refinementList.model.filter((model: string) => {
+        const make = modelMakeAssociations.get(model) || modelMakeMap.get(model) || BASELINE_MODEL_TO_MAKE[model];
+        return make ? selectedMakes.has(make) : true;
+      });
+    }
+    if (refinementList.model.length === 0) delete refinementList.model;
   }
 
   const route: PlainObject = { refinementList, range };
-  
-  // Clean up orphaned models ONLY if they came from explicit make;model encoding
-  // This prevents removing models when the page first loads with just makes in the URL
-  if (hasExplicitModelEncoding && refinementList.model && refinementList.model.length > 0 && refinementList.make && refinementList.make.length > 0) {
-    const selectedMakes = new Set<string>(refinementList.make);
-    const validModels = refinementList.model.filter((model: string) => {
-      const make = modelMakeAssociations.get(model);
-      // Keep model if its make is in selectedMakes or if we don't know its make yet
-      return !make || selectedMakes.has(make);
-    });
-    
-    // Only update if we actually filtered something out
-    if (validModels.length === 0) {
-      delete refinementList.model;
-    } else if (validModels.length < refinementList.model.length) {
-      refinementList.model = validModels;
-    }
-  }
-  
-  const query = params.get("q");
   if (query) route.query = query;
+  if (sortField) route.sortField = sortField;
+  if (sortDirection) route.sortDirection = sortDirection;
+  if (sortBy) route.sortBy = sortBy;
 
-  // Current format: a single sortBy param carrying the full criteria list,
-  // including status_rank, e.g. "status_rank:asc,price:asc".
-  const sortByParam = params.get("sortBy");
-  // Legacy formats, still accepted so previously shared links keep working.
-  const legacySortField = params.get("sortField");
-  const legacySortDirection = params.get("sortDirection")?.toUpperCase();
-  const legacySort = params.get("sort");
-
-  if (sortByParam) {
-    const criteria = sortByParam.split(",").filter(Boolean);
-    const primaryCriterion = criteria.find((c) => !c.startsWith("status_rank:")) || criteria[0];
-    const [field, direction] = primaryCriterion?.split(":", 2) ?? [];
-    if (field && direction && (direction.toUpperCase() === "ASC" || direction.toUpperCase() === "DESC")) {
-      route.sortField = field;
-      route.sortDirection = direction.toUpperCase();
-    }
-  } else if (legacySortField && (legacySortDirection === "ASC" || legacySortDirection === "DESC")) {
-    route.sortField = legacySortField;
-    route.sortDirection = legacySortDirection;
-  } else if (legacySort) {
-    route.sortBy = legacySort;
-  }
- 
   const pathFilters = window.history.state?.__inventoryPathFilters as PathFilters | undefined;
-  if (pathFilters && window.location.pathname.startsWith("/inventory/")) {
+  if (pathFilters && window.location.pathname.startsWith("/inventory")) {
     PATH_ATTRIBUTES.forEach((attribute) => {
       if (pathFilters[attribute]?.length) refinementList[attribute] = pathFilters[attribute];
     });
-  }
-
-  // A fresh request has no history state. Decode the canonical path values
-  // for any refinements not already supplied in the (non-path) query string.
-  const segments = window.location.pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean);
-  const seoData = parseInventorySeoUrl(window.location.pathname);
-  if (seoData) {
-    if (!refinementList.make) refinementList.make = [];
-    if (!refinementList.make.includes(seoData.make)) {
-      refinementList.make.push(seoData.make);
-    }
-    
-    if (!refinementList.location) refinementList.location = [];
-    if (!refinementList.location.includes(seoData.location)) {
-       refinementList.location.push(seoData.location);
-    }
-  } else if (!pathFilters && isInventoryListingPath(window.location.pathname)) {
-    readPathOnlyFilters(segments, refinementList);
   }
 
   return route;
@@ -569,12 +1329,29 @@ export const createInventoryStateMapping = (config: AppConfig) => {
   const indexName = config.site.collection || "";
   const defaultSort = `${indexName}/sort/status_rank:asc,created_at:desc`;
 
+  const sanitizeRefinementList = (rawRefinementList: PlainObject) => {
+    const refinementList = { ...rawRefinementList };
+    const selectedMakes = new Set<string>(
+      (refinementList.make || []).map((m: string) => m.toLowerCase())
+    );
+    if (Array.isArray(refinementList.model) && refinementList.model.length > 0) {
+      refinementList.model = refinementList.model.filter((model: string) => {
+        const make = getMakeForModel(model);
+        return make ? selectedMakes.has(make.toLowerCase()) : selectedMakes.size > 0;
+      });
+      if (refinementList.model.length === 0) {
+        delete refinementList.model;
+      }
+    }
+    return refinementList;
+  };
+
   return {
     stateToRoute(uiState: UiState) {
       const state = uiState[indexName] || {};
       return {
         query: state.query || undefined,
-        refinementList: state.refinementList || {},
+        refinementList: sanitizeRefinementList(state.refinementList || {}),
         range: state.range || {},
         sortBy: state.sortBy && state.sortBy !== defaultSort ? state.sortBy : undefined,
       };
@@ -588,7 +1365,7 @@ export const createInventoryStateMapping = (config: AppConfig) => {
       return {
         [indexName]: {
           query: route.query || "",
-          refinementList: route.refinementList || {},
+          refinementList: sanitizeRefinementList(route.refinementList || {}),
           range: route.range || {},
           sortBy,
         },
@@ -612,7 +1389,7 @@ export function createInventoryRouter(_config: AppConfig) {
   let lastWrittenUrl: string | null = null;
 
   if (typeof window !== "undefined" && Object.keys(pathFilters).length && window.location.pathname === "/inventory") {
-    const bootstrapUrl = serializePublicUrl(initialRoute, pathFilters);
+    const bootstrapUrl = serializePublicUrl(initialRoute);
     isInternalUrlWrite = true;
     window.history.replaceState({ ...initialRoute, __inventoryPathFilters: pathFilters }, "", bootstrapUrl);
     isInternalUrlWrite = false;
@@ -623,7 +1400,7 @@ export function createInventoryRouter(_config: AppConfig) {
     if (typeof window === "undefined") return;
     if (!isInventoryListingPath(window.location.pathname)) return;
 
-    const url = serializePublicUrl(route, filters);
+    const url = serializePublicUrl(route);
 
     if (url === lastWrittenUrl) return;
     lastWrittenUrl = url;
@@ -648,7 +1425,7 @@ export function createInventoryRouter(_config: AppConfig) {
     if (!isInventoryListingPath(window.location.pathname)) return;
     const route = readRouteState();
     previousRoute = route;
-    if (window.location.pathname === "/inventory") {
+    if (window.location.pathname.startsWith("/inventory")) {
       pathFilters = getPathFilters(route);
     }
     callback?.(route);
@@ -668,8 +1445,8 @@ export function createInventoryRouter(_config: AppConfig) {
 
     createURL(routeState: PlainObject) {
       // InstantSearch only uses this for links; write() is the canonical serializer.
-      const query = routeState.query ? `?q=${encodeURIComponent(routeState.query)}` : "";
-      return `${window.location.origin}/inventory${query}`;
+      const url = serializePublicUrl(routeState);
+      return typeof window !== "undefined" ? `${window.location.origin}${url}` : url;
     },
 
     onUpdate(nextCallback: (route: PlainObject) => void) {
