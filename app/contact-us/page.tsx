@@ -5,10 +5,12 @@ import supportImg from "@/assets/cars/supportContact.jpg"
 import { useAppConfig } from '../providers';
 import { getConstants } from '@/constants';
 import { useEffect, useState } from 'react';
+import { useIframeUrl } from '@/utils/urlHelpers';
 
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
+    const iframeSrc = useIframeUrl(SITE_CONFIG?.urls.contactUsBaseUrl);
     const [iframeHeight, setIframeHeight] = useState(700);
 
     useEffect(() => {
@@ -171,7 +173,8 @@ export default function ContactUs() {
                             >
                                 <iframe
                                     id="contact_us"
-                                    src={`${SITE_CONFIG?.urls.contactUsBaseUrl}`}
+                                    key={iframeSrc}
+                                    src={iframeSrc}
                                     name="iframe_a"
                                     className="w-full h-full border-none block"
                                     title="Contact Form"

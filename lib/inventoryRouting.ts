@@ -371,7 +371,7 @@ export function getMakeForModel(model: string): string | undefined {
 
   return undefined;
 }
-
+ 
 export const FILTER_KEYS: Record<string, string> = {
   location: "locations",
   vehicle_type: "vehicleTypes",
@@ -383,7 +383,7 @@ export const FILTER_KEYS: Record<string, string> = {
   transmission: "transmissions",
   fuel_type: "fuelTypes",
 };
-
+ 
 export const modelMakeAssociations = new Map<string, string>(Object.entries(BASELINE_MODEL_TO_MAKE));
 
 export type MakeModelSelection = { make: string; model: string };
@@ -429,7 +429,24 @@ export const RANGE_KEYS: Record<string, readonly [string, string]> = {
   odometer: ["odometerLow", "odometerHigh"],
 };
 
+export const DYNAMIC_RANGE_BOUNDS: Record<string, { min?: number; max?: number }> = {
+  selling_price: { min: 0, max: 100000 },
+  odometer: { min: 0, max: 200000 },
+};
 
+export function registerRangeBounds(attribute: string, min?: number, max?: number) {
+  if (!DYNAMIC_RANGE_BOUNDS[attribute]) {
+    DYNAMIC_RANGE_BOUNDS[attribute] = {};
+  }
+  if (min !== undefined && Number.isFinite(min)) {
+    DYNAMIC_RANGE_BOUNDS[attribute].min = min;
+  }
+  if (max !== undefined && Number.isFinite(max)) {
+    DYNAMIC_RANGE_BOUNDS[attribute].max = max;
+  }
+}
+
+ 
 const PUBLIC_SORT_FIELDS: Record<string, string> = {
   selling_price: "price",
 };
@@ -439,7 +456,7 @@ function getPublicSort(sortBy: unknown) {
 
   const sortExpression = sortBy.split("/sort/")[1];
   if (!sortExpression) return null;
-
+ 
   const criteria = sortExpression.split(",");
   const primaryCriterion = criteria.find((c) => !c.startsWith("status_rank:")) || criteria[0];
   const [field, direction] = primaryCriterion.split(":", 2);
@@ -565,12 +582,12 @@ const BASELINE_FACET_VALUES: Record<string, string[]> = {
     "HEV", "Hybrid Gas/Electric", "PHEV", "BEV", "Hybrid"
   ],
   exterior_color: [
-    "Black", "White", "Grey", "ONYX BLACK", "Silver", "SUMMIT WHITE", "Red", "Blue",
-    "Gray", "MOONSTONE GRAY", "Green", "Orange", "WHITE FROST TRICOAT",
-    "EBONY TWILIGHT METALLIC", "DARK GREEN", "WHITE DIAMOND", "BRILLIANT RED",
-    "GALAXY SILVER M", "QUICKSILVER MET", "THUNDERSTORM GREY", "STERLING METALLIC",
-    "SUMMIT WHITE, EBONY", "CRIMSON RED TIN, JET", "TITANIUM RUSH METALLIC",
-    "MOONSTONE GRAY METALLIC"
+    "Black", "White", "Grey", "Onyx Black", "Silver", "Summit White", "Red", "Blue",
+    "Gray", "Moonstone Gray", "Green", "Orange", "White Frost Tricoat",
+    "Ebony Twilight Metallic", "Dark Green", "White Diamond", "Brilliant Red",
+    "Galaxy Silver M", "Quicksilver Met", "Thunderstorm Grey", "Sterling Metallic",
+    "Summit White, Ebony", "Crimson Red Tin, Jet", "Titanium Rush Metallic",
+    "Moonstone Gray Metallic"
   ],
 };
 
@@ -591,21 +608,26 @@ function initFacetRegistry(attribute: string, values: Iterable<string>) {
     };
   }
   const reg = FACET_REGISTRIES[attribute];
-  for (const v of values) {
-    if (!v) continue;
-    reg.exact.add(v);
-    const lower = v.toLowerCase();
-    if (!reg.byLower.has(lower)) {
-      reg.byLower.set(lower, v);
-    }
+  for (const rawV of values) {
+    if (!rawV) continue;
+    const formatted = attribute === "year" ? rawV : formatFacetLabel(rawV);
+    reg.exact.add(rawV);
+    reg.exact.add(formatted);
+    const lower = rawV.toLowerCase();
+    const formattedLower = formatted.toLowerCase();
+
+    reg.byLower.set(lower, formatted);
+    reg.byLower.set(formattedLower, formatted);
+
     const slug = lower.replace(/\s+/g, "-");
-    if (!reg.bySlug.has(slug)) {
-      reg.bySlug.set(slug, v);
-    }
+    reg.bySlug.set(slug, formatted);
+    const formattedSlug = formattedLower.replace(/\s+/g, "-");
+    reg.bySlug.set(formattedSlug, formatted);
+
     const unhyphenated = lower.replace(/-/g, " ");
-    if (!reg.bySlug.has(unhyphenated)) {
-      reg.bySlug.set(unhyphenated, v);
-    }
+    reg.bySlug.set(unhyphenated, formatted);
+    const formattedUnhyphenated = formattedLower.replace(/-/g, " ");
+    reg.bySlug.set(formattedUnhyphenated, formatted);
   }
 }
 
@@ -639,25 +661,25 @@ export function parseNamedQueryValue(value: string, attribute?: string): string 
 
   const reg = attribute ? FACET_REGISTRIES[attribute] : undefined;
   if (reg) {
-    if (reg.exact.has(decoded)) return decoded;
     const lower = decoded.toLowerCase();
     if (reg.byLower.has(lower)) return reg.byLower.get(lower)!;
     if (reg.bySlug.has(lower)) return reg.bySlug.get(lower)!;
     const withSpaces = lower.replace(/-/g, " ");
     if (reg.byLower.has(withSpaces)) return reg.byLower.get(withSpaces)!;
     if (reg.bySlug.has(withSpaces)) return reg.bySlug.get(withSpaces)!;
+    if (reg.exact.has(decoded)) return attribute === "year" ? decoded : formatFacetLabel(decoded);
   }
 
   // If attribute wasn't specified, check all registries
   if (!attribute) {
     for (const registry of Object.values(FACET_REGISTRIES)) {
-      if (registry.exact.has(decoded)) return decoded;
       const lower = decoded.toLowerCase();
       if (registry.byLower.has(lower)) return registry.byLower.get(lower)!;
       if (registry.bySlug.has(lower)) return registry.bySlug.get(lower)!;
       const withSpaces = lower.replace(/-/g, " ");
       if (registry.byLower.has(withSpaces)) return registry.byLower.get(withSpaces)!;
       if (registry.bySlug.has(withSpaces)) return registry.bySlug.get(withSpaces)!;
+      if (registry.exact.has(decoded)) return formatFacetLabel(decoded);
     }
   }
 
@@ -667,7 +689,8 @@ export function parseNamedQueryValue(value: string, attribute?: string): string 
   }
 
   // Fallback: convert hyphens back to spaces
-  return decoded.replace(/-/g, " ");
+  const unhyphenated = decoded.replace(/-/g, " ");
+  return attribute === "year" ? unhyphenated : formatFacetLabel(unhyphenated);
 }
 
 function setRefinement(refinementList: PlainObject, attribute: string, value: string) {
@@ -703,9 +726,9 @@ function resolveUnkeyedQueryToken(token: string, refinementList: PlainObject): b
   const makeReg = FACET_REGISTRIES["make"];
   const matchedMake =
     makeReg?.exact.has(decoded) ? decoded :
-      makeReg?.byLower.get(lower) ||
-      makeReg?.bySlug.get(lower) ||
-      makeReg?.bySlug.get(lower.replace(/-/g, " "));
+    makeReg?.byLower.get(lower) ||
+    makeReg?.bySlug.get(lower) ||
+    makeReg?.bySlug.get(lower.replace(/-/g, " "));
 
   if (matchedMake) {
     setRefinement(refinementList, "make", matchedMake);
@@ -746,9 +769,9 @@ function resolveUnkeyedQueryToken(token: string, refinementList: PlainObject): b
     if (!reg) continue;
     const matched =
       reg.exact.has(decoded) ? decoded :
-        reg.byLower.get(lower) ||
-        reg.bySlug.get(lower) ||
-        reg.bySlug.get(lower.replace(/-/g, " "));
+      reg.byLower.get(lower) ||
+      reg.bySlug.get(lower) ||
+      reg.bySlug.get(lower.replace(/-/g, " "));
 
     if (matched) {
       setRefinement(refinementList, attr, matched);
@@ -878,117 +901,42 @@ export function serializePublicUrl(route: PlainObject) {
 
   // Standalone makes are makes with NO models selected
   const standaloneMakes = allSelectedMakes.filter((make) => !makesWithModels.has(make));
-
-  const otherFacetAttributes = [
-    "year",
-    "exterior_color",
-    "body_type",
-    "vehicle_type",
-    "fuel_type",
-    "transmission",
-    "location",
-  ] as const;
-
   const totalMakesCount = makesWithModels.size + standaloneMakes.length;
-  const hasMultiMakeOrModel = totalMakesCount > 1 || validModels.length > 1;
-  const hasMultiOtherFacets = otherFacetAttributes.some(
-    (attr) => (refinementList[attr] || []).length > 1
-  );
 
-  const isMultiSelect = hasMultiMakeOrModel || hasMultiOtherFacets;
+  const pathSegments: string[] = [];
+  const queryParams: string[] = [];
 
-  const hasRanges = Object.keys(RANGE_KEYS).some((attr) => {
-    const [low, high] = getRangeBounds(route.range?.[attr]);
-    return (low !== undefined && low !== "") || (high !== undefined && high !== "");
-  });
-  const hasQuery = Boolean(route.query);
-  const sort = getPublicSort(route.sortBy);
-  const hasSort = Boolean(sort);
-
-  const appendRange = (attribute: keyof typeof RANGE_KEYS, index: 0 | 1, targetParams: string[]) => {
-    const [low, high] = getRangeBounds(route.range?.[attribute]);
-    const value = index === 0 ? low : high;
-    if (value !== undefined && value !== "") {
-      targetParams.push(`${RANGE_KEYS[attribute][index]}=${encodeURIComponent(String(value))}`);
-    }
-  };
-
-  // If there are NO multi-selections and NO ranges/query/sort, format as clean path segments:
-  // e.g. /inventory/Ram/1500/Blue or /inventory/Audi or /inventory/Sedan
-  if (!isMultiSelect && !hasRanges && !hasQuery && !hasSort) {
-    const pathSegments: string[] = [];
-
-    // 1. Make and Model: e.g. /inventory/Audi or /inventory/Ford/F-150 or /inventory/Audi/A4
-    if (allSelectedMakes.length === 1 && validModels.length === 1) {
-      pathSegments.push(queryValue(allSelectedMakes[0]));
-      pathSegments.push(modelToQueryValue(validModels[0]));
-    } else if (allSelectedMakes.length === 1 && validModels.length === 0) {
-      pathSegments.push(queryValue(allSelectedMakes[0]));
-    } else if (allSelectedMakes.length === 0 && validModels.length === 1) {
-      pathSegments.push(modelToQueryValue(validModels[0]));
-    }
-
-    // 2. Year:
-    if ((refinementList.year || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.year[0]));
-    }
-
-    // 3. Exterior Color:
-    if ((refinementList.exterior_color || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.exterior_color[0]));
-    }
-
-    // 4. Body Type:
-    if ((refinementList.body_type || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.body_type[0]));
-    }
-
-    // 5. Vehicle Type:
-    if ((refinementList.vehicle_type || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.vehicle_type[0]));
-    }
-
-    // 6. Fuel Type:
-    if ((refinementList.fuel_type || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.fuel_type[0]));
-    }
-
-    // 7. Transmission:
-    if ((refinementList.transmission || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.transmission[0]));
-    }
-
-    // 8. Location:
-    if ((refinementList.location || []).length === 1) {
-      pathSegments.push(queryValue(refinementList.location[0]));
-    }
-
-    return pathSegments.length ? `/inventory/${pathSegments.join("/")}` : "/inventory";
-  }
-
-  // Multi-select or parameters mode: serialized starting with /inventory/
-  // Rule: Only add the key for fields that have MORE THAN ONE value.
-  // Single-value fields should be UNKEYED.
-  let makePrefix = "";
-  const params: string[] = [];
-
-  // 1. Make & Model
+  // 1. Makes & Models
   if (totalMakesCount === 1 && validModels.length === 1) {
-    // Exactly 1 make + 1 model -> Make as path prefix, model as unkeyed parameter
+    // Single make + Single model -> both in path
     const make = getMakeForModel(validModels[0]) || allSelectedMakes[0];
     if (make) {
-      makePrefix = queryValue(make);
-      params.push(modelToQueryValue(validModels[0]));
+      pathSegments.push(queryValue(make));
+      pathSegments.push(modelToQueryValue(validModels[0]));
     } else {
-      params.push(modelToQueryValue(validModels[0]));
+      pathSegments.push(modelToQueryValue(validModels[0]));
     }
   } else if (totalMakesCount === 1 && validModels.length === 0 && standaloneMakes.length === 1) {
-    // Exactly 1 make, no model -> single value -> unkeyed Make (e.g. Ram or Audi)
-    params.push(queryValue(standaloneMakes[0]));
+    // Single make, no models -> make in path
+    pathSegments.push(queryValue(standaloneMakes[0]));
+  } else if (totalMakesCount === 0 && validModels.length === 1) {
+    // No make selected, but 1 valid model -> model in path
+    const make = getMakeForModel(validModels[0]);
+    if (make) {
+      pathSegments.push(queryValue(make));
+    }
+    pathSegments.push(modelToQueryValue(validModels[0]));
+  } else if (totalMakesCount === 1 && standaloneMakes.length === 0 && makesWithModels.size === 1 && validModels.length > 1) {
+    // Exactly 1 make with multiple models of only that make -> make in path, models in query
+    const onlyMake = Array.from(makesWithModels)[0];
+    pathSegments.push(queryValue(onlyMake));
+
+    const modelTokens = validModels.map(modelToQueryValue).join(",");
+    queryParams.push(`${FILTER_KEYS.model}=${queryValue(onlyMake)}:${modelTokens}`);
   } else {
-    // Multiple makes or multiple models -> KEYED
+    // Multiple makes or models across multiple makes -> ALL go to query params
     if (standaloneMakes.length > 0) {
-      params.push(`${FILTER_KEYS.make}=${standaloneMakes.map(queryValue).join(",")}`);
+      queryParams.push(`${FILTER_KEYS.make}=${standaloneMakes.map(queryValue).join(",")}`);
     }
 
     if (validModels.length > 0) {
@@ -1014,49 +962,68 @@ export function serializePublicUrl(route: PlainObject) {
         modelTokens.push(modelToQueryValue(model));
       });
 
-      params.push(`${FILTER_KEYS.model}=${modelTokens.join(",")}`);
+      queryParams.push(`${FILTER_KEYS.model}=${modelTokens.join(",")}`);
     }
   }
 
-  // Helper for other facet attributes:
-  // If 1 value -> UNKEYED (e.g. Blue, 2026, Sedan)
-  // If > 1 values -> KEYED (e.g. colors=Blue,BRILLIANT-RED, year=2026,2025)
-  const appendFacet = (attribute: string) => {
-    const values: string[] = refinementList[attribute] || [];
+  // 2. Other facet attributes:
+  // year, exterior_color, body_type, vehicle_type, fuel_type, transmission, location
+  const otherFacetAttributes = [
+    "year",
+    "exterior_color",
+    "body_type",
+    "vehicle_type",
+    "fuel_type",
+    "transmission",
+    "location",
+  ] as const;
+
+  otherFacetAttributes.forEach((attr) => {
+    const values: string[] = refinementList[attr] || [];
     if (!values.length) return;
-    if (values.length === 1) {
-      params.push(queryValue(values[0]));
+    const formattedValues = values.map((v) => (attr === "year" ? v : formatFacetLabel(v)));
+    if (formattedValues.length === 1) {
+      // Single value -> add to PATH before '?'
+      pathSegments.push(queryValue(formattedValues[0]));
     } else {
-      const serializedValues = values.map(queryValue);
-      params.push(`${FILTER_KEYS[attribute]}=${serializedValues.join(",")}`);
+      // Multi value -> add to QUERY PARAMS after '?'
+      const serializedValues = formattedValues.map(queryValue);
+      queryParams.push(`${FILTER_KEYS[attr]}=${serializedValues.join(",")}`);
     }
-  };
+  });
 
-  appendFacet("year");
-  appendRange("selling_price", 0, params);   // priceLow
-  appendFacet("location");
-  appendFacet("exterior_color");
-  appendFacet("body_type");
-  appendFacet("transmission");
-  appendFacet("fuel_type");
-  appendRange("odometer", 0, params);        // odometerLow
-  appendFacet("vehicle_type");
-  appendRange("selling_price", 1, params);   // priceHigh
-  appendRange("odometer", 1, params);        // odometerHigh
+  // 3. Ranges (price, odometer) -> query params
+  const [rawPriceLow, rawPriceHigh] = getRangeBounds(route.range?.selling_price);
+  if (rawPriceLow !== undefined && rawPriceLow !== "") {
+    queryParams.push(`priceLow=${encodeURIComponent(String(rawPriceLow))}`);
+  }
+  if (rawPriceHigh !== undefined && rawPriceHigh !== "") {
+    queryParams.push(`priceHigh=${encodeURIComponent(String(rawPriceHigh))}`);
+  }
 
-  if (route.query) params.push(`q=${encodeURIComponent(route.query)}`);
+  const [rawOdoLow, rawOdoHigh] = getRangeBounds(route.range?.odometer);
+  if (rawOdoLow !== undefined && rawOdoLow !== "") {
+    queryParams.push(`odometerLow=${encodeURIComponent(String(rawOdoLow))}`);
+  }
+  if (rawOdoHigh !== undefined && rawOdoHigh !== "") {
+    queryParams.push(`odometerHigh=${encodeURIComponent(String(rawOdoHigh))}`);
+  }
+
+  // 4. Search query q -> query params
+  if (route.query) {
+    queryParams.push(`q=${encodeURIComponent(route.query)}`);
+  }
+
+  // 5. Sorting -> query params
+  const sort = getPublicSort(route.sortBy);
   if (sort) {
-    params.push(`sortBy=status_rank:asc,${sort.field}:${sort.direction.toLowerCase()}`);
+    queryParams.push(`sortBy=status_rank:asc,${sort.field}:${sort.direction.toLowerCase()}`);
   }
 
-  const queryPart = params.join("&");
-  if (makePrefix && queryPart) {
-    return `/inventory/${makePrefix}/${queryPart}`;
-  }
-  if (makePrefix) {
-    return `/inventory/${makePrefix}`;
-  }
-  return queryPart ? `/inventory/${queryPart}` : "/inventory";
+  const basePath = pathSegments.length ? `/inventory/${pathSegments.join("/")}` : "/inventory";
+  const queryString = queryParams.length ? `?${queryParams.join("&")}` : "";
+
+  return `${basePath}${queryString}`;
 }
 
 export function readRouteState(): PlainObject {
@@ -1331,6 +1298,22 @@ export const createInventoryStateMapping = (config: AppConfig) => {
 
   const sanitizeRefinementList = (rawRefinementList: PlainObject) => {
     const refinementList = { ...rawRefinementList };
+    Object.keys(refinementList).forEach((attr) => {
+      if (Array.isArray(refinementList[attr])) {
+        const seenNorms = new Set<string>();
+        const deduped: string[] = [];
+        refinementList[attr].forEach((item: string) => {
+          const formatted = attr === "year" ? String(item) : formatFacetLabel(String(item));
+          const norm = formatted.toLowerCase().replace(/[^a-z0-9]/g, "");
+          if (!seenNorms.has(norm)) {
+            seenNorms.add(norm);
+            deduped.push(formatted);
+          }
+        });
+        refinementList[attr] = deduped;
+      }
+    });
+
     const selectedMakes = new Set<string>(
       (refinementList.make || []).map((m: string) => m.toLowerCase())
     );

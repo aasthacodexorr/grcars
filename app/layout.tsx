@@ -23,10 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
     }),
     icons: {
       icon: [
-        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/fav.png", type: "image/png" },
       ],
-      shortcut: "/favicon.svg",
-      apple: "/favicon.svg",
+      shortcut: "/fav.png",
+      apple: "/fav.png",
     },
   };
 }

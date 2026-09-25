@@ -5,6 +5,7 @@ import { Suspense, useEffect, useState } from "react";
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { Footer, Header } from "@/components/layout";
+import { useIframeUrl } from "@/utils/urlHelpers";
 
 const MIN_HEIGHT = 500;
 const FALLBACK_HEIGHT = 791;
@@ -12,6 +13,7 @@ const FALLBACK_HEIGHT = 791;
 const FinanceContent = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
+  const iframeSrc = useIframeUrl(SITE_CONFIG?.urls.financeBaseUrl);
 
   const [iframeHeight, setIframeHeight] = useState(FALLBACK_HEIGHT);
 
@@ -51,7 +53,8 @@ const FinanceContent = () => {
           <div className="mx-auto max-w-[1400px]">
             <iframe
               id="finance_form"
-              src={SITE_CONFIG?.urls.financeBaseUrl}
+              key={iframeSrc}
+              src={iframeSrc}
               className="w-full border-0 rounded-2xl block"
               title="Express Checkout - Finance"
               allow="payment"

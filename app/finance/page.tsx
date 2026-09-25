@@ -12,6 +12,7 @@ import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { Reviews } from "@/components/home";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import { useIframeUrl } from "@/utils/urlHelpers";
 
 /* Constants */
 const MIN_HEIGHT = 540;
@@ -66,6 +67,7 @@ const Finance = () => {
   const { SITE_CONFIG } = getConstants(appConfig);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number>(FALLBACK_HEIGHT);
+  const iframeSrc = useIframeUrl(SITE_CONFIG.urls.financeRenderApiUrl);
 
   // Listen for height updates from the embedded financing form
   useEffect(() => {
@@ -97,7 +99,8 @@ const Finance = () => {
             <iframe
               ref={iframeRef}
               id="financing_form"
-              src={`${SITE_CONFIG.urls.financeRenderApiUrl}?`}
+              key={iframeSrc}
+              src={iframeSrc}
               name="iframe_a"
               title="GrCars financing application"
               scrolling="no"

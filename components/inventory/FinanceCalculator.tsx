@@ -9,6 +9,7 @@ import yearIcon from "@/assets/icons/year-icon.png";
 import vdpCar from "@/assets/icons/vdp-car.png";
 
 import { useAppConfig } from "@/app/providers";
+import { buildUrlWithQueryParams } from "@/utils/urlHelpers";
 
 interface FinanceCalculatorProps {
   vehiclePrice?: number;
@@ -70,6 +71,25 @@ const FinanceCalculator = ({ vehiclePrice, inventoryId = "2851" }: FinanceCalcul
 
   const min = 6;
   const max = 15;
+
+  const [financeUrl, setFinanceUrl] = useState(() =>
+    buildUrlWithQueryParams("/vehicle-financing", inventoryId ? { inventory_id: inventoryId } : undefined)
+  );
+
+  useEffect(() => {
+    setFinanceUrl(
+      buildUrlWithQueryParams("/vehicle-financing", inventoryId ? { inventory_id: inventoryId } : undefined)
+    );
+  }, [inventoryId]);
+
+  const handleQuotesClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const targetUrl = buildUrlWithQueryParams(
+      "/vehicle-financing",
+      inventoryId ? { inventory_id: inventoryId } : undefined
+    );
+    window.location.href = targetUrl;
+  };
 
   // Local text buffer for the interest rate input
   const [interestRateInput, setInterestRateInput] = useState<string | number>(interestRate);
@@ -370,7 +390,8 @@ const FinanceCalculator = ({ vehiclePrice, inventoryId = "2851" }: FinanceCalcul
               </div>
               
               <motion.a
-                href={`/finance?inventory_id=${inventoryId}`}
+                href={financeUrl}
+                onClick={handleQuotesClick}
                 className="mt-2 block w-full text-white font-bold text-base py-4 px-6 rounded-full text-center no-underline transition-all bg-brand-btn-gradient shadow-[0_2px_10px_rgba(16,185,129,0.1)]"
                 whileHover={{ scale: 1.01, filter: "brightness(1.05)" }}
                 whileTap={{ scale: 0.99 }}
