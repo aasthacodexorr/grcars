@@ -1934,7 +1934,7 @@ const InventoryContent = () => {
         </div>
 
         {/* ── Two-column layout ── */}
-        <div className="bg-light-gray mt-40 lg:-mt-4 min-h-screen lg:px-14 px-3 py-[20px] overflow-visible">
+        <div className="bg-light-gray mt-36 lg:-mt-4 min-h-screen lg:px-14 px-3 py-[20px] overflow-visible">
 
           {/* Mobile-only Search / AI Search toggle — desktop keeps its own copy inside the sidebar */}
           <div className="flex lg:hidden items-center gap-1.5 max-w-[1550px] mx-auto mb-3 p-[6px]">

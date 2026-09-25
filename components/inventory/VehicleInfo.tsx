@@ -7,6 +7,7 @@ import { useAppConfig } from "@/app/providers";
 import { createPortal } from "react-dom";
 import { ChevronRight, ArrowDownCircle } from "lucide-react";
 import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
+import { buildUrlWithQueryParams, useIframeUrl } from "@/utils/urlHelpers";
 
 export const VehicleHeaderAndCTA = ({
   vehicle,
@@ -106,6 +107,26 @@ export const VehicleHeaderAndCTA = ({
 
   const isSold =
     vehicle.status && vehicle.status.toLowerCase() !== "instock";
+
+  const inventoryId = vehicle?.id || vehicle?.inventory_id;
+  const [financeUrl, setFinanceUrl] = useState(() =>
+    buildUrlWithQueryParams("/vehicle-financing", inventoryId ? { inventory_id: inventoryId } : undefined)
+  );
+
+  useEffect(() => {
+    setFinanceUrl(
+      buildUrlWithQueryParams("/vehicle-financing", inventoryId ? { inventory_id: inventoryId } : undefined)
+    );
+  }, [inventoryId]);
+
+  const handleFinanceClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const targetUrl = buildUrlWithQueryParams(
+      "/vehicle-financing",
+      inventoryId ? { inventory_id: inventoryId } : undefined
+    );
+    window.location.href = targetUrl;
+  };
 
   return (
     <>
@@ -271,7 +292,7 @@ export const VehicleHeaderAndCTA = ({
         {/* Buttons Action Group */}
         <div className="hidden lg:block space-y-2.5 px-6 mb-5 text-center">
           {/* Button 1: Get pre-qualified */}
-          <a href="/vehicle-financing/" className="block w-full">
+          <a href={financeUrl} onClick={handleFinanceClick} className="block w-full">
             <button className="w-full capitalize cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-4 rounded-full transition-colors text-base shadow-sm">
               Get pre-qualified
             </button>
@@ -300,7 +321,7 @@ export const VehicleHeaderAndCTA = ({
         className={`fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 px-4 py-3 shadow-2xl lg:hidden flex gap-3 transition-transform duration-300 ease-in-out ${showSticky ? "translate-y-0" : "translate-y-full"
           }`}
       >
-        <a href="/vehicle-financing/" className="flex-1">
+        <a href={financeUrl} onClick={handleFinanceClick} className="flex-1">
           <button className="w-full capitalize cursor-pointer bg-[#00874a] hover:bg-green-800 text-white font-bold py-3 rounded-full text-sm shadow-md">
             Get pre-qualified
           </button>
@@ -329,6 +350,10 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
   const appConfig = useAppConfig();
   const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
   const inventoryId = vehicle?.id || vehicle?.inventory_id;
+  const iframeSrc = useIframeUrl(
+    SITE_CONFIG?.urls.vehiclePageContactUsBaseUrl,
+    inventoryId ? { inventory_id: inventoryId } : undefined
+  );
 
   const [mounted, setMounted] = useState(false);
   const [iframeHeight, setIframeHeight] = useState(640);
@@ -418,7 +443,8 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
         <div className="w-full overflow-hidden">
           <iframe
             id="contact_us"
-            src={`${SITE_CONFIG?.urls.vehiclePageContactUsBaseUrl}?inventory_id=${inventoryId}`}
+            key={iframeSrc}
+            src={iframeSrc}
             className="w-full rounded-2xl border-0 block transition-[height] duration-300 ease-out"
             title="Contact Us"
             allow="payment"

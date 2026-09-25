@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { setQueryParams } from "@/utils/queryParams";
 import car1 from "@/assets/icons/verification-car1.png";
 import car2 from "@/assets/icons/verification-car2.png";
 import car3 from "@/assets/icons/verification-car3.png";
@@ -23,10 +24,11 @@ const VehicleCategoryGrid = () => {
   ];
 
   const handleCategoryClick = (bodyTypes: string[]) => {
-    const vehicleUrl = `/inventory?${new URLSearchParams({
-      bodyStyles: bodyTypes.join(',')
-    }).toString()}`;
-    router.push(vehicleUrl);
+    const vehicleUrl =
+      bodyTypes.length === 1
+        ? `/inventory/${encodeURIComponent(bodyTypes[0])}`
+        : `/inventory?bodyStyles=${encodeURIComponent(bodyTypes.join(","))}`;
+    router.push(setQueryParams(vehicleUrl));
   };
 
   return (
@@ -35,7 +37,7 @@ const VehicleCategoryGrid = () => {
             <div
               key={index}
               onClick={() => handleCategoryClick(vehicle.bodyTypes)}
-              className="bg-white rounded-full p-5 h-28 flex flex-col justify-between items-start shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group hover:bg-light-gray"
+              className="bg-white rounded-lg p-5 h-28 flex flex-col justify-between items-start shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group hover:bg-light-gray"
             >
               {/* Top Row: Icon aligned center/right using flex placement */}
               <div className="w-full flex justify-center items-center h-10 relative">
