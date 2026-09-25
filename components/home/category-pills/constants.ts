@@ -27,7 +27,7 @@ export const getCategories = (appConfig: AppConfig): (Category & { image: string
     id:3,
     label: "Trucks",
     image: truck?.src,
-    href: getInventoryUrlByRefinement("body_type", ["Truck", "Pickup"], appConfig),
+    href: getInventoryUrlByRefinement("body_type", ["Truck", "Pickup", ",Pickup-Truck"], appConfig),
   },
   {
     id:4,

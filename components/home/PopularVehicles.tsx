@@ -26,7 +26,7 @@ const MODELS: ModelCard[] = [
   { make: "Nissan", model: "Rogue", image: nissan?.src, href: getInventoryUrlByModel("Nissan", "Rogue") },
   { make: "Toyota", model: "Camry", image: camry?.src, href: getInventoryUrlByModel("Toyota", "Camry") },
   { make: "Honda", model: "Civic", image: hondaCivic?.src, href: getInventoryUrlByModel("Honda", "Civic") },
-  { make: "Nissan", model: "Altima", image: nissanAltima?.src, href: getInventoryUrlByModel("Nissan", "Altima") },
+  { make: "Nissan", model: "Sentra", image: nissanAltima?.src, href: getInventoryUrlByModel("Nissan", "Sentra") },
   { make: "Jeep", model: "Grand Cherokee", image: jeep?.src, href: getInventoryUrlByModel("Jeep", "Grand Cherokee") },
   { make: "Ford", model: "F-150 SuperCrew", image: ford?.src, href: getInventoryUrlByModel("Ford", "F-150") },
   { make: "Honda", model: "Accord", image: hondaAccord?.src, href: getInventoryUrlByModel("Honda", "Accord") },
