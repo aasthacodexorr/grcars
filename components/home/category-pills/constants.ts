@@ -27,7 +27,7 @@ export const getCategories = (appConfig: AppConfig): (Category & { image: string
     id:3,
     label: "Trucks",
     image: truck?.src,
-    href: getInventoryUrlByRefinement("body_type", ["Truck", "Pickup"], appConfig),
+    href: getInventoryUrlByRefinement("body_type", ["Truck", "Pickup", ",Pickup-Truck"], appConfig),
   },
   {
     id:4,
@@ -47,12 +47,12 @@ export const getCategories = (appConfig: AppConfig): (Category & { image: string
     image:  coupe?.src,
     href: getInventoryUrlByRefinement("body_type", ["Coupe"], appConfig),
   },
-  {
-    id:7,
-    label: "Hatchbacks",
-    image:  hatchback?.src,
-    href: getInventoryUrlByRefinement("body_type", ["Hatchback"], appConfig),
-  },
+  // {
+  //   id:7,
+  //   label: "Hatchbacks",
+  //   image:  hatchback?.src,
+  //   href: getInventoryUrlByRefinement("body_type", ["Hatchback"], appConfig),
+  // },
   {
     id:8,
     label: "SUVs",
