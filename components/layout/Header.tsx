@@ -158,10 +158,7 @@ const Header = () => {
         </div>
 
         {/* Mobile horizontal navigation tabs */}
-        <div
-          className=" w-full overflow-x-auto border-t border-gray-100 border-b border-gray-100 px-3 [scrollbar-width:thin] [scrollbar-color:#777_transparent] [&::-webkit-scrollbar]:h-[6px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#777]
-    [&::-webkit-scrollbar-thumb:hover]:bg-[#555] [&::-webkit-scrollbar-button]:hidden"
-        >
+        <div className="w-full overflow-x-auto scrollbar-hide border-t bg-white border-gray-100 border-b border-gray-100 px-3">
           <nav className="flex w-max min-w-full items-center">
             {NAV_ITEMS.map((item) => {
               const isActive =
@@ -181,7 +178,9 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`flex h-[48px] shrink-0 items-center justify-center px-5 text-[15px] font-semibold whitespace-nowrap transition-colors ${isActive ? "text-brand-green" : "text-white"
+                  className={`flex h-[48px] shrink-0 items-center justify-center px-5 text-[15px] font-semibold whitespace-nowrap transition-colors ${isActive
+                    ? "text-brand-green"
+                    : "text-black"
                     }`}
                 >
                   {item.label}
