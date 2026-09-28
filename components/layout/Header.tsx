@@ -74,7 +74,7 @@ const Header = () => {
               const Icon = "icon" in item ? item.icon : null;
 
               return (
-                <a
+                <Link
                   key={item.label}
                   href={item.to}
                   target={isExternal ? "_blank" : undefined}
@@ -98,7 +98,7 @@ const Header = () => {
                 >
                   {Icon && <Icon size={18} strokeWidth={2.5} />}
                   <span className="font-semibold tracking-wide">{item.label}</span>
-                </a>
+                </Link>
               );
             })}
           </nav>

@@ -512,8 +512,11 @@ const PATH_ATTRIBUTES = [
 type PathFilters = Partial<Record<(typeof PATH_ATTRIBUTES)[number], string[]>>;
 
 function isInventoryListingPath(pathname: string) {
+  if (!pathname || (pathname !== "/inventory" && !pathname.startsWith("/inventory/"))) {
+    return false;
+  }
   const segments = pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean);
-  if (!segments.length) return pathname === "/inventory" || pathname === "/inventory/";
+  if (!segments.length) return true;
 
   // Vehicle detail links begin with an inventory ID (for example 3019-2022-honda-civic-lx);
   // listing paths may begin with a four-digit vehicle year or facet name.
@@ -1027,7 +1030,7 @@ export function serializePublicUrl(route: PlainObject) {
 }
 
 export function readRouteState(): PlainObject {
-  if (typeof window === "undefined") return {};
+  if (typeof window === "undefined" || !isInventoryListingPath(window.location.pathname)) return {};
 
   const refinementList: PlainObject = {};
   const range: PlainObject = {};
