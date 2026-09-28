@@ -230,6 +230,7 @@ const Header = () => {
                 </p>
                 <Link
                   href="/finance"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full py-2.5 bg-gray-50 hover:bg-gray-100 text-blue-600 font-semibold text-[14px] rounded-xl text-center transition-colors"
                 >
                   Get Pre-qualified
@@ -248,29 +249,39 @@ const Header = () => {
                 </p>
                 <Link
                   href="/trade-in-my-car"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full py-2.5 bg-gray-50 hover:bg-gray-100 text-blue-600 font-semibold text-[14px] rounded-xl text-center transition-colors"
                 >
                   Get Your Offer
                 </Link>
               </div>
             </div>
-            <Link href="/contact-us" className="flex flex-col gap-2">
+            <Link
+              href="/contact-us"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex flex-col gap-2"
+            >
               <h3 className="text-[18px] font-bold text-gray-900">
                 Contact Us
               </h3>
-
             </Link>
-            <Link href="/about-us" className="flex flex-col gap-2">
+            <Link
+              href="/about-us"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex flex-col gap-2"
+            >
               <h3 className="text-[18px] font-bold text-gray-900">
                 About Us
               </h3>
-
             </Link>
-            <Link href="/blogs" className="flex flex-col gap-2">
+            <Link
+              href="/blogs"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex flex-col gap-2"
+            >
               <h3 className="text-[18px] font-bold text-gray-900">
                 Our Blogs
               </h3>
-
             </Link>
           </div>
         </div>
