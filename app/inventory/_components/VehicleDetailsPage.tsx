@@ -319,7 +319,7 @@ export default async function VehicleDetailsPage({
                                 {vehicle.vehicle_description && (
                                     <div
                                         id="vehicle-description-section"
-                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44"
+                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-12"
                                     >
                                         <h2 className="text-[30px] text-center font-semibold text-black mb-[25px]">
                                             Vehicle Description
