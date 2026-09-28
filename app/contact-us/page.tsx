@@ -7,11 +7,13 @@ import { getConstants } from '@/constants';
 import { useEffect, useState } from 'react';
 import { useIframeUrl } from '@/utils/urlHelpers';
 
+const MIN_HEIGHT = 700;
+
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
     const iframeSrc = useIframeUrl(SITE_CONFIG?.urls.contactUsBaseUrl);
-    const [iframeHeight, setIframeHeight] = useState(700);
+    const [iframeHeight, setIframeHeight] = useState(MIN_HEIGHT);
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
@@ -28,6 +30,7 @@ export default function ContactUs() {
                 data.element_id === "contact_us" &&
                 typeof data.value === "number"
             ) {
+                console.log("[Contact iframe] height event:", data.value);
                 setIframeHeight(Math.ceil(data.value));
             }
         };
@@ -168,19 +171,25 @@ export default function ContactUs() {
                                 Submit a question through our contact form below and we’ll get back to you as soon as possible.
                             </p>
                             <div
-                                className="w-full bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm"
-                                style={{ height: `${iframeHeight}px` }}
+                                className="w-full bg-white rounded-lg border border-gray-200 shadow-sm"
+                                style={{
+                                    minHeight: `${iframeHeight}px`,
+                                }}
                             >
                                 <iframe
                                     id="contact_us"
                                     key={iframeSrc}
                                     src={iframeSrc}
                                     name="iframe_a"
-                                    className="w-full h-full border-none block"
                                     title="Contact Form"
                                     scrolling="no"
+                                    className="block w-full max-w-full border-0 rounded-2xl bg-transparent"
                                     style={{
+                                        width: "100%",
                                         height: `${iframeHeight}px`,
+                                        minHeight: `${MIN_HEIGHT}px`,
+                                        border: "none",
+                                        display: "block",
                                     }}
                                 />
                             </div>
