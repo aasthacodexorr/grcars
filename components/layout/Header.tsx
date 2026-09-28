@@ -52,7 +52,7 @@ const Header = () => {
   return (
     <>
       {/* Desktop Header */}
-      <header className={`hidden lg:block ${positionClass} z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-white`}>
+      <header className={`hidden lg:block ${positionClass} z-50 w-full shadow-[0_2px_10px_rgba(0,0,0,0.05)] px-8 bg-black`}>
         <div className="mx-auto flex max-w-[1600px] items-center justify-between py-[18px]">
 
           {/* Logo */}
@@ -92,7 +92,7 @@ const Header = () => {
                     }
         ${isActive
                       ? "text-brand-green"
-                      : "text-black hover:text-brand-green"
+                      : "text-white hover:text-brand-green"
                     }
       `}
                 >
@@ -126,7 +126,7 @@ const Header = () => {
       </header>
 
       {/* Mobile Header */}
-      <header className={`lg:hidden ${positionClass} left-0 w-full z-50 bg-neutral-offWhite shadow-none`}>
+      <header className={`lg:hidden ${positionClass} left-0 w-full z-50 bg-black shadow-none`}>
 
         {/* Top bar: logo + social icons */}
         <div className="flex items-center justify-between pl-[12px] pr-[29px] py-[20px] w-full ">
@@ -141,7 +141,7 @@ const Header = () => {
               className="flex flex-col items-center justify-center gap-1 relative"
               aria-label="Wishlist"
             >
-              <svg className="w-[24px] h-[24px]" fill="none" viewBox="0 0 24 24" stroke="black">
+              <svg className="w-[24px] h-[24px]" fill="none" viewBox="0 0 24 24" stroke="white">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
             </button>
@@ -152,13 +152,16 @@ const Header = () => {
               className="flex flex-col items-center justify-center gap-1 mx-[7%] max-[537px]:mx-[6%] max-[397px]:mx-[4%]"
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
-              <Menu className="h-[24px] w-[24px] text-black fill-black" />
+              <Menu className="h-[24px] w-[24px] text-white fill-white" />
             </button>
           </div>
         </div>
 
         {/* Mobile horizontal navigation tabs */}
-        <div className="w-full overflow-x-auto scrollbar-hide border-t border-gray-100 border-b border-gray-100 px-3">
+        <div
+          className=" w-full overflow-x-auto border-t border-gray-100 border-b border-gray-100 px-3 [scrollbar-width:thin] [scrollbar-color:#777_transparent] [&::-webkit-scrollbar]:h-[6px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#777]
+    [&::-webkit-scrollbar-thumb:hover]:bg-[#555] [&::-webkit-scrollbar-button]:hidden"
+        >
           <nav className="flex w-max min-w-full items-center">
             {NAV_ITEMS.map((item) => {
               const isActive =
@@ -178,9 +181,7 @@ const Header = () => {
                       window.location.href = "/inventory";
                     }
                   }}
-                  className={`flex h-[48px] shrink-0 items-center justify-center px-5 text-[15px] font-semibold whitespace-nowrap transition-colors ${isActive
-                    ? "text-brand-green"
-                    : "text-black"
+                  className={`flex h-[48px] shrink-0 items-center justify-center px-5 text-[15px] font-semibold whitespace-nowrap transition-colors ${isActive ? "text-brand-green" : "text-white"
                     }`}
                 >
                   {item.label}
