@@ -7,7 +7,7 @@ import { getConstants } from '@/constants';
 import { useEffect, useState } from 'react';
 import { useIframeUrl } from '@/utils/urlHelpers';
 
-const MIN_HEIGHT = 900;
+const MIN_HEIGHT = 700;
 
 export default function ContactUs() {
     const appConfig = useAppConfig();
@@ -187,7 +187,6 @@ export default function ContactUs() {
                                     style={{
                                         width: "100%",
                                         height: `${iframeHeight}px`,
-                                        minHeight: `${MIN_HEIGHT}px`,
                                         border: "none",
                                         display: "block",
                                     }}
