@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, Menu, Repeat, Wallet, X } from "lucide-react";
@@ -17,6 +17,13 @@ import { useDrawer } from "@/context/DrawerContext";
 import { isVehicleDetailSlug } from "@/lib/inventoryUrls";
 const googleMapsUrl = "https://www.google.com/maps/place/Gedi+Route+Cars/@43.7055262,-79.6938153,4367m/data=!3m1!1e3!4m6!3m5!1s0x882b3f18084db7a7:0x703d924801f6b7fa!8m2!3d43.7016063!4d-79.702997!16s%2Fg%2F11kr86czzy?entry=ttu&g_ep=EgoyMDI2MDgyMy4wIKXMDSoASAFQAw%3D%3D";
 
+// Survives header remounts during client-side navigation
+let savedNavScrollLeft = 0;
+
+// useLayoutEffect on the client (no flicker), useEffect on the server (avoids SSR warning)
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /* Component */
 const Header = () => {
   const appConfig = useAppConfig();
@@ -27,6 +34,8 @@ const Header = () => {
   const { openWishlistDrawer } = useDrawer();
   const wishlistCount = isHydrated ? wishlist?.length : 0;
 
+  // Ref to the horizontally scrollable mobile tab bar
+  const navScrollRef = useRef<HTMLDivElement>(null);
 
   const inventorySlug = pathname?.startsWith("/inventory/")
     ? pathname.replace(/^\/inventory\/?/, "").split("/").filter(Boolean)
@@ -48,6 +57,32 @@ const Header = () => {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
+
+  // Restore the saved scroll position on mount (before paint, so there's no flicker)
+  useIsoLayoutEffect(() => {
+    const el = navScrollRef.current;
+    if (el) el.scrollLeft = savedNavScrollLeft;
+  }, []);
+
+  // On route change, only scroll if the active tab is not fully visible
+  useIsoLayoutEffect(() => {
+    const el = navScrollRef.current;
+    if (!el) return;
+    const active = el.querySelector<HTMLElement>('[data-active="true"]');
+    if (!active) return;
+
+    const left = active.offsetLeft;
+    const right = left + active.offsetWidth;
+    const viewLeft = el.scrollLeft;
+    const viewRight = viewLeft + el.clientWidth;
+
+    if (left < viewLeft) {
+      el.scrollLeft = left - 12;
+    } else if (right > viewRight) {
+      el.scrollLeft = right - el.clientWidth + 12;
+    }
+    savedNavScrollLeft = el.scrollLeft;
+  }, [pathname]);
 
   return (
     <>
@@ -158,7 +193,13 @@ const Header = () => {
         </div>
 
         {/* Mobile horizontal navigation tabs */}
-        <div className="w-full overflow-x-auto scrollbar-hide border-t bg-white border-gray-100 border-b border-gray-100 px-3">
+        <div
+          ref={navScrollRef}
+          onScroll={(e) => {
+            savedNavScrollLeft = e.currentTarget.scrollLeft;
+          }}
+          className="w-full overflow-x-auto scrollbar-hide border-t bg-white border-gray-100 border-b border-gray-100 px-3"
+        >
           <nav className="flex w-max min-w-full items-center">
             {NAV_ITEMS.map((item) => {
               const isActive =
@@ -170,6 +211,7 @@ const Header = () => {
                 <Link
                   key={item.label}
                   href={item.to}
+                  data-active={isActive ? "true" : "false"}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
