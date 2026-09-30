@@ -14,9 +14,7 @@ import { Reviews } from "@/components/home";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import { useIframeUrl } from "@/utils/urlHelpers";
 
-/* Constants */
-const MIN_HEIGHT = 540;
-const FALLBACK_HEIGHT = 900;
+const MIN_HEIGHT = 1000;
 
 const faqs = [
   {
@@ -61,32 +59,58 @@ const faqs = [
   },
 ];
 
-/* Page Component */
 const Finance = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [height, setHeight] = useState<number>(FALLBACK_HEIGHT);
-  const iframeSrc = useIframeUrl(SITE_CONFIG.urls.financeRenderApiUrl);
 
-  // Listen for height updates from the embedded financing form
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const [height, setHeight] = useState<number>(MIN_HEIGHT);
+
+  const iframeSrc = useIframeUrl(
+    SITE_CONFIG.urls.financeRenderApiUrl
+  );
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       const data = event.data;
+
+      console.log("Finance iframe message:", data);
+
+
       if (
         data &&
-        typeof data === "object" &&
         data.type === "css" &&
-        data.element_id === "financing_form" &&
+        data.element_id === "finance_form" &&
         typeof data.value === "number"
       ) {
-        setHeight(Math.max(MIN_HEIGHT, Math.ceil(data.value)));
+        const newHeight = Math.max(
+          MIN_HEIGHT,
+          Math.ceil(data.value)
+        );
+
+        console.log("Updating finance iframe height:", newHeight);
+
+        setHeight((previousHeight) => {
+          if (previousHeight === newHeight) {
+            return previousHeight;
+          }
+
+          return newHeight;
+        });
       }
     };
 
     window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
   }, []);
+
+  useEffect(() => {
+    console.log("Finance iframe height changed:", height);
+  }, [height]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -94,8 +118,16 @@ const Finance = () => {
 
       <section className="py-6 md:py-10 pb-16 mt-44 lg:mt-24">
         <div className="mx-auto max-w-[1100px] px-4 md:px-6">
-          <h1 className="text-3xl font-bold text-center">Used Car Financing</h1>
-          <div className="overflow-hidden">
+          <h1 className="text-3xl font-bold text-center">
+            Used Car Financing
+          </h1>
+
+          <div
+            className="w-full overflow-hidden"
+            style={{
+              minHeight: `${MIN_HEIGHT}px`,
+            }}
+          >
             <iframe
               ref={iframeRef}
               id="financing_form"
@@ -104,18 +136,21 @@ const Finance = () => {
               name="iframe_a"
               title="GrCars financing application"
               scrolling="no"
-              className="w-full block transition-[height] duration-300 ease-out border-0"
+              className="block w-full border-0"
               style={{
-                minHeight: MIN_HEIGHT,
+                width: "100%",
                 height: `${height}px`,
+                minHeight: `${MIN_HEIGHT}px`,
+                border: "none",
+                display: "block",
               }}
             />
           </div>
         </div>
-        {/* Welcome Banner Section */}
-        <div className="relative overflow-hidden text-white w-full left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] max-w-screen">
-          {/* Background Image Container */}
-          <div className="relative w-full min-h-[400px] md:min-h-[70vh]">
+
+        {/* Welcome Banner */}
+        <div className="relative left-1/2 right-1/2 w-full max-w-screen -ml-[50vw] -mr-[50vw] overflow-hidden text-white">
+          <div className="relative min-h-[400px] w-full md:min-h-[70vh]">
             <Image
               src={finImg}
               alt="Gedi Route Dealership"
@@ -124,34 +159,35 @@ const Finance = () => {
               className="object-cover"
             />
 
-            {/* Dark Overlay */}
             <div className="absolute inset-0 bg-black/40" />
 
-            {/* Content Container aligned with site width */}
-            <div className="absolute inset-0 z-10 mx-auto max-w-[1280px] px-8 md:px-0 flex flex-col justify-center items-start text-left">
-              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight mb-4">
+            <div className="absolute inset-0 z-10 mx-auto flex max-w-[1280px] flex-col items-start justify-center px-8 text-left md:px-0">
+              <h2 className="mb-4 text-3xl font-extrabold uppercase leading-tight tracking-tight md:text-5xl">
                 Welcome to Gedi Route
               </h2>
 
-              <p className="text-base text-white font-bold max-w-2xl leading-relaxed">
-                Gedi Route is an OMVIC licensed dealer and a proud member of the
-                Used Car Dealers Association (UCDA) so you can buy your next
-                vehicle with confidence. At Gedi Route we proudly sell used
-                cars to customers from Brampton, Ontario including Toronto,
-                Mississauga, Etobicoke, Milton, Caledon, Oakville, Bolton,
-                Guelph, Kitchener, Burlington, Waterloo and surrounding areas.
+              <p className="max-w-2xl text-base font-bold leading-relaxed text-white">
+                Gedi Route is an OMVIC licensed dealer and a proud member of
+                the Used Car Dealers Association (UCDA) so you can buy your
+                next vehicle with confidence. At Gedi Route we proudly sell
+                used cars to customers from Brampton, Ontario including
+                Toronto, Mississauga, Etobicoke, Milton, Caledon, Oakville,
+                Bolton, Guelph, Kitchener, Burlington, Waterloo and
+                surrounding areas.
               </p>
             </div>
           </div>
         </div>
+
         <Reviews />
 
-       <div className="mx-auto max-w-[1280px] px-8 md:px-0 py-10 flex flex-col justify-center items-center">
-        <h1 className="text-2xl lg:text-5xl font-bold text-start mb-5">
-          Frequently Asked Questions About Used Car Financing in Brampton
-        </h1>
-         <FaqAccordion faqs={faqs} />
-       </div>
+        <div className="mx-auto flex max-w-[1280px] flex-col items-center justify-center px-8 py-10 md:px-0">
+          <h1 className="mb-5 text-start text-2xl font-bold lg:text-5xl">
+            Frequently Asked Questions About Used Car Financing in Brampton
+          </h1>
+
+          <FaqAccordion faqs={faqs} />
+        </div>
       </section>
 
       <Footer />
