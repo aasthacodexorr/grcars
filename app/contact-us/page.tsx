@@ -134,7 +134,7 @@ export default function ContactUs() {
                                     href="tel:+19052478040"
                                     className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
                                 >
-                                    +1 (905) 247-8040
+                                    Call: 1-(905)-247-8040
                                 </a>
                             </div>
 
@@ -213,7 +213,7 @@ export default function ContactUs() {
                                     <p className="text-xl text-gray-800 my-6">
                                         Phone:{' '}
                                         <a
-                                            href={`tel:${loc.phone}`}
+                                            href={`tel:+${loc.phone}`}
                                             className="font-bold hover:underline"
                                         >
                                             {loc.phone}

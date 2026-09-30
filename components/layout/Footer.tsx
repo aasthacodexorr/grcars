@@ -107,7 +107,7 @@ const Footer = () => {
           title: "CALL US",
           links: [
             {
-              label: "Sales: (905) 247-8040",
+              label: "Sales: 1-(905)-247-8040",
               href: "tel:+19052478040",
             },
           ],
@@ -118,13 +118,13 @@ const Footer = () => {
 
   return (
     <footer className="w-full font-sans">
-      <div className="max-w-[2050px] mx-auto bg-[#101827] text-white px-8 pt-8 pb-6 sm:px-12 lg:px-28 ">
+      <div className="max-w-[2050px] mx-auto bg-[#101827] text-white px-8 pt-8 pb-6 sm:px-12 lg:px-20 ">
 
         {/* Main Grid: Logo + Nav Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-1">
 
           {/* Logo Column */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-1 " >
             <Link href="/" className="inline-block">
               <div className="rounded-full -mt-4 flex items-center justify-center -ml-4">
                 <img src={logo?.src} alt="Logo" width={"240"} />
