@@ -316,15 +316,17 @@ const Header = () => {
                 About Us
               </h3>
             </Link>
-            <Link
-              href="/blogs"
+            <a
+              href="https://blog.grcars.ca/"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex flex-col gap-2"
             >
               <h3 className="text-[18px] font-bold text-gray-900">
                 Our Blogs
               </h3>
-            </Link>
+            </a>
           </div>
         </div>
       </header>

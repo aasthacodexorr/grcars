@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { GetInTouch } from '@/components/common';
 import { Footer, Header } from '@/components/layout';
 import { useAppConfig } from '@/app/providers';
+import { BLOG_POSTS_LIST, getBlogBaseUrl, getBlogUrl } from '@/lib/blogConfig';
 
 interface SitemapUrl {
   loc: string;
@@ -78,7 +78,13 @@ export default function SitemapPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [blogBaseUrl, setBlogBaseUrl] = useState('https://blog.grcars.ca');
+
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setBlogBaseUrl(getBlogBaseUrl(window.location.hostname));
+    }
+
     const fetchSitemap = async () => {
       try {
         const response = await fetch('/api/sitemap', {
@@ -133,7 +139,7 @@ export default function SitemapPage() {
       <Header />
 
       <main className="min-h-screen bg-gray-50">
-        <div className="max-w-[1300px] mx-auto px-4 lg:px-0 py-10 md:py-14 lg:mt-18 mt-40">
+        <div className="max-w-[1240px] mx-auto px-4 lg:px-0 py-10 md:py-14 lg:mt-18 mt-40">
 
           {/* Main H1 Page Heading */}
           <div className="mb-4">
@@ -144,7 +150,7 @@ export default function SitemapPage() {
 
           <div className="space-y-12">
 
-            {/* Top Inventory Links Section */}
+            {/* Top Navigation Links Section */}
             <section>
               <div className="flex flex-col space-y-3 text-gray-900">
 
@@ -169,12 +175,14 @@ export default function SitemapPage() {
                   <span className="text-[16px] font-semibold uppercase">Apply for Financing</span>
                 </Link>
 
-                <Link
+                <a
                   href="https://www.grwheels.ca/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-fit transition-colors hover:text-gray-400"
                 >
                   <span className="text-[16px] font-semibold uppercase">Tire & Rims</span>
-                </Link>
+                </a>
 
                 <Link
                   href="/payment-calculator"
@@ -190,16 +198,17 @@ export default function SitemapPage() {
                   <span className="text-[16px] font-semibold uppercase">About Us</span>
                 </Link>
 
-                <Link
-                  href="/blogs"
+                <a
+                  href={blogBaseUrl}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="w-fit transition-colors hover:text-gray-400"
                 >
                   <span className="text-[16px] font-semibold uppercase">Blog</span>
-                </Link>
+                </a>
 
                 <Link
-                  href="/contact"
+                  href="/contact-us"
                   className="w-fit transition-colors hover:text-gray-400"
                 >
                   <span className="text-[16px] font-semibold uppercase">Contact</span>
