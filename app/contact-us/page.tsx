@@ -47,7 +47,7 @@ export default function ContactUs() {
             id: 'Brampton',
             name: 'Brampton',
             address: '316 Orenda Rd\nBrampton ON,\nL6T 1G1',
-            phone: '1-855-895-9800',
+            phone: '1-(855)-895-9800',
             mapSrc:
                 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.4300984651895!2d-79.70557192332906!3d43.70161014929783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b3e7bd56f8457%3A0xcf19d3086ece63bf!2s316%20Orenda%20Rd%2C%20Brampton%2C%20ON%20L6T%201G1%2C%20Canada!5e0!3m2!1sen!2sin!4v1713623875572!5m2!1sen!2sin',
         },
