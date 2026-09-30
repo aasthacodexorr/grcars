@@ -1,19 +1,36 @@
-"use client"
-import { GetInTouch } from '@/components/common';
-import { Footer, Header } from '@/components/layout';
-import supportImg from "@/assets/cars/supportContact.jpg"
-import { useAppConfig } from '../providers';
-import { getConstants } from '@/constants';
-import { useEffect, useState } from 'react';
-import { useIframeUrl } from '@/utils/urlHelpers';
+"use client";
+
+import { GetInTouch } from "@/components/common";
+import { Footer, Header } from "@/components/layout";
+import supportImg from "@/assets/cars/supportContact.jpg";
+import { useAppConfig } from "../providers";
+import { getConstants } from "@/constants";
+import { useEffect, useState } from "react";
+import { useIframeUrl } from "@/utils/urlHelpers";
 
 const MIN_HEIGHT = 700;
+const MOBILE_MIN_HEIGHT = 1000;
 
 export default function ContactUs() {
     const appConfig = useAppConfig();
     const SITE_CONFIG = getConstants(appConfig).SITE_CONFIG;
     const iframeSrc = useIframeUrl(SITE_CONFIG?.urls.contactUsBaseUrl);
+
     const [iframeHeight, setIframeHeight] = useState(MIN_HEIGHT);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
@@ -31,7 +48,16 @@ export default function ContactUs() {
                 typeof data.value === "number"
             ) {
                 console.log("[Contact iframe] height event:", data.value);
-                setIframeHeight(Math.ceil(data.value));
+
+                const receivedHeight = Math.ceil(data.value);
+
+                if (window.innerWidth < 768) {
+                    setIframeHeight(
+                        Math.max(receivedHeight, MOBILE_MIN_HEIGHT)
+                    );
+                } else {
+                    setIframeHeight(receivedHeight);
+                }
             }
         };
 
@@ -44,31 +70,39 @@ export default function ContactUs() {
 
     const locations = [
         {
-            id: 'Brampton',
-            name: 'Brampton',
-            address: '316 Orenda Rd\nBrampton ON,\nL6T 1G1',
-            phone: '1-(855)-895-9800',
+            id: "Brampton",
+            name: "Brampton",
+            address: "316 Orenda Rd\nBrampton ON,\nL6T 1G1",
+            phone: "1-(855)-895-9800",
             mapSrc:
-                'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.4300984651895!2d-79.70557192332906!3d43.70161014929783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b3e7bd56f8457%3A0xcf19d3086ece63bf!2s316%20Orenda%20Rd%2C%20Brampton%2C%20ON%20L6T%201G1%2C%20Canada!5e0!3m2!1sen!2sin!4v1713623875572!5m2!1sen!2sin',
+                "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884.4300984651895!2d-79.70557192332906!3d43.70161014929783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b3e7bd56f8457%3A0xcf19d3086ece63bf!2s316%20Orenda%20Rd%2C%20Brampton%2C%20ON%20L6T%201G1%2C%20Canada!5e0!3m2!1sen!2sin!4v1713623875572!5m2!1sen!2sin",
         },
     ];
 
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     // Smooth scroll to element by ID
-    const scrollToLocation = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    const scrollToLocation = (
+        e: React.MouseEvent<HTMLAnchorElement>,
+        id: string
+    ) => {
         e.preventDefault();
         const element = document.getElementById(id);
+
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
         }
     };
 
     return (
         <>
             <Header />
+
             <div className="min-h-screen bg-white text-gray-800 font-sans lg:mt-32 mt-40">
                 {/* Locations Header Nav */}
                 {/* <div id="top-back" className="py-8 text-center border-b border-gray-100">
@@ -76,6 +110,7 @@ export default function ContactUs() {
                         <span className="text-red-600">📍</span>
                         <span>5 Locations To Serve You Better</span>
                     </div>
+
                     <div className="flex flex-wrap justify-center gap-3 max-w-6xl mx-auto px-4">
                         {locations.map((loc) => (
                             <a
@@ -94,15 +129,17 @@ export default function ContactUs() {
                 <section className="max-w-[1280px] mx-auto px-8 lg:px-2 py-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
                         <div>
-                            <span className="text-base lg:text-xl font-semibold uppercase text-gray-900 mb-2 ml-1   ">
+                            <span className="text-base lg:text-xl font-semibold uppercase text-gray-900 mb-2 ml-1">
                                 CONTACT US
                             </span>
+
                             <h1 className="text-4xl font-semibold text-gray-900 leading-tight">
                                 Got a question? We’re
                                 <br />
                                 here to help.
                             </h1>
                         </div>
+
                         <div>
                             <img
                                 src={supportImg?.src}
@@ -118,18 +155,33 @@ export default function ContactUs() {
                         <div className="space-y-10">
                             {/* Call Section */}
                             <div className="space-y-3">
-                                <h3 className="text-xl font-bold text-gray-900">Call or text us</h3>
+                                <h3 className="text-xl font-bold text-gray-900">
+                                    Call or text us
+                                </h3>
+
                                 <ul className="text-lg text-gray-600 space-y-1 py-1 mb-8">
                                     <li>
-                                        <strong className="text-gray-800">Monday – Friday:</strong> 10am – 8pm
+                                        <strong className="text-gray-800">
+                                            Monday – Friday:
+                                        </strong>{" "}
+                                        10am – 8pm
                                     </li>
+
                                     <li>
-                                        <strong className="text-gray-800">Saturday:</strong> 10am – 7pm
+                                        <strong className="text-gray-800">
+                                            Saturday:
+                                        </strong>{" "}
+                                        10am – 7pm
                                     </li>
+
                                     <li>
-                                        <strong className="text-gray-800">Sunday:</strong> 11am – 6pm
+                                        <strong className="text-gray-800">
+                                            Sunday:
+                                        </strong>{" "}
+                                        11am – 6pm
                                     </li>
                                 </ul>
+
                                 <a
                                     href="tel:+19052478040"
                                     className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
@@ -140,21 +192,37 @@ export default function ContactUs() {
 
                             {/* Chat Section */}
                             {/* <div className="space-y-3 pt-6 border-t border-gray-100">
-                                <h3 className="text-xl font-bold text-gray-900">Chat with us</h3>
+                                <h3 className="text-xl font-bold text-gray-900">
+                                    Chat with us
+                                </h3>
+
                                 <p className="text-xl text-gray-600 leading-relaxed">
                                     We’re here for you in real time. Chat with our Customer Support team, or send in your question overnight and we’ll get back to you the next day.
                                 </p>
+
                                 <ul className="text-lg text-gray-600 space-y-1 py-1">
                                     <li>
-                                        <strong className="text-gray-800">Monday – Friday:</strong> 10am – 8pm
+                                        <strong className="text-gray-800">
+                                            Monday – Friday:
+                                        </strong>{" "}
+                                        10am – 8pm
                                     </li>
+
                                     <li>
-                                        <strong className="text-gray-800">Saturday:</strong> 10am – 7pm
+                                        <strong className="text-gray-800">
+                                            Saturday:
+                                        </strong>{" "}
+                                        10am – 7pm
                                     </li>
+
                                     <li>
-                                        <strong className="text-gray-800">Sunday:</strong> 11am – 6pm
+                                        <strong className="text-gray-800">
+                                            Sunday:
+                                        </strong>{" "}
+                                        11am – 6pm
                                     </li>
                                 </ul>
+
                                 <a
                                     href="#"
                                     className="inline-block bg-black text-white text-lg font-semibold px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
@@ -166,10 +234,15 @@ export default function ContactUs() {
 
                         {/* Right Column: Contact Form Iframe Container */}
                         <div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">Submit a question</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">
+                                Submit a question
+                            </h3>
+
                             <p className="text-xl text-black mb-6">
-                                Submit a question through our contact form below and we’ll get back to you as soon as possible.
+                                Submit a question through our contact form below
+                                and we’ll get back to you as soon as possible.
                             </p>
+
                             <div
                                 className="w-full bg-white rounded-lg border border-gray-200 shadow-sm"
                                 style={{
@@ -202,16 +275,20 @@ export default function ContactUs() {
                         <div
                             key={loc.id}
                             id={loc.id}
-                            className="scroll-mt-36" /* Offsets sticky headers during scroll */
+                            className="scroll-mt-36"
                         >
                             <div className="max-w-[1280px] pb-12 mx-auto px-8 lg:px-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div className="space-y-4">
-                                    <h3 className="text-2xl font-extrabold text-gray-900">{loc.name}</h3>
+                                    <h3 className="text-2xl font-extrabold text-gray-900">
+                                        {loc.name}
+                                    </h3>
+
                                     <p className="text-lg text-gray-600 whitespace-pre-line leading-relaxed">
                                         {loc.address}
                                     </p>
+
                                     <p className="text-xl text-gray-800 my-6">
-                                        Phone:{' '}
+                                        Phone:{" "}
                                         <a
                                             href={`tel:+${loc.phone}`}
                                             className="font-bold hover:underline"
@@ -219,6 +296,7 @@ export default function ContactUs() {
                                             {loc.phone}
                                         </a>
                                     </p>
+
                                     <button
                                         onClick={scrollToTop}
                                         className="hidden lg:inline-block bg-black text-white cursor-pointer text-lg font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors mt-2"
@@ -226,6 +304,7 @@ export default function ContactUs() {
                                         Back to top
                                     </button>
                                 </div>
+
                                 <div className="w-full h-[350px] rounded-lg overflow-hidden border border-gray-200 shadow-sm">
                                     <iframe
                                         src={loc.mapSrc}
@@ -241,6 +320,7 @@ export default function ContactUs() {
                     ))}
                 </section>
             </div>
+
             <Footer />
         </>
     );
