@@ -9,8 +9,6 @@ const nextConfig: NextConfig = {
 
   devIndicators: false,
 
-
-
   images: {
     remotePatterns: [
       {
@@ -44,6 +42,32 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+  },
+
+  async redirects() {
+    return [
+      // GRCars blog redirects
+      {
+        source: '/blogs',
+        destination: 'https://blog.grcars.ca/',
+        permanent: true,
+      },
+      {
+        source: '/blogs/:slug*',
+        destination: 'https://blog.grcars.ca/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/blog',
+        destination: 'https://blog.grcars.ca/',
+        permanent: true,
+      },
+      {
+        source: '/blog/:slug*',
+        destination: 'https://blog.grcars.ca/:slug*',
+        permanent: true,
+      },
+    ];
   },
 
   async rewrites() {

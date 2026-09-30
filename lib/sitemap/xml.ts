@@ -1,4 +1,5 @@
 import { SITEMAP_INDEX, SITE_PAGES } from './config';
+import { getBlogUrl } from '@/lib/blogConfig';
 
 export function xmlResponse(xml: string) {
   return new Response(xml, {
@@ -47,8 +48,8 @@ ${urls}
 }
 
 export function buildPostsXml(baseUrl: string, posts: string[]) {
-  const urls = posts.map((path) => {
-    const loc = `${baseUrl}${path}`;
+  const urls = posts.map((slug) => {
+    const loc = getBlogUrl(slug, baseUrl);
     return `  <url>
     <loc>${loc}</loc>
   </url>`;

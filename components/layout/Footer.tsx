@@ -61,7 +61,7 @@ const Footer = () => {
             { label: "TIRE & RIMS", href: "https://www.grwheels.ca/" },
             { label: "PAYMENT CALCULATOR", href: "/payment-calculator" },
             { label: "ABOUT US", href: "/about-us" },
-            { label: "BLOG", href: "/blogs" },
+            { label: "BLOG", href: "https://blog.grcars.ca/" },
             { label: "CONTACT", href: "/contact-us" },
           ],
         },
@@ -146,17 +146,22 @@ const Footer = () => {
                     )}
                   </div>
                   <ul className="space-y-3 text-[15px] font-sans">
-                    {sec.links.map((link, linkIdx) => (
-                      <li key={linkIdx}>
-                        <a
-                          href={link.href}
-                          onClick={(e) => ("forceReload" in link && link.forceReload) && handleInventoryClick(e, link.href)}
-                          className="hover:text-white transition-colors flex items-center"
-                        >
-                          {link.label}
-                        </a>
-                      </li>
-                    ))}
+                    {sec.links.map((link, linkIdx) => {
+                      const isExternal = link.href.startsWith("http");
+                      return (
+                        <li key={linkIdx}>
+                          <a
+                            href={link.href}
+                            target={isExternal ? "_blank" : undefined}
+                            rel={isExternal ? "noopener noreferrer" : undefined}
+                            onClick={(e) => ("forceReload" in link && link.forceReload) && handleInventoryClick(e, link.href)}
+                            className="hover:text-white transition-colors flex items-center"
+                          >
+                            {link.label}
+                          </a>
+                        </li>
+                      );
+                    })}
                   </ul>
 
                   {/* Get Direction Button */}
