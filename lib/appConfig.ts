@@ -5,8 +5,8 @@ export const defaultAppConfig = defineAppConfig({
     dealership_name: "Gedi Route",
     dealership_logo:
       "",
-    full_address_1: "1 Yonge St #1801",
-    city_1: "Toronto",
+    full_address_1: "316 Orenda Rd",
+    city_1: "Brampton",
     province_1: "Ontario",
     postal_code_1: "M5E 1W7",
     country_1: "CA",
