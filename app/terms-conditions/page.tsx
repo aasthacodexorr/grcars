@@ -84,6 +84,48 @@ export default async function TermsOfService() {
               </ul>
             </section>
 
+            <section className="mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">SMS Terms & Conditions</h3>
+              <ul className="list-disc pl-5 space-y-2 text-[15px] leading-relaxed text-gray-600">
+                <li>Messaging frequency may vary.</li>
+                <li>Message and data rates may apply.</li>
+                <li>To opt out at any time, text STOP.</li>
+                <li>
+                  For assistance, text HELP or visit our website at{" "}
+                  <a
+                    href="https://www.grcars.ca"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    www.grcars.ca
+                  </a>
+                  .
+                </li>
+                <li>
+                  Visit{" "}
+                  <a
+                    href="https://www.grcars.ca/privacy-policy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    https://www.grcars.ca/privacy-policy/
+                  </a>{" "}
+                  for privacy policy and{" "}
+                  <a
+                    href="https://www.grcars.ca/contact-us/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-800"
+                  >
+                    https://www.grcars.ca/contact-us/
+                  </a>{" "}
+                  for Terms of Service.
+                </li>
+              </ul>
+            </section>
+
             {/* Limitation of Liability */}
             <section className="mb-8">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Limitation of Liability</h3>
