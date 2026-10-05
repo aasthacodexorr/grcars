@@ -108,6 +108,9 @@ export default async function PrivacyPolicy() {
                                 <li>
                                     <span className="font-bold text-gray-900">Third-Party Service Providers:</span> We may share your information with third-party providers who assist in delivering products or services, such as shipping, payment processing, or website maintenance. These parties are bound to handle your information in compliance with our privacy standards and applicable law.
                                 </li>
+                                 <li>
+                                    <span className="font-bold text-gray-900">SMS consent:</span> SMS consent is not shared with third parties.
+                                </li>
                                 <li>
                                     <span className="font-bold text-gray-900">Legal Obligations:</span> We may disclose your information if required by law or if we believe in good faith that such action is necessary to comply with legal requirements, protect our rights, or respond to judicial processes.
                                 </li>
