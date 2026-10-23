@@ -28,7 +28,7 @@ const GrCarsLogo = () => {
                 <img src={logo?.src} alt="Logo" width={"240"} />
               </div>
           </div>: 
-        <p className="text-2xl font-bold uppercase"> Gedi Route </p>
+        <p className="text-2xl font-bold uppercase"> GR </p>
       }
     </>
   );

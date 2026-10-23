@@ -44,7 +44,7 @@ const PreQualify = () => {
             Know your buying power
           </h2>
           <p className="text-black text-base leading-relaxed">
-            At Gedi Route Cars, we go above and beyond for our customers — and that’s why we’re recognized as one of the best used car dealerships in Brampton.
+            At GR Cars, we go above and beyond for our customers — and that’s why we’re recognized as one of the best used car dealerships in Brampton.
           </p>
 
           <div className="relative w-full max-w-[440px] pt-4">

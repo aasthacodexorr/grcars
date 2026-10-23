@@ -11,9 +11,9 @@ interface FaqItem {
 
 const faqs = [
   {
-    question: "Why should I choose Gedi Route Cars to buy used cars in Toronto?",
+    question: "Why should I choose GR Cars to buy used cars in Toronto?",
     answer:
-      "At Gedi Route Cars, we pride ourselves on offering high-quality pre-owned vehicles that are fully inspected and competitively priced while delivering exceptional customer service. Our transparent buying process, flexible financing options, and quick approvals make purchasing your next car simple and stress-free.",
+      "At GR Cars, we pride ourselves on offering high-quality pre-owned vehicles that are fully inspected and competitively priced while delivering exceptional customer service. Our transparent buying process, flexible financing options, and quick approvals make purchasing your next car simple and stress-free.",
   },
   {
     question: "What types of vehicles do you sell?",
@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "Are your vehicles inspected and certified?",
     answer:
-      "Yes. Every vehicle at Gedi Route Cars goes through a comprehensive 210-point inspection performed by certified technicians. This ensures that each vehicle meets our strict standards for safety and performance before reaching our lot.",
+      "Yes. Every vehicle at GR Cars goes through a comprehensive 210-point inspection performed by certified technicians. This ensures that each vehicle meets our strict standards for safety and performance before reaching our lot.",
   },
   {
     question: "What is the down payment required?",

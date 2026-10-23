@@ -14,7 +14,7 @@ const reviews: Review[] = [
   {
     name: "Dimple Sharma",
     date: "08/11/2023",
-    text: "Had a very good experience with gedi routes. I got approval within 15 minutes. Thank you"
+    text: "Had a very good experience with GRs. I got approval within 15 minutes. Thank you"
   },
   {
     name: "Navdeep Singh",
@@ -29,7 +29,7 @@ const reviews: Review[] = [
   {
     name: "raman preet",
     date: "08/23/2025",
-    text: "im here today for delivery of my first car,had great experience with Mandeep bhai,very smooth and transparent process here at Gedi route cars"
+    text: "im here today for delivery of my first car,had great experience with Mandeep bhai,very smooth and transparent process here at GR cars"
   },
   {
     name: "Harshdeep singh Harraich",
@@ -39,12 +39,12 @@ const reviews: Review[] = [
   {
     name: "TARUNBIR SINGH",
     date: "08/22/2025",
-    text: "amazing rims collection at gedi route wheels. nice experience"
+    text: "amazing rims collection at GR wheels. nice experience"
   },
   {
     name: "tanishq choudhary",
     date: "08/22/2025",
-    text: "Super happy with gedi route cars\nHighly recommend"
+    text: "Super happy with GR cars\nHighly recommend"
   },
   {
     name: "Gurpargat Singh",
@@ -59,12 +59,12 @@ const reviews: Review[] = [
   {
     name: "Nanak Sidhu",
     date: "08/22/2025",
-    text: "Very good experience with gedi route wheels\nPlease visit gedi route wheels for amazing deals ⛳️"
+    text: "Very good experience with GR wheels\nPlease visit GR wheels for amazing deals ⛳️"
   },
   {
     name: "kuldeep mangat",
     date: "08/22/2025",
-    text: "great experience with arsh and gedi route card"
+    text: "great experience with arsh and GR card"
   },
   {
     name: "JAGMEET SINGH DHILLON",

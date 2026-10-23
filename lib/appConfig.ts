@@ -2,7 +2,7 @@ export const defineAppConfig = (config: any) => config;
 
 export const defaultAppConfig = defineAppConfig({
   dealership: {
-    dealership_name: "Gedi Route",
+    dealership_name: "GR",
     dealership_logo:
       "",
     full_address_1: "316 Orenda Rd",
