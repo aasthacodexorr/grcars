@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Header, Footer } from "@/components/layout";
 
 // Assets
-import finImg from "@/assets/cars/finImg1.jpg";
+import finImg from "@/assets/cars/finImg1.png";
 
 // Config
 import { getConstants } from "@/constants";
