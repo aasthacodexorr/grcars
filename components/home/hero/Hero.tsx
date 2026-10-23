@@ -4,7 +4,7 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronRight, Wallet, Repeat } from "lucide-react";
 import HeroDesktop from "@/assets/cars/HomebgImg.png";
-import HeroMobile from "@/assets/cars/hero-mobile.jpg";
+import HeroMobile from "@/assets/cars/hero-mobile.png";
 import Link from "next/link";
 
 const src = (img: any) => (typeof img === "string" ? img : img?.src);
