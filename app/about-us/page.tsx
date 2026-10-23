@@ -26,11 +26,11 @@ const fadeIn: Variants = {
 const About = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
-  const dealershipName = SITE_CONFIG?.dealership?.name || "Gedi Route Cars";
+  const dealershipName = SITE_CONFIG?.dealership?.name || "GR Cars";
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans text-neutral-900 overflow-x-hidden">
-      <Header />
+      
 
       <main className="flex-1 w-full pt-36 md:pt-20">
 
@@ -54,7 +54,7 @@ const About = () => {
           {/* Banner Content */}
           <div className="relative z-10 w-full max-w-[1240px] mx-auto px-7 sm:px-8 md:px-0 text-white">
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-              About Gedi Route Cars
+              About GR Cars
             </h1>
             <p className="mt-3 text-base md:text-lg text-white max-w-2xl">
               A fast and convenient way to research and find a vehicle that is right for you.
@@ -198,7 +198,7 @@ const About = () => {
       </main>
 
       {/* Footer Wrapper */}
-      <Footer />
+      
     </div>
   );
 };

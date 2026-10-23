@@ -10,7 +10,6 @@ import VehicleCategoryGrid from '@/components/thank-you/VehicleCategoryGrid';
 export default function CarLoanLanding() {
   return (
     <>
-      <Header />
       <main className="mt-20 font-sans text-gray-800 bg-white">
         {/* 1. Confirmation Banner Section */}
         <section className="py-20 pb-8 text-gray-900 bg-background-light">
@@ -236,7 +235,6 @@ export default function CarLoanLanding() {
         </div>
       </main>
       
-      <Footer />
     </>
   );
 }

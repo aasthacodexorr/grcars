@@ -9,7 +9,7 @@
 import Image from "next/image";
 import { useAppConfig } from "@/app/providers";
 import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
-import logo from "@/assets/brand/logo_white.png"
+import logo from "@/assets/brand/Gr-logo.png"
 
 const GrCarsLogo = () => {
   const appConfig = useAppConfig();
@@ -28,7 +28,7 @@ const GrCarsLogo = () => {
                 <img src={logo?.src} alt="Logo" width={"240"} />
               </div>
           </div>: 
-        <p className="text-2xl font-bold uppercase"> Gedi Route </p>
+        <p className="text-2xl font-bold uppercase"> GR </p>
       }
     </>
   );

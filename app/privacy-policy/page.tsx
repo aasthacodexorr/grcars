@@ -19,8 +19,8 @@ export default async function PrivacyPolicy() {
     
     return (
         <>
-            <Header />
-            <div className="bg-white min-h-screen font-sans antialiased text-gray-800 selection:bg-gray-200 mt-20 mb-5">
+            {/*  */}
+            <div className="bg-white min-h-screen font-sans antialiased text-gray-800 selection:bg-gray-200 lg:mt-20 mb-5">
                 {/* Privacy Policy Main Content Wrapper */}
                 <main className="w-full mx-auto flex justify-center px-6 sm:px-12 py-12 lg:py-16">
                     <div className="max-w-6xl">
@@ -227,7 +227,7 @@ export default async function PrivacyPolicy() {
                     </div>
                 </main>
             </div>
-            <Footer />
+            
         </>
     );
 }

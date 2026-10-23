@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import { ChevronRight, ArrowDownCircle } from "lucide-react";
 import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
 import { buildUrlWithQueryParams, useIframeUrl } from "@/utils/urlHelpers";
+import { PriceDrop } from "../common";
 
 export const VehicleHeaderAndCTA = ({
   vehicle,
@@ -19,9 +20,18 @@ export const VehicleHeaderAndCTA = ({
   >(null);
   const [showSticky, setShowSticky] = useState(false);
   const [showCardWishlist, setShowCardWishlist] = useState(false);
-
   const tooltipRef = useRef<HTMLDivElement>(null);
   const inlineContainerRef = useRef<HTMLDivElement>(null);
+  const [activePriceTab, setActivePriceTab] = useState<"finance" | "cash">("finance");
+  const savingsAmount =
+    Number(vehicle?.price || 0) - Number(vehicle?.special_price || 0);
+
+
+  const toggleTooltip = (tooltip: "finance" | "cash") => {
+    setActiveTooltip((current) =>
+      current === tooltip ? null : tooltip
+    );
+  };
 
   // 1. Detect when inline CTAs are scrolled out of view for Sticky Mobile Bar
   useEffect(() => {
@@ -77,6 +87,7 @@ export const VehicleHeaderAndCTA = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -148,144 +159,103 @@ export const VehicleHeaderAndCTA = ({
 
         {/* Pricing & Tooltip Section */}
         {!isSold ? (
-          <div
-            ref={tooltipRef}
-            className="flex flex-col gap-2 mb-3 px-6 pb-5"
-          >
-            {Number(currentPrice) > 0 ? (
-              <>
-                {/* Finance Price */}
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-lg font-semibold text-[#0d2238]">
-                    Finance Price
-                  </span>
-
-                  <div className="relative inline-flex items-center gap-1">
-                    <span className="text-lg font-semibold text-[#0d2238]">
-                      ${Number(currentPrice).toLocaleString("en-US")}
-                    </span>
-
-                    <div className="relative group">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveTooltip((prev) =>
-                            prev === "finance" ? null : "finance"
-                          );
-                        }}
-                        aria-label="Finance price information"
-                        className="flex items-center justify-center p-0.5"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 text-gray-400 cursor-pointer"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-
-                      <div
-                        className={`absolute bottom-full right-0 mb-2 w-[250px] max-w-[calc(100vw-32px)] 
-      bg-black text-white text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl 
-      z-[9999] transition-opacity duration-150
-      ${activeTooltip === "finance"
-                            ? "opacity-100 visible"
-                            : "opacity-0 invisible"
-                          }
-      group-hover:opacity-100 group-hover:visible`}
-                      >
-                        Finance price does not include taxes and licensing fees.
-
-                        <div className="absolute right-2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cash Price */}
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-lg font-semibold text-[#0d2238]">
-                    Cash Price
-                  </span>
-
-                  <div className="relative inline-flex items-center gap-1">
-                    <span className="text-lg font-semibold text-[#0d2238]">
-                      ${(Number(currentPrice) + 2000).toLocaleString("en-US")}
-                    </span>
-
-                    <div className="relative group">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveTooltip((prev) =>
-                            prev === "cash" ? null : "cash"
-                          );
-                        }}
-                        aria-label="Cash price information"
-                        className="flex items-center justify-center p-0.5"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 text-gray-400 cursor-pointer"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-
-                      <div
-                        className={`absolute bottom-full right-0 mb-2 w-[250px] max-w-[calc(100vw-32px)] 
-      bg-black text-white text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl 
-      z-[9999] transition-opacity duration-150
-      ${activeTooltip === "cash"
-                            ? "opacity-100 visible"
-                            : "opacity-0 invisible"
-                          }
-      group-hover:opacity-100 group-hover:visible`}
-                      >
-                        Cash price does not include taxes and licensing fees.
-
-                        <div className="absolute right-2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              /* Call for Price */
-              <div className="flex items-center justify-center gap-2 py-1">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+          <div className="my-2">
+            <div
+              role="tablist"
+              aria-label="Vehicle pricing"
+              className="mb-3 flex border-gray-300 p-0.5"
+            >
+              {(["finance", "cash"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  id={`${tab}-price-tab`}
+                  type="button"
+                  role="tab"
+                  aria-selected={activePriceTab === tab}
+                  aria-controls="vehicle-price-panel"
+                  onClick={() => {
+                    setActivePriceTab(tab);
+                    setActiveTooltip(null);
+                  }}
+                  className={`flex-1 cursor-pointer px-3 py-1 text-[12px] font-semibold transition-colors ${activePriceTab === tab
+                    ? "text-brand border-b-3 border-brand-green"
+                    : "text-gray-800 hover:bg-gray-50"
+                    }`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
+                  {tab === "finance" ? "Finance" : "Cash"}
+                </button>
+              ))}
+            </div>
 
-                <span className="text-lg font-semibold text-[#0d2238]">
-                  Call for price
-                </span>
+            <div
+              id="vehicle-price-panel"
+              role="tabpanel"
+              aria-labelledby={`${activePriceTab}-price-tab`}
+              className="relative rounded-xl bg-[#f1f8f5] px-4 lg:px-5 py-4"
+            >
+              {!isSold && hasPriceDrop && (
+                <div className="mb-2 mt-1 w-fit rounded-full bg-brand px-2 py-1.5 text-[13px] font-medium leading-none text-white">
+                  Price drop
+                </div>
+              )}
+
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                    <div className="flex flex-wrap items-baseline gap-x-1 gap-y-1">
+                      <PriceDrop
+                        price={vehicle?.price}
+                        specialPrice={vehicle?.special_price}
+                        adjustment={activePriceTab === "cash" ? 2000 : 0}
+                        className="text-[28px] font-extrabold leading-none text-price-black"
+                        showArrow={false}
+                      />
+                    </div>
+
+                    {hasPriceDrop && savingsAmount > 0 && (
+                      <div className="w-fit shrink-0 rounded-full bg-brand/10 px-2 py-1.5 text-[12px] font-semibold leading-none text-price-green">
+                        Save ${savingsAmount.toLocaleString("en-CA")}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-1 text-xs font-medium text-gray-500 flex items-center gap-1">
+                    + HST &amp; licensing {activePriceTab === "finance" ? " | O.A.C" : ""} <p data-price-tooltip className="relative inline-flex items-center group">
+                      <button
+                        type="button"
+                        onClick={() => toggleTooltip(activePriceTab)}
+                        aria-label={`${activePriceTab === "finance" ? "Finance" : "Cash"} price information`}
+                        className="flex items-center justify-center mb-1"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-500 cursor-pointer"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+
+                      <span
+                        className={`absolute bottom-full left-1/2  -translate-x-1/2 mb-2 normal-case font-normal tracking-normal w-[240px] max-w-[calc(100vw-32px)] bg-black px-3 py-2 text-xs text-white shadow-lg z-[100] rounded-md transition-opacity duration-200 ${activeTooltip === activePriceTab
+                          ? "opacity-100 visible"
+                          : "opacity-0 invisible"
+                          } group-hover:opacity-100 group-hover:visible`}
+                      >
+                        Listed price does not include taxes and licensing fees.
+                        <span className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] h-3 w-3 rotate-45 bg-black" />
+                      </span>
+                    </p>
+                  </div>
+                </div>
               </div>
-            )}
+            </div>
+
           </div>
         ) : null}
 

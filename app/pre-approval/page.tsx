@@ -23,7 +23,7 @@ const FALLBACK_HEIGHT = 900;
 
 const faqs = [
     {
-        q: "How can I apply for used car financing in Brampton with Gedi Route Cars?",
+        q: "How can I apply for used car financing in Brampton with GR Cars?",
         a: "You can apply directly through our online finance form or visit our indoor showroom in Brampton. Once you share a few basic details, our team reviews your information and connects you with the right lender. We handle all communication with the banks and lenders on your behalf, so getting approved is simple and quick.",
     },
     {
@@ -51,7 +51,7 @@ const faqs = [
         a: "Yes. We accept trade-ins to help you lower the cost of your next car. Our appraisal team provides a fair market value for your vehicle, and you can apply the amount toward your new purchase or financing plan.",
     },
     {
-        q: "What types of vehicles can I finance through Gedi Route Cars?",
+        q: "What types of vehicles can I finance through GR Cars?",
         a: "You can finance all types of vehicles in our inventory, including sedans, SUVs, trucks, vans, hatchbacks, and coupes. With over 300 vehicles to choose from, we’ll help you find the one that suits your lifestyle and budget.",
     },
     {
@@ -59,7 +59,7 @@ const faqs = [
         a: "Yes. We serve customers across Ontario, including Mississauga, Toronto, Etobicoke, Milton, Caledon, Oakville, Bolton, Guelph, Kitchener, Burlington, and Waterloo. You can start your application online, and our finance team will assist you remotely.",
     },
     {
-        q: "Why should I choose Gedi Route Cars for used car financing in Brampton?",
+        q: "Why should I choose GR Cars for used car financing in Brampton?",
         a: "We are an OMVIC-licensed and UCDA-member dealership, committed to honest service and customer satisfaction. With access to top lenders, personalized financing options, and a large indoor showroom, we make it easy to buy your next vehicle with confidence.",
     },
 ];
@@ -103,7 +103,7 @@ const PreApproval = () => {
 
     return (
         <div className="min-h-screen bg-background">
-            <Header />
+            
 
             <section className="py-6 md:py-10 pb-16 mt-44 lg:mt-24">
                 <div className="mx-auto max-w-[1100px] px-4 md:px-6">
@@ -130,7 +130,7 @@ const PreApproval = () => {
                     <div className="relative w-full min-h-[400px] md:min-h-[70vh]">
                         <Image
                             src={finImg}
-                            alt="Gedi Route Dealership"
+                            alt="GR Dealership"
                             fill
                             priority
                             className="object-cover"
@@ -142,14 +142,14 @@ const PreApproval = () => {
                         {/* Content Container */}
                         <div className="absolute inset-0 z-10 mx-auto max-w-[1280px] px-8 md:px-0 flex flex-col justify-center items-start text-left">
                             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight mb-4">
-                                Welcome to Gedi Route
+                                Welcome to GR
                             </h2>
 
                             <p className="text-base text-white font-bold max-w-2xl leading-relaxed">
-                                Gedi Route is an OMVIC licensed dealer and a
+                                GR is an OMVIC licensed dealer and a
                                 proud member of the Used Car Dealers Association
                                 (UCDA) so you can buy your next vehicle with
-                                confidence. At Gedi Route we proudly sell used
+                                confidence. At GR we proudly sell used
                                 cars to customers from Brampton, Ontario
                                 including Toronto, Mississauga, Etobicoke,
                                 Milton, Caledon, Oakville, Bolton, Guelph,
@@ -172,7 +172,7 @@ const PreApproval = () => {
                 </div>
             </section>
 
-            <Footer />
+            
         </div>
     );
 };

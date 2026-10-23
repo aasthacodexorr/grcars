@@ -18,7 +18,7 @@ const mockReviews = [
     name: 'Adeeb Raheja',
     rating: 5.0,
     date: '2026-05-12',
-    comment: 'Bought my car from Rishabh Pabbi at Gedi Route Cars and had an amazing experience. Super helpful, knowledgeable, and easy to deal with. Highly recommend Rishabh at Gedi Route Cars. Very transparent throughout the process and got me approved quickly with a great deal.',
+    comment: 'Bought my car from Rishabh Pabbi at GR Cars and had an amazing experience. Super helpful, knowledgeable, and easy to deal with. Highly recommend Rishabh at GR Cars. Very transparent throughout the process and got me approved quickly with a great deal.',
     initial: 'A',
     bgColor: 'bg-sky-600',
   },
@@ -36,7 +36,7 @@ const mockReviews = [
     name: 'Adeeb Raheja',
     rating: 5.0,
     date: '2026-05-12',
-    comment: 'Bought my car from Rishabh Pabbi at Gedi Route Cars and had an amazing experience. Super helpful, knowledgeable, and easy to deal with. Highly recommend Rishabh at Gedi Route Cars. Very transparent throughout the process and got me approved quickly with a great deal.',
+    comment: 'Bought my car from Rishabh Pabbi at GR Cars and had an amazing experience. Super helpful, knowledgeable, and easy to deal with. Highly recommend Rishabh at GR Cars. Very transparent throughout the process and got me approved quickly with a great deal.',
     initial: 'A',
     bgColor: 'bg-sky-600',
   },
@@ -107,7 +107,7 @@ export default function GoogleReviewsWidget() {
             <div className="flex items-start justify-between p-6 pb-4 mt-6">
                 
               <div>
-                <h2 className="text-2xl text-gray-900">Gedi Route Cars Inc.</h2>
+                <h2 className="text-2xl text-gray-900">GR Cars Inc.</h2>
               </div>
               <div className="flex flex-col items-center gap-1">
                 

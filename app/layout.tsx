@@ -7,6 +7,8 @@ import { generateMetadata as generateMetadataHelper } from "@/lib/metadataHelper
 import { CSS_VARIABLES } from "@/lib/colors";
 import { headers } from "next/headers";
 import { Inter } from "next/font/google";
+import { Footer, Header } from "@/components/layout";
+import { MainContent } from "@/components/layout/MainContent";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -91,7 +93,11 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <Providers config={appConfig}>{children}</Providers>
+        <Providers config={appConfig}>
+          <Header />
+          <MainContent>{children}</MainContent>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

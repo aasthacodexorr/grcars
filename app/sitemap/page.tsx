@@ -136,8 +136,6 @@ export default function SitemapPage() {
 
   return (
     <>
-      <Header />
-
       <main className="min-h-screen bg-gray-50">
         <div className="max-w-[1240px] mx-auto px-4 lg:px-0 py-10 md:py-14 lg:mt-18 mt-40">
 
@@ -263,7 +261,7 @@ export default function SitemapPage() {
           </div>
         </div>
       </main>
-      <Footer />
+      
     </>
   );
 }

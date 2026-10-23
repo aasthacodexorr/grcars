@@ -25,7 +25,8 @@ import { VehicleHeaderAndCTA } from "@/components/inventory/VehicleInfo";
 import VehicleDetailsTabsNav from "@/components/inventory/VehicleDetailsTabsNav";
 import ViewAllFeaturesButton from "@/components/inventory/ViewAllFeaturesButton";
 import Link from "next/link";
-
+import { getEffectivePrice } from "@/utils/pricing";
+import RecentlyViewedTracker from "@/components/inventory/RecentlyViewedTracker";
 // Force dynamic rendering — vehicle data changes frequently
 export const dynamic = "force-dynamic";
 
@@ -62,7 +63,7 @@ export async function generateMetadata({
                 make: vehicle.make,
                 model: vehicle.model,
                 trim: vehicle.trim || "",
-                dynamic_price_placeholder: "$" + (vehicle.selling_price ? vehicle.selling_price.toLocaleString() : "0"),
+                dynamic_price_placeholder: "$" + ((getEffectivePrice(vehicle.price, vehicle.special_price) ?? 0).toLocaleString()),
             },
         });
     } catch (error) {
@@ -138,7 +139,7 @@ export default async function VehicleDetailsPage({
         } : undefined,
         "offers": {
             "@type": "Offer",
-            "price": vehicle.selling_price || vehicle.price || "0",
+            "price": getEffectivePrice(vehicle.price, vehicle.special_price) ?? "0",
             "priceCurrency": appConfig.schema_org?.currencies_accepted || "CAD",
             "availability": isSold ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
             "itemCondition": "https://schema.org/UsedCondition",
@@ -158,15 +159,17 @@ export default async function VehicleDetailsPage({
             },
         },
     };
-
     return (
         <main className="min-h-screen bg-background flex flex-col items-center">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(carSchema) }}
             />
+            <RecentlyViewedTracker inventoryId={id} />
+
+            {/* Header spanning 100% viewport, inside contents are usually centered natively */}
             <div className="w-full bg-hero-bg">
-                <Header />
+                {/*  */}
             </div>
 
             <section className="w-full bg-background mt-5">
@@ -197,13 +200,13 @@ export default async function VehicleDetailsPage({
                                         </span>
                                     </div>
 
-                                    <div id="vdp-top-wishlist-mobile" className="lg:hidden shrink-0 flex items-center justify-center">
-                                        <VDPWishlistButton vehicle={vehicle} />
-                                    </div>
+
+
+
                                 </nav>
 
                                 {/* Image gallery */}
-                                <ImageGallery images={images} title={titleText} isSold={isSold} />
+                                <ImageGallery images={images} title={titleText} isSold={isSold} id={id} vehicle={vehicle} />
 
                                 {/* vehicle header on mobile */}
                                 <div className={`flex justify-center w-full lg:hidden -mt-4`}>
@@ -352,7 +355,7 @@ export default async function VehicleDetailsPage({
             </section>
             <div className="w-full mb-18 md:mb-0 lg:mt-10">
                 <div className="max-w-[1440px] xl:max-w-[1600px] 2xl:max-w-full  mx-auto w-full">
-                    <Footer />
+
                 </div>
             </div>
         </main>

@@ -35,7 +35,6 @@ const HomePage = () => {
     <main className="min-h-screen bg-background overflow-hidden pt-[130px] lg:pt-0">
       {/* Hero section has a blue background */}
       <div className="bg-hero-bg ">
-        <Header />
         <Hero />
       </div>
 
@@ -47,7 +46,7 @@ const HomePage = () => {
       <PreQualify/>
       <Reviews/>
       <FaqSection/>
-      <Footer />
+      
       {/* <GoogleReviewsWidget/> */}
     </main>
   );

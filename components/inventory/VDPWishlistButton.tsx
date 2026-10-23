@@ -3,6 +3,7 @@
 import { useWishlist } from "@/context/WishlistContext";
 import { WishlistItem } from "@/context/WishlistContext";
 import { useState } from "react";
+import { getEffectivePrice } from "@/utils/pricing";
 
 interface VDPWishlistButtonProps {
   vehicle: Record<string, any>;
@@ -27,7 +28,7 @@ export default function VDPWishlistButton({ vehicle, showLabel = false }: VDPWis
       const wishlistItem: WishlistItem = {
         inventory_id: vehicle.id,
         title: vehicle.title,
-        price: vehicle.selling_price,
+        price: getEffectivePrice(vehicle.price, vehicle.special_price) ?? 0,
         odometer: vehicle.odometer || 0,
         image_url: imageUrl,
         year: vehicle.year,

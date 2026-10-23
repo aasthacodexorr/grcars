@@ -101,7 +101,7 @@ export default function ContactUs() {
 
     return (
         <>
-            <Header />
+            
 
             <div className="min-h-screen bg-white text-gray-800 font-sans lg:mt-32 mt-40">
                 {/* Locations Header Nav */}
@@ -321,7 +321,7 @@ export default function ContactUs() {
                 </section>
             </div>
 
-            <Footer />
+            
         </>
     );
 }

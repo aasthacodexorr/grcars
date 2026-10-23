@@ -61,7 +61,7 @@ export const BLOG_POSTS_LIST: BlogPostItem[] = [
   },
   {
     slug: "gedi-route-cars-2026-best-full-size-truck-ford-f-150",
-    title: "Gedi Route Cars: 2026 Best Full-Size Truck - Ford F-150",
+    title: "GR Cars: 2026 Best Full-Size Truck - Ford F-150",
     year: 2026,
   },
   {
@@ -265,7 +265,7 @@ export const BLOG_POSTS_LIST: BlogPostItem[] = [
   },
   {
     slug: "discovering-gedi-route-your-gateway-to-quality-cars-in-brampton",
-    title: "Discovering Gedi Route: Your Gateway to Quality Cars in Brampton",
+    title: "Discovering GR: Your Gateway to Quality Cars in Brampton",
     year: 2024,
   },
 ];

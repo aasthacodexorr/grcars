@@ -27,7 +27,7 @@ const SLIDES: CarouselSlide[] = [
   },
   {
     id: "shaq-promo",
-    title: "Save time with Gedi Route, just like Shaq did",
+    title: "Save time with GR, just like Shaq did",
     subtitle:
       "Get pre-qualified instantly to shop 100% online with personalized terms. No hit to your credit.",
     buttonText: "Get Your Terms",

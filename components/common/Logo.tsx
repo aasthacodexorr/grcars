@@ -30,7 +30,7 @@ const GrCarsLogo = () => {
             height={60}
             priority
             className="h-[48px] w-auto object-contain"
-          /> : <p className="text-2xl font-bold uppercase">Gedi route</p>
+          /> : <p className="text-2xl font-bold uppercase">GR</p>
 
       }
     </>

@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import zlogo from "@/assets/brand/zlogo.png";
 import { useAppConfig } from "@/app/providers";
 import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
-import logo from "@/assets/brand/logo_white.png";
+import logo from "@/assets/brand/Gr-logo.png";
 import facebook from "@/assets/social/fb.png";
 import instagram from "@/assets/social/insta-1.png";
 
@@ -220,7 +220,7 @@ const Footer = () => {
         {/* Copyright and Legal Terms */}
         <div className="pt-6 space-y-3 text-[15px] text-white">
           <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-sm text-white">
-            <p>Copyright © {new Date().getFullYear()} Gedi Route Cars Inc. All Rights Reserved.</p>
+            <p>Copyright © {new Date().getFullYear()} GR Cars Inc. All Rights Reserved.</p>
             <div className="flex items-center gap-1">
               <span>Powered by</span>
               <a href="https://www.zopdealer.com/" target="_blank" rel="noopener noreferrer">
