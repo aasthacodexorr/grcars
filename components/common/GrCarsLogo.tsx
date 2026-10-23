@@ -9,7 +9,7 @@
 import Image from "next/image";
 import { useAppConfig } from "@/app/providers";
 import { fallbackValue, defaultAppConfig } from "@/lib/appConfig";
-import logo from "@/assets/brand/logo_white.png"
+import logo from "@/assets/brand/Gr-logo.png"
 
 const GrCarsLogo = () => {
   const appConfig = useAppConfig();
