@@ -160,10 +160,11 @@ export const VehicleHeaderAndCTA = ({
         {/* Pricing & Tooltip Section */}
         {!isSold ? (
           <div className="my-2">
+
             <div
               role="tablist"
               aria-label="Vehicle pricing"
-              className="mb-3 flex border-gray-300 p-0.5"
+              className="mb-3 flex px-5 py-0"
             >
               {(["finance", "cash"] as const).map((tab) => (
                 <button
@@ -177,15 +178,16 @@ export const VehicleHeaderAndCTA = ({
                     setActivePriceTab(tab);
                     setActiveTooltip(null);
                   }}
-                  className={`flex-1 cursor-pointer px-3 py-1 text-[12px] font-semibold transition-colors ${activePriceTab === tab
-                    ? "text-brand border-b-3 border-brand-green"
-                    : "text-gray-800 hover:bg-gray-50"
+                  className={`flex-1 cursor-pointer border-b-[3px] px-3 py-1 text-[12px] font-semibold transition-colors ${activePriceTab === tab
+                      ? "border-brand-green text-brand"
+                      : "border-transparent text-gray-800 hover:bg-gray-50"
                     }`}
                 >
                   {tab === "finance" ? "Finance" : "Cash"}
                 </button>
               ))}
             </div>
+
 
             <div
               id="vehicle-price-panel"
