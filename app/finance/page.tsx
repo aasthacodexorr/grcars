@@ -5,7 +5,7 @@ import Image from "next/image";
 
 // Layout
 import { Header, Footer } from "@/components/layout";
-import finImg from "@/assets/cars/finImg1.jpg";
+import finImg from "@/assets/cars/finImg1.png";
 
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
