@@ -191,7 +191,7 @@ export const VehicleHeaderAndCTA = ({
               id="vehicle-price-panel"
               role="tabpanel"
               aria-labelledby={`${activePriceTab}-price-tab`}
-              className="relative bg-[#f1f8f5] px-4 lg:px-5 py-4"
+              className="relative bg-[#f1f8f5] rounded-xl px-4 lg:px-2 py-4 mx-6 mb-3"
             >
               {!isSold && hasPriceDrop && (
                 <div className="mb-2 mt-1 w-fit rounded-full bg-[#00a650] px-2 py-1.5 text-[13px] font-medium leading-none text-white">
