@@ -11,7 +11,7 @@ const VehicleForm = () => {
 
     return (
         <>
-            <Header />
+            
             <main className="lg:mt-24 mt-56 mb-10">
                 <section className="container mx-auto">
                     <div className="w-full overflow-hidden">
@@ -28,7 +28,7 @@ const VehicleForm = () => {
                 </section>
             </main>
 
-            <Footer />
+            
         </>
     );
 };

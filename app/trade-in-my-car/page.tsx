@@ -251,7 +251,7 @@ const TradeIn = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans">
-      <Header />
+      
 
       {/* 1. Hero Section */}
       <section className="relative bg-black text-white min-h-[500px] flex items-center lg:mt-20 px-10 lg:px-20 pt-24 pb-10 lg:pt-1 overflow-hidden mt-32">
@@ -470,7 +470,7 @@ const TradeIn = () => {
       </div>
     </section> */}
 
-      <Footer />
+      
     </div>
   );
 };

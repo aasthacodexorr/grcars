@@ -46,7 +46,7 @@ const FinanceContent = () => {
 
   return (
     <>
-      <Header />
+      
 
       <main className="bg-background my-18 mx-5 xl:mx-36 overflow-hidden lg:mt-32 mt-52">
         <section className="flex-1 w-full">
@@ -68,7 +68,7 @@ const FinanceContent = () => {
         </section>
       </main>
 
-      <Footer />
+      
     </>
   );
 };

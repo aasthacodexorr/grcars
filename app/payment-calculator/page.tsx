@@ -143,7 +143,6 @@ export default function PaymentCalculator() {
 
     return (
         <>
-            <Header />
             <div className='bg-gray-400/20 lg:px-28 mt-36 lg:mt-10'>
                 <div className="lg:mt-20 mx-auto px-7 max-w-[1440px] lg:px-0 py-16 lg:py-12 font-sans text-gray-700">
                     <h1 className="text-3xl md:text-5xl font-bold mb-8 text-black">Payment Calculator</h1>
@@ -564,7 +563,6 @@ export default function PaymentCalculator() {
                     </div>
                 </div>
             </section>
-            <Footer />
         </>
     );
 }

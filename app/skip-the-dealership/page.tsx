@@ -49,7 +49,6 @@ export default function SkipTheDealership() {
     const { SITE_CONFIG } = getConstants(appConfig);
     return (
         <>
-            <Header />
             <div className="w-full font-sans antialiased text-gray-900 selection:bg-yellow-200 lg:mt-20 overflow-hidden">
 
                 {/* 1. Banner Section */}
@@ -263,7 +262,6 @@ export default function SkipTheDealership() {
 
             </div>
             
-            <Footer />
         </>
     );
 }

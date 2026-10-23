@@ -7,7 +7,6 @@ import Image from "next/image";
 import { Header, Footer } from "@/components/layout";
 import finImg from "@/assets/cars/finImg1.jpg";
 
-// Config
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { Reviews } from "@/components/home";
@@ -114,7 +113,7 @@ const Finance = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      {/*  */}
 
       <section className="py-6 md:py-10 pb-16 mt-44 lg:mt-24">
         <div className="mx-auto max-w-[1100px] px-4 md:px-6">
@@ -190,7 +189,6 @@ const Finance = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };

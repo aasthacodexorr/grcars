@@ -46,7 +46,7 @@ const VehicleForm = () => {
 
     return (
         <>
-            <Header />
+            
 
             <main className="lg:mt-24 mt-44 mb-10">
                 <section className="container mx-auto">
@@ -66,7 +66,7 @@ const VehicleForm = () => {
                 </section>
             </main>
 
-            <Footer />
+            
         </>
     );
 };

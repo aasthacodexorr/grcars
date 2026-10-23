@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Header, Footer } from "@/components/layout";
 import { GetInTouch } from "@/components/common";
 import { getConstants } from "@/constants";
@@ -10,6 +11,7 @@ import { useIframeUrl } from "@/utils/urlHelpers";
 const TradeInVehicle = () => {
   const appConfig = useAppConfig();
   const { SITE_CONFIG } = getConstants(appConfig);
+
   const params = useParams();
   const vehicleId = params.vehicle as string | undefined;
   const iframeSrc = useIframeUrl(
@@ -19,9 +21,8 @@ const TradeInVehicle = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <Header />
+      {/*  */}
 
-      {/* Vehicle Trade-In Content Section */}
       <section className="w-full relative px-4 lg:px-24 mt-10 lg:mt-28">
         <div className="mx-auto max-w-[900px] px-2 md:px-9 md:py-5 md:pb-14 pb-5 ">
           {/* Iframe Container */}
@@ -36,7 +37,7 @@ const TradeInVehicle = () => {
       </section>
 
       
-      <Footer />
+      
     </div>
   );
 };

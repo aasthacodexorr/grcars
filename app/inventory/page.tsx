@@ -505,7 +505,7 @@ const PageFooter = () => {
   return (
     <div className="transition-opacity duration-300 ease-in">
 
-      <Footer />
+      
     </div>
   );
 };
@@ -1929,7 +1929,7 @@ const InventoryContent = () => {
       <MainLayoutWrapper>
         {/* ── Header ── */}
         <div className="w-full bg-hero-bg">
-          <Header />
+          
           <div className="hidden lg:block" style={{ height: headerHeight }} aria-hidden />
         </div>
 

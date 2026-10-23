@@ -30,7 +30,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans text-neutral-900 overflow-x-hidden">
-      <Header />
+      
 
       <main className="flex-1 w-full pt-36 md:pt-20">
 
@@ -198,7 +198,7 @@ const About = () => {
       </main>
 
       {/* Footer Wrapper */}
-      <Footer />
+      
     </div>
   );
 };

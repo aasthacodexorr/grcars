@@ -22,15 +22,18 @@ import lgHash from "lightgallery/plugins/hash";
 import lgFullscreen from "lightgallery/plugins/fullscreen";
 import lgAutoplay from "lightgallery/plugins/autoplay";
 import lgShare from "lightgallery/plugins/share";
+import VDPHeaderActions from "@/app/inventory/_components/VDPHeaderActions";
 
 type ImageGalleryProps = {
   images: string[];
   title: string;
   isSold?: boolean;
   centered?: boolean;
+  id: string;
+  vehicle: any;
 };
 
-export const ImageGallery = ({ images, title, isSold = false, centered }: ImageGalleryProps) => {
+export const ImageGallery = ({ images, title, isSold = false, centered, id, vehicle }: ImageGalleryProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
@@ -132,6 +135,8 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
           </div>
         )}
 
+        <VDPHeaderActions inventoryId={id} vehicle={vehicle} />
+
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
@@ -152,7 +157,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered }: ImageG
                 alt={`${title} - Image ${activeIndex + 1}`}
                 fill
                 priority
-                className={` ${isSold ? "grayscale opacity-90 object-contain" : "object-cover"}`}
+                className={isSold ? "grayscale opacity-90 object-contain" : "object-cover"}
               />
             </motion.div>
           </AnimatePresence>

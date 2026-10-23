@@ -103,7 +103,7 @@ const PreApproval = () => {
 
     return (
         <div className="min-h-screen bg-background">
-            <Header />
+            
 
             <section className="py-6 md:py-10 pb-16 mt-44 lg:mt-24">
                 <div className="mx-auto max-w-[1100px] px-4 md:px-6">
@@ -172,7 +172,7 @@ const PreApproval = () => {
                 </div>
             </section>
 
-            <Footer />
+            
         </div>
     );
 };

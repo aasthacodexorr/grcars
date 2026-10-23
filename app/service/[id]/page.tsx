@@ -67,7 +67,6 @@ export default async function ServicePage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen font-sans bg-white antialiased">
-      <Header />
 
       {/* SECTION 1: Hero with Title + Coupon Side by Side */}
       <section className="w-full py-12 md:py-20 flex items-center lg:mt-28 bg-gradient-to-b from-white to-prequalify-blue">
@@ -482,7 +481,6 @@ export default async function ServicePage({ params }: PageProps) {
 
       
 
-      <Footer />
     </div>
   );
 }

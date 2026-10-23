@@ -9,3 +9,5 @@ export { default as GrCarsLogo } from "./GrCarsLogo";
 export { NavLink } from "./NavLink";
 export { default as GetInTouch } from "./GetInTouch";
 export { default as DreamVehicleCTA } from "./DreamVehicleCTA";
+export { PriceDrop } from "./PriceDrop";
+export type { PriceDropProps } from "./PriceDrop";
