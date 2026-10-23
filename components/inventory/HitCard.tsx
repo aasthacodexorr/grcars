@@ -189,7 +189,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
 
           {/* Price drop tag */}
           {!isSold && hasPriceDrop && (
-            <div className="w-fit mx-3 z-10 rounded-full bg-brand px-2 py-1.5 -mt-1 text-[13px] font-medium leading-none text-white">
+            <div className="w-fit mx-3 z-10 rounded-full bg-[#00a650] px-2 py-1.5 -mt-1 text-[13px] font-medium leading-none text-white">
               Price drop
             </div>
           )}
