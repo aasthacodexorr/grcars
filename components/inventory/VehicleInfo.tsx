@@ -191,10 +191,10 @@ export const VehicleHeaderAndCTA = ({
               id="vehicle-price-panel"
               role="tabpanel"
               aria-labelledby={`${activePriceTab}-price-tab`}
-              className="relative rounded-xl bg-[#f1f8f5] px-4 lg:px-5 py-4"
+              className="relative bg-[#f1f8f5] rounded-xl px-4 lg:px-2 py-4 mx-6 mb-3"
             >
               {!isSold && hasPriceDrop && (
-                <div className="mb-2 mt-1 w-fit rounded-full bg-brand px-2 py-1.5 text-[13px] font-medium leading-none text-white">
+                <div className="mb-2 mt-1 w-fit rounded-full bg-[#00a650] px-2 py-1.5 text-[13px] font-medium leading-none text-white">
                   Price drop
                 </div>
               )}
@@ -213,7 +213,7 @@ export const VehicleHeaderAndCTA = ({
                     </div>
 
                     {hasPriceDrop && savingsAmount > 0 && (
-                      <div className="w-fit shrink-0 rounded-full bg-brand/10 px-2 py-1.5 text-[12px] font-semibold leading-none text-price-green">
+                      <div className="w-fit shrink-0 rounded-full bg-[#00a650]/10 px-2 py-1.5 text-[12px] font-semibold leading-none text-green-500">
                         Save ${savingsAmount.toLocaleString("en-CA")}
                       </div>
                     )}

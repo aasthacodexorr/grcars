@@ -42,7 +42,110 @@ export type HitCardHit = {
   term?: number | string;
   [key: string]: unknown;
 };
- 
+
+const getPaymentFrequencyDetails = (frequency?: string) => {
+  const normalizedFrequency = frequency?.trim().toLowerCase();
+
+  switch (normalizedFrequency) {
+    case "bi-weekly":
+    case "biweekly":
+    case "bi weekly":
+      return {
+        label: "Bi-Weekly",
+        paymentsPerYear: 26,
+      };
+
+    case "monthly":
+      return {
+        label: "Monthly",
+        paymentsPerYear: 12,
+      };
+
+    case "yearly":
+    case "annually":
+    case "annual":
+      return {
+        label: "Yearly",
+        paymentsPerYear: 1,
+      };
+
+    default:
+      return {
+        label: "Bi-Weekly",
+        paymentsPerYear: 26,
+      };
+  }
+};
+
+const calculatePayment = (
+  price: number,
+  downPayment: number,
+  annualInterestRate: number,
+  termMonths: number,
+  paymentsPerYear: number
+): number | null => {
+  const loanAmount = price - downPayment;
+
+  if (
+    !Number.isFinite(price) ||
+    !Number.isFinite(downPayment) ||
+    !Number.isFinite(loanAmount) ||
+    !Number.isFinite(annualInterestRate) ||
+    !Number.isFinite(termMonths) ||
+    !Number.isFinite(paymentsPerYear) ||
+    loanAmount <= 0 ||
+    price <= 0 ||
+    downPayment < 0 ||
+    downPayment > price ||
+    annualInterestRate < 0 ||
+    termMonths <= 0 ||
+    paymentsPerYear <= 0
+  ) {
+    return null;
+  }
+
+  // Calculate the number of payments for the selected loan term.
+  const numberOfPayments = (termMonths / 12) * paymentsPerYear;
+
+  // Calculate the interest rate per payment period.
+  const periodicRate =
+    annualInterestRate / 100 / paymentsPerYear;
+
+  let payment: number;
+
+  if (periodicRate === 0) {
+    payment = loanAmount / numberOfPayments;
+  } else {
+    const rateFactor = Math.pow(
+      1 + periodicRate,
+      numberOfPayments
+    );
+
+    payment =
+      (loanAmount * periodicRate * rateFactor) /
+      (rateFactor - 1);
+  }
+
+  return Number.isFinite(payment) && payment > 0
+    ? payment
+    : null;
+};
+
+const formatCurrency = (amount: number): string =>
+  Math.floor(amount).toLocaleString("en-CA", {
+    style: "currency",
+    currency: "CAD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+const formatCashDown = (amount: number): string =>
+  amount.toLocaleString("en-CA", {
+    style: "currency",
+    currency: "CAD",
+    maximumFractionDigits: 0,
+  });
+
 const InfoIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +217,26 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
     .replace(/^-|-$/g, "");
 
   const vehicleUrl = `/inventory/${slug}`;
+
+  const downPayment = Number(hit.downpayment ?? 0);
+  const interestRate = Number(hit.interest_rate);
+  const termMonths = Number(hit.term);
+
+  const paymentFrequency = getPaymentFrequencyDetails(hit.payment_frequency);
+
+  const paymentAmount = calculatePayment(
+    price,
+    downPayment,
+    interestRate,
+    termMonths,
+    paymentFrequency.paymentsPerYear
+  );
+  const isFinancingEnabled = Number(hit.financing_on) === 1;
+  const hasFinancingDetails =
+    isFinancingEnabled &&
+    paymentAmount !== null &&
+    Number.isFinite(downPayment) &&
+    downPayment >= 0;
 
   return (
     <>
@@ -189,7 +312,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
 
           {/* Price drop tag */}
           {!isSold && hasPriceDrop && (
-            <div className="w-fit mx-3 z-10 rounded-full bg-brand px-2 py-1.5 -mt-1 text-[13px] font-medium leading-none text-white">
+            <div className="w-fit mx-3 z-10 rounded-full bg-[#00a650] px-2 py-1.5 -mt-1 text-[13px] font-medium leading-none text-white">
               Price drop
             </div>
           )}
@@ -330,6 +453,42 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
                 )
               ) : null}
             </div>
+
+
+            {/* Bi-weekly & Cash Down Section */}
+            {!isSold && hasFinancingDetails && (
+              <>
+                <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[5px] flex justify-start items-center gap-1">
+                  {formatCurrency(paymentAmount!)}/{paymentFrequency.label} estimated
+                  <span className="relative group shrink-0">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setActiveTooltip((prev) => (prev === "payment" ? null : "payment"));
+                      }}
+                      aria-label="Financing payment information"
+                      className="flex items-center justify-center p-0.5"
+                    >
+                      <InfoIcon />
+                    </button>
+
+                    <span
+                      className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[240px] max-w-[calc(100vw-32px)] bg-black text-white text-xs sm:text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl z-[9999] transition-opacity duration-150 pointer-events-none ${activeTooltip === "payment" ? "opacity-100 visible" : "opacity-0 invisible"
+                        } group-hover:opacity-100 group-hover:visible`}
+                    >
+                      Estimated bi-weekly financing payment. Taxes and licensing fees are not included.
+                      <span className="absolute left-1/2 -translate-x-1/2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
+                    </span>
+                  </span>
+                </p>
+
+                <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[4px]">
+                  {formatCashDown(downPayment)} cash down
+                </p>
+              </>
+            )}
 
             <p className="text-[12px] mb-2 font-light text-gray-500 mt-1">Stock #: {stock}</p>
           </div>
