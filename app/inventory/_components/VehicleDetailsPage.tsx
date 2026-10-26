@@ -219,7 +219,7 @@ export default async function VehicleDetailsPage({
 
                                 {/* Tab header */}
                                 <div className="hidden lg:block sticky top-4 z-50 w-full mb-12 bg-white">
-                                    <VehicleDetailsTabsNav />
+                                    <VehicleDetailsTabsNav isSold={isSold} />
                                 </div>
 
                                 {/* Specs grid & Extended Coverage */}
@@ -233,7 +233,8 @@ export default async function VehicleDetailsPage({
                                 </div>
 
                                 {/* Pricing Section */}
-                                <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
+                                {!isSold && (
+                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
                                     <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -268,6 +269,8 @@ export default async function VehicleDetailsPage({
                                         </div>
                                     </div>
                                 </div>
+
+                                )}
 
                                 {/* Protection Section */}
                                 <div id="vehicle-protection-section" className="w-full max-w-[925px] bg-white scroll-mt-44 mb-10 ">

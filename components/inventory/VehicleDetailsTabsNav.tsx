@@ -9,7 +9,12 @@ const TABS = [
   { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
-export default function VehicleDetailsTabsNav() {
+interface VehicleDetailsTabsNavProps {
+  isSold?: boolean;
+}
+
+export default function VehicleDetailsTabsNav({ isSold = false }: VehicleDetailsTabsNavProps) {
+  const tabs = isSold ? TABS.filter((t) => t.id !== 'pricing') : TABS;
   const [activeTab, setActiveTab] = useState<string>('details');
   const [showTabs, setShowTabs] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -50,7 +55,7 @@ export default function VehicleDetailsTabsNav() {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
 
-      for (const tab of TABS) {
+      for (const tab of tabs) {
         const el = document.getElementById(tab.target);
         if (el) {
           const top = el.offsetTop;
@@ -63,7 +68,7 @@ export default function VehicleDetailsTabsNav() {
       }
 
       // Fallback for when scrolled past the very last section
-      const lastTab = TABS[TABS.length - 1];
+      const lastTab = tabs[tabs.length - 1];
       const lastEl = document.getElementById(lastTab.target);
       if (lastEl) {
         const rect = lastEl.getBoundingClientRect();
@@ -106,7 +111,7 @@ export default function VehicleDetailsTabsNav() {
     >
       <div className="w-full flex items-center justify-start py-3 px-3">
         <div className="inline-flex items-center gap-1 bg-white rounded-full p-1.5 overflow-x-auto max-w-full">
-          {TABS.map((tab) => (
+          {tabs.map((tab) => (
             <button
               key={tab.id}
               type="button"
