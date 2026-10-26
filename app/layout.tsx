@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import { Inter } from "next/font/google";
 import { Footer, Header } from "@/components/layout";
 import { MainContent } from "@/components/layout/MainContent";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -98,6 +99,7 @@ export default async function RootLayout({
           <MainContent>{children}</MainContent>
           <Footer />
         </Providers>
+         <GoogleAnalytics gaId="G-2PNJ1RNLQD" />
       </body>
     </html>
   );
