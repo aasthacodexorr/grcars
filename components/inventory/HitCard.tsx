@@ -259,7 +259,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
               />
 
               {isSold && (
-                <div className="absolute top-24 -left-10 rotate-[-42deg] text-white text-[14px] font-bold uppercase tracking-[3px] shadow-lg w-[400px] text-center py-[6px] z-10 bg-sold-overlay pointer-events-none">
+                <div className="absolute uppercase top-14 left-2 z-10 rounded-lg bg-sold-overlay px-3 py-1.5 text-[13px] font-medium leading-none text-white">
                   Sold
                 </div>
               )}
