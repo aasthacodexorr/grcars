@@ -244,15 +244,26 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
         {/* Clickable Card Body Area */}
         <Link href={vehicleUrl} className="flex flex-col flex-1 focus:outline-none">
           {/* Image & Badges */}
-          <div className="relative overflow-hidden rounded-t-[19px] p-3">
-            <Image
-              src={imageSrc}
-              alt={title}
-              width={600}
-              height={400}
-              className={`w-full object-cover h-[240px] min-h-[240px] 2xl:h-[260px] 2xl:min-h-[260px] rounded-xl transition-transform duration-500 ${isSold || isDealPending ? "grayscale opacity-80" : ""
+          {/* Image & Badges */}
+          <div className="relative px-3">
+            {/* Image + Sold ribbon container (isolated clipping) */}
+            <div className="relative overflow-hidden rounded-xl">
+              <Image
+                src={imageSrc}
+                alt={title}
+                width={600}
+                height={400}
+                className={`w-full object-cover h-[240px] min-h-[240px] 2xl:h-[260px] 2xl:min-h-[260px] transition-transform duration-500 ${
+                  isSold || isDealPending ? "grayscale opacity-80" : ""
                 }`}
-            />
+              />
+
+              {isSold && (
+                <div className="absolute top-24 -left-10 rotate-[-42deg] text-white text-[14px] font-bold uppercase tracking-[3px] shadow-lg w-[400px] text-center py-[6px] z-10 bg-sold-overlay pointer-events-none">
+                  Sold
+                </div>
+              )}
+            </div>
 
             {isRecentlyViewedVehicle && (
               <div>
@@ -260,14 +271,8 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
               </div>
             )}
 
-            {isSold && (
-              <div className="absolute top-4 -left-10 rotate-[-45deg] text-white text-[14px] font-bold uppercase tracking-[3px] shadow-lg w-[160px] text-center py-[6px] z-10 bg-sold-overlay">
-                Sold
-              </div>
-            )}
-
             {isDealPending && (
-              <div className="absolute uppercase ml-1 top-4 left-1/2 -translate-x-1/2 w-fit whitespace-nowrap text-white text-[11px] font-semibold shadow-lg text-center py-[6px] px-3 rounded-md z-10 bg-brand-green">
+              <div className="w-fit z-10 mt-2.5 rounded-full bg-brand-green px-2 py-1.5 text-[13px] font-medium leading-none text-white">
                 Deal Pending
               </div>
             )}
@@ -303,8 +308,9 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
                 aria-label={isInWishlist(inventoryId) ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
-                  className={`w-5 h-5 ${isInWishlist(inventoryId) ? "fill-brand-green stroke-none" : "stroke-gray-600"
-                    } transition-colors`}
+                  className={`w-5 h-5 ${
+                    isInWishlist(inventoryId) ? "fill-brand-green stroke-none" : "stroke-gray-600"
+                  } transition-colors`}
                 />
               </button>
             )}
@@ -312,7 +318,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
 
           {/* Price drop tag */}
           {!isSold && hasPriceDrop && (
-            <div className="w-fit mx-3 z-10 rounded-full bg-[#00a650] px-2 py-1.5 -mt-1 text-[13px] font-medium leading-none text-white">
+            <div className="w-fit mx-3 z-10 rounded-full bg-[#00a650] px-2 py-1.5 mt-2.5 text-[13px] font-medium leading-none text-white">
               Price drop
             </div>
           )}
