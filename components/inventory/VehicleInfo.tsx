@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { getConstants } from "@/constants";
 import { useAppConfig } from "@/app/providers";
 import { createPortal } from "react-dom";
-import { ChevronRight, ArrowDownCircle } from "lucide-react";
+import { ChevronRight, ArrowDownCircle, MessageSquareMore } from "lucide-react";
 import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
 import { buildUrlWithQueryParams, useIframeUrl } from "@/utils/urlHelpers";
 import { PriceDrop } from "../common";
@@ -306,6 +306,14 @@ export const VehicleHeaderAndCTA = ({
           Request Info
         </button>
       </div>
+
+      <button
+        type="button"
+        onClick={() => window.chekkitSettings?.toggleChat?.()}
+        className="fixed bottom-6 cursor-pointer right-6 z-[9999] rounded-full border-0 bg-[#2563eb] p-3 flex justify-center items-center text-base font-semibold text-white shadow-[0_2px_6px_rgba(37,99,235,0.4)] transition hover:bg-blue-700"
+      >
+        <MessageSquareMore className="inline-block h-8 w-8" />
+      </button>
 
       {/* Modal component */}
       <MessageModal

@@ -2074,17 +2074,15 @@ const InventoryContent = () => {
                     <button
                       onClick={scrollToTop}
                       className={[
-                        "fixed bottom-6 right-6 z-40 pointer-events-auto cursor-pointer",
-                        "w-12 h-12 rounded-full bg-black hover:bg-gray-900",
-                        "flex items-center justify-center text-white shadow-lg active:scale-95",
-                        "transition-all duration-200 border-2 border-black shadow-xl",
+                        "pointer-events-auto cursor-pointer flex items-center gap-2 bg-[#222] hover:bg-black text-white text-[13px] font-bold px-5 py-2.5 rounded-full shadow-lg active:scale-95 transition-all duration-200",
+                        "-translate-y-7 lg:translate-y-0",
                         showScrollTop
                           ? "opacity-100 scale-100 visible"
-                          : "opacity-0 scale-95 invisible pointer-events-none",
+                          : "opacity-0 scale-95 invisible",
                       ].join(" ")}
-                      title="Scroll to top"
                     >
-                      <CircleArrowUp className="h-7 w-7" />
+                      <ChevronUp className="h-4 w-4" />
+                      <span>Back to top</span>
                     </button>
                   </div>
                 </div>

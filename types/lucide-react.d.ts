@@ -84,4 +84,6 @@ declare module 'lucide-react' {
   export const Grid:Icon;
   export const LayoutGrid:Icon;
   export const CircleArrowUp:Icon;
+  export const CircleArrowUp:Icon;
+  export const MessageSquareMore:Icon;
 }
