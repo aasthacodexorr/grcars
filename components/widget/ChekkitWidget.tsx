@@ -1,6 +1,7 @@
 
 "use client";
 
+import { MessageSquareMore, } from "lucide-react";
 import Script from "next/script";
 
 declare global {
@@ -36,13 +37,7 @@ export default function ChekkitWidget() {
         strategy="afterInteractive"
       />
 
-      <button
-        type="button"
-        onClick={() => window.chekkitSettings?.toggleChat?.()}
-        className="fixed bottom-6 cursor-pointer left-6 z-[9999] rounded-full border-0 bg-[#2563eb] px-7 py-3 text-base font-semibold text-white shadow-[0_2px_6px_rgba(37,99,235,0.4)] transition hover:bg-blue-700"
-      >
-        Text Us
-      </button>
+      
     </>
   );
 }
