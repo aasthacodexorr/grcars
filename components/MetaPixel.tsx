@@ -13,6 +13,9 @@ import Script from "next/script";
  * - Tracks PageView events automatically
  * - Includes noscript fallback for users without JavaScript
  */
+
+
+// testing script on live 
 export function MetaPixel() {
   return (
     <>
