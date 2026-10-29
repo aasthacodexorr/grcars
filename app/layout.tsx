@@ -11,6 +11,7 @@ import { Footer, Header } from "@/components/layout";
 import { MainContent } from "@/components/layout/MainContent";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ChekkitWidget from "@/components/widget/ChekkitWidget";
+import { MetaPixel } from "@/components/MetaPixel";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -89,6 +90,7 @@ export default async function RootLayout({
         <link rel="shortcut icon" href="/favicon.svg" />
         {/* Load form validation script before any interactive content */}
         <ScriptLoader />
+        <MetaPixel />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgData) }}
