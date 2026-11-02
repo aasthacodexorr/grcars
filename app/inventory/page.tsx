@@ -78,7 +78,31 @@ function buildDisplayItems(hits: any[]): DisplayItem[] {
   return items;
 }
 
-/* Shared class name configs for InstantSearch widgets */
+// Component to reset sort when switching tabs
+const TabSwitchSortReset = ({ isAISearchActive, collectionName }: { isAISearchActive: boolean; collectionName: string }) => {
+  const { setIndexUiState } = useInstantSearch();
+  const previousModeRef = useRef(isAISearchActive);
+
+  useEffect(() => {
+    // When switching FROM AI search (true) TO default search (false)
+    if (previousModeRef.current && !isAISearchActive) {
+      // Explicitly set the sort to the default "Recently Added" sort which is status_rank:asc,created_at:desc
+      // This ensures sold items appear at the bottom by forcing the correct sort order
+      const defaultSort = `${collectionName}/sort/status_rank:asc,created_at:desc`;
+      setIndexUiState((prevState) => {
+        return {
+          ...prevState,
+          sortBy: defaultSort,
+        };
+      });
+    }
+    previousModeRef.current = isAISearchActive;
+  }, [isAISearchActive, setIndexUiState, collectionName]);
+
+  return null;
+};
+
+// Shared class name configs for InstantSearch widgets
 const refinementListClassNames = {
   list: "space-y-2 pt-2 pb-4 p-0",
 
@@ -1923,6 +1947,7 @@ const InventoryContent = () => {
       <SyncModelMakeMap />
       <SyncOrphanedModels />
       <ScrollToTopOnSearch />
+      <TabSwitchSortReset isAISearchActive={isAISearchActive} collectionName={TYPESENSE_COLLECTION_NAME} />
       <Configure hitsPerPage={21} />
 
       {/* Put the layout wrapper here, safe inside InstantSearch context! */}

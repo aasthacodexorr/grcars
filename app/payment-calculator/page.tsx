@@ -70,6 +70,7 @@ const ESSENTIAL_PACKAGE_PRICES: Record<'A' | 'B', number> = {
     B: 2499,
 };
 
+const SALES_TAX_RATE = 0.13; // 13% tax rate
 
 export default function PaymentCalculator() {
     const appConfig = useAppConfig();
@@ -90,56 +91,193 @@ export default function PaymentCalculator() {
     // Output State
     const [biWeeklyPayment, setBiWeeklyPayment] = useState<string>('0.00');
     const [desiredPayment, setDesiredPayment] = useState<string>('');
+    const [adjustmentMessage, setAdjustmentMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+    const [isAdjusting, setIsAdjusting] = useState<boolean>(false);
 
     // Loan Calculation Logic
-    useEffect(() => {
-        // Essential Package = Class A or Class B (if selected) + any manually entered additional fee
-        const essentialPackageCost = (packageClass ? ESSENTIAL_PACKAGE_PRICES[packageClass] : 0) + additionalFees;
 
-        const secureGardFee = includeSecureGard ? 499 : 0;
-        const tireGardFee = includeTireGard ? 399 : 0;
-        // Total Principal = Vehicle Price + Essential Package + Gap Protection + Extended Warranty + Existing Loan Balance - Down Payment - Trade-in
-        const basePrincipal =
+    useEffect(() => {
+        // Package and additional costs
+        const essentialPackageCost =
+            (packageClass ? ESSENTIAL_PACKAGE_PRICES[packageClass] : 0) +
+            additionalFees;
+
+        // Taxable subtotal (vehicle + taxable extras)
+        const taxableSubtotal =
             vehiclePrice +
             essentialPackageCost +
             gapFee +
-            warrantyCost +
-            secureGardFee +
-            tireGardFee +
-            loanBalance -
-            downPayment -
-            tradeInValue;
+            warrantyCost;
 
-        // Simulate simple 13% tax add-on if checked (adjust rate as per your specific region)
-        const totalPrincipal = includeTax ? basePrincipal * 1.13 : basePrincipal;
+        // Ontario trade-in tax credit: trade-in reduces taxable amount
+        const taxableAmount = Math.max(0, taxableSubtotal - tradeInValue);
+
+        // Calculate tax BEFORE deducting down payment
+        const salesTax = includeTax
+            ? taxableAmount * SALES_TAX_RATE
+            : 0;
+
+        // Final amount financed
+        const totalPrincipal =
+            taxableSubtotal +
+            loanBalance -
+            tradeInValue -
+            downPayment +
+            salesTax;
 
         if (totalPrincipal <= 0 || term <= 0) {
             setBiWeeklyPayment('0.00');
             return;
         }
 
-        // Convert Annual APR to a Bi-Weekly Interest Rate
-        // There are 26 bi-weekly periods in a year
+        // Bi-weekly interest rate
         const annualRate = apr / 100;
         const biWeeklyRate = annualRate / 26;
 
-        // Convert Month term to total number of bi-weekly payments
-        // Approximation: (Months * 12) / 26 periods a year -> or roughly Months * 2.166
+        // Number of bi-weekly payments
         const totalPayments = (term / 12) * 26;
 
         let payment = 0;
+
         if (biWeeklyRate === 0) {
             payment = totalPrincipal / totalPayments;
         } else {
-            // Standard Amortization Formula: P * (r(1+r)^n) / ((1+r)^n - 1)
+            const factor = Math.pow(1 + biWeeklyRate, totalPayments);
+
             payment =
-                (totalPrincipal * biWeeklyRate * Math.pow(1 + biWeeklyRate, totalPayments)) /
-                (Math.pow(1 + biWeeklyRate, totalPayments) - 1);
+                (totalPrincipal * biWeeklyRate * factor) /
+                (factor - 1);
         }
 
         setBiWeeklyPayment(payment.toFixed(2));
-    }, [vehiclePrice, downPayment, additionalFees, packageClass, gapFee, warrantyCost, term, tradeInValue, loanBalance, apr, includeTax, includeSecureGard, includeTireGard]);
 
+    }, [
+        vehiclePrice,
+        downPayment,
+        additionalFees,
+        packageClass,
+        gapFee,
+        warrantyCost,
+        term,
+        tradeInValue,
+        loanBalance,
+        apr,
+        includeTax
+    ]);
+
+    /**
+     * Reverse calculation: Calculates the maximum affordable vehicle price based on desired bi-weekly payment
+     * Using the inverse of the loan amortization formula
+     */
+    const handleAdjustBiWeekly = () => {
+        setAdjustmentMessage(null);
+        setIsAdjusting(true);
+
+        try {
+            // Validation
+            const desiredPaymentNum = parseFloat(desiredPayment);
+
+            if (!desiredPayment || isNaN(desiredPaymentNum)) {
+                setAdjustmentMessage({
+                    type: 'error',
+                    text: 'Please enter a desired bi-weekly payment amount.',
+                });
+                setIsAdjusting(false);
+                return;
+            }
+
+            if (desiredPaymentNum <= 0) {
+                setAdjustmentMessage({
+                    type: 'error',
+                    text: 'Desired bi-weekly payment must be greater than zero.',
+                });
+                setIsAdjusting(false);
+                return;
+            }
+
+            if (term <= 0) {
+                setAdjustmentMessage({
+                    type: 'error',
+                    text: 'Invalid loan term.',
+                });
+                setIsAdjusting(false);
+                return;
+            }
+
+            // Calculate non-vehicle costs
+
+            // Calculate additional costs
+            const essentialPackageCost =
+                (packageClass ? ESSENTIAL_PACKAGE_PRICES[packageClass] : 0) +
+                additionalFees;
+
+            const taxableExtras =
+                essentialPackageCost + gapFee + warrantyCost;
+
+            // Calculate maximum financeable amount
+            const annualRate = apr / 100;
+            const biWeeklyRate = annualRate / 26;
+            const totalPayments = (term / 12) * 26;
+
+            let maxFinanceable = 0;
+
+            if (biWeeklyRate === 0) {
+                maxFinanceable = desiredPaymentNum * totalPayments;
+            } else {
+                const factor = Math.pow(1 + biWeeklyRate, totalPayments);
+
+                maxFinanceable =
+                    desiredPaymentNum *
+                    ((factor - 1) / (biWeeklyRate * factor));
+            }
+
+            // Reverse calculation using the same tax logic
+            let affordableVehiclePrice = 0;
+
+            if (includeTax) {
+                affordableVehiclePrice =
+                    (maxFinanceable - loanBalance + downPayment) /
+                    (1 + SALES_TAX_RATE) -
+                    taxableExtras +
+                    tradeInValue;
+            } else {
+                affordableVehiclePrice =
+                    maxFinanceable -
+                    loanBalance +
+                    downPayment -
+                    taxableExtras +
+                    tradeInValue;
+            }
+
+
+            // Validation: Ensure calculated price is valid
+            if (affordableVehiclePrice < 0) {
+                setAdjustmentMessage({
+                    type: 'error',
+                    text: 'Your desired payment is too low to finance a vehicle with the current settings. Please increase the desired payment amount.',
+                });
+                setIsAdjusting(false);
+                return;
+            }
+
+            // Update vehicle price and clear adjustment message after success
+            setVehiclePrice(Math.round(affordableVehiclePrice * 100) / 100); // Round to 2 decimal places
+            setAdjustmentMessage({
+                type: 'success',
+                text: `Vehicle price adjusted to $${(Math.round(affordableVehiclePrice * 100) / 100).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                })}. Your estimated bi-weekly payment will update automatically.`,
+            });
+        } catch (error) {
+            setAdjustmentMessage({
+                type: 'error',
+                text: 'An error occurred during calculation. Please check your inputs.',
+            });
+        } finally {
+            setIsAdjusting(false);
+        }
+    };
 
     return (
         <>
@@ -384,10 +522,22 @@ export default function PaymentCalculator() {
                                     </div>
                                     <button
                                         type="button"
-                                        className=" bg-black hover:bg-gray-800 text-white text-xs font-bold py-4 px-4 rounded-xl cursor-pointer uppercase tracking-wider transition-colors"
+                                        onClick={handleAdjustBiWeekly}
+                                        disabled={isAdjusting}
+                                        className=" bg-black hover:bg-gray-800 disabled:bg-gray-500 text-white text-xs font-bold py-4 px-4 rounded-xl cursor-pointer uppercase tracking-wider transition-colors w-full"
                                     >
-                                        Adjust Bi-Weekly
+                                        {isAdjusting ? 'Adjusting...' : 'Adjust Bi-Weekly'}
                                     </button>
+
+                                    {/* Adjustment Message */}
+                                    {adjustmentMessage && (
+                                        <div className={`mt-4 p-3 rounded-md text-sm font-medium ${adjustmentMessage.type === 'success'
+                                                ? 'bg-green-50 text-green-800 border border-green-200'
+                                                : 'bg-red-50 text-red-800 border border-red-200'
+                                            }`}>
+                                            {adjustmentMessage.text}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
