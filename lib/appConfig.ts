@@ -297,8 +297,17 @@ export async function getAppConfig(): Promise<AppConfig> {
       next: { revalidate: 60 }
     });
     if (!res.ok) {
+      console.warn(`API returned status ${res.status}, using default config`);
       return defaultAppConfig;
     }
+    
+    // Validate content type before parsing JSON
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.warn(`API returned unexpected content-type: ${contentType}, using default config`);
+      return defaultAppConfig;
+    }
+    
     const apiConfig = await res.json();
     const mergedConfig = deepMerge(defaultAppConfig, apiConfig);
     
