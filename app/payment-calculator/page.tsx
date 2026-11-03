@@ -298,8 +298,11 @@ export default function PaymentCalculator() {
                                         <input
                                             type="number"
                                             value={vehiclePrice || ''}
-                                            onChange={(e) => setVehiclePrice(Number(e.target.value))}
-                                            className="w-full pl-8 pr-3 py-3 rounded-xl border border-border-lightGray transition-all duration-200 outline-none  focus:ring-4 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            onChange={(e) => {
+                                                setVehiclePrice(Number(e.target.value));
+                                                setAdjustmentMessage(null);
+                                            }}
+                                            className="w-full pl-8 pr-3 py-3 rounded-xl border border-border-lightGray transition-all duration-200 outline-none focus:ring-4 focus:ring-blue-100 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                         />
                                     </div>
                                 </div>
