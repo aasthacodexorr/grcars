@@ -1,7 +1,6 @@
 import { getAppConfig, getSafeDealershipConfig } from "@/lib/appConfig";
 import { getLocationPage } from "@/lib/locationPages";
 import LocationInventory from "./LocationInventory";
-import LocationSEOContent from "./LocationSEOContent";
 
 export interface LocationPageProps {
   cityKey: string;
@@ -99,10 +98,8 @@ export default async function LocationPage({ cityKey }: LocationPageProps) {
       <LocationInventory
         city={data.city}
         heading={data.heading}
+        seoData={data}
       />
-
-      {/* SEO Editorial Content Section (Rendered in SSR for search crawlers) */}
-      <LocationSEOContent data={data} />
     </div>
   );
 }
