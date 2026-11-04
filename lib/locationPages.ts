@@ -44,16 +44,17 @@ export const locationPages: Record<string, LocationPageConfig> = {
   brampton: {
     city: "Brampton",
     province: "Ontario",
-    slug: "/used-cars-brampton",
-    primaryKeyword: "used cars for sale in Brampton",
+    slug: "/used-car-dealership-brampton",
+    primaryKeyword: "used car dealership Brampton",
     secondaryKeywords: [
-      "certified used cars Brampton",
-      "pre-owned cars Brampton",
+      "best used car dealership Brampton",
+      "car dealers in Brampton",
+      "cheap used cars Brampton",
     ],
-    title: "Used Cars for Sale in Brampton | Certified & Pre-Owned Cars | Cardora",
+    title: "Used Car Dealership Brampton | Best Car Dealers & Cheap Used Cars | GR Cars",
     description:
-      "Find quality used cars for sale in Brampton at Cardora. Browse certified used cars Brampton and pre-owned cars Brampton with upfront pricing, inspection & financing.",
-    heading: "Used Cars for Sale in Brampton, Ontario",
+      "Looking for the best used car dealership Brampton has to offer? Explore cheap used cars and top-rated vehicles from trusted car dealers in Brampton at GR Cars.",
+    heading: "Used Car Dealership in Brampton, Ontario",
     seoContent: {
       guideHeading: "Brampton Used Car Guide",
       // Client will provide the final SEO content for this city.
@@ -78,16 +79,17 @@ export const locationPages: Record<string, LocationPageConfig> = {
   mississauga: {
     city: "Mississauga",
     province: "Ontario",
-    slug: "/used-cars-mississauga",
-    primaryKeyword: "used cars for sale in Mississauga",
+    slug: "/used-car-dealership-mississauga",
+    primaryKeyword: "used car dealer Mississauga",
     secondaryKeywords: [
-      "pre-owned cars Mississauga",
-      "trade in my car Mississauga",
+      "affordable used cars Mississauga",
+      "cheap used cars Mississauga",
+      "sell my car Mississauga",
     ],
-    title: "Used Cars for Sale in Mississauga | Pre-Owned Cars | Cardora",
+    title: "Used Car Dealer Mississauga | Affordable & Cheap Used Cars | GR Cars",
     description:
-      "Shop quality used cars for sale in Mississauga at Cardora. Explore pre-owned cars Mississauga drivers love, or easily trade in my car Mississauga with top appraisal value.",
-    heading: "Used Cars for Sale in Mississauga, Ontario",
+      "Visit GR Cars, your premier used car dealer Mississauga. Browse affordable and cheap used cars in Mississauga or get top dollar when you sell my car Mississauga.",
+    heading: "Used Car Dealer in Mississauga, Ontario",
     seoContent: {
       guideHeading: "Mississauga Used Car Guide",
       // Client will provide the final SEO content for this city.
@@ -112,24 +114,25 @@ export const locationPages: Record<string, LocationPageConfig> = {
   toronto: {
     city: "Toronto",
     province: "Ontario",
-    slug: "/used-cars-toronto",
-    primaryKeyword: "used cars for sale Toronto",
+    slug: "/used-car-dealership-toronto",
+    primaryKeyword: "used car dealership Toronto",
     secondaryKeywords: [
-      "certified pre-owned cars Toronto",
-      "trade in my car Toronto",
+      "cheap used cars Toronto",
+      "sell my car Toronto",
+      "affordable used cars Toronto",
     ],
-    title: "Used Cars for Sale Toronto | Certified Pre-Owned Cars | Cardora",
+    title: "Used Car Dealership Toronto | Affordable & Cheap Used Cars | GR Cars",
     description:
-      "Discover reliable used cars for sale Toronto at Cardora. Browse certified pre-owned cars Toronto with multi-point inspection, or trade in my car Toronto easily.",
-    heading: "Used Cars for Sale in Toronto, Ontario",
+      "Find quality vehicles at GR Cars, the top used car dealership Toronto. Shop affordable & cheap used cars in Toronto, or sell my car Toronto for top value.",
+    heading: "Used Car Dealership in Toronto, Ontario",
     seoContent: {
       guideHeading: "Toronto Used Car Guide",
       overview: {
         heading: "Overview",
         paragraphs: [
           "In a city as dynamic as Toronto, used cars are a practical and popular choice for drivers seeking affordability, variety, and reliability. Whether navigating the busy downtown streets, commuting on the Gardiner Expressway, or braving snowy winters, used cars provide versatility for Toronto's diverse driving needs.",
-          "Compared to new cars, used vehicles offer significant cost savings and better value retention. While new cars depreciate quickly within the first few years, used cars have already undergone most of their depreciation, making them a smart investment. From fuel-efficient sedans to family-friendly SUVs, Toronto's used car market caters to a range of lifestyles. Explore our guide to the best used cars in Canada for insights on top models to consider.",
-          "For those new to the process, understanding Ontario's unique buying process is key. Our guide to buying a used car in Ontario offers helpful tips and advice to navigate your purchase with confidence.",
+          "Compared to new cars, used vehicles offer significant cost savings and better value retention. While new cars depreciate quickly within the first few years, used cars have already undergone most of their depreciation, making them a smart investment. From fuel-efficient sedans to family-friendly SUVs, Toronto's used car market caters to a range of lifestyles.",
+          "For those new to the process, understanding Ontario's unique buying process is key. Researching vehicle history and choosing a reputable dealership helps you navigate your purchase with confidence.",
         ],
       },
       keyBenefits: {
@@ -200,21 +203,21 @@ export const locationPages: Record<string, LocationPageConfig> = {
       },
     },
   },
-  kitchener: {
-    city: "Kitchener",
+  milton: {
+    city: "Milton",
     province: "Ontario",
-    slug: "/used-cars-kitchener",
-    primaryKeyword: "used cars for sale in Kitchener",
+    slug: "/used-car-dealership-milton",
+    primaryKeyword: "used cars for sale in Milton",
     secondaryKeywords: [
-      "used car dealer Kitchener",
-      "certified used cars Kitchener",
+      "used car dealership Milton Ontario",
+      "cheap used cars Milton",
     ],
-    title: "Used Cars for Sale in Kitchener | Used Car Dealer | Cardora",
+    title: "Used Cars for Sale in Milton | Used Car Dealership Milton Ontario | GR Cars",
     description:
-      "Explore dependable used cars for sale in Kitchener at Cardora. As a trusted used car dealer Kitchener, we offer certified used cars Kitchener with upfront pricing.",
-    heading: "Used Cars for Sale in Kitchener, Ontario",
+      "Explore reliable used cars for sale in Milton at GR Cars. Your trusted used car dealership Milton Ontario offering cheap used cars with transparent pricing.",
+    heading: "Used Cars for Sale in Milton, Ontario",
     seoContent: {
-      guideHeading: "Kitchener Used Car Guide",
+      guideHeading: "Milton Used Car Guide",
       // Client will provide the final SEO content for this city.
       overview: {
         heading: "Overview",
@@ -222,33 +225,33 @@ export const locationPages: Record<string, LocationPageConfig> = {
       },
       keyBenefits: {
         heading: "Key benefits",
-        leadText: "Buying a used car in Kitchener comes with several advantages, including:",
+        leadText: "Buying a used car in Milton comes with several advantages, including:",
         items: [],
         summary: "",
       },
       tradeOffs: {
         heading: "Potential trade-offs",
-        leadText: "While buying a used car in Kitchener offers great value, consider these trade-offs:",
+        leadText: "While buying a used car in Milton offers great value, consider these trade-offs:",
         items: [],
         closingNote: "",
       },
     },
   },
-  barrie: {
-    city: "Barrie",
+  caledon: {
+    city: "Caledon",
     province: "Ontario",
-    slug: "/used-cars-barrie",
-    primaryKeyword: "used cars for sale in Barrie",
+    slug: "/used-car-dealership-caledon",
+    primaryKeyword: "used cars for sale Caledon",
     secondaryKeywords: [
-      "used car dealership Barrie",
-      "pre-owned cars Barrie",
+      "affordable used cars Caledon",
+      "used car dealer near Caledon",
     ],
-    title: "Used Cars for Sale in Barrie | Used Car Dealership | Cardora",
+    title: "Used Cars for Sale Caledon | Used Car Dealer Near Caledon | GR Cars",
     description:
-      "Find top quality used cars for sale in Barrie at Cardora. Your premier used car dealership Barrie offering inspected pre-owned cars Barrie drivers rely on.",
-    heading: "Used Cars for Sale in Barrie, Ontario",
+      "Discover top-quality used cars for sale Caledon at GR Cars. Your premier used car dealer near Caledon offering affordable used cars and flexible financing.",
+    heading: "Used Cars for Sale in Caledon, Ontario",
     seoContent: {
-      guideHeading: "Barrie Used Car Guide",
+      guideHeading: "Caledon Used Car Guide",
       // Client will provide the final SEO content for this city.
       overview: {
         heading: "Overview",
@@ -256,47 +259,13 @@ export const locationPages: Record<string, LocationPageConfig> = {
       },
       keyBenefits: {
         heading: "Key benefits",
-        leadText: "Buying a used car in Barrie comes with several advantages, including:",
+        leadText: "Buying a used car in Caledon comes with several advantages, including:",
         items: [],
         summary: "",
       },
       tradeOffs: {
         heading: "Potential trade-offs",
-        leadText: "While buying a used car in Barrie offers great value, consider these trade-offs:",
-        items: [],
-        closingNote: "",
-      },
-    },
-  },
-  hamilton: {
-    city: "Hamilton",
-    province: "Ontario",
-    slug: "/used-cars-hamilton",
-    primaryKeyword: "used cars for sale in Hamilton",
-    secondaryKeywords: [
-      "certified used cars Hamilton",
-      "sell my car Hamilton",
-    ],
-    title: "Used Cars for Sale in Hamilton | Certified Used Cars | Cardora",
-    description:
-      "Shop quality used cars for sale in Hamilton at Cardora. Discover certified used cars Hamilton with multi-point inspections, or easily sell my car Hamilton today.",
-    heading: "Used Cars for Sale in Hamilton, Ontario",
-    seoContent: {
-      guideHeading: "Hamilton Used Car Guide",
-      // Client will provide the final SEO content for this city.
-      overview: {
-        heading: "Overview",
-        paragraphs: [],
-      },
-      keyBenefits: {
-        heading: "Key benefits",
-        leadText: "Buying a used car in Hamilton comes with several advantages, including:",
-        items: [],
-        summary: "",
-      },
-      tradeOffs: {
-        heading: "Potential trade-offs",
-        leadText: "While buying a used car in Hamilton offers great value, consider these trade-offs:",
+        leadText: "While buying a used car in Caledon offers great value, consider these trade-offs:",
         items: [],
         closingNote: "",
       },
@@ -305,7 +274,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
 };
 
 export function getLocationPage(cityKey: string): LocationPageConfig | undefined {
-  const normalizedKey = cityKey.toLowerCase().trim();
+  const normalizedKey = cityKey?.toLowerCase().trim();
   return locationPages[normalizedKey];
 }
 
