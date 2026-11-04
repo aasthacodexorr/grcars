@@ -39,7 +39,7 @@ const Footer = () => {
   // Define an interface for the section objects
   interface FooterSection {
     title: string;
-    links: { label: string; href: string; forceReload?: boolean }[];
+    links: { label: string; href: string; forceReload?: boolean; external?: boolean }[];
     hasUnderline?: boolean;
     hasDirectionButton?: boolean;
   }
@@ -89,6 +89,21 @@ const Footer = () => {
     {
       sections: [
         {
+          title: "BROWSE BY LOCATION",
+          links: [
+            { label: "USED CARS IN TORONTO", href: "/used-car-dealership-toronto", external: true },
+            { label: "USED CARS IN BRAMPTON", href: "/used-car-dealership-brampton", external: true },
+            { label: "USED CARS IN MISSISSAUGA", href: "/used-car-dealership-mississauga", external: true },
+            { label: "USED CARS IN MILTON", href: "/used-car-dealership-milton", external: true },
+            { label: "USED CARS IN CALEDON", href: "/used-car-dealership-caledon", external: true },
+          ],
+        },
+      ],
+    },
+
+    {
+      sections: [
+        {
           title: "CONTACT INFO",
           hasUnderline: true,
           links: [
@@ -121,7 +136,7 @@ const Footer = () => {
       <div className="max-w-[2050px] mx-auto bg-[#101827] text-white px-8 pt-8 pb-6 sm:px-12 lg:px-20 ">
 
         {/* Main Grid: Logo + Nav Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 mb-1">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-10 mb-1">
 
           {/* Logo Column */}
           <div className="lg:col-span-1 " >
@@ -147,7 +162,7 @@ const Footer = () => {
                   </div>
                   <ul className="space-y-3 text-[15px] font-sans">
                     {sec.links.map((link, linkIdx) => {
-                      const isExternal = link.href.startsWith("http");
+                      const isExternal = link.external || link.href.startsWith("http");
                       return (
                         <li key={linkIdx}>
                           <a

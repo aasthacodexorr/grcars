@@ -29,6 +29,11 @@ export const SITEMAP_INDEX: SitemapIndexItem[] = [
 ];
 
 export const SITE_PAGES = [
+  '/used-car-dealership-brampton/',
+  '/used-car-dealership-mississauga/',
+  '/used-car-dealership-toronto/',
+  '/used-car-dealership-milton/',
+  '/used-car-dealership-caledon/',
   '/used-volkswagen-brampton/',
   '/used-nissan-brampton/',
   '/used-jeep-brampton/',
