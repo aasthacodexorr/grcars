@@ -4,12 +4,13 @@ import { useState, useEffect, useLayoutEffect, useRef, useMemo } from "react";
 import { Check, ChevronDown, ChevronUp, Search, Settings2, X } from "lucide-react";
 import { AIChatSidebar, AIResultsPanel, useAISearch } from "@/components/inventory/AISearch/AISearchPanel";
 import LocationSEOContent from "@/components/location/LocationSEOContent";
-import { LocationSEOContentData } from "@/lib/locationPages";
+import { type LocationPageConfig } from "@/lib/locationPages";
 
 export interface InventoryViewProps {
   isLocationPage?: boolean;
   locationCity?: string;
   locationHeading?: string;
+  locationSeoData?: LocationPageConfig;
   bottomSlot?: React.ReactNode;
 }
 
@@ -1919,6 +1920,7 @@ export const InventoryView = ({
   isLocationPage = false,
   locationCity,
   locationHeading,
+  locationSeoData,
   bottomSlot,
 }: InventoryViewProps) => {
   const config = useAppConfig();
@@ -2394,6 +2396,11 @@ export const InventoryView = ({
                       </NoResultsHandler>
                     </SearchResultsWrapper>
                   </div>
+
+                  {/* Location SEO Content - Render after inventory loading completes */}
+                  {isLocationPage && locationSeoData && (
+                    <LocationSEOContent data={locationSeoData} />
+                  )}
                 </>
               )}
             </div>
