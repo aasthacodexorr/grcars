@@ -10,7 +10,9 @@ export interface InventoryViewProps {
   isLocationPage?: boolean;
   locationCity?: string;
   locationHeading?: string;
+  locationIntro?: string;
   locationSeoData?: LocationPageConfig;
+  hasLocationVehicles?: boolean;
   bottomSlot?: React.ReactNode;
 }
 
@@ -303,7 +305,13 @@ const MobileControlsBar = ({
   );
 };
 
-const SearchResultsWrapper = ({ children }: { children: React.ReactNode }) => {
+const SearchResultsWrapper = ({
+  children,
+  isLocationPage = false,
+}: {
+  children: React.ReactNode;
+  isLocationPage?: boolean;
+}) => {
   const { status } = useInstantSearch();
   const { results } = useHits();
 
@@ -332,6 +340,35 @@ const SearchResultsWrapper = ({ children }: { children: React.ReactNode }) => {
   }
 
   return <>{children}</>;
+};
+
+const BottomSlotWrapper = ({
+  children,
+  isLocationPage = false,
+}: {
+  children: React.ReactNode;
+  isLocationPage?: boolean;
+}) => {
+  const { status } = useInstantSearch();
+  const { results } = useHits();
+
+  const [isHydrated, setIsHydrated] = useState(false);
+  useEffect(() => {
+    if (!isHydrated && status === "idle" && results && !results.__isArtificial) {
+      setIsHydrated(true);
+    }
+  }, [status, results, isHydrated]);
+
+  // If this is a location page, only show bottomSlot once initial inventory has finished loading
+  if (isLocationPage && !isHydrated) {
+    return null;
+  }
+
+  return (
+    <div className="w-full bg-light-gray">
+      {children}
+    </div>
+  );
 };
 
 const CustomHitsCount = () => {
@@ -401,8 +438,12 @@ const LOAD_MORE_SHIMMER_MIN_MS = 450;
 
 const LocationResultsCount = () => {
   const { results } = useHits();
+  const { status } = useInstantSearch();
+  if (!results || results.__isArtificial || status === "loading") {
+    return <span className="text-gray-400">· Loading inventory...</span>;
+  }
   const count = results?.nbHits || 0;
-  return <span>{count.toLocaleString()} results</span>;
+  return <span>· {count.toLocaleString()} results</span>;
 };
 
 const CustomPagination = () => {
@@ -512,8 +553,23 @@ const CustomPagination = () => {
 };
 
 const CustomHitsWithPagination = ({ hitComponent: HitComponent }: any) => {
-  const { hits } = useHits();
+  const { hits: rawHits } = useHits();
   const { status } = useInstantSearch();
+
+  const sortHitsBySoldStatus = (hitsToSort: any[]) => {
+    return [...hitsToSort].sort((a, b) => {
+      const aIsSold = Boolean(a.status) && String(a.status).toLowerCase() !== "instock";
+      const bIsSold = Boolean(b.status) && String(b.status).toLowerCase() !== "instock";
+
+      if (aIsSold !== bIsSold) {
+        return aIsSold ? 1 : -1;
+      }
+
+      return 0;
+    });
+  };
+
+  const hits = sortHitsBySoldStatus(rawHits);
 
   if (status === "stalled" && hits.length === 0) {
     return <InventoryGridSkeleton />;
@@ -554,7 +610,24 @@ const CustomHitsWithPagination = ({ hitComponent: HitComponent }: any) => {
 
 const CustomInfiniteHits = ({ hitComponent: HitComponent }: any) => {
   const { status } = useInstantSearch();
-  const { hits, isLastPage, showMore } = useInfiniteHits();
+  const { hits: rawHits, isLastPage, showMore } = useInfiniteHits();
+
+  // Sort hits client-side to ensure sold vehicles appear at the end
+  const sortHitsBySoldStatus = (hitsToSort: any[]) => {
+    return [...hitsToSort].sort((a, b) => {
+      const aIsSold = Boolean(a.status) && String(a.status).toLowerCase() !== "instock";
+      const bIsSold = Boolean(b.status) && String(b.status).toLowerCase() !== "instock";
+
+      // If statuses are different, active vehicles come first
+      if (aIsSold !== bIsSold) {
+        return aIsSold ? 1 : -1;
+      }
+
+      return 0;
+    });
+  };
+
+  const hits = sortHitsBySoldStatus(rawHits);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const loadingMoreRef = useRef(false);
   const preservedScrollYRef = useRef<number | null>(null);
@@ -1920,7 +1993,9 @@ export const InventoryView = ({
   isLocationPage = false,
   locationCity,
   locationHeading,
+  locationIntro,
   locationSeoData,
+  hasLocationVehicles,
   bottomSlot,
 }: InventoryViewProps) => {
   const config = useAppConfig();
@@ -1928,6 +2003,18 @@ export const InventoryView = ({
   const { searchClient, TYPESENSE_COLLECTION_NAME } = useMemo(() => getTypesenseClient(config), [config]);
   const router = useMemo(() => createInventoryRouter(config), [config]);
   const stateMapping = useMemo(() => createInventoryStateMapping(config), [config]);
+
+  const [hasVehiclesInLocation, setHasVehiclesInLocation] = useState<boolean>(
+    hasLocationVehicles ?? true
+  );
+
+  useEffect(() => {
+    if (typeof hasLocationVehicles === "boolean") {
+      setHasVehiclesInLocation(hasLocationVehicles);
+    }
+  }, [hasLocationVehicles]);
+
+  const isLocationFilterActive = isLocationPage && Boolean(locationCity) && hasVehiclesInLocation;
 
   const [openFilter, setOpenFilter] = useState<string | null>("");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -2079,9 +2166,9 @@ export const InventoryView = ({
 
   const renderFilterGroups = () => (
     <div className="space-y-[18px]">
-      <FilterGroup title="LOCATION" isOpen={openFilter === "LOCATION"} onToggle={() => setOpenFilter(openFilter === "LOCATION" ? null : "LOCATION")}>
+      {/* <FilterGroup title="LOCATION" isOpen={openFilter === "LOCATION"} onToggle={() => setOpenFilter(openFilter === "LOCATION" ? null : "LOCATION")}>
         <StableRefinementList attribute="location" />
-      </FilterGroup>
+      </FilterGroup> */}
       <FilterGroup title="MAKE" isOpen={openFilter === "MAKE"} onToggle={() => setOpenFilter(openFilter === "MAKE" ? null : "MAKE")}>
         <MakeRefinementList />
       </FilterGroup>
@@ -2135,7 +2222,11 @@ export const InventoryView = ({
       <SyncOrphanedModels />
       <ScrollToTopOnSearch />
       <TabSwitchSortReset isAISearchActive={isAISearchActive} collectionName={TYPESENSE_COLLECTION_NAME} />
-      <Configure hitsPerPage={21} />
+      <Configure
+        hitsPerPage={21}
+        filters={isLocationFilterActive ? `location:${locationCity}` : undefined}
+        sortBy={`${TYPESENSE_COLLECTION_NAME}/sort/status_rank:asc,created_at:desc`}
+      />
 
       {/* Put the layout wrapper here, safe inside InstantSearch context! */}
       <MainLayoutWrapper>
@@ -2365,19 +2456,24 @@ export const InventoryView = ({
                     </div>
                   </div>
 
-                  {/* Location Page Wireframe Heading */}
+                  {/* Inventory Header (H1, above search results) */}
                   {isLocationPage && (
-                    <div className="lg:px-3 pt-3 pb-1">
+                    <div className="lg:px-3 pt-3 pb-2">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-baseline gap-2 flex-wrap">
-                          <h1 className="text-md text-gray-500 tracking-tight">
+                          <h1 className="font-bold text-gray-900 tracking-tight">
                             {locationHeading || `Used Cars for Sale in ${locationCity || "Ontario"}`}
                           </h1>
-                          <span className="text-sm sm:text-base font-normal text-gray-500">
-                            · <LocationResultsCount />
+                          <span className="font-normal text-gray-500">
+                            <LocationResultsCount />
                           </span>
                         </div>
                       </div>
+                      {locationIntro && (
+                        <p className="text-gray-600 leading-relaxed mt-2">
+                          {locationIntro}
+                        </p>
+                      )}
                     </div>
                   )}
 
@@ -2386,26 +2482,24 @@ export const InventoryView = ({
                   </div>
 
                   <div className="mb-4">
-                    <SearchResultsWrapper>
+                    <SearchResultsWrapper isLocationPage={isLocationPage}>
                       <NoResultsHandler>
-                        {isLocationPage ? (
-                          <CustomHitsWithPagination hitComponent={HitCard} />
-                        ) : (
-                          <CustomInfiniteHits hitComponent={HitCard} />
-                        )}
+                        <CustomInfiniteHits hitComponent={HitCard} />
                       </NoResultsHandler>
                     </SearchResultsWrapper>
                   </div>
 
-                  {/* Location SEO Content - Render after inventory loading completes */}
-                  {isLocationPage && locationSeoData && (
-                    <LocationSEOContent data={locationSeoData} />
-                  )}
                 </>
               )}
             </div>
           </div>
         </div>
+
+        {bottomSlot && (
+          <BottomSlotWrapper isLocationPage={isLocationPage}>
+            {bottomSlot}
+          </BottomSlotWrapper>
+        )}
 
         {!isLocationPage && (
           <div className="max-w-[1820px] mx-auto">
