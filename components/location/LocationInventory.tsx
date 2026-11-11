@@ -2,24 +2,30 @@
 
 import InventoryView from "@/components/inventory/InventoryView";
 import type { LocationPageConfig } from "@/lib/locationPages";
+import LocationSEOContent from "./LocationSEOContent";
 
 export interface LocationInventoryProps {
   city: string;
   heading: string;
-  seoData?: LocationPageConfig;
+  locationData: LocationPageConfig;
+  hasLocationVehicles?: boolean;
 }
 
 export default function LocationInventory({
   city,
   heading,
-  seoData,
+  locationData,
+  hasLocationVehicles,
 }: LocationInventoryProps) {
   return (
     <InventoryView
       isLocationPage={true}
       locationCity={city}
       locationHeading={heading}
-      locationSeoData={seoData}
+      locationIntro={locationData.introText}
+      locationSeoData={locationData}
+      hasLocationVehicles={hasLocationVehicles}
+      bottomSlot={<LocationSEOContent data={locationData} />}
     />
   );
 }

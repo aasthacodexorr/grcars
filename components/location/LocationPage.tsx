@@ -1,14 +1,28 @@
-import { getAppConfig, getSafeDealershipConfig } from "@/lib/appConfig";
-import { getLocationPage } from "@/lib/locationPages";
+import { Suspense } from "react";
+import { getAppConfig, getSafeDealershipConfig, defaultAppConfig } from "@/lib/appConfig";
+import { getLocationPage, checkLocationHasVehicles } from "@/lib/locationPages";
 import LocationInventory from "./LocationInventory";
+import LocationInventorySkeleton from "./LocationInventorySkeleton";
 
 export interface LocationPageProps {
   cityKey: string;
 }
 
 export default async function LocationPage({ cityKey }: LocationPageProps) {
-  const appConfig = await getAppConfig();
-  const safeD = getSafeDealershipConfig(appConfig?.dealership);
+  let safeD = getSafeDealershipConfig(defaultAppConfig.dealership);
+  let resolvedAppConfig = defaultAppConfig;
+  try {
+    const appConfig = await getAppConfig();
+    if (appConfig) {
+      resolvedAppConfig = appConfig;
+      if (appConfig.dealership) {
+        safeD = getSafeDealershipConfig(appConfig.dealership);
+      }
+    }
+  } catch (err) {
+    // Graceful fallback to defaultAppConfig
+  }
+
   const data = getLocationPage(cityKey);
 
   if (!data) {
@@ -21,6 +35,8 @@ export default async function LocationPage({ cityKey }: LocationPageProps) {
       </div>
     );
   }
+
+  const hasVehicles = await checkLocationHasVehicles(data.city, resolvedAppConfig);
 
   const baseUrl = "https://www.grcars.ca";
   const canonicalUrl = `${baseUrl}${data.slug}`;
@@ -85,21 +101,33 @@ export default async function LocationPage({ cityKey }: LocationPageProps) {
   return (
     <div className="w-full bg-light-gray">
       {/* Schema.org Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(autoDealerSchema) }}
-      />
+      {data.schemaMarkup ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(data.schemaMarkup) }}
+        />
+      ) : (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(autoDealerSchema) }}
+          />
+        </>
+      )}
 
-      {/* Main Location Inventory Section (Connected to live Typesense inventory) */}
-      <LocationInventory
-        city={data.city}
-        heading={data.heading}
-        seoData={data}
-      />
+      {/* Main Location Inventory Section with Suspense loading skeleton */}
+      <Suspense fallback={<LocationInventorySkeleton heading={data.heading} city={data.city} />}>
+        <LocationInventory
+          city={data.city}
+          heading={data.heading}
+          locationData={data}
+          hasLocationVehicles={hasVehicles}
+        />
+      </Suspense>
     </div>
   );
 }

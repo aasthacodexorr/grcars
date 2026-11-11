@@ -91,11 +91,11 @@ const Footer = () => {
         {
           title: "BROWSE BY LOCATION",
           links: [
-            { label: "USED CARS IN TORONTO", href: "/used-car-dealership-toronto", external: true },
-            { label: "USED CARS IN BRAMPTON", href: "/used-car-dealership-brampton", external: true },
-            { label: "USED CARS IN MISSISSAUGA", href: "/used-car-dealership-mississauga", external: true },
-            { label: "USED CARS IN MILTON", href: "/used-car-dealership-milton", external: true },
-            { label: "USED CARS IN CALEDON", href: "/used-car-dealership-caledon", external: true },
+            { label: "USED CARS IN TORONTO", href: "/used-car-dealership-toronto", external: false },
+            { label: "USED CARS IN BRAMPTON", href: "/used-car-dealership-brampton", external: false },
+            { label: "USED CARS IN MISSISSAUGA", href: "/used-car-dealership-mississauga", external: false },
+            { label: "USED CARS IN MILTON", href: "/used-car-dealership-milton", external: false },
+            { label: "USED CARS IN CALEDON", href: "/used-car-dealership-caledon", external: false },
           ],
         },
       ],
@@ -133,7 +133,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full font-sans">
-      <div className="max-w-[2050px] mx-auto bg-[#101827] text-white px-8 pt-8 pb-6 sm:px-12 lg:px-20 ">
+      <div className="max-w-[2050px] mx-auto bg-[#101827] text-white px-8 pt-8 pb-6 sm:px-12 lg:px-14">
 
         {/* Main Grid: Logo + Nav Columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-10 mb-1">
@@ -153,14 +153,14 @@ const Footer = () => {
               {col.sections.map((sec, secIdx) => (
                 <div key={secIdx}>
                   <div className="mb-3">
-                    <h3 className="text-xl font-bold text-white tracking-wide inline-block">
+                    <h3 className="text-md font-bold text-white tracking-wide inline-block">
                       {sec.title}
                     </h3>
                     {sec.hasUnderline && (
                       <div className="w-12 h-[2px] bg-blue-500 mt-1" />
                     )}
                   </div>
-                  <ul className="space-y-3 text-[15px] font-sans">
+                  <ul className="space-y-3 text-[14px] font-sans">
                     {sec.links.map((link, linkIdx) => {
                       const isExternal = link.external || link.href.startsWith("http");
                       return (
@@ -169,7 +169,13 @@ const Footer = () => {
                             href={link.href}
                             target={isExternal ? "_blank" : undefined}
                             rel={isExternal ? "noopener noreferrer" : undefined}
-                            onClick={(e) => ("forceReload" in link && link.forceReload) && handleInventoryClick(e, link.href)}
+                            onClick={(e) => {
+                              if ("forceReload" in link && link.forceReload) {
+                                handleInventoryClick(e, link.href);
+                              } else if (pathname === link.href || pathname === `${link.href}/`) {
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }
+                            }}
                             className="hover:text-white transition-colors flex items-center"
                           >
                             {link.label}
