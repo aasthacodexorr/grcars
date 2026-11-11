@@ -67,6 +67,32 @@ const nextConfig: NextConfig = {
         destination: 'https://blog.grcars.ca/:slug*',
         permanent: true,
       },
+      // Location page aliases from content docs
+      {
+        source: '/used-cars-caledon',
+        destination: '/used-car-dealership-caledon',
+        permanent: true,
+      },
+      {
+        source: '/used-cars-milton',
+        destination: '/used-car-dealership-milton',
+        permanent: true,
+      },
+      {
+        source: '/used-car-dealer-mississauga',
+        destination: '/used-car-dealership-mississauga',
+        permanent: true,
+      },
+      {
+        source: '/used-cars-brampton',
+        destination: '/used-car-dealership-brampton',
+        permanent: true,
+      },
+      {
+        source: '/used-cars-toronto',
+        destination: '/used-car-dealership-toronto',
+        permanent: true,
+      },
     ];
   },
 

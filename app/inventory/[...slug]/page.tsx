@@ -1,4 +1,4 @@
-import InventoryPage from "../page";
+import InventoryView from "@/components/inventory/InventoryView";
 import VehicleDetailsPage from "../_components/VehicleDetailsPage";
 import { isVehicleDetailSlug } from "@/lib/inventoryUrls";
 
@@ -18,5 +18,5 @@ export default async function InventoryCatchAllPage({
     if (vehiclePage) return vehiclePage;
   }
 
-  return <InventoryPage />;
+  return <InventoryView />;
 }

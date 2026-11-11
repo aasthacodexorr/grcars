@@ -10,10 +10,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = getLocationPage(CITY_KEY);
   if (!data) return {};
 
+  const exactCanonicalUrl = `https://www.grcars.ca${data.slug}/`;
+
   return generateMetadataHelper({
     title: data.title,
     description: data.description,
-    canonicalPath: data.slug,
+    canonicalUrl: exactCanonicalUrl,
+    images: data.ogImage ? [data.ogImage] : undefined,
+    siteName: "GR Cars",
+    locale: "en_CA",
+    robots: {
+      index: true,
+      follow: true,
+    },
   });
 }
 
