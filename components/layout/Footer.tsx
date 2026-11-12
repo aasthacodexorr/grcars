@@ -91,11 +91,11 @@ const Footer = () => {
         {
           title: "BROWSE BY LOCATION",
           links: [
-            { label: "USED CARS IN TORONTO", href: "/used-car-dealership-toronto", external: false },
-            { label: "USED CARS IN BRAMPTON", href: "/used-car-dealership-brampton", external: false },
-            { label: "USED CARS IN MISSISSAUGA", href: "/used-car-dealership-mississauga", external: false },
-            { label: "USED CARS IN MILTON", href: "/used-car-dealership-milton", external: false },
-            { label: "USED CARS IN CALEDON", href: "/used-car-dealership-caledon", external: false },
+            { label: "USED CARS IN TORONTO", href: "/inventory/used-car-toronto", external: false },
+            { label: "USED CARS IN BRAMPTON", href: "/inventory/used-car-brampton", external: false },
+            { label: "USED CARS IN MISSISSAUGA", href: "/inventory/used-car-mississauga", external: false },
+            { label: "USED CARS IN MILTON", href: "/inventory/used-car-milton", external: false },
+            { label: "USED CARS IN CALEDON", href: "/inventory/used-car-caledon", external: false },
           ],
         },
       ],

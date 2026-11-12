@@ -4,6 +4,8 @@ import { useState, useEffect, useLayoutEffect, useRef, useMemo } from "react";
 import { Check, ChevronDown, ChevronUp, Search, Settings2, X } from "lucide-react";
 import { AIChatSidebar, AIResultsPanel, useAISearch } from "@/components/inventory/AISearch/AISearchPanel";
 import LocationSEOContent from "@/components/location/LocationSEOContent";
+import DynamicLocationHeading from "@/components/inventory/DynamicLocationHeading";
+import { readRouteState } from "@/lib/inventoryRouting";
 import { type LocationPageConfig } from "@/lib/locationPages";
 
 export interface InventoryViewProps {
@@ -12,6 +14,7 @@ export interface InventoryViewProps {
   locationHeading?: string;
   locationIntro?: string;
   locationSeoData?: LocationPageConfig;
+  locationSlug?: string;
   hasLocationVehicles?: boolean;
   bottomSlot?: React.ReactNode;
 }
@@ -436,7 +439,7 @@ const NoResultsHandler = ({ children }: { children: React.ReactNode }) => {
 
 const LOAD_MORE_SHIMMER_MIN_MS = 450;
 
-const LocationResultsCount = () => {
+export const LocationResultsCount = () => {
   const { results } = useHits();
   const { status } = useInstantSearch();
   if (!results || results.__isArtificial || status === "loading") {
@@ -1995,13 +1998,29 @@ export const InventoryView = ({
   locationHeading,
   locationIntro,
   locationSeoData,
+  locationSlug,
   hasLocationVehicles,
   bottomSlot,
 }: InventoryViewProps) => {
   const config = useAppConfig();
   const { isWishlistDrawerOpen } = useDrawer();
   const { searchClient, TYPESENSE_COLLECTION_NAME } = useMemo(() => getTypesenseClient(config), [config]);
-  const router = useMemo(() => createInventoryRouter(config), [config]);
+
+  const effectiveLocationSlug = useMemo(() => {
+    if (locationSlug) return locationSlug;
+    if (typeof window !== "undefined") {
+      const fromRoute = readRouteState().locationSlug;
+      if (fromRoute) return fromRoute;
+      const match = window.location.pathname.match(/used-cars?-([a-z0-9-]+)/i);
+      if (match) return match[0].toLowerCase();
+    }
+    if (isLocationPage && locationCity) {
+      return `used-car-${locationCity.toLowerCase()}`;
+    }
+    return undefined;
+  }, [locationSlug, isLocationPage, locationCity]);
+
+  const router = useMemo(() => createInventoryRouter(config, effectiveLocationSlug), [config, effectiveLocationSlug]);
   const stateMapping = useMemo(() => createInventoryStateMapping(config), [config]);
 
   const [hasVehiclesInLocation, setHasVehiclesInLocation] = useState<boolean>(
@@ -2208,14 +2227,10 @@ export const InventoryView = ({
     <InstantSearch
       searchClient={searchClient}
       indexName={TYPESENSE_COLLECTION_NAME}
-      {...(isLocationPage
-        ? {}
-        : {
-            routing: {
-              router,
-              stateMapping,
-            },
-          })}
+      routing={{
+        router,
+        stateMapping,
+      }}
       stalledSearchDelay={300}
     >
       <SyncModelMakeMap />
@@ -2459,16 +2474,7 @@ export const InventoryView = ({
                   {/* Inventory Header (H1, above search results) */}
                   {isLocationPage && (
                     <div className="lg:px-3 pt-3 pb-2">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div className="flex items-baseline gap-2 flex-wrap">
-                          <h1 className="font-bold text-gray-900 tracking-tight">
-                            {locationHeading || `Used Cars for Sale in ${locationCity || "Ontario"}`}
-                          </h1>
-                          <span className="font-normal text-gray-500">
-                            <LocationResultsCount />
-                          </span>
-                        </div>
-                      </div>
+                      <DynamicLocationHeading city={locationCity} province={locationSeoData?.province} />
                       {locationIntro && (
                         <p className="text-gray-600 leading-relaxed mt-2">
                           {locationIntro}

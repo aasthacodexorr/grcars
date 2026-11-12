@@ -233,7 +233,7 @@ export function getModelVariants(model: string): string[] {
 const PRESERVE_UPPERCASE_TOKENS = new Set([
   "BMW", "GMC", "SUV", "CVT", "EV", "HEV", "PHEV", "BEV", "AWD", "4WD", "4X4",
   "SRW", "DRW", "HD", "GR", "TT", "ZDX", "GLI", "WK", "MKX", "TLX", "WRX", "MHEV",
-  "CR", "CX", "CLA", "GLC", "GLE", "ES", "IS", "RX"
+  "CR", "CX", "CLA", "GLC", "GLE", "ES", "IS", "RX", "ADX", "MDX", "RDX", "QX", "ILX", "RLX"
 ]);
 
 /**
@@ -862,7 +862,96 @@ function getPathFilters(route: PlainObject): PathFilters {
   return filters;
 }
 
-export function serializePublicUrl(route: PlainObject) {
+
+const KNOWN_LOCATION_CITIES = new Set(["brampton", "caledon", "milton", "mississauga", "toronto"]);
+
+export function isLocationSlug(segment: string): boolean {
+  if (!segment) return false;
+  const lower = decodeURIComponent(segment).toLowerCase().trim();
+  const match = lower.match(/^used-cars?-([a-z0-9-]+)$/);
+  if (!match) return false;
+  return KNOWN_LOCATION_CITIES.has(match[1]);
+}
+
+export function extractLocationCityKey(segment: string): string | null {
+  if (!segment) return null;
+  const lower = decodeURIComponent(segment).toLowerCase().trim();
+  const match = lower.match(/^used-cars?-([a-z0-9-]+)$/);
+  if (!match) return null;
+  return KNOWN_LOCATION_CITIES.has(match[1]) ? match[1] : null;
+}
+
+export interface DynamicHeadingOptions {
+  refinements: PlainObject;
+  city?: string;
+  province?: string;
+}
+
+export function buildDynamicHeading({
+  refinements,
+  city,
+  province = "Ontario",
+}: DynamicHeadingOptions): string {
+  const resolvedCity = city ? formatFacetLabel(city) : "Ontario";
+  const resolvedProvince = province || (resolvedCity !== "Ontario" ? "Ontario" : "");
+  const locationName = resolvedProvince && resolvedCity.toLowerCase() !== resolvedProvince.toLowerCase()
+    ? `${resolvedCity}, ${resolvedProvince}`
+    : resolvedCity;
+
+  const makes = (refinements.make || []).filter(Boolean);
+  const models = (refinements.model || []).filter(Boolean);
+  const fuelTypes = (refinements.fuel_type || []).filter(Boolean);
+  const bodyTypes = (refinements.body_type || []).filter(Boolean);
+  const colors = (refinements.exterior_color || []).filter(Boolean);
+
+  let showMake: string | null = null;
+  let showModel: string | null = null;
+
+  if (makes.length <= 1 && models.length <= 1) {
+    if (makes.length === 1) {
+      showMake = formatFacetLabel(makes[0]);
+    }
+    if (models.length === 1) {
+      showModel = formatFacetLabel(models[0]);
+    }
+  }
+
+  let showColor: string | null = null;
+  if (colors.length === 1) {
+    showColor = formatFacetLabel(colors[0]);
+  }
+
+  let showFuelType: string | null = null;
+  if (fuelTypes.length === 1) {
+    showFuelType = formatFacetLabel(fuelTypes[0]);
+  }
+
+  let showBodyType: string | null = null;
+  if (bodyTypes.length === 1) {
+    showBodyType = formatFacetLabel(bodyTypes[0]);
+  }
+
+  const tokens: string[] = [];
+  if (showColor) tokens.push(showColor);
+  if (showMake) tokens.push(showMake);
+  if (showModel) tokens.push(showModel);
+  if (showFuelType) tokens.push(showFuelType);
+  if (showBodyType) tokens.push(showBodyType);
+
+  if (tokens.length === 0) {
+    return `Used Cars for Sale in ${locationName}`;
+  }
+
+  const lastToken = tokens[tokens.length - 1];
+  if (lastToken === showFuelType || lastToken === showColor) {
+    tokens.push("Cars");
+  }
+
+  return `Used ${tokens.join(" ")} for Sale in ${locationName}`;
+}
+
+export function serializePublicUrl(route: PlainObject, locationSlug?: string) {
+  const effectiveLocationSlug = (locationSlug || route.locationSlug)?.toLowerCase().trim();
   const sourceRefinementList = route.refinementList || {};
   const refinementList: PlainObject = {};
 
@@ -978,7 +1067,7 @@ export function serializePublicUrl(route: PlainObject) {
     "vehicle_type",
     "fuel_type",
     "transmission",
-    "location",
+    ...(effectiveLocationSlug ? [] : ["location" as const]),
   ] as const;
 
   otherFacetAttributes.forEach((attr) => {
@@ -1021,6 +1110,10 @@ export function serializePublicUrl(route: PlainObject) {
   const sort = getPublicSort(route.sortBy);
   if (sort) {
     queryParams.push(`sortBy=status_rank:asc,${sort.field}:${sort.direction.toLowerCase()}`);
+  }
+
+  if (effectiveLocationSlug && !pathSegments.some(isLocationSlug)) {
+    pathSegments.push(effectiveLocationSlug);
   }
 
   const basePath = pathSegments.length ? `/inventory/${pathSegments.join("/")}` : "/inventory";
@@ -1203,14 +1296,24 @@ export function readRouteState(): PlainObject {
     resolveUnkeyedQueryToken(decoded, refinementList);
   };
 
+  let detectedLocationSlug: string | undefined;
+
   // 1. Process Pathname tokens (e.g. /inventory/Ram:1500&colors=Blue,BRILLIANT-RED or /inventory/Ram/1500/Blue)
   if (isInventoryListingPath(window.location.pathname)) {
     const pathContent = window.location.pathname.replace(/^\/inventory\/?/, "").trim();
     if (pathContent) {
       const segments = pathContent.split("/").filter(Boolean);
       for (const segment of segments) {
+        if (isLocationSlug(segment)) {
+          detectedLocationSlug = segment.toLowerCase().trim();
+          continue;
+        }
         const tokens = segment.split("&").filter(Boolean);
         for (const token of tokens) {
+          if (isLocationSlug(token)) {
+            detectedLocationSlug = token.toLowerCase().trim();
+            continue;
+          }
           const eqIdx = token.indexOf("=");
           if (eqIdx !== -1) {
             processToken(token.slice(0, eqIdx), token.slice(eqIdx + 1));
@@ -1280,6 +1383,11 @@ export function readRouteState(): PlainObject {
   }
 
   const route: PlainObject = { refinementList, range };
+  const historyLocationSlug = typeof window !== "undefined" ? window.history.state?.__locationSlug : undefined;
+  const finalLocationSlug = detectedLocationSlug || historyLocationSlug;
+  if (finalLocationSlug) {
+    route.locationSlug = finalLocationSlug;
+  }
   if (query) route.query = query;
   if (sortField) route.sortField = sortField;
   if (sortDirection) route.sortDirection = sortDirection;
@@ -1335,11 +1443,13 @@ export const createInventoryStateMapping = (config: AppConfig) => {
   return {
     stateToRoute(uiState: UiState) {
       const state = uiState[indexName] || {};
+      const currentRoute = typeof window !== "undefined" ? readRouteState() : {};
       return {
         query: state.query || undefined,
         refinementList: sanitizeRefinementList(state.refinementList || {}),
         range: state.range || {},
         sortBy: state.sortBy && state.sortBy !== defaultSort ? state.sortBy : undefined,
+        locationSlug: currentRoute.locationSlug,
       };
     },
 
@@ -1360,11 +1470,12 @@ export const createInventoryStateMapping = (config: AppConfig) => {
   };
 };
 
-export function createInventoryRouter(_config: AppConfig) {
+export function createInventoryRouter(_config: AppConfig, initialLocationSlug?: string) {
   watchExternalUrlChanges();
   let callback: ((route: PlainObject) => void) | null = null;
   const initialRoute = readRouteState();
-  let previousRoute = initialRoute;
+  let currentLocationSlug = initialLocationSlug || initialRoute.locationSlug;
+  let previousRoute = { ...initialRoute, locationSlug: currentLocationSlug };
   let pathFilters: PathFilters =
     typeof window !== "undefined"
       ? window.history.state?.__inventoryPathFilters || getPathFilters(initialRoute)
@@ -1375,9 +1486,9 @@ export function createInventoryRouter(_config: AppConfig) {
   let lastWrittenUrl: string | null = null;
 
   if (typeof window !== "undefined" && Object.keys(pathFilters).length && window.location.pathname === "/inventory") {
-    const bootstrapUrl = serializePublicUrl(initialRoute);
+    const bootstrapUrl = serializePublicUrl(initialRoute, currentLocationSlug);
     isInternalUrlWrite = true;
-    window.history.replaceState({ ...initialRoute, __inventoryPathFilters: pathFilters }, "", bootstrapUrl);
+    window.history.replaceState({ ...initialRoute, __inventoryPathFilters: pathFilters, __locationSlug: currentLocationSlug }, "", bootstrapUrl);
     isInternalUrlWrite = false;
     lastWrittenUrl = bootstrapUrl;
   }
@@ -1386,12 +1497,13 @@ export function createInventoryRouter(_config: AppConfig) {
     if (typeof window === "undefined") return;
     if (!isInventoryListingPath(window.location.pathname)) return;
 
-    const url = serializePublicUrl(route);
+    const slugToWrite = currentLocationSlug || route.locationSlug;
+    const url = serializePublicUrl(route, slugToWrite);
 
     if (url === lastWrittenUrl) return;
     lastWrittenUrl = url;
 
-    const state = { ...route, __inventoryPathFilters: filters };
+    const state = { ...route, __inventoryPathFilters: filters, __locationSlug: slugToWrite };
 
     // Safari often jumps scroll UP on history.replaceState. Only correct
     // upward jumps so bottom infinite-scroll growth is not fought.
@@ -1410,7 +1522,8 @@ export function createInventoryRouter(_config: AppConfig) {
   const notify = () => {
     if (!isInventoryListingPath(window.location.pathname)) return;
     const route = readRouteState();
-    previousRoute = route;
+    if (route.locationSlug) { currentLocationSlug = route.locationSlug; }
+    previousRoute = { ...route, locationSlug: currentLocationSlug };
     if (window.location.pathname.startsWith("/inventory")) {
       pathFilters = getPathFilters(route);
     }
@@ -1419,19 +1532,36 @@ export function createInventoryRouter(_config: AppConfig) {
   externalUrlListeners.add(notify);
 
   return {
-    read: readRouteState,
+    read() {
+      const route = readRouteState();
+      if (currentLocationSlug && !route.locationSlug) {
+        route.locationSlug = currentLocationSlug;
+      }
+      return route;
+    },
 
     write(nextRoute: PlainObject) {
+      if (nextRoute.locationSlug) {
+        currentLocationSlug = nextRoute.locationSlug;
+      }
       pathFilters = getPathFilters(nextRoute);
-      previousRoute = nextRoute;
-      performWrite(nextRoute, pathFilters);
+      previousRoute = { ...nextRoute, locationSlug: currentLocationSlug };
+      performWrite(previousRoute, pathFilters);
     },
 
     resync,
 
+    setLocationSlug(slug?: string) {
+      currentLocationSlug = slug;
+      if (typeof window !== "undefined") {
+        performWrite(previousRoute, pathFilters);
+      }
+    },
+
     createURL(routeState: PlainObject) {
       // InstantSearch only uses this for links; write() is the canonical serializer.
-      const url = serializePublicUrl(routeState);
+      const slugToWrite = currentLocationSlug || routeState.locationSlug;
+      const url = serializePublicUrl(routeState, slugToWrite);
       return typeof window !== "undefined" ? `${window.location.origin}${url}` : url;
     },
 
