@@ -17,7 +17,7 @@ export default function LocationSEOContent({ data }: LocationSEOContentProps) {
         {/* Guide Section (H2) */}
         <h2
           id="location-guide-heading"
-          className="font-semibold text-gray-900 tracking-tight mb-4"
+          className="font-bold text-gray-900 tracking-tight mb-4"
         >
           {seo.guideHeading}
         </h2>
@@ -34,7 +34,7 @@ export default function LocationSEOContent({ data }: LocationSEOContentProps) {
         {/* Overview Section */}
         {seo.overview && (
           <div className="mb-8">
-            <h3 className="font-bold text-gray-900 mb-4">
+            <h3 className="font-semibold text-gray-900 mb-4">
               {seo.overview.heading}
             </h3>
             <div className="space-y-4 text-gray-700 leading-relaxed">
