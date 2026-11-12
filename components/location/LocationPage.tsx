@@ -6,9 +6,10 @@ import LocationInventorySkeleton from "./LocationInventorySkeleton";
 
 export interface LocationPageProps {
   cityKey: string;
+  locationSlug?: string;
 }
 
-export default async function LocationPage({ cityKey }: LocationPageProps) {
+export default async function LocationPage({ cityKey, locationSlug }: LocationPageProps) {
   let safeD = getSafeDealershipConfig(defaultAppConfig.dealership);
   let resolvedAppConfig = defaultAppConfig;
   try {
@@ -125,6 +126,7 @@ export default async function LocationPage({ cityKey }: LocationPageProps) {
           city={data.city}
           heading={data.heading}
           locationData={data}
+          locationSlug={locationSlug || `used-car-${cityKey}`}
           hasLocationVehicles={hasVehicles}
         />
       </Suspense>
