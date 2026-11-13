@@ -126,7 +126,7 @@ export default async function LocationPage({ cityKey, locationSlug }: LocationPa
           city={data.city}
           heading={data.heading}
           locationData={data}
-          locationSlug={locationSlug || `used-car-${cityKey}`}
+          locationSlug={locationSlug || `used-cars-${cityKey}`}
           hasLocationVehicles={hasVehicles}
         />
       </Suspense>
