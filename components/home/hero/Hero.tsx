@@ -6,12 +6,17 @@ import { Search, ChevronRight, Wallet, Repeat } from "lucide-react";
 import HeroDesktop from "@/assets/cars/HomebgImg.png";
 import HeroMobile from "@/assets/cars/hero-mobile.png";
 import Link from "next/link";
+import { useRecentlyViewed } from "@/lib/recentlyViewed";
 
-const src = (img: any) => (typeof img === "string" ? img : img?.src);
+const src = (img: unknown) => (typeof img === "string" ? img : (img as { src?: string })?.src);
 
 const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  const { recentlyViewed, isHydrated } = useRecentlyViewed();
+
+  // Welcome Back triggers only if the user has previously opened at least one VDP
+  const isReturningVisitor = isHydrated && recentlyViewed.length > 0;
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -47,9 +52,18 @@ const Hero = () => {
       <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-16 lg:mt-24 mx-auto flex flex-col justify-between h-full min-h-[450px] md:min-h-[480px]">
         {/* Top Text & Search Section */}
         <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
-            Right Car. <br />
-            Right Price.
+          <h1
+            suppressHydrationWarning
+            className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md"
+          >
+            {isReturningVisitor ? (
+              "WELCOME BACK"
+            ) : (
+              <>
+                Right Car. <br />
+                Right Price.
+              </>
+            )}
           </h1>
 
           {/* Search Form */}

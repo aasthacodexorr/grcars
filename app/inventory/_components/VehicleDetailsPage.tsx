@@ -165,7 +165,7 @@ export default async function VehicleDetailsPage({
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(carSchema) }}
             />
-            <RecentlyViewedTracker inventoryId={id} />
+            <RecentlyViewedTracker vehicle={vehicle} inventoryId={id} />
 
             {/* Header spanning 100% viewport, inside contents are usually centered natively */}
             <div className="w-full bg-hero-bg">
