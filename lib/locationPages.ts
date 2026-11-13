@@ -58,7 +58,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
   "brampton": {
     "city": "Brampton",
     "province": "Ontario",
-    "slug": "/inventory/used-car-brampton",
+    "slug": "/inventory/used-cars-brampton",
     "primaryKeyword": "car dealers in Brampton",
     "secondaryKeywords": [
       "used car dealership Brampton",
@@ -239,8 +239,8 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.grcars.ca/inventory/used-car-brampton",
-          "url": "https://www.grcars.ca/inventory/used-car-brampton",
+          "@id": "https://www.grcars.ca/inventory/used-cars-brampton",
+          "url": "https://www.grcars.ca/inventory/used-cars-brampton",
           "name": "Car Dealers in Brampton | Used Car Dealership | GR Cars",
           "description": "GR Cars is one of the trusted car dealers in Brampton. Shop cheap used cars, get pre-qualified with no credit hit and trade in fast at 316 Orenda Rd.",
           "about": {
@@ -261,7 +261,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
               "@type": "ListItem",
               "position": 2,
               "name": "Used Car Dealership Brampton",
-              "item": "https://www.grcars.ca/inventory/used-car-brampton"
+              "item": "https://www.grcars.ca/inventory/used-cars-brampton"
             }
           ]
         },
@@ -324,7 +324,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
   "caledon": {
     "city": "Caledon",
     "province": "Ontario",
-    "slug": "/inventory/used-car-caledon",
+    "slug": "/inventory/used-cars-caledon",
     "primaryKeyword": "used cars for sale Caledon",
     "secondaryKeywords": [
       "affordable used cars in Caledon",
@@ -509,8 +509,8 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.grcars.ca/inventory/used-car-caledon",
-          "url": "https://www.grcars.ca/inventory/used-car-caledon",
+          "@id": "https://www.grcars.ca/inventory/used-cars-caledon",
+          "url": "https://www.grcars.ca/inventory/used-cars-caledon",
           "name": "Used Cars for Sale Caledon | Affordable Used Cars | GR Cars",
           "description": "Find used cars for sale for Caledon drivers at GR Cars. Affordable trucks, SUVs and sedans, no-credit-hit pre-approval, just down Highway 410.",
           "about": {
@@ -537,7 +537,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
               "@type": "ListItem",
               "position": 2,
               "name": "Used Cars Caledon",
-              "item": "https://www.grcars.ca/inventory/used-car-caledon"
+              "item": "https://www.grcars.ca/inventory/used-cars-caledon"
             }
           ]
         },
@@ -592,7 +592,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
   "milton": {
     "city": "Milton",
     "province": "Ontario",
-    "slug": "/inventory/used-car-milton",
+    "slug": "/inventory/used-cars-milton",
     "primaryKeyword": "used cars for sale in Milton",
     "secondaryKeywords": [
       "used car dealership Milton Ontario",
@@ -779,8 +779,8 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.grcars.ca/inventory/used-car-milton",
-          "url": "https://www.grcars.ca/inventory/used-car-milton",
+          "@id": "https://www.grcars.ca/inventory/used-cars-milton",
+          "url": "https://www.grcars.ca/inventory/used-cars-milton",
           "name": "Used Cars for Sale in Milton | Cheap Used Cars | GR Cars",
           "description": "Browse used cars for sale in Milton, Ontario at GR Cars. Cheap used cars, SUVs and trucks with no-credit-hit pre-approval. Easy drive via the 401 & 407.",
           "about": {
@@ -801,7 +801,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
               "@type": "ListItem",
               "position": 2,
               "name": "Used Cars Milton",
-              "item": "https://www.grcars.ca/inventory/used-car-milton"
+              "item": "https://www.grcars.ca/inventory/used-cars-milton"
             }
           ]
         },
@@ -856,7 +856,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
   "mississauga": {
     "city": "Mississauga",
     "province": "Ontario",
-    "slug": "/inventory/used-car-mississauga",
+    "slug": "/inventory/used-cars-mississauga",
     "primaryKeyword": "used car dealer Mississauga",
     "secondaryKeywords": [
       "cheap used cars in Mississauga",
@@ -1029,7 +1029,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "Service",
-          "@id": "https://www.grcars.ca/inventory/used-car-mississauga#sell",
+          "@id": "https://www.grcars.ca/inventory/used-cars-mississauga#sell",
           "name": "Sell My Car Mississauga – Instant Vehicle Offer",
           "serviceType": "Used Car Buying",
           "provider": {
@@ -1043,7 +1043,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "Service",
-          "@id": "https://www.grcars.ca/inventory/used-car-mississauga#sales",
+          "@id": "https://www.grcars.ca/inventory/used-cars-mississauga#sales",
           "name": "Affordable Used Cars for Mississauga Drivers",
           "serviceType": "Used Car Sales and Financing",
           "provider": {
@@ -1056,8 +1056,8 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.grcars.ca/inventory/used-car-mississauga",
-          "url": "https://www.grcars.ca/inventory/used-car-mississauga",
+          "@id": "https://www.grcars.ca/inventory/used-cars-mississauga",
+          "url": "https://www.grcars.ca/inventory/used-cars-mississauga",
           "name": "Used Car Dealer Mississauga | Affordable Used Cars | GR Cars",
           "description": "Need a used car dealer near Mississauga? GR Cars offers affordable used cars, pre-approval with no credit hit and instant offers when you sell your car.",
           "about": {
@@ -1102,7 +1102,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
               "@type": "ListItem",
               "position": 2,
               "name": "Used Car Dealer Mississauga",
-              "item": "https://www.grcars.ca/inventory/used-car-mississauga"
+              "item": "https://www.grcars.ca/inventory/used-cars-mississauga"
             }
           ]
         },
@@ -1165,7 +1165,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
   "toronto": {
     "city": "Toronto",
     "province": "Ontario",
-    "slug": "/inventory/used-car-toronto",
+    "slug": "/inventory/used-cars-toronto",
     "primaryKeyword": "used car dealership Toronto",
     "secondaryKeywords": [
       "cheap used cars in Toronto",
@@ -1363,7 +1363,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "Service",
-          "@id": "https://www.grcars.ca/inventory/used-car-toronto#sales",
+          "@id": "https://www.grcars.ca/inventory/used-cars-toronto#sales",
           "name": "Affordable Used Cars for Toronto Drivers",
           "serviceType": "Used Car Sales and Financing",
           "provider": {
@@ -1377,7 +1377,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "Service",
-          "@id": "https://www.grcars.ca/inventory/used-car-toronto#sell",
+          "@id": "https://www.grcars.ca/inventory/used-cars-toronto#sell",
           "name": "Sell My Car Toronto",
           "serviceType": "Used Car Buying and Trade-In",
           "provider": {
@@ -1391,8 +1391,8 @@ export const locationPages: Record<string, LocationPageConfig> = {
         },
         {
           "@type": "WebPage",
-          "@id": "https://www.grcars.ca/inventory/used-car-toronto",
-          "url": "https://www.grcars.ca/inventory/used-car-toronto",
+          "@id": "https://www.grcars.ca/inventory/used-cars-toronto",
+          "url": "https://www.grcars.ca/inventory/used-cars-toronto",
           "name": "Used Car Dealership Toronto | Cheap Used Cars | GR Cars",
           "description": "GR Cars helps Toronto drivers find affordable used cars and sell their cars fast. Get pre-qualified with no credit hit and browse our inventory today.",
           "about": {
@@ -1413,7 +1413,7 @@ export const locationPages: Record<string, LocationPageConfig> = {
               "@type": "ListItem",
               "position": 2,
               "name": "Used Car Dealership Toronto",
-              "item": "https://www.grcars.ca/inventory/used-car-toronto"
+              "item": "https://www.grcars.ca/inventory/used-cars-toronto"
             }
           ]
         },
