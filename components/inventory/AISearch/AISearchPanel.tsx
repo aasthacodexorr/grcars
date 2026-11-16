@@ -338,7 +338,7 @@ export const AIChatSidebar = ({
 
           <div className="min-w-0">
             <h3 className="text-[15px] font-semibold text-gray-900 leading-tight">
-              GrCars Assistant
+              GR Cars Assistant
             </h3>
 
             <p className="text-[12px] text-gray-500 leading-[12px] mt-0.5">

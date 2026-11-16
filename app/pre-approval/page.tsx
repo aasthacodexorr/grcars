@@ -113,7 +113,7 @@ const PreApproval = () => {
                             id="financing_form"
                             src={`${SITE_CONFIG.urls.financeRenderApiUrl}?`}
                             name="iframe_a"
-                            title="GrCars financing application"
+                            title="GR Cars financing application"
                             scrolling="no"
                             className="w-full block transition-[height] duration-300 ease-out border-0"
                             style={{
@@ -130,7 +130,7 @@ const PreApproval = () => {
                     <div className="relative w-full min-h-[400px] md:min-h-[70vh]">
                         <Image
                             src={finImg}
-                            alt="GR Dealership"
+                            alt="GR Cars Dealership"
                             fill
                             priority
                             className="object-cover"
@@ -142,14 +142,14 @@ const PreApproval = () => {
                         {/* Content Container */}
                         <div className="absolute inset-0 z-10 mx-auto max-w-[1280px] px-8 md:px-0 flex flex-col justify-center items-start text-left">
                             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight uppercase leading-tight mb-4">
-                                Welcome to GR
+                                Welcome to GR Cars
                             </h2>
 
                             <p className="text-base text-white font-bold max-w-2xl leading-relaxed">
-                                GR is an OMVIC licensed dealer and a
+                                GR Cars is an OMVIC licensed dealer and a
                                 proud member of the Used Car Dealers Association
                                 (UCDA) so you can buy your next vehicle with
-                                confidence. At GR we proudly sell used
+                                confidence. At GR Cars we proudly sell used
                                 cars to customers from Brampton, Ontario
                                 including Toronto, Mississauga, Etobicoke,
                                 Milton, Caledon, Oakville, Bolton, Guelph,

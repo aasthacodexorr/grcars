@@ -127,7 +127,7 @@ export const ImageGallery = ({ images, title, isSold = false, centered, id, vehi
       {/* Main image */}
       <div
         onClick={() => lightboxRef.current?.openGallery(activeIndex)}
-        className="relative w-full aspect-[16/9] sm:aspect-[16/8] rounded-2xl overflow-hidden bg-gray-100 shadow-sm cursor-zoom-in"
+        className="relative w-full aspect-[16/9] sm:aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 shadow-sm cursor-zoom-in"
       >
         {isSold && (
           <div className="absolute top-4 right-4 z-20 bg-red-600 text-white text-sm font-bold px-4 py-2 rounded-md shadow-lg uppercase">

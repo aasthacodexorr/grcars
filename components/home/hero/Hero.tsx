@@ -39,7 +39,7 @@ const Hero = () => {
         <img
           src={src(HeroMobile)}
           alt="Neighborhood background"
-          className="h-full w-full object-cover object-start"
+          className="h-full w-full object-cover object-[50%_top] md:object-[35%_center]"
           fetchPriority="high"
         />
       </picture>

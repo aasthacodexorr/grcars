@@ -46,7 +46,7 @@ export const FinanceAdCard = () => {
 
       {/* Heading */}
       <h3 className="text-[22px] font-bold tracking-tight text-[#051329]">
-        Finance with GrCars
+        Finance with GR Cars
       </h3>
 
       {/* Subtext */}
@@ -112,7 +112,7 @@ export const GreatDealsAdCard = () => {
       <div className="w-full flex items-center justify-center my-4 bg-white">
         <img
           src={AdCard3?.src}
-          alt="GrCars Certified"
+          alt="GR Cars Certified"
           className="w-72 h-auto object-contain transform bg-white transition-transform duration-300"
         />
       </div>

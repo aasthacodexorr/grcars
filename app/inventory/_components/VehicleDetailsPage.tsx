@@ -314,7 +314,7 @@ export default async function VehicleDetailsPage({
                                                 </li>
                                                 <li className="flex items-start gap-3">
                                                     <span className="text-gray-900 font-bold leading-none mt-1">•</span>
-                                                    <span>Available when you finance with GrCars</span>
+                                                    <span>Available when you finance with GR Cars</span>
                                                 </li>
                                             </ul>
                                         </div>

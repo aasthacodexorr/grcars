@@ -133,7 +133,7 @@ const Finance = () => {
               key={iframeSrc}
               src={iframeSrc}
               name="iframe_a"
-              title="GrCars financing application"
+              title="GR Cars financing application"
               scrolling="no"
               className="block w-full border-0"
               style={{
@@ -152,7 +152,7 @@ const Finance = () => {
           <div className="relative min-h-[400px] w-full md:min-h-[70vh]">
             <Image
               src={finImg}
-              alt="GR Dealership"
+              alt="GR Cars Dealership"
               fill
               priority
               className="object-cover"
@@ -162,13 +162,13 @@ const Finance = () => {
 
             <div className="absolute inset-0 z-10 mx-auto flex max-w-[1280px] flex-col items-start justify-center px-8 text-left md:px-0">
               <h2 className="mb-4 text-3xl font-extrabold uppercase leading-tight tracking-tight md:text-5xl">
-                Welcome to GRCars
+                Welcome to GR Cars
               </h2>
 
               <p className="max-w-2xl text-base font-bold leading-relaxed text-white">
-                GR is an OMVIC licensed dealer and a proud member of
+                GR Cars is an OMVIC licensed dealer and a proud member of
                 the Used Car Dealers Association (UCDA) so you can buy your
-                next vehicle with confidence. At GR we proudly sell
+                next vehicle with confidence. At GR Cars we proudly sell
                 used cars to customers from Brampton, Ontario including
                 Toronto, Mississauga, Etobicoke, Milton, Caledon, Oakville,
                 Bolton, Guelph, Kitchener, Burlington, Waterloo and
