@@ -95,6 +95,12 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgData) }}
         />
+        {/* Synchronously check returning visitor before paint to prevent flash of initial text */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var v=localStorage.getItem("grcars_recently_viewed");if(v){var p=JSON.parse(v);if(Array.isArray(p)&&p.length>0){document.documentElement.classList.add("is-returning-visitor");}}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         <Providers config={appConfig}>
