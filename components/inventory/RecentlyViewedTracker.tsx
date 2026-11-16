@@ -1,29 +1,34 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
-import { useRecentlyViewed } from "@/lib/recentlyViewed";
+import { useRecentlyViewed, getVehicleInventoryId } from "@/lib/recentlyViewed";
 
 interface RecentlyViewedTrackerProps {
-  inventoryId: string | number;
+  vehicle?: Record<string, any> | null;
+  inventoryId?: string | number;
 }
 
 export default function RecentlyViewedTracker({
+  vehicle,
   inventoryId,
 }: RecentlyViewedTrackerProps) {
   const { addRecentlyViewed } = useRecentlyViewed();
-  const lastTrackedInventoryId = useRef<string | null>(null);
+  const lastTrackedKey = useRef<string | null>(null);
 
   useEffect(() => {
-    const normalizedId = String(inventoryId).trim();
+    const target = vehicle ?? (inventoryId ? { id: inventoryId } : null);
+    if (!target) return;
 
-    if (!normalizedId || lastTrackedInventoryId.current === normalizedId) {
+    const currentId = getVehicleInventoryId(vehicle) || (inventoryId ? String(inventoryId).trim() : "");
+    if (!currentId || lastTrackedKey.current === currentId) {
       return;
     }
 
-    lastTrackedInventoryId.current = normalizedId;
-    addRecentlyViewed(normalizedId);
-  }, [addRecentlyViewed, inventoryId]);
+    lastTrackedKey.current = currentId;
+    if (vehicle) {
+      addRecentlyViewed(vehicle);
+    }
+  }, [addRecentlyViewed, vehicle, inventoryId]);
 
   return null;
 }
