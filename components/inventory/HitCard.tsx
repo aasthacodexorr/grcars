@@ -162,7 +162,13 @@ const InfoIcon = () => (
   </svg>
 );
 
-export const HitCard = ({ hit }: { hit: HitCardHit }) => {
+export const HitCard = ({
+  hit,
+  showRecentlyViewed = true,
+}: {
+  hit: HitCardHit;
+  showRecentlyViewed?: boolean;
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activePriceTab, setActivePriceTab] = useState<"finance" | "cash">("finance");
   const [activeTooltip, setActiveTooltip] = useState<"finance" | "cash" | "payment" | null>(null);
@@ -175,7 +181,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
   const { hasBeenViewed } = useRecentlyViewed();
 
   const inventoryId = String(hit.inventory_id ?? hit.id ?? "");
-  const isRecentlyViewedVehicle = hasBeenViewed(inventoryId);
+  const isRecentlyViewedVehicle = showRecentlyViewed && hasBeenViewed(inventoryId);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
