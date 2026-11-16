@@ -153,14 +153,11 @@ const Footer = () => {
               {col.sections.map((sec, secIdx) => (
                 <div key={secIdx}>
                   <div className="mb-3">
-                    <h3 className="text-md font-bold text-white tracking-wide inline-block">
+                    <h3 className="text-sm font-bold text-white tracking-wide inline-block">
                       {sec.title}
                     </h3>
-                    {sec.hasUnderline && (
-                      <div className="w-12 h-[2px] bg-blue-500 mt-1" />
-                    )}
                   </div>
-                  <ul className="space-y-3 text-[14px] font-sans">
+                  <ul className="space-y-3 text-[12px] font-sans">
                     {sec.links.map((link, linkIdx) => {
                       const isExternal = link.external || link.href.startsWith("http");
                       return (
