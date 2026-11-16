@@ -18,6 +18,7 @@ const Hero = () => {
   // Welcome Back triggers only if the user has previously opened at least one VDP
   const isReturningVisitor = isHydrated && recentlyViewed.length > 0;
 
+  // const isReturningVisitor = false
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
 
@@ -54,15 +55,18 @@ const Hero = () => {
         <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
           <h1
             suppressHydrationWarning
-            className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md"
           >
             {isReturningVisitor ? (
-              "WELCOME BACK"
+              <p className="text-3xl md:text-5xl mt-4 lg:text-[47px] font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
+              <br/>
+              WELCOME BACK
+              </p>
+              
             ) : (
-              <>
+              <p className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
                 Right Car. <br />
                 Right Price.
-              </>
+              </p>
             )}
           </h1>
 
