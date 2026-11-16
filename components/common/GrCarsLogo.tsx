@@ -25,10 +25,10 @@ const GrCarsLogo = () => {
       {logo ? 
         <div className="lg:col-span-2">
               <div className="flex items-center justify-center ml-4 bg-black">
-                <img src={logo?.src} alt="Logo" width={"240"} />
+                <img src={logo?.src} alt={`${safeD.dealership_name} Logo`} width={"240"} />
               </div>
           </div>: 
-        <p className="text-2xl font-bold uppercase"> GR </p>
+        <p className="text-2xl font-bold uppercase"> GR Cars </p>
       }
     </>
   );

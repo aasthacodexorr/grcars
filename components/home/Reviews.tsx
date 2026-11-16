@@ -64,7 +64,7 @@ const reviews: Review[] = [
   {
     name: "kuldeep mangat",
     date: "08/22/2025",
-    text: "great experience with arsh and GR card"
+    text: "great experience with arsh and GR cars"
   },
   {
     name: "JAGMEET SINGH DHILLON",

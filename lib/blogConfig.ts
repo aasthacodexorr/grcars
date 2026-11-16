@@ -265,7 +265,7 @@ export const BLOG_POSTS_LIST: BlogPostItem[] = [
   },
   {
     slug: "discovering-gedi-route-your-gateway-to-quality-cars-in-brampton",
-    title: "Discovering GR: Your Gateway to Quality Cars in Brampton",
+    title: "Discovering GR Cars: Your Gateway to Quality Cars in Brampton",
     year: 2024,
   },
 ];

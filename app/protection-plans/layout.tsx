@@ -3,7 +3,7 @@ import { generateMetadata as generateMetadataHelper } from "@/lib/metadataHelper
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateMetadataHelper({
-    title: "Protect Your Vehicle | Warranty & Coverage Plans - GrCars",
+    title: "Protect Your Vehicle | Warranty & Coverage Plans - GR Cars",
     description: "Protect your vehicle with comprehensive coverage plans. From extended warranties to added protection, drive with confidence anywhere in Canada. Visit GR Cars for full details."
   });
 }

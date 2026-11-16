@@ -252,7 +252,7 @@ const Header = () => {
           {/* Welcome Header Section (Pushed down with spacing) */}
           <div className="px-6 pt-2 pb-4">
             <h2 className="text-[24px] font-bold text-gray-900 tracking-tight">
-              Welcome to GRCars
+              Welcome to GR Cars
             </h2>
             <p className="text-[14px] text-gray-500 mt-0.5">
               Personalize your experience
@@ -264,7 +264,7 @@ const Header = () => {
             {/* Finance Section */}
             <div className="flex flex-col gap-2">
               <h3 className="text-[18px] font-bold text-gray-900">
-                Finance with GRCars
+                Finance with GR Cars
               </h3>
               <div className="rounded-2xl border border-gray-200 p-4 bg-white shadow-sm flex flex-col gap-3">
                 <p className="text-[15px] leading-relaxed text-gray-600">
