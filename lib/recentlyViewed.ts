@@ -81,6 +81,9 @@ if (typeof window !== "undefined") {
   try {
     const initialRaw = window.localStorage.getItem(RECENTLY_VIEWED_STORAGE_KEY);
     const initialItems = parseVehicles(initialRaw);
+    if (initialItems.length > 0) {
+      document.documentElement.classList.add("is-returning-visitor");
+    }
     for (const item of initialItems) {
       const id = getVehicleInventoryId(item);
       if (id) viewedBeforeVisitSet.add(id);
@@ -160,6 +163,11 @@ function saveVehicles(vehicles: RecentlyViewedVehicle[]) {
   try {
     if (typeof window !== "undefined") {
       window.localStorage.setItem(RECENTLY_VIEWED_STORAGE_KEY, nextSnapshot);
+      if (validVehicles.length > 0) {
+        document.documentElement.classList.add("is-returning-visitor");
+      } else {
+        document.documentElement.classList.remove("is-returning-visitor");
+      }
       try {
         window.dispatchEvent(new Event("grcars_recently_viewed_updated"));
       } catch {
@@ -229,6 +237,9 @@ export function addRecentlyViewed(vehicleOrId: RecentlyViewedVehicle | string | 
 
 export function clearRecentlyViewed() {
   viewedBeforeVisitSet.clear();
+  if (typeof document !== "undefined") {
+    document.documentElement.classList.remove("is-returning-visitor");
+  }
   saveVehicles([]);
 }
 

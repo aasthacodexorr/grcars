@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronRight, Wallet, Repeat } from "lucide-react";
 import HeroDesktop from "@/assets/cars/HomebgImg.png";
@@ -15,10 +15,16 @@ const Hero = () => {
   const router = useRouter();
   const { recentlyViewed, isHydrated } = useRecentlyViewed();
 
-  // Welcome Back triggers only if the user has previously opened at least one VDP
-  const isReturningVisitor = isHydrated && recentlyViewed.length > 0;
+  // Keep returning visitor class in sync once client hydration completes
+  useEffect(() => {
+    if (!isHydrated) return;
+    if (recentlyViewed.length > 0) {
+      document.documentElement.classList.add("is-returning-visitor");
+    } else {
+      document.documentElement.classList.remove("is-returning-visitor");
+    }
+  }, [isHydrated, recentlyViewed.length]);
 
-  // const isReturningVisitor = false
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
 
@@ -56,18 +62,18 @@ const Hero = () => {
           <h1
             suppressHydrationWarning
           >
-            {isReturningVisitor ? (
-              <p className="text-3xl md:text-5xl mt-4 lg:text-[47px] font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
-              <br/>
-              WELCOME BACK
-              </p>
-              
-            ) : (
-              <p className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
+            <span className="hero-welcome-returning">
+              <span className="block text-3xl md:text-5xl mt-4 lg:text-[47px] font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
+                <br/>
+                WELCOME BACK
+              </span>
+            </span>
+            <span className="hero-welcome-default">
+              <span className="block text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
                 Right Car. <br />
                 Right Price.
-              </p>
-            )}
+              </span>
+            </span>
           </h1>
 
           {/* Search Form */}
