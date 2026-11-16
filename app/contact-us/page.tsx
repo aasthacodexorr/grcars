@@ -157,7 +157,7 @@ export default function ContactUs() {
                                     {bramptonLocation.address}
                                 </p>
 
-                                <p className="text-xl text-gray-800 my-4">
+                                {/* <p className="text-xl text-gray-800 my-4">
                                     Phone:{" "}
                                     <a
                                         href={`tel:+${bramptonLocation.phone}`}
@@ -165,7 +165,7 @@ export default function ContactUs() {
                                     >
                                         {bramptonLocation.phone}
                                     </a>
-                                </p>
+                                </p> */}
                             </div>
 
                             <div className="w-full h-[400px] sm:h-[450px] lg:h-[500px] rounded-lg overflow-hidden border border-gray-200 shadow-sm">
