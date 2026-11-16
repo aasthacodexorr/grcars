@@ -61,18 +61,19 @@ const Hero = () => {
         <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
           <h1
             suppressHydrationWarning
+            className="block text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md"
           >
             <span className="hero-welcome-returning">
-              <span className="block text-3xl md:text-5xl mt-4 lg:text-[47px] font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
+              <>
                 <br/>
                 WELCOME BACK
-              </span>
+              </>
             </span>
             <span className="hero-welcome-default">
-              <span className="block text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md">
+              <>
                 Right Car. <br />
                 Right Price.
-              </span>
+              </>
             </span>
           </h1>
 
