@@ -162,7 +162,7 @@ const Finance = () => {
 
             <div className="absolute inset-0 z-10 mx-auto flex max-w-[1280px] flex-col items-start justify-center px-8 text-left md:px-0">
               <h2 className="mb-4 text-3xl font-extrabold uppercase leading-tight tracking-tight md:text-5xl">
-                Welcome to GR
+                Welcome to GRCars
               </h2>
 
               <p className="max-w-2xl text-base font-bold leading-relaxed text-white">

@@ -174,7 +174,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
   const { isInWishlist, addToWishlist, removeFromWishlist, isHydrated } = useWishlist();
   const { hasBeenViewed } = useRecentlyViewed();
 
-  const inventoryId = String(hit.inventory_id ?? "");
+  const inventoryId = String(hit.inventory_id ?? hit.id ?? "");
   const isRecentlyViewedVehicle = hasBeenViewed(inventoryId);
 
   useEffect(() => {
@@ -209,7 +209,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
     imageSrc = firstUrl.startsWith("/") ? `${SITE_CONFIG?.urls?.assetBaseUrl}${firstUrl}` : firstUrl;
   }
 
-  const slug = [hit.inventory_id, hit.year, hit.make, hit.model, hit.trim]
+  const slug = [hit.inventory_id ?? hit.id, hit.year, hit.make, hit.model, hit.trim]
     .filter(Boolean)
     .join("-")
     .toLowerCase()
@@ -245,7 +245,7 @@ export const HitCard = ({ hit }: { hit: HitCardHit }) => {
         <Link href={vehicleUrl} className="flex flex-col flex-1 focus:outline-none">
           {/* Image & Badges */}
           {/* Image & Badges */}
-          <div className="relative px-3">
+          <div className="relative px-3 pt-3">
             {/* Image + Sold ribbon container (isolated clipping) */}
             <div className="relative overflow-hidden rounded-xl">
               <Image

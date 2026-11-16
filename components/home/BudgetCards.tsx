@@ -138,7 +138,7 @@ export default function BudgetCards() {
   return (
     <div className="w-full flex flex-col items-center py-5 font-sans overflow-x-hidden">
       {/* 1. FIXED HEADING SECTION (Stationary on scroll) */}
-      <div className="w-full max-w-[1280px] px-8 md:px-0 mx-auto">
+      <div className="w-full max-w-[1280px] px-8 md:px-4 mx-auto">
         <h2 className="text-[20px] mb-4 md:text-[28px] font-bold text-[#0F2942]">
           Explore cars you’ll love
         </h2>
@@ -149,7 +149,7 @@ export default function BudgetCards() {
         ref={sliderRef}
         className="w-full max-w-[100vw] overflow-x-auto px-6 md:px-0 overflow-y-hidden snap-x snap-mandatory pt-3 pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
-        <div className="flex flex-row gap-5 items-stretch justify-start max-w-[1280px] mx-auto min-w-[min(100%,max-content)] px-3 md:px-0 after:content-[''] after:w-[1px] after:flex-none">
+        <div className="flex flex-row gap-5 items-stretch justify-start max-w-[1280px] mx-auto min-w-[min(100%,max-content)] px-3 md:px-4 after:content-[''] after:w-[1px] after:flex-none">
           {/* Card 1: Cars under $20K */}
           <article className="card-item snap-center w-[300px] flex-none h-[350px] rounded-[18px] p-4.5 flex flex-col bg-[#a8d4fc]">
             <h2 className="text-[#003366] text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em]">

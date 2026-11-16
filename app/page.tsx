@@ -2,9 +2,9 @@
    Home Page
    Root page of the GrCars website.
    Composes all homepage sections in order:
-   Hero → CategoryPills → PreQualify → NextRide →
-   FeaturedVehicles → Reviews → GrCarsDifference →
-   GetInTouch → Footer
+   Hero → CategoryPills → RecentlyViewedVehicles →
+   BudgetCards → PopularVehicles → PreQualify →
+   Reviews → FaqSection
 ========================= */
 
 "use client";
@@ -16,6 +16,7 @@ import { Header, Footer } from "@/components/layout";
 import {
   Hero,
   CategoryPills,
+  RecentlyViewedVehicles,
   PreQualify,
   NextRide,
   Reviews,
@@ -39,6 +40,7 @@ const HomePage = () => {
       </div>
 
       {/* Homepage sections */}
+      <RecentlyViewedVehicles />
       <CategoryPills />
       {/* <NextRide /> */}
       <BudgetCards/>
