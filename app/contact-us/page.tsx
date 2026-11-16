@@ -182,7 +182,7 @@ export default function ContactUs() {
 
                         {/* Right Column: Contact Form Iframe Container */}
                         <div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">
+                            <h3 className="text-xl font-bold text-gray-900 mb-4">
                                 Submit a question
                             </h3>
 
