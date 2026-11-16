@@ -35,7 +35,7 @@ export default function RecentlyViewedVehicles() {
             const vehicleId = getVehicleInventoryId(vehicle) || `vehicle-${index}`;
             return (
               <div key={vehicleId} className="flex flex-col h-full">
-                <HitCard hit={vehicle} />
+                <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>
             );
           })}
