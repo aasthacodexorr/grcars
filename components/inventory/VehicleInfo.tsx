@@ -144,7 +144,7 @@ export const VehicleHeaderAndCTA = ({
       {/* Primary Card Container (Observed for sticky bar) */}
       <div
         ref={inlineContainerRef}
-        className="w-full bg-white rounded-3xl font-sans text-start relative pt-5 lg:pt-0"
+        className="w-full bg-white rounded-3xl font-sans text-start relative pt-5 lg:pt-3"
       >
         {/* Vehicle Title */}
         <h1 className="text-2xl sm:text-[26px] px-6 font-extrabold text-[#0d2238] tracking-tight leading-tight">

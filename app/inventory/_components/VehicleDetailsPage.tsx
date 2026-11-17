@@ -341,12 +341,12 @@ export default async function VehicleDetailsPage({
                             {/* Right column: Sticky Sidebar + Right Aligned Wishlist */}
                             {showSidebar && (
                                 <div className="hidden lg:block lg:w-[450px] xl:w-[450px] 2xl:w-[520px]">
-                                    <div id="vdp-top-wishlist-desktop" className="flex justify-end w-full max-w-[410px] mb-3">
+                                    <div id="vdp-top-wishlist-desktop" className="flex justify-end w-full max-w-[410px]">
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
 
                                     <div className="sticky top-6 h-fit space-y-3">
-                                        <div className="max-w-[400px] shadow-xl rounded-xl bg-white overflow-hidden">
+                                        <div className="max-w-[400px] shadow-2xl rounded-xl bg-white overflow-hidden">
                                             <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop" />
                                         </div>
                                     </div>
