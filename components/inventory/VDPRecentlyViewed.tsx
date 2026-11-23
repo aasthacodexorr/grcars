@@ -2,9 +2,11 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useAppConfig } from "@/app/providers";
 import {
   useRecentlyViewed,
   getVehicleInventoryId,
+  isSoldVehicle,
 } from "@/lib/recentlyViewed";
 import { HitCard } from "@/components/inventory";
 
@@ -15,17 +17,19 @@ interface VDPRecentlyViewedProps {
 export default function VDPRecentlyViewed({
   currentVehicleId,
 }: VDPRecentlyViewedProps) {
+  const appConfig = useAppConfig();
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const { recentlyViewed, isHydrated } = useRecentlyViewed();
+  const { recentlyViewed, isHydrated } = useRecentlyViewed(appConfig);
 
   const otherVehicles = useMemo(() => {
     if (!recentlyViewed || recentlyViewed.length === 0) return [];
     const normalizedCurrentId = String(currentVehicleId).trim();
 
     return recentlyViewed.filter((item) => {
+      if (isSoldVehicle(item)) return false;
       const id = getVehicleInventoryId(item);
       return id !== "" && id !== normalizedCurrentId;
     });

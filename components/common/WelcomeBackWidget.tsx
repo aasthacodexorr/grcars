@@ -24,7 +24,7 @@ function BellIcon({ className }: { className?: string }) {
   );
 }
 
-import { useRecentlyViewed } from "@/lib/recentlyViewed";
+import { useRecentlyViewed, isSoldVehicle } from "@/lib/recentlyViewed";
 import { useAppConfig } from "@/app/providers";
 import { getConstants } from "@/constants";
 import { isVehicleDetailSlug } from "@/lib/inventoryUrls";
@@ -33,7 +33,7 @@ export default function WelcomeBackWidget() {
   const pathname = usePathname();
   const appConfig = useAppConfig();
   const { SITE_CONFIG, DEFAULT_PLACEHOLDER_IMAGE } = getConstants(appConfig);
-  const { recentlyViewedVehicles } = useRecentlyViewed();
+  const { recentlyViewedVehicles } = useRecentlyViewed(appConfig);
 
   const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -41,8 +41,14 @@ export default function WelcomeBackWidget() {
   const cardRef = useRef<HTMLDivElement>(null);
   const userInteractedRef = useRef(false);
 
+  // Active unsold recently viewed vehicles
+  const activeRecentlyViewed = useMemo(
+    () => recentlyViewedVehicles.filter((v) => !isSoldVehicle(v)),
+    [recentlyViewedVehicles]
+  );
+
   // Latest vehicle viewed
-  const latestVehicle = recentlyViewedVehicles[0];
+  const latestVehicle = activeRecentlyViewed[0];
 
   // Route checks:
   // The notification icon should ONLY be shown on the inventory listing page.
