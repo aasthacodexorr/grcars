@@ -16,12 +16,14 @@ type VehicleFeaturesProps = {
   vehicle?: Vehicle | Record<string, any> | null;
   bodyType?: string | null;
   features?: string[];
+  className?: string;
 };
 
 export default function VehicleFeatures({
   vehicle,
   bodyType,
   features: explicitFeatures,
+  className,
 }: VehicleFeaturesProps) {
   const carouselRef = useRef<HTMLUListElement>(null);
   const [failedVideos, setFailedVideos] = useState<Set<string>>(() => new Set());
@@ -100,20 +102,20 @@ export default function VehicleFeatures({
 
   return (
     <section
-      className="w-full mb-8 font-sans  mx-auto max-w-[1440px] xl:max-w-[1600px] md:px-14 lg:px-20 2xl:px-0"
+      className={`w-full font-sans ${className || ""}`}
       aria-labelledby="vehicle-features-showcase-heading"
     >
-      {/* Header section with CarMax style typography and controls */}
-      <div className="lg:mb-5 flex flex-row sm:items-end justify-between gap-3">
-        <div className="max-w-2xl">
-          <h2 className="text-[22px] font-semibold text-black mb-[15px]">
-            Popular Features
-          </h2>
-          
-        </div>
+      {/* Header section with centered title and controls */}
+      <div className="relative mb-6">
+        <h2
+          id="vehicle-features-showcase-heading"
+          className="text-[30px] font-semibold text-black text-center"
+        >
+          Popular Features
+        </h2>
 
         {matchedFeatures.length > 1 && (
-          <div className="shrink-0 flex items-center gap-2 self-end sm:self-auto mb-5 lg:mb-0">
+          <div className="mt-4 sm:mt-0 flex justify-end sm:absolute sm:right-0 sm:top-1/2 sm:-translate-y-1/2 items-center gap-2">
             <button
               type="button"
               onClick={() => scroll("left")}

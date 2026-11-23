@@ -4,17 +4,29 @@ import { useEffect, useRef, useState } from 'react';
 
 const TABS = [
   { id: 'details', label: 'Vehicle Details', target: 'vehicle-details-section' },
-  { id: 'pricing', label: 'Pricing', target: 'vehicle-pricing-section' },
+  { id: 'pricing', label: 'Price Details', target: 'vehicle-pricing-section' },
+  { id: 'features', label: 'Features', target: 'vehicle-features-section' },
   { id: 'protection', label: 'Protection', target: 'vehicle-protection-section' },
   { id: 'description', label: 'Vehicle Description', target: 'vehicle-description-section' },
 ] as const;
 
 interface VehicleDetailsTabsNavProps {
   isSold?: boolean;
+  hasFeatures?: boolean;
+  hasDescription?: boolean;
 }
 
-export default function VehicleDetailsTabsNav({ isSold = false }: VehicleDetailsTabsNavProps) {
-  const tabs = isSold ? TABS.filter((t) => t.id !== 'pricing') : TABS;
+export default function VehicleDetailsTabsNav({
+  isSold = false,
+  hasFeatures = true,
+  hasDescription = true,
+}: VehicleDetailsTabsNavProps) {
+  const tabs = TABS.filter((t) => {
+    if (t.id === 'pricing' && isSold) return false;
+    if (t.id === 'features' && !hasFeatures) return false;
+    if (t.id === 'description' && !hasDescription) return false;
+    return true;
+  });
   const [activeTab, setActiveTab] = useState<string>('details');
   const [showTabs, setShowTabs] = useState(true);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -53,36 +65,36 @@ export default function VehicleDetailsTabsNav({ isSold = false }: VehicleDetails
   // Robust scroll-position listener to update active tab accurately
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200;
+      const navHeight = navRef.current?.getBoundingClientRect().height || 60;
+      const threshold = headerHeight + navHeight + 80;
 
+      let currentActive = tabs[0]?.id || 'details';
       for (const tab of tabs) {
         const el = document.getElementById(tab.target);
         if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveTab(tab.id);
-            break;
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= threshold) {
+            currentActive = tab.id;
           }
         }
       }
 
-      // Fallback for when scrolled past the very last section
-      const lastTab = tabs[tabs.length - 1];
-      const lastEl = document.getElementById(lastTab.target);
-      if (lastEl) {
-        const rect = lastEl.getBoundingClientRect();
-        if (rect.top <= 300) {
-          setActiveTab(lastTab.id);
-        }
+      // Fallback for when scrolled past the very last section or near bottom of page
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 100
+      ) {
+        currentActive = tabs[tabs.length - 1]?.id || currentActive;
       }
+
+      setActiveTab(currentActive);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [tabs, headerHeight]);
 
   const handleTabClick = (tabId: string, targetId: string) => {
     setActiveTab(tabId);
