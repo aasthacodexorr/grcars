@@ -7,6 +7,7 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import { DrawerProvider } from "@/context/DrawerContext";
 import { useDrawer } from "@/context/DrawerContext";
 import WishlistDrawer from "@/components/inventory/WishlistDrawer";
+import WelcomeBackWidget from "@/components/common/WelcomeBackWidget";
 
 export const AppConfigContext = createContext<AppConfig>(defaultAppConfig);
 
@@ -28,6 +29,7 @@ export function Providers({ children, config }: { children: React.ReactNode; con
         <WishlistProvider>
           <DrawerProvider>
             <WishlistDrawerWithState />
+            <WelcomeBackWidget />
             {children}
           </DrawerProvider>
         </WishlistProvider>

@@ -21,6 +21,9 @@ import { getAppConfig, getSafeDealershipConfig } from "@/lib/appConfig";
 import { generateMetadata as generateMetadataHelper } from "@/lib/metadataHelper";
 import { headers } from "next/headers";
 import AboutVehicle from "@/components/inventory/AboutVehicle";
+import VehicleFeatures from "@/components/inventory/VehicleFeatures";
+import WarrantyStatus from "@/components/inventory/WarrantyStatus";
+import VDPRecentlyViewed from "@/components/inventory/VDPRecentlyViewed";
 import { VehicleHeaderAndCTA } from "@/components/inventory/VehicleInfo";
 import VehicleDetailsTabsNav from "@/components/inventory/VehicleDetailsTabsNav";
 import ViewAllFeaturesButton from "@/components/inventory/ViewAllFeaturesButton";
@@ -225,6 +228,8 @@ export default async function VehicleDetailsPage({
                                 {/* Specs grid & Extended Coverage */}
                                 <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
                                     <AboutVehicle vehicle={vehicle} />
+                                    {/* Manufacturer Warranty Status */}
+                                    <WarrantyStatus vehicle={vehicle} />
                                     <ViewAllFeaturesButton
                                         standardJson={vehicle.standard}
                                         techSpecsJson={vehicle.technical_specification}
@@ -235,28 +240,11 @@ export default async function VehicleDetailsPage({
                                 {/* Pricing Section */}
                                 {!isSold && (
                                     <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
-                                    <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
+                                        <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {/* Cash Price Card */}
-                                        <div className="bg-white border border-gray-200 rounded-lg p-5">
+                                        <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-center">
                                             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
-                                                Cash Price
-                                            </h3>
-
-                                            <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
-                                                ${((vehicle.selling_price || vehicle.price || 28690) + 2000).toLocaleString()}
-                                            </div>
-
-                                            <p className="text-sm text-gray-600">
-                                                Cash price does not include taxes and licensing fees.
-                                            </p>
-                                        </div>
-
-                                        {/* Finance Price Card */}
-                                        <div className="bg-white border border-gray-200 rounded-lg p-5">
-                                            <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
-                                                Finance Price
+                                                Vehicle Price
                                             </h3>
 
                                             <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
@@ -264,12 +252,10 @@ export default async function VehicleDetailsPage({
                                             </div>
 
                                             <p className="text-sm text-gray-600">
-                                                Finance price does not include taxes and licensing fees.
+                                                Price does not include taxes and licensing fees.
                                             </p>
                                         </div>
                                     </div>
-                                </div>
-
                                 )}
 
                                 {/* Protection Section */}
@@ -321,6 +307,11 @@ export default async function VehicleDetailsPage({
                                     </div>
                                 </div>
 
+                                {/* Popular Vehicle Features Showcase (Mobile / Responsive: above Vehicle description) */}
+                                <div className="block lg:hidden w-full mb-10">
+                                    <VehicleFeatures vehicle={vehicle} />
+                                </div>
+
                                 {/* Vehicle Description Section */}
                                 {vehicle.vehicle_description && (
                                     <div
@@ -354,6 +345,11 @@ export default async function VehicleDetailsPage({
                             )}
                         </div>
                     </div>
+
+                    {/* Popular Vehicle Features Showcase (Desktop: full-width below two columns) */}
+                    <div className="hidden lg:block lg:mt-12 w-full">
+                        <VehicleFeatures vehicle={vehicle} />
+                    </div>
                 </div>
             </section>
             <div className="w-full mb-18 md:mb-0 lg:mt-10">
@@ -361,6 +357,9 @@ export default async function VehicleDetailsPage({
 
                 </div>
             </div>
+
+            {/* Recently Viewed Vehicles (excluding current open vehicle) */}
+            <VDPRecentlyViewed currentVehicleId={id} />
         </main>
     );
 }

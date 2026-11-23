@@ -29,12 +29,15 @@ export default function RecentlyViewedVehicles() {
           </h2>
         </div>
 
-        {/* Vehicle Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 px-3 lg:px-0">
+        {/* Vehicle Cards - Horizontal scroll on responsive, grid on desktop */}
+        <div className="flex items-stretch gap-4 overflow-x-auto snap-x snap-mandatory pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3 lg:px-0 lg:grid lg:grid-cols-4 lg:gap-5 lg:overflow-visible lg:pb-0">
           {displayedVehicles.map((vehicle, index) => {
             const vehicleId = getVehicleInventoryId(vehicle) || `vehicle-${index}`;
             return (
-              <div key={vehicleId} className="flex flex-col h-full">
+              <div
+                key={vehicleId}
+                className="flex-none w-[280px] sm:w-[320px] lg:w-auto snap-start flex flex-col self-stretch"
+              >
                 <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>
             );

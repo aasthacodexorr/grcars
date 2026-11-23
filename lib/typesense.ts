@@ -6,11 +6,19 @@
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AppConfig } from "@/lib/appConfig";
 import {
+  getCanonicalFeatureName,
+  getFeatureQueryVariants,
+  isFeatureMatch,
+  DEFAULT_POPULAR_FEATURE_TAGS,
+} from "@/constants/popularFeatures";
+import type { PopularFeatureTag } from "@/types/vehicle";
+import {
   parseMakeModelSelections,
   readRouteState,
   modelMakeAssociations,
   getModelMakeMap,
   getModelVariants,
+  formatFacetLabel,
 } from "@/lib/inventoryRouting";
 
 /* =========================
@@ -191,60 +199,174 @@ function mergeSearchResults(results: any[], request: any, branchCount: number) {
   };
 }
 
+function getFacetCasingVariants(attribute: string, value: string): string[] {
+  const set = new Set<string>();
+  set.add(value);
+  if (attribute !== "year") {
+    set.add(formatFacetLabel(value));
+    set.add(value.toUpperCase());
+    set.add(value.toLowerCase());
+  }
+  return Array.from(set).filter(Boolean);
+}
+
+// Resolves the exact Typesense document value for a popular feature
+function getPopularFeatureFilterValue(
+  value: string,
+  configuredFeatureValues: string[]
+): string {
+  const configuredValue = configuredFeatureValues.find((candidate) =>
+    isFeatureMatch(value, candidate)
+  );
+  if (configuredValue) return configuredValue;
+
+  const defaultTag = DEFAULT_POPULAR_FEATURE_TAGS.find(
+    (tag) =>
+      isFeatureMatch(value, tag.value) ||
+      isFeatureMatch(value, tag.label)
+  );
+  if (defaultTag?.value) return defaultTag.value;
+
+  const canonical = getCanonicalFeatureName(value);
+  if (canonical) {
+    const canonicalTag = DEFAULT_POPULAR_FEATURE_TAGS.find(
+      (tag) =>
+        isFeatureMatch(canonical, tag.label) ||
+        isFeatureMatch(canonical, tag.value)
+    );
+    if (canonicalTag?.value) return canonicalTag.value;
+    return canonical;
+  }
+
+  return value;
+}
+
 function expandFacetFiltersWithModelVariants(
   facetFilters: FacetFilterEntry[] | undefined
 ): FacetFilterEntry[] | undefined {
   if (!facetFilters || !Array.isArray(facetFilters)) return facetFilters;
   return facetFilters.map((entry) => {
     if (typeof entry === "string") {
-      if (entry.startsWith("model:")) {
-        const val = normalizeFacetValue(entry.slice("model:".length));
-        const variants = getModelVariants(val);
-        if (variants.length > 1) {
-          return variants.map((v) => `model:${v}`);
+      const colonIdx = entry.indexOf(":");
+      if (colonIdx > 0) {
+        const attr = entry.slice(0, colonIdx);
+        const rawVal = normalizeFacetValue(entry.slice(colonIdx + 1));
+        if (attr === "model") {
+          const variants = getModelVariants(rawVal);
+          if (variants.length > 1) {
+            return variants.map((v) => `model:${v}`);
+          }
+        } else if (
+          attr === "exterior_color" ||
+          attr === "body_type" ||
+          attr === "transmission" ||
+          attr === "fuel_type" ||
+          attr === "vehicle_type" ||
+          attr === "location"
+        ) {
+          const variants = getFacetCasingVariants(attr, rawVal);
+          if (variants.length > 1) {
+            return variants.map((v) => `${attr}:${v}`);
+          }
         }
       }
       return entry;
     }
     if (Array.isArray(entry)) {
       const expanded: string[] = [];
-      let hadModel = false;
+      let modified = false;
       entry.forEach((item) => {
-        if (typeof item === "string" && item.startsWith("model:")) {
-          hadModel = true;
-          const val = normalizeFacetValue(item.slice("model:".length));
-          const variants = getModelVariants(val);
-          variants.forEach((v) => {
-            const f = `model:${v}`;
-            if (!expanded.includes(f)) expanded.push(f);
-          });
-        } else {
-          expanded.push(item);
+        if (typeof item === "string") {
+          const colonIdx = item.indexOf(":");
+          if (colonIdx > 0) {
+            const attr = item.slice(0, colonIdx);
+            const rawVal = normalizeFacetValue(item.slice(colonIdx + 1));
+            if (attr === "model") {
+              modified = true;
+              const variants = getModelVariants(rawVal);
+              variants.forEach((v) => {
+                const f = `model:${v}`;
+                if (!expanded.includes(f)) expanded.push(f);
+              });
+              return;
+            } else if (
+              attr === "exterior_color" ||
+              attr === "body_type" ||
+              attr === "transmission" ||
+              attr === "fuel_type" ||
+              attr === "vehicle_type" ||
+              attr === "location"
+            ) {
+              modified = true;
+              const variants = getFacetCasingVariants(attr, rawVal);
+              variants.forEach((v) => {
+                const f = `${attr}:${v}`;
+                if (!expanded.includes(f)) expanded.push(f);
+              });
+              return;
+            }
+          }
         }
+        expanded.push(item);
       });
-      return hadModel ? expanded : entry;
+      return modified ? expanded : entry;
     }
     return entry;
   });
 }
 
-function wrapSearchClientWithMakeModelFilter(searchClient: any) {
+function addPopularFeaturePrefixFilter(
+  request: any,
+  configuredFeatureValues: string[]
+) {
+  const facetFilters: FacetFilterEntry[] = request?.params?.facetFilters || [];
+  const { values, remaining } = extractFacetAttribute(
+    facetFilters,
+    "popular_features"
+  );
+  const featureValues = Array.from(
+    new Set(
+      values.map((value) =>
+        getPopularFeatureFilterValue(
+          normalizeFacetValue(value),
+          configuredFeatureValues
+        )
+      )
+    )
+  );
+  const featureFilter = featureValues.length
+    ? featureValues.map((value) => `popular_features:[\`${value}\`]`).join(" && ")
+    : undefined;
+  const filters = [request.params?.filters, featureFilter]
+    .filter(Boolean)
+    .join(" && ");
+
+  return {
+    ...request,
+    params: {
+      ...request.params,
+      filters: filters || undefined,
+      facetFilters:
+        facetFilters.length > 0
+          ? expandFacetFiltersWithModelVariants(remaining)
+          : request.params?.facetFilters,
+    },
+  };
+}
+
+function wrapSearchClientWithMakeModelFilter(
+  searchClient: any,
+  configuredFeatureValues: string[]
+) {
   const originalSearch = searchClient.search.bind(searchClient);
 
   searchClient.search = (requests: any[]) => {
     const expandedRequests: any[] = [];
     const groups: Array<{ request: any; start: number; count: number }> = [];
 
-    const processedRequests = requests.map((req) => {
-      if (!req?.params?.facetFilters) return req;
-      return {
-        ...req,
-        params: {
-          ...req.params,
-          facetFilters: expandFacetFiltersWithModelVariants(req.params.facetFilters),
-        },
-      };
-    });
+    const processedRequests = requests.map((req) =>
+      addPopularFeaturePrefixFilter(req, configuredFeatureValues)
+    );
 
     processedRequests.forEach((request) => {
       try {
@@ -282,6 +404,24 @@ function wrapSearchClientWithMakeModelFilter(searchClient: any) {
         ),
       };
 
+      const hasPopularFeatureRefinement = processedRequests.some((request) =>
+        request?.params?.filters?.includes("popular_features:")
+      );
+
+      if (process.env.NODE_ENV !== "production" && hasPopularFeatureRefinement) {
+        console.debug(
+          "[Typesense popular_features facet]",
+          JSON.stringify(processedRequests.map((request, index) => ({
+            facets: request?.params?.facets,
+            facetFilters: request?.params?.facetFilters || [],
+            numericFilters: request?.params?.numericFilters || [],
+            filters: request?.params?.filters,
+            valuesAndCounts:
+              normalizedResult.results[index]?.facets?.popular_features || {},
+          })))
+        );
+      }
+
       return normalizedResult;
     });
   };
@@ -303,14 +443,27 @@ export function getTypesenseClient(config: AppConfig) {
   const typesenseAdapter = new TypesenseInstantSearchAdapter({
     server: typesenseServerConfig,
     additionalSearchParameters: {
-      query_by: "make,model,year_search,trim,vin,stock_no,exterior_color,body_type,vehicle_type,transmission,fuel_type",
+      query_by: "make,model,year_search,trim,vin,stock_no,exterior_color,body_type,vehicle_type,transmission,fuel_type,popular_features",
       num_typos: "0",
-      facet_by: "year,make,model,exterior_color,body_type,vehicle_type,transmission,fuel_type,location,selling_price,odometer",
+      facet_by: "year,make,model,exterior_color,body_type,vehicle_type,transmission,fuel_type,location,selling_price,odometer,popular_features",
+      max_facet_values: 100,
     },
   });
 
+  const configuredFeatureTags: PopularFeatureTag[] = Array.isArray(
+    config.vehicle_default_popular_tags
+  )
+    ? config.vehicle_default_popular_tags
+    : [];
+  const configuredFeatureValues = configuredFeatureTags
+    .flatMap((tag) => [tag.value, tag.label])
+    .filter((value) => value.length > 0);
+
   return {
-    searchClient: wrapSearchClientWithMakeModelFilter(typesenseAdapter.searchClient),
+    searchClient: wrapSearchClientWithMakeModelFilter(
+      typesenseAdapter.searchClient,
+      configuredFeatureValues
+    ),
     TYPESENSE_COLLECTION_NAME: config.site.collection,
   };
 }

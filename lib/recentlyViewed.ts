@@ -284,6 +284,7 @@ export function useRecentlyViewed() {
 
   return {
     recentlyViewed,
+    recentlyViewedVehicles: recentlyViewed,
     recentlyViewedIds: recentlyViewed.map(getVehicleInventoryId),
     hasRecentlyViewed: recentlyViewed.length > 0,
     hasBeenViewed,

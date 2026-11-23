@@ -41,6 +41,11 @@ const nextConfig: NextConfig = {
         hostname: "www.cardora.ca",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "prod.pictures.autoscout24.net",
+        pathname: "/**",
+      },
     ],
   },
 
