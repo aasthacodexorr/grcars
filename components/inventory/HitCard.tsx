@@ -169,7 +169,9 @@ export const HitCard = ({
   const { hasBeenViewed } = useRecentlyViewed();
 
   const inventoryId = String(hit.inventory_id ?? hit.id ?? "");
-  const isRecentlyViewedVehicle = showRecentlyViewed && hasBeenViewed(inventoryId);
+  const isSold = Boolean(hit.status) && String(hit.status).toLowerCase() !== "instock";
+  const isDealPending = hit.sub_status === "Deal Pending";
+  const isRecentlyViewedVehicle = showRecentlyViewed && !isSold && hasBeenViewed(inventoryId);
 
   const phoneNumber = PHONE_NUMBER || "";
   const title = `${hit.year || ""} ${hit.make || ""} ${hit.model || ""} ${hit.trim || ""}`.trim();
@@ -178,9 +180,6 @@ export const HitCard = ({
   const km = Number(hit.odometer) || 0;
   const drivetrain = hit.drivetrain || "N/A";
   const stock = hit.stock_no || "N/A";
-
-  const isSold = Boolean(hit.status) && String(hit.status).toLowerCase() !== "instock";
-  const isDealPending = hit.sub_status === "Deal Pending";
 
   const imageUrls = hit.image_urls ? String(hit.image_urls).split(";") : [];
   let imageSrc = DEFAULT_PLACEHOLDER_IMAGE || `${SITE_CONFIG?.urls?.assetBaseUrl}/image/default-placeholder.jpg`;
@@ -240,9 +239,7 @@ export const HitCard = ({
 
             {isSold && (
               <div
-                className={`absolute uppercase left-3 z-10 rounded-lg bg-sold-overlay px-3 py-1.5 text-[13px] font-medium leading-none text-white ${
-                  isRecentlyViewedVehicle ? "top-14" : "top-3"
-                }`}
+                className="absolute uppercase left-3 top-3 z-10 rounded-lg bg-sold-overlay px-3 py-1.5 text-[13px] font-medium leading-none text-white"
               >
                 Sold
               </div>

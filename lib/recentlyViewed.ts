@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useMemo, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
+import type { AppConfig } from "@/lib/appConfig";
+import { useAppConfig } from "@/app/providers";
 
 export const RECENTLY_VIEWED_STORAGE_KEY = "grcars_recently_viewed";
 export const HOMEPAGE_MAX_RECENTLY_VIEWED = 4;
@@ -33,7 +35,25 @@ export function getVehicleInventoryId(vehicle: unknown): string {
 }
 
 /**
+ * Determines whether a vehicle is considered sold.
+ * Vehicles with `status !== "instock"` (case-insensitive) or `is_sold === true` are treated as sold.
+ */
+export function isSoldVehicle(vehicle: unknown): boolean {
+  if (!vehicle || typeof vehicle !== "object") return false;
+  const v = vehicle as Record<string, unknown>;
+  if (v.is_sold === true || v.isSold === true) return true;
+  if (v.status != null) {
+    const status = String(v.status).trim().toLowerCase();
+    if (status && status !== "instock") {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Validates that an item from localStorage represents a complete, renderable vehicle object.
+ * Excludes sold inventory.
  */
 export function isValidVehicle(item: unknown): item is RecentlyViewedVehicle {
   if (!item || typeof item !== "object" || Array.isArray(item)) {
@@ -42,6 +62,10 @@ export function isValidVehicle(item: unknown): item is RecentlyViewedVehicle {
   const v = item as Record<string, unknown>;
   const id = getVehicleInventoryId(v);
   if (!id) {
+    return false;
+  }
+  // Never treat sold vehicles as valid recently viewed items
+  if (isSoldVehicle(v)) {
     return false;
   }
   // Must contain minimal vehicle information to render in HitCard
@@ -187,18 +211,31 @@ export function getRecentlyViewed(): RecentlyViewedVehicle[] {
 
 /**
  * Adds a complete vehicle inventory object to recently viewed storage:
- * 1. Retrieve existing recently viewed array from localStorage.
- * 2. Identify the current vehicle using its unique inventory ID.
- * 3. Remove any existing entry for that vehicle.
- * 4. Add the complete current vehicle object at the beginning.
- * 5. Keep all unique visited vehicles (up to MAX_RECENTLY_VIEWED).
- * 6. Save the updated array back to localStorage.
+ * 1. Ensure the vehicle is not sold.
+ * 2. Retrieve existing recently viewed array from localStorage.
+ * 3. Identify the current vehicle using its unique inventory ID.
+ * 4. Remove any existing entry for that vehicle.
+ * 5. Add the complete current vehicle object at the beginning.
+ * 6. Keep all unique visited vehicles (up to MAX_RECENTLY_VIEWED).
+ * 7. Save the updated array back to localStorage.
  */
 export function addRecentlyViewed(vehicleOrId: RecentlyViewedVehicle | string | number) {
   if (!vehicleOrId) return;
 
   const currentId = getVehicleInventoryId(vehicleOrId);
   if (!currentId) return;
+
+  // Never add or retain sold inventory
+  if (isSoldVehicle(vehicleOrId)) {
+    const currentVehicles = getRecentlyViewed();
+    const next = currentVehicles.filter(
+      (item) => getVehicleInventoryId(item) !== currentId
+    );
+    if (next.length !== currentVehicles.length) {
+      saveVehicles(next);
+    }
+    return;
+  }
 
   const currentVehicles = getRecentlyViewed();
 
@@ -212,7 +249,7 @@ export function addRecentlyViewed(vehicleOrId: RecentlyViewedVehicle | string | 
   } else {
     // If only an ID was passed, find if full vehicle already exists
     const existing = currentVehicles.find((v) => getVehicleInventoryId(v) === currentId);
-    if (!existing) {
+    if (!existing || isSoldVehicle(existing)) {
       return;
     }
     vehicleToSave = existing;
@@ -235,6 +272,18 @@ export function addRecentlyViewed(vehicleOrId: RecentlyViewedVehicle | string | 
   saveVehicles(next.slice(0, MAX_RECENTLY_VIEWED));
 }
 
+export function removeRecentlyViewed(inventoryId: string | number) {
+  const currentId = getVehicleInventoryId(inventoryId);
+  if (!currentId) return;
+  const currentVehicles = getRecentlyViewed();
+  const next = currentVehicles.filter(
+    (item) => getVehicleInventoryId(item) !== currentId
+  );
+  if (next.length !== currentVehicles.length) {
+    saveVehicles(next);
+  }
+}
+
 export function clearRecentlyViewed() {
   viewedBeforeVisitSet.clear();
   if (typeof document !== "undefined") {
@@ -243,7 +292,15 @@ export function clearRecentlyViewed() {
   saveVehicles([]);
 }
 
-export function useRecentlyViewed() {
+export function useRecentlyViewed(appConfigOverride?: AppConfig) {
+  let contextConfig: AppConfig | undefined;
+  try {
+    contextConfig = useAppConfig();
+  } catch {
+    // Graceful fallback if called outside provider
+  }
+  const appConfig = appConfigOverride ?? contextConfig;
+
   const serializedItems = useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -260,6 +317,83 @@ export function useRecentlyViewed() {
     () => parseVehicles(serializedItems),
     [serializedItems]
   );
+
+  // Revalidate live inventory status from Typesense using appConfig variable to prune sold or deleted vehicles
+  useEffect(() => {
+    if (!isHydrated || recentlyViewed.length === 0) return;
+
+    const host = appConfig?.site?.typesense_host;
+    const port = Number(appConfig?.site?.typesense_port) || 443;
+    const protocol = appConfig?.site?.typesense_protocol || "https";
+    const collection = appConfig?.site?.collection;
+    const searchKey = appConfig?.site?.inventory_search_only_key;
+
+    // Must have typesense credentials configured in appConfig
+    if (!host || !collection || !searchKey) return;
+
+    const ids = recentlyViewed.map(getVehicleInventoryId).filter(Boolean);
+    if (ids.length === 0) return;
+
+    let isCancelled = false;
+
+    async function checkSoldStatus() {
+      try {
+        const searchUrl = `${protocol}://${host}:${port}/collections/${collection}/documents/search?q=*&filter_by=id:=[${ids.join(",")}]&include_fields=id,inventory_id,status&per_page=${ids.length}`;
+
+        const res = await fetch(searchUrl, {
+          headers: {
+            "X-TYPESENSE-API-KEY": searchKey,
+          },
+        });
+
+        if (!res.ok || isCancelled) return;
+        const data = await res.json();
+        const hits = (data?.hits || []) as Array<{ document: Record<string, unknown> }>;
+
+        const statusMap = new Map<string, string>();
+        for (const hit of hits) {
+          const doc = hit.document;
+          const docId = String(doc.id ?? doc.inventory_id ?? "").trim();
+          if (docId) {
+            statusMap.set(docId, String(doc.status ?? "").trim().toLowerCase());
+          }
+        }
+
+        let updated = false;
+        const currentList = getRecentlyViewed();
+        const validList = currentList.filter((item) => {
+          const itemId = getVehicleInventoryId(item);
+          const liveStatus = statusMap.get(itemId);
+          // If live status is present and not instock, it is sold or unavailable
+          if (liveStatus && liveStatus !== "instock") {
+            updated = true;
+            return false;
+          }
+          return true;
+        });
+
+        if (updated && !isCancelled) {
+          saveVehicles(validList);
+        }
+      } catch {
+        // Silently ignore network or check errors
+      }
+    }
+
+    checkSoldStatus();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [
+    isHydrated,
+    recentlyViewed.length,
+    appConfig?.site?.typesense_host,
+    appConfig?.site?.typesense_port,
+    appConfig?.site?.typesense_protocol,
+    appConfig?.site?.collection,
+    appConfig?.site?.inventory_search_only_key,
+  ]);
 
   const hasBeenViewed = useCallback(
     (inventoryId: string | number) => {
@@ -290,6 +424,7 @@ export function useRecentlyViewed() {
     hasBeenViewed,
     wasViewedBeforeCurrentVisit,
     addRecentlyViewed,
+    removeRecentlyViewed,
     clearRecentlyViewed,
     isHydrated,
   };
