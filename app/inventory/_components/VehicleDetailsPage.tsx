@@ -22,6 +22,10 @@ import { generateMetadata as generateMetadataHelper } from "@/lib/metadataHelper
 import { headers } from "next/headers";
 import AboutVehicle from "@/components/inventory/AboutVehicle";
 import VehicleFeatures from "@/components/inventory/VehicleFeatures";
+import {
+    extractVehicleFeatureNames,
+    getMatchedVehicleFeatures,
+} from "@/components/inventory/vehicleFeaturesConfig";
 import WarrantyStatus from "@/components/inventory/WarrantyStatus";
 import VDPRecentlyViewed from "@/components/inventory/VDPRecentlyViewed";
 import { VehicleHeaderAndCTA } from "@/components/inventory/VehicleInfo";
@@ -108,6 +112,11 @@ export default async function VehicleDetailsPage({
         : [DEFAULT_PLACEHOLDER_IMAGE || `${SITE_CONFIG.urls.assetBaseUrl}/image/default-placeholder.jpg`];
 
     const isSold = vehicle.status?.toLowerCase() !== "instock";
+
+    const rawFeatures = extractVehicleFeatureNames(vehicle);
+    const effectiveBodyType = vehicle?.body_type ?? vehicle?.body_style ?? null;
+    const matchedFeatures = getMatchedVehicleFeatures(rawFeatures, effectiveBodyType);
+    const hasFeatures = matchedFeatures.length > 0;
 
     let host = "www.grcars.ca";
     try {
@@ -222,14 +231,16 @@ export default async function VehicleDetailsPage({
 
                                 {/* Tab header */}
                                 <div className="hidden lg:block sticky top-4 z-50 w-full mb-12 bg-white">
-                                    <VehicleDetailsTabsNav isSold={isSold} />
+                                    <VehicleDetailsTabsNav
+                                        isSold={isSold}
+                                        hasFeatures={hasFeatures}
+                                        hasDescription={Boolean(vehicle.vehicle_description)}
+                                    />
                                 </div>
 
                                 {/* Specs grid & Extended Coverage */}
                                 <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
                                     <AboutVehicle vehicle={vehicle} />
-                                    {/* Manufacturer Warranty Status */}
-                                    <WarrantyStatus vehicle={vehicle} />
                                     <ViewAllFeaturesButton
                                         standardJson={vehicle.standard}
                                         techSpecsJson={vehicle.technical_specification}
@@ -255,6 +266,16 @@ export default async function VehicleDetailsPage({
                                                 Price does not include taxes and licensing fees.
                                             </p>
                                         </div>
+                                    </div>
+                                )}
+
+                                {/* Popular Vehicle Features Showcase (Features Section) */}
+                                {hasFeatures && (
+                                    <div
+                                        id="vehicle-features-section"
+                                        className="w-full max-w-[925px] scroll-mt-44 mb-10"
+                                    >
+                                        <VehicleFeatures vehicle={vehicle} />
                                     </div>
                                 )}
 
@@ -305,11 +326,9 @@ export default async function VehicleDetailsPage({
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Popular Vehicle Features Showcase (Mobile / Responsive: above Vehicle description) */}
-                                <div className="block lg:hidden w-full mb-10">
-                                    <VehicleFeatures vehicle={vehicle} />
+                                    {/* Manufacturer Warranty Status */}
+                                    <WarrantyStatus vehicle={vehicle} />
                                 </div>
 
                                 {/* Vehicle Description Section */}
@@ -346,10 +365,7 @@ export default async function VehicleDetailsPage({
                         </div>
                     </div>
 
-                    {/* Popular Vehicle Features Showcase (Desktop: full-width below two columns) */}
-                    <div className="hidden lg:block lg:mt-12 w-full">
-                        <VehicleFeatures vehicle={vehicle} />
-                    </div>
+                    
                 </div>
             </section>
             <div className="w-full mb-18 md:mb-0 lg:mt-10">
