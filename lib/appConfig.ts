@@ -1,3 +1,5 @@
+import { DEFAULT_POPULAR_FEATURE_TAGS } from "@/constants/popularFeatures";
+
 export const defineAppConfig = (config: any) => config;
 
 export const defaultAppConfig = defineAppConfig({
@@ -131,6 +133,7 @@ export const defaultAppConfig = defineAppConfig({
     interest_rate: 7.99,
     tax: 13,
   },
+  vehicle_default_popular_tags: DEFAULT_POPULAR_FEATURE_TAGS,
 });
 
 export type AppConfig = typeof defaultAppConfig;
@@ -310,13 +313,40 @@ export async function getAppConfig(): Promise<AppConfig> {
     
     const apiConfig = await res.json();
     const mergedConfig = deepMerge(defaultAppConfig, apiConfig);
-    
+
+    const rawPopularTags =
+      apiConfig?.vehicle_default_popular_tags ??
+      apiConfig?.site?.vehicle_default_popular_tags ??
+      apiConfig?.dealership?.vehicle_default_popular_tags ??
+      mergedConfig?.vehicle_default_popular_tags ??
+      defaultAppConfig.vehicle_default_popular_tags ??
+      [];
+
+    let safePopularTags = Array.isArray(rawPopularTags) && rawPopularTags.length > 0 ? rawPopularTags : DEFAULT_POPULAR_FEATURE_TAGS;
+
+    // Fetch popular features from canonical inventory configuration endpoint if not in main config
+    try {
+      const popRes = await fetch(
+        "https://demo.zopsoftware.com/api/website/inventory/configurations/default-popular-features",
+        { next: { revalidate: 300 }, signal: AbortSignal.timeout(3000) }
+      );
+      if (popRes.ok) {
+        const popData = await popRes.json();
+        if (Array.isArray(popData) && popData.length > 0) {
+          safePopularTags = popData;
+        }
+      }
+    } catch {
+      // Fallback already assigned
+    }
+
     // Apply fallback logic to all config sections to ensure null/undefined/"" values use defaults
     return {
       dealership: getSafeDealershipConfig(mergedConfig.dealership),
       site: getSafeSiteConfig(mergedConfig.site),
       schema_org: getSafeSchemaOrgConfig(mergedConfig.schema_org),
       payment_calculator: getSafePaymentCalculatorConfig(mergedConfig.payment_calculator),
+      vehicle_default_popular_tags: safePopularTags,
     };
   } catch (error) {
     console.error("Failed to fetch app configuration", error);

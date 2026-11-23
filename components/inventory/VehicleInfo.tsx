@@ -15,22 +15,16 @@ export const VehicleHeaderAndCTA = ({
   topWishlistId = "vdp-top-wishlist-desktop",
 }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTooltip, setActiveTooltip] = useState<
-    "finance" | "cash" | null
-  >(null);
+  const [activeTooltip, setActiveTooltip] = useState<boolean>(false);
   const [showSticky, setShowSticky] = useState(false);
   const [showCardWishlist, setShowCardWishlist] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const inlineContainerRef = useRef<HTMLDivElement>(null);
-  const [activePriceTab, setActivePriceTab] = useState<"finance" | "cash">("finance");
   const savingsAmount =
     Number(vehicle?.price || 0) - Number(vehicle?.special_price || 0);
 
-
-  const toggleTooltip = (tooltip: "finance" | "cash") => {
-    setActiveTooltip((current) =>
-      current === tooltip ? null : tooltip
-    );
+  const toggleTooltip = () => {
+    setActiveTooltip((current) => !current);
   };
 
   // 1. Detect when inline CTAs are scrolled out of view for Sticky Mobile Bar
@@ -82,7 +76,7 @@ export const VehicleHeaderAndCTA = ({
         tooltipRef.current &&
         !tooltipRef.current.contains(event.target as Node)
       ) {
-        setActiveTooltip(null);
+        setActiveTooltip(false);
       }
     };
 
@@ -160,39 +154,8 @@ export const VehicleHeaderAndCTA = ({
         {/* Pricing & Tooltip Section */}
         {!isSold ? (
           <div className="my-2">
-
-            <div
-              role="tablist"
-              aria-label="Vehicle pricing"
-              className="mb-3 flex px-5 py-0"
-            >
-              {(["finance", "cash"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  id={`${tab}-price-tab`}
-                  type="button"
-                  role="tab"
-                  aria-selected={activePriceTab === tab}
-                  aria-controls="vehicle-price-panel"
-                  onClick={() => {
-                    setActivePriceTab(tab);
-                    setActiveTooltip(null);
-                  }}
-                  className={`flex-1 cursor-pointer border-b-[3px] px-3 py-1 text-[12px] font-semibold transition-colors ${activePriceTab === tab
-                      ? "border-brand-green text-brand"
-                      : "border-transparent text-gray-800 hover:bg-gray-50"
-                    }`}
-                >
-                  {tab === "finance" ? "Finance" : "Cash"}
-                </button>
-              ))}
-            </div>
-
-
             <div
               id="vehicle-price-panel"
-              role="tabpanel"
-              aria-labelledby={`${activePriceTab}-price-tab`}
               className="relative bg-[#f1f8f5] rounded-xl px-4 lg:px-2 py-4 mx-6 mb-3"
             >
               {!isSold && hasPriceDrop && (
@@ -208,7 +171,6 @@ export const VehicleHeaderAndCTA = ({
                       <PriceDrop
                         price={vehicle?.price}
                         specialPrice={vehicle?.special_price}
-                        adjustment={activePriceTab === "cash" ? 2000 : 0}
                         className="text-[28px] font-extrabold leading-none text-price-black"
                         showArrow={false}
                       />
@@ -222,12 +184,12 @@ export const VehicleHeaderAndCTA = ({
                   </div>
 
                   <div className="mt-1 text-xs font-medium text-gray-500 flex items-center gap-1">
-                    + HST &amp; licensing {activePriceTab === "finance" ? " | O.A.C" : ""} <p data-price-tooltip className="relative inline-flex items-center group">
+                    + HST &amp; licensing <p data-price-tooltip className="relative inline-flex items-center group">
                       <button
                         type="button"
-                        onClick={() => toggleTooltip(activePriceTab)}
-                        aria-label={`${activePriceTab === "finance" ? "Finance" : "Cash"} price information`}
-                        className="flex items-center justify-center mb-1"
+                        onClick={toggleTooltip}
+                        aria-label="Price information"
+                        className="flex items-center justify-center mb-1 cursor-pointer"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -244,10 +206,11 @@ export const VehicleHeaderAndCTA = ({
                       </button>
 
                       <span
-                        className={`absolute bottom-full left-1/2  -translate-x-1/2 mb-2 normal-case font-normal tracking-normal w-[240px] max-w-[calc(100vw-32px)] bg-black px-3 py-2 text-xs text-white shadow-lg z-[100] rounded-md transition-opacity duration-200 ${activeTooltip === activePriceTab
-                          ? "opacity-100 visible"
-                          : "opacity-0 invisible"
-                          } group-hover:opacity-100 group-hover:visible`}
+                        className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 normal-case font-normal tracking-normal w-[240px] max-w-[calc(100vw-32px)] bg-black px-3 py-2 text-xs text-white shadow-lg z-[100] rounded-md transition-opacity duration-200 ${
+                          activeTooltip
+                            ? "opacity-100 visible"
+                            : "opacity-0 invisible"
+                        } group-hover:opacity-100 group-hover:visible`}
                       >
                         Listed price does not include taxes and licensing fees.
                         <span className="absolute left-1/2 -translate-x-1/2 bottom-[-6px] h-3 w-3 rotate-45 bg-black" />
@@ -257,7 +220,6 @@ export const VehicleHeaderAndCTA = ({
                 </div>
               </div>
             </div>
-
           </div>
         ) : null}
 

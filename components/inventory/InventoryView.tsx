@@ -24,7 +24,8 @@ export interface InventoryViewProps {
 import { Header, Footer } from "@/components/layout";
 
 // Inventory components
-import { HitCard } from "@/components/inventory";
+import { HitCard, PopularFeatureSearchChips } from "@/components/inventory";
+import { isFeatureMatch, getCanonicalFeatureName } from "@/constants/popularFeatures";
 
 // Shared components
 import { GetInTouch } from "@/components/common";
@@ -807,7 +808,10 @@ const GroupedCurrentRefinements = () => {
   const { items, refine } = useCurrentRefinements();
   const { setIndexUiState } = useInstantSearch();
 
-  if (items.length === 0) return null;
+  // Exclude popular_features so selecting a key feature only highlights the chip above without creating a separate filter field below
+  const visibleItems = items.filter((item) => item.attribute !== "popular_features");
+
+  if (visibleItems.length === 0) return null;
 
   // Keep refinement chips in a predictable order.
   // This is especially important when a user selects a MODEL first:
@@ -817,7 +821,7 @@ const GroupedCurrentRefinements = () => {
     model: 1,
   };
 
-  const orderedItems = [...items].sort((a, b) => {
+  const orderedItems = [...visibleItems].sort((a, b) => {
     const priorityA = refinementPriority[a.attribute] ?? 2;
     const priorityB = refinementPriority[b.attribute] ?? 2;
 
@@ -898,6 +902,34 @@ const GroupedCurrentRefinements = () => {
       return;
     }
 
+    if (category.attribute === "popular_features") {
+      setIndexUiState((prevIndexUiState) => {
+        const currentRefinementList = prevIndexUiState.refinementList || {};
+        const currentFeatures = (currentRefinementList.popular_features || []).map(String);
+        const nextFeatures = currentFeatures.filter(
+          (f) =>
+            !isFeatureMatch(f, refinement.label) &&
+            !isFeatureMatch(f, String(refinement.value))
+        );
+
+        const nextRefinementList: Record<string, string[]> = {
+          ...currentRefinementList,
+        };
+        if (nextFeatures.length > 0) {
+          nextRefinementList.popular_features = nextFeatures;
+        } else {
+          delete nextRefinementList.popular_features;
+        }
+
+        return {
+          ...prevIndexUiState,
+          page: 1,
+          refinementList: nextRefinementList,
+        };
+      });
+      return;
+    }
+
     refine(refinement);
   };
 
@@ -920,7 +952,9 @@ const GroupedCurrentRefinements = () => {
                 className="flex items-center bg-white rounded-lg px-[12px] py-[6px] border border-gray-200 text-[14px] text-gray-600 font-light shadow-sm"
               >
                 <span className="cursor-pointer tracking-wider font-light">
-                  {formatFacetLabel(refinement.label)}
+                  {category.attribute === "popular_features"
+                    ? (getCanonicalFeatureName(refinement.label) || refinement.label)
+                    : formatFacetLabel(refinement.label)}
                 </span>
                 <button
                   onClick={() => handleRemoveRefinement(category, refinement)}
@@ -952,15 +986,18 @@ const StableRefinementList = ({
   attribute,
   sortBy,
   limit = 200,
+  operator,
 }: {
   attribute: string;
   sortBy?: readonly string[];
   limit?: number;
+  operator?: "and" | "or";
 }) => {
   const { items, refine } = useRefinementList({
     attribute,
     limit,
     sortBy: sortBy as any,
+    operator: operator || (attribute === "popular_features" ? "and" : "or"),
   });
 
   // Cache every item we've ever seen so they don't vanish when a price
@@ -2214,6 +2251,9 @@ export const InventoryView = ({
       <FilterGroup title="BODY TYPE" isOpen={openFilter === "BODY TYPE"} onToggle={() => setOpenFilter(openFilter === "BODY TYPE" ? null : "BODY TYPE")}>
         <StableRefinementList attribute="body_type" />
       </FilterGroup>
+      <FilterGroup title="POPULAR FEATURES" isOpen={openFilter === "POPULAR FEATURES"} onToggle={() => setOpenFilter(openFilter === "POPULAR FEATURES" ? null : "POPULAR FEATURES")}>
+        <StableRefinementList attribute="popular_features" />
+      </FilterGroup>
       <FilterGroup title="TRANSMISSION" isOpen={openFilter === "TRANSMISSION"} onToggle={() => setOpenFilter(openFilter === "TRANSMISSION" ? null : "TRANSMISSION")}>
         <StableRefinementList attribute="transmission" />
       </FilterGroup>
@@ -2469,6 +2509,9 @@ export const InventoryView = ({
                         sortItems={getSortItems(TYPESENSE_COLLECTION_NAME)}
                       />
                     </div>
+
+                    {/* Popular Vehicle Feature Chips */}
+                    <PopularFeatureSearchChips />
                   </div>
 
                   {/* Inventory Header (H1, above search results) */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
@@ -108,27 +108,18 @@ const calculatePayment = (
   const numberOfPayments = (termMonths / 12) * paymentsPerYear;
 
   // Calculate the interest rate per payment period.
-  const periodicRate =
-    annualInterestRate / 100 / paymentsPerYear;
+  const periodicRate = annualInterestRate / 100 / paymentsPerYear;
 
   let payment: number;
 
   if (periodicRate === 0) {
     payment = loanAmount / numberOfPayments;
   } else {
-    const rateFactor = Math.pow(
-      1 + periodicRate,
-      numberOfPayments
-    );
-
-    payment =
-      (loanAmount * periodicRate * rateFactor) /
-      (rateFactor - 1);
+    const rateFactor = Math.pow(1 + periodicRate, numberOfPayments);
+    payment = (loanAmount * periodicRate * rateFactor) / (rateFactor - 1);
   }
 
-  return Number.isFinite(payment) && payment > 0
-    ? payment
-    : null;
+  return Number.isFinite(payment) && payment > 0 ? payment : null;
 };
 
 const formatCurrency = (amount: number): string =>
@@ -170,31 +161,15 @@ export const HitCard = ({
   showRecentlyViewed?: boolean;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activePriceTab, setActivePriceTab] = useState<"finance" | "cash">("finance");
-  const [activeTooltip, setActiveTooltip] = useState<"finance" | "cash" | "payment" | null>(null);
+  const [activeTooltip, setActiveTooltip] = useState(false);
 
-  const tooltipRef = useRef<HTMLDivElement>(null);
   const appConfig = useAppConfig();
-
   const { SITE_CONFIG, PHONE_NUMBER, DEFAULT_PLACEHOLDER_IMAGE } = getConstants(appConfig);
   const { isInWishlist, addToWishlist, removeFromWishlist, isHydrated } = useWishlist();
   const { hasBeenViewed } = useRecentlyViewed();
 
   const inventoryId = String(hit.inventory_id ?? hit.id ?? "");
   const isRecentlyViewedVehicle = showRecentlyViewed && hasBeenViewed(inventoryId);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-        setActiveTooltip(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const phoneNumber = PHONE_NUMBER || "";
   const title = `${hit.year || ""} ${hit.make || ""} ${hit.model || ""} ${hit.trim || ""}`.trim();
@@ -207,7 +182,7 @@ export const HitCard = ({
   const isSold = Boolean(hit.status) && String(hit.status).toLowerCase() !== "instock";
   const isDealPending = hit.sub_status === "Deal Pending";
 
-  const imageUrls = hit.image_urls ? hit.image_urls.split(";") : [];
+  const imageUrls = hit.image_urls ? String(hit.image_urls).split(";") : [];
   let imageSrc = DEFAULT_PLACEHOLDER_IMAGE || `${SITE_CONFIG?.urls?.assetBaseUrl}/image/default-placeholder.jpg`;
 
   if (imageUrls.length > 0) {
@@ -228,7 +203,9 @@ export const HitCard = ({
   const interestRate = Number(hit.interest_rate);
   const termMonths = Number(hit.term);
 
-  const paymentFrequency = getPaymentFrequencyDetails(hit.payment_frequency);
+  const paymentFrequency = getPaymentFrequencyDetails(
+    typeof hit.payment_frequency === "string" ? hit.payment_frequency : undefined
+  );
 
   const paymentAmount = calculatePayment(
     price,
@@ -246,39 +223,39 @@ export const HitCard = ({
 
   return (
     <>
-      <div className="relative flex flex-col justify-between h-full bg-white border border-border-standard rounded-[20px] overflow-visible group/card">
+      <div className="relative flex flex-col justify-between h-full flex-1 w-full bg-white border border-border-standard rounded-[20px] overflow-hidden group/card shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-md transition-shadow">
         {/* Clickable Card Body Area */}
         <Link href={vehicleUrl} className="flex flex-col flex-1 focus:outline-none">
-          {/* Image & Badges */}
-          {/* Image & Badges */}
-          <div className="relative px-3 pt-3">
-            {/* Image + Sold ribbon container (isolated clipping) */}
-            <div className="relative overflow-hidden rounded-xl">
-              <Image
-                src={imageSrc}
-                alt={title}
-                width={600}
-                height={400}
-                className={`w-full object-cover h-[240px] min-h-[240px] 2xl:h-[260px] 2xl:min-h-[260px] transition-transform duration-500 ${
-                  isSold || isDealPending ? "grayscale opacity-80" : ""
-                }`}
-              />
+          {/* Image & Badges - Full width edge-to-edge across the top of the card */}
+          <div className="relative w-full aspect-[16/10] overflow-hidden rounded-t-[19px] bg-gray-50">
+            <Image
+              src={imageSrc}
+              alt={title}
+              fill
+              sizes="(max-width: 640px) 280px, (max-width: 1024px) 340px, 400px"
+              className={`w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-105 ${
+                isSold || isDealPending ? "grayscale opacity-80" : ""
+              }`}
+            />
 
-              {isSold && (
-                <div className={`absolute uppercase left-2 z-10 rounded-lg bg-sold-overlay px-3 py-1.5 text-[13px] font-medium leading-none text-white ${isRecentlyViewedVehicle ? "top-14" : "top-4"}`}>
-                  Sold
-                </div>
-              )}
-            </div>
+            {isSold && (
+              <div
+                className={`absolute uppercase left-3 z-10 rounded-lg bg-sold-overlay px-3 py-1.5 text-[13px] font-medium leading-none text-white ${
+                  isRecentlyViewedVehicle ? "top-14" : "top-3"
+                }`}
+              >
+                Sold
+              </div>
+            )}
 
             {isRecentlyViewedVehicle && (
-              <div>
-                <RecentlyViewedTag />
+              <div className="absolute top-3 left-3 z-10">
+                <RecentlyViewedTag variant="inline" />
               </div>
             )}
 
             {isDealPending && (
-              <div className="w-fit z-10 mt-2.5 rounded-full bg-brand-green px-2 py-1.5 text-[13px] font-medium leading-none text-white">
+              <div className="absolute bottom-3 left-3 z-10 rounded-full bg-brand-green px-2.5 py-1 text-[12px] font-medium leading-none text-white shadow-sm">
                 Deal Pending
               </div>
             )}
@@ -310,7 +287,7 @@ export const HitCard = ({
                     });
                   }
                 }}
-                className="absolute top-[14px] right-[14px] p-1.5 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
+                className="absolute top-3 right-3 p-1.5 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
                 aria-label={isInWishlist(inventoryId) ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
@@ -323,129 +300,56 @@ export const HitCard = ({
           </div>
 
           {/* Price drop tag */}
-          {!isSold && hasPriceDrop && hit?.vehicle_type?.toLowerCase() != "as-is" && (
+          {!isSold && hasPriceDrop && hit?.vehicle_type?.toLowerCase() !== "as-is" && (
             <div className="w-fit mx-3 z-10 rounded-lg bg-brand px-2 py-1.5 mt-3 text-[13px] font-medium leading-none text-white">
               Price drop
             </div>
           )}
 
           {/* Details Body */}
-          <div className="flex flex-col flex-1 px-[15px] pt-2 pb-0 text-start">
+          <div className="flex flex-col flex-1 px-[15px] pt-3 pb-0 text-start">
             <h3 className="text-[16px] font-[600] text-foreground leading-[22px] line-clamp-2">
               {title}
             </h3>
 
-            {/* Mileage & Stock */}
-            <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[10px]">
+            {/* Mileage & Drivetrain */}
+            <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[8px]">
               {km.toLocaleString()} KM {drivetrain && drivetrain !== "N/A" && <>&bull; {drivetrain}</>}
             </p>
 
-            {/* Price Selection / Call for price */}
-            <div ref={tooltipRef}>
+            {/* Simple Price - from API with no finance or cash price mentions */}
+            <div className="mt-2.5">
               {!isSold ? (
                 hit?.vehicle_type?.toLowerCase() === "as-is" ? (
-                  <div className="text-[17px] w-full font-semibold text-foreground leading-6 mt-2 py-[3px]">
+                  <div className="text-[17px] w-full font-semibold text-foreground leading-6 py-[3px]">
                     <div className="flex justify-between items-center w-full">
-                        <span className="flex items-center gap-1 text-price-green">
-                          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                            />
-                          </svg>
-                          <span>Call for price</span>
-                        </span>
+                      <span className="flex items-center gap-1 text-price-green">
+                        <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                          />
+                        </svg>
+                        <span>Call for price</span>
+                      </span>
                     </div>
                   </div>
                 ) : price > 0 ? (
                   <div className="w-full">
-                    {/* Finance vs Cash Tabs */}
-                    <div className="grid grid-cols-2 mt-1.5">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setActivePriceTab("finance");
-                          setActiveTooltip(null);
-                        }}
-                        className={`relative py-2 cursor-pointer text-[12px] font-semibold transition-colors ${activePriceTab === "finance" ? "text-brand-green" : "text-gray-500 hover:text-gray-700"
-                          }`}
-                      >
-                        Finance
-                        {activePriceTab === "finance" && (
-                          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-brand-green" />
-                        )}
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setActivePriceTab("cash");
-                          setActiveTooltip(null);
-                        }}
-                        className={`relative py-2 cursor-pointer text-[12px] font-semibold transition-colors ${activePriceTab === "cash" ? "text-brand-green" : "text-gray-500 hover:text-gray-700"
-                          }`}
-                      >
-                        Cash
-                        {activePriceTab === "cash" && (
-                          <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-brand-green" />
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Price & Tooltip */}
-                    <div className="flex items-center justify-between gap-2 pt-2">
+                    <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1 min-w-0">
-                        {activePriceTab === "finance" ? (
-                          <PriceDrop
-                            price={hit.price}
-                            specialPrice={hit.special_price}
-                            className="text-[23px] font-extrabold leading-none text-price-black"
-                          />
-                        ) : (
-                          <PriceDrop
-                            price={hit.price}
-                            specialPrice={hit.special_price}
-                            adjustment={2000}
-                            showArrow={false}
-                            className="text-[23px] font-extrabold leading-none text-price-black"
-                          />
-                        )}
-
-                        <div className="relative group shrink-0">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setActiveTooltip((prev) => (prev === activePriceTab ? null : activePriceTab));
-                            }}
-                            aria-label={`${activePriceTab === "finance" ? "Finance" : "Cash"} price information`}
-                            className="flex items-center justify-center p-0.5"
-                          >
-                            <InfoIcon />
-                          </button>
-
-                          <div
-                            className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[240px] max-w-[calc(100vw-32px)] bg-black text-white text-xs sm:text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl z-[9999] transition-opacity duration-150 pointer-events-none ${activeTooltip === activePriceTab ? "opacity-100 visible" : "opacity-0 invisible"
-                              } group-hover:opacity-100 group-hover:visible`}
-                          >
-                            {activePriceTab === "finance"
-                              ? "Finance price does not include taxes and licensing fees."
-                              : "Cash price does not include taxes and licensing fees."}
-                            <div className="absolute left-1/2 -translate-x-1/2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
-                          </div>
-                        </div>
+                        <PriceDrop
+                          price={hit.price}
+                          specialPrice={hit.special_price}
+                          className="text-[23px] font-extrabold leading-none text-price-black"
+                        />
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-[17px] w-full font-semibold leading-6 mt-1.5">
+                  <div className="text-[17px] w-full font-semibold leading-6">
                     <div className="flex items-center gap-1 text-price-green border-t border-gray-300 py-2">
                       <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -462,7 +366,6 @@ export const HitCard = ({
               ) : null}
             </div>
 
-
             {/* Bi-weekly & Cash Down Section */}
             {!isSold && hasFinancingDetails && (
               <>
@@ -474,17 +377,18 @@ export const HitCard = ({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        setActiveTooltip((prev) => (prev === "payment" ? null : "payment"));
+                        setActiveTooltip((prev) => !prev);
                       }}
                       aria-label="Financing payment information"
-                      className="flex items-center justify-center p-0.5"
+                      className="flex items-center justify-center p-0.5 cursor-pointer"
                     >
                       <InfoIcon />
                     </button>
 
                     <span
-                      className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[240px] max-w-[calc(100vw-32px)] bg-black text-white text-xs sm:text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl z-[9999] transition-opacity duration-150 pointer-events-none ${activeTooltip === "payment" ? "opacity-100 visible" : "opacity-0 invisible"
-                        } group-hover:opacity-100 group-hover:visible`}
+                      className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-[240px] max-w-[calc(100vw-32px)] bg-black text-white text-xs sm:text-sm leading-5 px-3 py-2.5 rounded-lg shadow-xl z-[9999] transition-opacity duration-150 pointer-events-none ${
+                        activeTooltip ? "opacity-100 visible" : "opacity-0 invisible"
+                      } group-hover:opacity-100 group-hover:visible`}
                     >
                       Estimated bi-weekly financing payment. Taxes and licensing fees are not included.
                       <span className="absolute left-1/2 -translate-x-1/2 bottom-[-5px] w-2.5 h-2.5 bg-black rotate-45" />
