@@ -159,7 +159,7 @@ export const VehicleHeaderAndCTA = ({
               className="relative bg-[#f1f8f5] rounded-xl px-4 lg:px-2 py-4 mx-6 mb-3"
             >
               {!isSold && hasPriceDrop && (
-                <div className="mb-2 mt-1 w-fit rounded-full bg-[#00a650] px-2 py-1.5 text-[13px] font-medium leading-none text-white">
+                <div className="mb-1 mt-1 w-fit rounded-full bg-[#00a650] px-2 py-1 text-[11px] font-medium leading-3 text-white">
                   Price drop
                 </div>
               )}
@@ -172,7 +172,6 @@ export const VehicleHeaderAndCTA = ({
                         price={vehicle?.price}
                         specialPrice={vehicle?.special_price}
                         className="text-[28px] font-extrabold leading-none text-price-black"
-                        showArrow={false}
                       />
                     </div>
 

@@ -296,15 +296,17 @@ export const HitCard = ({
             )}
           </div>
 
-          {/* Price drop tag */}
-          {!isSold && hasPriceDrop && hit?.vehicle_type?.toLowerCase() !== "as-is" && (
-            <div className="w-fit mx-3 z-10 rounded-lg bg-brand px-2 py-1.5 mt-3 text-[13px] font-medium leading-none text-white">
-              Price drop
-            </div>
-          )}
+          {/* Keep the title aligned when a card has no price-drop tag. */}
+          <div className="mx-3 mt-3 flex h-5 items-start">
+            {!isSold && hasPriceDrop && hit?.vehicle_type?.toLowerCase() !== "as-is" && (
+              <div className="w-fit rounded-full bg-brand px-2 py-1 text-[11px] font-medium leading-3 text-white">
+                Price drop
+              </div>
+            )}
+          </div>
 
           {/* Details Body */}
-          <div className="flex flex-col flex-1 px-[15px] pt-[14px] pb-[16px] text-start">
+          <div className="flex flex-col flex-1 px-[15px] pt-[3px] pb-[16px] text-start">
             <h3 className="text-[16px] font-[600] text-foreground leading-[22px] line-clamp-2">
               {title}
             </h3>

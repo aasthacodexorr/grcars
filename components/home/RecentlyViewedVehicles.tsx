@@ -73,7 +73,11 @@ export default function RecentlyViewedVehicles() {
           </h2>
 
           {activeVehicles.length > 1 && (
-            <div className="flex items-center gap-2">
+            <div
+              className={`flex items-center gap-2 ${
+                activeVehicles.length <= 3 ? "lg:hidden" : ""
+              }`}
+            >
               <button
                 type="button"
                 onClick={() => scroll("left")}
