@@ -115,7 +115,11 @@ export default function VehicleFeatures({
         </h2>
 
         {matchedFeatures.length > 1 && (
-          <div className="mt-4 flex justify-center items-center gap-2 lg:mt-0 lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2">
+          <div
+            className={`mt-4 flex justify-center items-center gap-2 lg:mt-0 lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2 ${
+              matchedFeatures.length <= 3 ? "lg:hidden" : ""
+            }`}
+          >
             <button
               type="button"
               onClick={() => scroll("left")}

@@ -49,19 +49,19 @@ export const PriceDrop = ({
       {showArrow && (
         <span
           aria-hidden="true"
-          className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#00a650]"
+          className="inline-flex h-3 w-3 shrink-0 items-center justify-center rounded-full bg-[#00a650]"
         >
           <svg
-            width="10"
-            height="10"
-            viewBox="0 0 8 9"
+            width="7"
+            height="7"
+            viewBox="0 0 8 8"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M2 2L8 8M8 8V3.8M8 8H3.8"
+              d="M2 2L6 6M6 6V3.5M6 6H3.5"
               stroke="white"
-              strokeWidth="1.8"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />

@@ -80,7 +80,7 @@ export default function VDPRecentlyViewed({
     >
       <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-5 md:px-12 lg:px-20">
         {/* Section Heading & Carousel Controls */}
-        <div className="mb-6 flex flex-col items-center lg:flex-row lg:justify-between mt-7 sm:mt-16  ">
+        <div className="mb-6 flex flex-col items-center lg:flex-row lg:justify-between mt-7 sm:mt-18  ">
           <h2
             id="vdp-recently-viewed-heading"
             className="text-center text-[30px] font-semibold text-black"
@@ -89,7 +89,11 @@ export default function VDPRecentlyViewed({
           </h2>
 
           {otherVehicles.length > 1 && (
-            <div className="mt-4 flex items-center justify-center gap-2 lg:mt-0">
+            <div
+              className={`mt-4 flex items-center justify-center gap-2 lg:mt-0 ${
+                otherVehicles.length <= 3 ? "lg:hidden" : ""
+              }`}
+            >
               <button
                 type="button"
                 onClick={() => scroll("left")}
