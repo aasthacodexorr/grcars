@@ -50,7 +50,7 @@ export const PriceDrop = ({
       {showArrow && (
         <span
           aria-hidden="true"
-          className="relative inline-flex h-3 w-3 shrink-0"
+          className="relative inline-flex items-center h-4 w-4 shrink-0"
         >
           <Image
             src={priceDropIcon}
@@ -58,7 +58,7 @@ export const PriceDrop = ({
             width={29}
             height={28}
             unoptimized
-            className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
+            className="absolute left-1/2 top-1/2 min-w-[40px] -translate-x-1/2 -translate-y-1/2"
           />
         </span>
       )}
