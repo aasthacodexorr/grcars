@@ -172,7 +172,6 @@ export const VehicleHeaderAndCTA = ({
                         price={vehicle?.price}
                         specialPrice={vehicle?.special_price}
                         className="text-[28px] font-extrabold leading-none text-price-black"
-                        showArrow={false}
                       />
                     </div>
 
