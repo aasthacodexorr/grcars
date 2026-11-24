@@ -64,12 +64,12 @@ export default function RecentlyViewedVehicles() {
   }
 
   return (
-    <section className="w-full bg-white py-6 md:pt-5 px-3 md:px-12 overflow-hidden">
+    <section className="w-full bg-white pt-9 pb-0 px-3 md:px-12 overflow-hidden">
       <div className="max-w-[1280px] mx-auto">
         {/* Section Heading & Prev / Next Controls */}
         <div className="flex items-center justify-between mb-6 px-3 lg:px-0">
           <h2 className="text-[20px] md:text-[28px] font-bold text-[#0F2942]">
-            Recently Viewed
+            Recently viewed
           </h2>
 
           {activeVehicles.length > 1 && (
@@ -108,7 +108,7 @@ export default function RecentlyViewedVehicles() {
               <div
                 key={vehicleId}
                 data-card
-                className="flex-none w-[280px] sm:w-[310px] lg:w-[295px] xl:w-[305px] snap-start flex flex-col self-stretch"
+                className="flex-none w-[calc(100vw-48px)] max-w-[330px] sm:w-[350px] lg:w-[340px] xl:w-[350px] snap-start flex flex-col self-stretch"
               >
                 <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>

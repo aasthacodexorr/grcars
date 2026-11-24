@@ -78,18 +78,19 @@ export default function VDPRecentlyViewed({
       className="w-full bg-white mb-10 overflow-hidden"
       aria-labelledby="vdp-recently-viewed-heading"
     >
-      <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-12 lg:px-20">
+      <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-5 md:px-12 lg:px-20">
         {/* Section Heading & Carousel Controls */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex flex-col items-center lg:flex-row lg:justify-between mt-7 sm:mt-16  ">
+          <h2 className="hidden lg:block"></h2>
           <h2
             id="vdp-recently-viewed-heading"
-            className="text-[22px] md:text-[28px] font-bold text-[#0F2942]"
+            className="text-center text-[30px] font-semibold text-black"
           >
-            Recently Viewed
+            Recently viewed
           </h2>
 
           {otherVehicles.length > 1 && (
-            <div className="flex items-center gap-2">
+            <div className="mt-4 flex items-center justify-center gap-2 lg:mt-0">
               <button
                 type="button"
                 onClick={() => scroll("left")}
@@ -124,7 +125,7 @@ export default function VDPRecentlyViewed({
               <div
                 key={vehicleId}
                 data-vdp-card
-                className="flex-none w-[280px] sm:w-[310px] lg:w-[330px] snap-start flex flex-col self-stretch"
+                className="flex-none w-[calc(100vw-40px)] max-w-[330px] sm:w-[350px] lg:w-[360px] snap-start flex flex-col self-stretch"
               >
                 <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>

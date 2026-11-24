@@ -184,7 +184,7 @@ export default async function VehicleDetailsPage({
                 {/*  */}
             </div>
 
-            <section className="w-full bg-background mt-5">
+            <section className="w-full bg-background mt-0 lg:mt-5">
                 <div className="w-full pt-[2px] flex-1 mx-auto">
 
                     {/* CONTAINER WRAPPER */}
@@ -197,7 +197,7 @@ export default async function VehicleDetailsPage({
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
 
                                 {/* BREADCRUMBS */}
-                                <nav className="flex items-center w-full h-8 -mb-4">
+                                <nav className="flex items-center w-full h-12 lg:h-8 -mb-4">
                                     <div className="flex items-center min-w-0 flex-1 pr-6 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
                                         <Link href="/inventory" className="hover:underline hover:text-black transition-colors shrink-0">
                                             All Cars
@@ -212,9 +212,9 @@ export default async function VehicleDetailsPage({
                                         </span>
                                     </div>
 
-
-
-
+                                    <div id="vdp-top-wishlist-mobile" className="shrink-0 lg:hidden">
+                                        <VDPWishlistButton vehicle={vehicle} />
+                                    </div>
                                 </nav>
 
                                 {/* Image gallery */}
@@ -239,7 +239,7 @@ export default async function VehicleDetailsPage({
                                 </div>
 
                                 {/* Specs grid & Extended Coverage */}
-                                <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
+                                <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-0 lg:mb-10">
                                     <AboutVehicle vehicle={vehicle} />
                                     <ViewAllFeaturesButton
                                         standardJson={vehicle.standard}
@@ -250,7 +250,7 @@ export default async function VehicleDetailsPage({
 
                                 {/* Pricing Section */}
                                 {!isSold && (
-                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-10">
+                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-0 lg:mb-10">
                                         <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
 
                                         <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-center">
@@ -273,14 +273,14 @@ export default async function VehicleDetailsPage({
                                 {hasFeatures && (
                                     <div
                                         id="vehicle-features-section"
-                                        className="w-full max-w-[925px] scroll-mt-44 mb-10"
+                                        className="w-full max-w-[925px] scroll-mt-44 mb-0 lg:mb-10"
                                     >
                                         <VehicleFeatures vehicle={vehicle} />
                                     </div>
                                 )}
 
                                 {/* Protection Section */}
-                                <div id="vehicle-protection-section" className="w-full max-w-[925px] bg-white scroll-mt-44 mb-10 ">
+                                <div id="vehicle-protection-section" className="w-full max-w-[925px] bg-white scroll-mt-44 mb-0 ">
                                     {/* Section Header */}
                                     <div className="text-center mb-10 flex flex-col items-center">
                                         {/* Decorative Top Accent Bar */}
@@ -335,7 +335,7 @@ export default async function VehicleDetailsPage({
                                 {vehicle.vehicle_description && (
                                     <div
                                         id="vehicle-description-section"
-                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-12"
+                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-0 lg:mb-6"
                                     >
                                         <h2 className="text-[30px] text-center font-semibold text-black mb-[25px]">
                                             Vehicle Description
@@ -368,12 +368,6 @@ export default async function VehicleDetailsPage({
                     
                 </div>
             </section>
-            <div className="w-full mb-18 md:mb-0 lg:mt-10">
-                <div className="max-w-[1440px] xl:max-w-[1600px] 2xl:max-w-full  mx-auto w-full">
-
-                </div>
-            </div>
-
             {/* Recently Viewed Vehicles (excluding current open vehicle) */}
             <VDPRecentlyViewed currentVehicleId={id} />
         </main>

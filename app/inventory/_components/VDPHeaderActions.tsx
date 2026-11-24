@@ -1,6 +1,6 @@
 "use client";
 
-import VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
+import type VDPWishlistButton from "@/components/inventory/VDPWishlistButton";
 import { useRecentlyViewed, isSoldVehicle } from "@/lib/recentlyViewed";
 import RecentlyViewedIndicator from "./RecentlyViewedIndicator";
 
@@ -20,10 +20,10 @@ export default function VDPHeaderActions({
   const showRecentlyViewed = !isSold && wasViewedBeforeCurrentVisit(inventoryId);
 
   return (
-    <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-      {showRecentlyViewed && (
+    showRecentlyViewed ? (
+      <div className="absolute top-4 left-4 z-20">
         <RecentlyViewedIndicator inventoryId={inventoryId} />
-      )}
-    </div>
+      </div>
+    ) : null
   );
 }

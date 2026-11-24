@@ -23,16 +23,16 @@ const AboutVehicle = ({ vehicle }: any) => {
   console.log(vehicle, "Vvvvvvvvvvvvv");
 
   return (
-    <div id="vehicle-details-section" className="bg-card border-none rounded-xl p-0 w-full -mt-3">
+    <div id="vehicle-details-section" className="bg-card border-none rounded-xl p-0 w-full mt-0 lg:-mt-3">
       <motion.h2
         initial={{ opacity: 0, x: -15 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        className="text-[30px] font-semibold text-black text-center mb-[2px]"
+        className="text-[30px] font-semibold text-black text-center mb-6 lg:mb-[2px]"
       >
         Vehicle Details
       </motion.h2>
-      <div className="max-w-4xl mx-auto py-8 px-4">
+      <div className="max-w-4xl mx-auto pt-0 pb-8 px-4 lg:py-8">
 
 
         {/* Details Grid */}
