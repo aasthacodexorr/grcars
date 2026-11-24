@@ -284,7 +284,7 @@ export const HitCard = ({
                     });
                   }
                 }}
-                className="absolute top-3 right-3 p-1.5 cursor-pointer rounded-full bg-white/90 hover:bg-white transition-colors shadow-md z-20"
+                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center cursor-pointer rounded-full bg-white/95 hover:bg-white transition-colors shadow-[0_1px_6px_rgba(0,0,0,0.16)] z-20"
                 aria-label={isInWishlist(inventoryId) ? "Remove from wishlist" : "Add to wishlist"}
               >
                 <Heart
@@ -304,18 +304,18 @@ export const HitCard = ({
           )}
 
           {/* Details Body */}
-          <div className="flex flex-col flex-1 px-[15px] pt-3 pb-0 text-start">
+          <div className="flex flex-col flex-1 px-[15px] pt-[14px] pb-[16px] text-start">
             <h3 className="text-[16px] font-[600] text-foreground leading-[22px] line-clamp-2">
               {title}
             </h3>
 
             {/* Mileage & Drivetrain */}
-            <p className="text-[14px] text-gray-700/80 leading-[14px] mt-[8px]">
+            <p className="text-[13px] text-gray-700/80 leading-[17px] mt-[6px]">
               {km.toLocaleString()} KM {drivetrain && drivetrain !== "N/A" && <>&bull; {drivetrain}</>}
             </p>
 
             {/* Simple Price - from API with no finance or cash price mentions */}
-            <div className="mt-2.5">
+            <div className="mt-[17px]">
               {!isSold ? (
                 hit?.vehicle_type?.toLowerCase() === "as-is" ? (
                   <div className="text-[17px] w-full font-semibold text-foreground leading-6 py-[3px]">
@@ -340,7 +340,7 @@ export const HitCard = ({
                         <PriceDrop
                           price={hit.price}
                           specialPrice={hit.special_price}
-                          className="text-[23px] font-extrabold leading-none text-price-black"
+                          className="text-[24px] font-extrabold leading-[26px] text-price-black"
                         />
                       </div>
                     </div>
