@@ -239,7 +239,7 @@ export default async function VehicleDetailsPage({
                                 </div>
 
                                 {/* Specs grid & Extended Coverage */}
-                                <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-0 lg:mb-10">
+                                <div id="vehicle-details-section" className="w-full max-w-[925px] scroll-mt-44 mb-0 lg:mb-0">
                                     <AboutVehicle vehicle={vehicle} />
                                     <ViewAllFeaturesButton
                                         standardJson={vehicle.standard}

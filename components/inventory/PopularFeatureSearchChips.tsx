@@ -321,7 +321,7 @@ export default function PopularFeatureSearchChips() {
 
   return (
     <div
-      className="relative w-full pt-2 pb-1"
+      className="relative w-full pt-2"
       aria-label="Popular vehicle feature filters"
     >
       {/* Left Scroll Arrow with gradient backdrop (Desktop) */}
