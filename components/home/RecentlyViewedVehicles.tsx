@@ -108,7 +108,7 @@ export default function RecentlyViewedVehicles() {
               <div
                 key={vehicleId}
                 data-card
-                className="flex-none w-[calc(100vw-48px)] max-w-[330px] sm:w-[350px] lg:w-[340px] xl:w-[350px] snap-start flex flex-col self-stretch"
+                className="flex-none w-[calc(100vw-48px)] max-w-[330px] sm:w-[350px] lg:w-[calc((100%_-_2.5rem)/3)] lg:max-w-none snap-start flex flex-col self-stretch"
               >
                 <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>

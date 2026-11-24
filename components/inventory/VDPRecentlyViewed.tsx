@@ -81,12 +81,11 @@ export default function VDPRecentlyViewed({
       <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-5 md:px-12 lg:px-20">
         {/* Section Heading & Carousel Controls */}
         <div className="mb-6 flex flex-col items-center lg:flex-row lg:justify-between mt-7 sm:mt-16  ">
-          <h2 className="hidden lg:block"></h2>
           <h2
             id="vdp-recently-viewed-heading"
             className="text-center text-[30px] font-semibold text-black"
           >
-            Recently viewed
+            Recently Viewed
           </h2>
 
           {otherVehicles.length > 1 && (
@@ -125,7 +124,7 @@ export default function VDPRecentlyViewed({
               <div
                 key={vehicleId}
                 data-vdp-card
-                className="flex-none w-[calc(100vw-40px)] max-w-[330px] sm:w-[350px] lg:w-[360px] snap-start flex flex-col self-stretch"
+                className="flex-none w-[calc(100vw-40px)] max-w-[330px] sm:w-[350px] lg:w-[calc((100%_-_2.5rem)/3)] lg:max-w-none snap-start flex flex-col self-stretch"
               >
                 <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>
