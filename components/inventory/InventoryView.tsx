@@ -945,7 +945,7 @@ const GroupedCurrentRefinements = () => {
         });
 
         return (
-          <div key={category.attribute} className="flex flex-wrap items-center gap-[0.5px] bg-transparent">
+          <div key={category.attribute} className="flex flex-wrap items-center gap-[0.5px] pb-2 bg-transparent">
             {uniqueRefinements.map((refinement) => (
               <div
                 key={refinement.label}
@@ -2530,7 +2530,7 @@ export const InventoryView = ({
                     <GroupedCurrentRefinements />
                   </div>
 
-                  <div className="mb-4">
+                  <div className="mb-4 -mt-2">
                     <SearchResultsWrapper isLocationPage={isLocationPage}>
                       <NoResultsHandler>
                         <CustomInfiniteHits hitComponent={HitCard} />
