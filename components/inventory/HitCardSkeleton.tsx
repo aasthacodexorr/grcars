@@ -7,16 +7,16 @@ import { useEffect, useState } from "react";
    ========================= */
 export const HitCardSkeleton = () => {
   return (
-    <div className="flex flex-col h-full w-full bg-white border border-border-standard rounded-[20px] overflow-hidden">
+    <div className="flex flex-col h-full w-full bg-white border border-border-standard rounded-[10px] overflow-hidden">
       {/* Match HitCard image box so shimmer → card swap stays height-stable */}
-      <div className="relative overflow-hidden rounded-t-[19px] w-full aspect-[16/10] bg-[#e5e7eb]">
+      <div className="relative overflow-hidden rounded-t-[9px] w-full aspect-[1.9/1] bg-[#e5e7eb]">
         <span
           className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[linear-gradient(90deg,rgba(229,231,235,0)_0%,rgba(255,255,255,0.85)_50%,rgba(229,231,235,0)_100%)] -translate-x-full animate-[inventoryShimmerSweep_1.35s_ease-in-out_infinite] will-change-transform"
           aria-hidden
         />
       </div>
 
-      <div className="flex flex-col flex-1 px-[15px] pt-3 pb-0 space-y-0">
+      <div className="flex flex-col flex-1 px-[15px] pt-[14px] pb-[16px] space-y-0">
         <div className="relative overflow-hidden bg-[#e5e7eb] [transform:translateZ(0)] [backface-visibility:hidden] h-[44px] rounded-md w-3/4">
           <span
             className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[linear-gradient(90deg,rgba(229,231,235,0)_0%,rgba(255,255,255,0.85)_50%,rgba(229,231,235,0)_100%)] -translate-x-full animate-[inventoryShimmerSweep_1.35s_ease-in-out_infinite] will-change-transform"
@@ -38,21 +38,6 @@ export const HitCardSkeleton = () => {
         </div>
         <div className="border-t border-gray-200 my-2" />
         <div className="relative overflow-hidden bg-[#e5e7eb] [transform:translateZ(0)] [backface-visibility:hidden] h-3 mb-2 rounded-md w-1/3">
-          <span
-            className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[linear-gradient(90deg,rgba(229,231,235,0)_0%,rgba(255,255,255,0.85)_50%,rgba(229,231,235,0)_100%)] -translate-x-full animate-[inventoryShimmerSweep_1.35s_ease-in-out_infinite] will-change-transform"
-            aria-hidden
-          />
-        </div>
-      </div>
-
-      <div className="w-full rounded-[12px] mb-3 px-3 mt-auto flex gap-1">
-        <div className="relative overflow-hidden bg-[#e5e7eb] [transform:translateZ(0)] [backface-visibility:hidden] h-[42px] w-26 rounded-[12px]">
-          <span
-            className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[linear-gradient(90deg,rgba(229,231,235,0)_0%,rgba(255,255,255,0.85)_50%,rgba(229,231,235,0)_100%)] -translate-x-full animate-[inventoryShimmerSweep_1.35s_ease-in-out_infinite] will-change-transform"
-            aria-hidden
-          />
-        </div>
-        <div className="relative overflow-hidden bg-[#e5e7eb] [transform:translateZ(0)] [backface-visibility:hidden] h-[42px] flex-1 rounded-[12px]">
           <span
             className="absolute top-0 left-0 w-full h-full pointer-events-none bg-[linear-gradient(90deg,rgba(229,231,235,0)_0%,rgba(255,255,255,0.85)_50%,rgba(229,231,235,0)_100%)] -translate-x-full animate-[inventoryShimmerSweep_1.35s_ease-in-out_infinite] will-change-transform"
             aria-hidden
