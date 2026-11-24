@@ -598,7 +598,7 @@ const CustomHitsWithPagination = ({ hitComponent: HitComponent }: any) => {
 
           const AdComponent = AD_CARDS[item.adIndex];
           return (
-            <div key={item.key} className="flex flex-col h-full p-[9px]">
+            <div key={item.key} className="flex flex-col h-full px-0 lg:px-[9px] py-[9px]">
               <AdComponent />
             </div>
           );
@@ -758,7 +758,7 @@ const CustomInfiniteHits = ({ hitComponent: HitComponent }: any) => {
 
           const AdComponent = AD_CARDS[item.adIndex];
           return (
-            <div key={item.key} className="flex flex-col h-full p-[9px]">
+            <div key={item.key} className="flex flex-col h-full px-0 lg:px-[9px] py-[9px]">
               <AdComponent />
             </div>
           );
@@ -2292,7 +2292,7 @@ export const InventoryView = ({
         </div>
 
         {/* ── Two-column layout ── */}
-        <div className="bg-light-gray mt-36 lg:-mt-4 min-h-screen lg:px-14 px-3 py-[20px] overflow-visible">
+        <div className="bg-light-gray mt-28 lg:-mt-4 min-h-screen lg:px-14 px-3 py-[20px] overflow-visible">
 
           {/* Mobile-only Search / AI Search toggle — desktop keeps its own copy inside the sidebar */}
           <div className="flex lg:hidden items-center gap-1.5 max-w-[1550px] mx-auto mb-3 p-[6px]">

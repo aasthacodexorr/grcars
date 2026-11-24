@@ -58,7 +58,7 @@ const Hero = () => {
       {/* Main Hero Content Container */}
       <div className="relative z-10 max-w-[1280px] w-full mt-4 md:mt-16 lg:mt-24 mx-auto flex flex-col justify-between h-full min-h-[450px] md:min-h-[480px]">
         {/* Top Text & Search Section */}
-        <div className="max-w-xl space-y-3 md:space-y-6 pt-2 md:pt-6">
+        <div className="max-w-xl space-y-3 md:space-y-6 pt-8 md:pt-6">
           <h1
             suppressHydrationWarning
             className="block text-3xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight uppercase drop-shadow-md"

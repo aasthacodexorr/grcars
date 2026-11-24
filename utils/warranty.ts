@@ -147,7 +147,10 @@ export function getManufacturerWarranties(
       warranty_remaining_duration = moment(
         warranty_validity_date,
         "MMM D, YYYY"
-      ).fromNow();
+      )
+        .fromNow()
+        .replace(/\b(?:a|an|1) year\b/gi, "12 months")
+        .replace(/\b(\d+) years?\b/gi, (_, years: string) => `${Number(years) * 12} months`);
     }
 
     return {

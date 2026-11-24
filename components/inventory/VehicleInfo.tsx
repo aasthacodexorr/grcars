@@ -307,21 +307,17 @@ export const MessageModal = ({ isOpen, onClose, vehicle }: any) => {
   useEffect(() => {
     if (!isOpen) return;
 
-    const body = document.body;
     const html = document.documentElement;
 
-    const originalBodyOverflow = body.style.overflow;
-    const originalBodyTouchAction = body.style.touchAction;
     const originalHtmlOverflow = html.style.overflow;
+    const originalScrollbarGutter = html.style.scrollbarGutter;
 
-    body.style.overflow = "hidden";
-    body.style.touchAction = "none";
     html.style.overflow = "hidden";
+    html.style.scrollbarGutter = "stable";
 
     return () => {
-      body.style.overflow = originalBodyOverflow;
-      body.style.touchAction = originalBodyTouchAction;
       html.style.overflow = originalHtmlOverflow;
+      html.style.scrollbarGutter = originalScrollbarGutter;
     };
   }, [isOpen]);
 

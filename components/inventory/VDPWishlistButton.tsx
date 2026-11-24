@@ -14,11 +14,11 @@ export default function VDPWishlistButton({ vehicle, showLabel = false }: VDPWis
   const { addToWishlist, removeFromWishlist, isInWishlist, isHydrated } = useWishlist();
   const [showToast, setShowToast] = useState(false);
 
-  if (!isHydrated) return null;
-
   const inWishlist = isInWishlist(vehicle.id);
 
   const handleClick = () => {
+    if (!isHydrated) return;
+
     if (inWishlist) {
       removeFromWishlist(vehicle.id);
       setShowToast(true);
@@ -49,7 +49,8 @@ export default function VDPWishlistButton({ vehicle, showLabel = false }: VDPWis
     <>
       <button
         onClick={handleClick}
-        className={`flex items-center gap-2 lg:px-4 cursor-pointer py-3 rounded-lg font-semibold transition-all duration-300 ${
+        disabled={!isHydrated}
+        className={`flex cursor-pointer items-center gap-2 py-3 rounded-lg font-semibold transition-all duration-300 lg:px-4 ${
           showLabel ? "text-[#0d2238] hover:text-[#06c]" : ""
         }`}
         aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
