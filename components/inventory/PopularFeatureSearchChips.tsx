@@ -123,7 +123,7 @@ export default function PopularFeatureSearchChips() {
     return Array.from(new Set([...fromUiState, ...fromCurrent]));
   }, [indexUiState.refinementList?.popular_features, currentRefinements]);
 
-  // Track when component is mounted, URL features are restored, and initial count/availability data has arrived
+  // Wait for the first real search result before showing the configured feature list.
   useEffect(() => {
     if (!isMounted) return;
 
@@ -133,13 +133,11 @@ export default function PopularFeatureSearchChips() {
       !results.__isArtificial &&
       typeof results.nbHits === "number"
     );
-    const hasFacetData =
-      facetItems.length > 0 || (hasRealResults && results?.nbHits === 0);
 
-    if (hasRealResults && !isSearchLoading && hasFacetData) {
+    if (hasRealResults && !isSearchLoading) {
       setIsInitialized(true);
     }
-  }, [isMounted, results, status, facetItems]);
+  }, [isMounted, results, status]);
 
   // Match an API tag to all equivalent Typesense facet values. Inventory data
   // can contain multiple casings or aliases for the same canonical feature.
@@ -189,26 +187,14 @@ export default function PopularFeatureSearchChips() {
     [activeFeatures]
   );
 
-  // Dynamic Feature Visibility:
-  // - Wait until initial availability/count data is received (show skeleton while initializing)
-  // - Once ready, render all available chips together including selected chips
-  // - Keep active/selected features visible so user can deselect them
-  // - Show unselected features only when matching vehicles are available for current selection + candidate feature
+  // Keep the configured feature list stable as other filters change facet counts.
   const visibleTags = useMemo(() => {
     if (!isInitialized) {
       return [];
     }
 
-    return featureTags.filter((tag) => {
-      // Always keep active/selected features visible
-      if (isFeatureActive(tag)) {
-        return true;
-      }
-
-      // Display only features that have at least one matching vehicle in current inventory results
-      return findMatchingFacets(tag).some((item) => item.count > 0);
-    });
-  }, [isInitialized, featureTags, isFeatureActive, findMatchingFacets]);
+    return featureTags;
+  }, [isInitialized, featureTags]);
 
   // Check scroll position to display left/right navigation arrows on desktop
   const updateScrollArrows = useCallback(() => {
@@ -302,19 +288,14 @@ export default function PopularFeatureSearchChips() {
     });
   };
 
-  // 1. Initial loading state: show skeleton until data and counts are ready
-  // During page reload or initialization, if active features are in URL but facet counts have not loaded yet,
-  // ensure the skeleton loader is displayed instead of showing selected chips alone.
-  const showSkeleton =
-    !isMounted ||
-    !isInitialized ||
-    (activeFeatures.length > 0 && facetItems.length === 0 && (results?.nbHits ?? 1) > 0);
+  // Show the skeleton until the first real search result arrives.
+  const showSkeleton = !isMounted || !isInitialized;
 
   if (showSkeleton) {
     return <PopularFeatureChipsSkeleton />;
   }
 
-  // 2. If no popular features have matching vehicles in current results, hide the chips container
+  // No configured features are available to display.
   if (visibleTags.length === 0) {
     return null;
   }
@@ -326,7 +307,7 @@ export default function PopularFeatureSearchChips() {
     >
       {/* Left Scroll Arrow with gradient backdrop (Desktop) */}
       {canScrollLeft && (
-        <div className="hidden lg:flex absolute left-0 top-0 bottom-0 z-10 w-14 items-center justify-start pl-0.5 bg-gradient-to-r from-[#efefef] from-50% to-transparent pointer-events-none">
+        <div className="hidden xl:flex absolute left-0 top-0 bottom-0 z-10 w-14 items-center justify-start pl-0.5 bg-gradient-to-r from-[#efefef] from-50% to-transparent pointer-events-none">
           <button
             type="button"
             onClick={() => handleScroll("left")}
@@ -381,7 +362,7 @@ export default function PopularFeatureSearchChips() {
 
       {/* Right Scroll Arrow with gradient backdrop (Desktop) */}
       {canScrollRight && (
-        <div className="hidden lg:flex absolute right-0 top-0 bottom-0 z-10 w-14 items-center justify-end pr-0.5 bg-gradient-to-l from-[#efefef] from-50% to-transparent pointer-events-none">
+        <div className="hidden xl:flex absolute right-0 top-0 bottom-0 z-10 w-14 items-center justify-end pr-0.5 bg-gradient-to-l from-[#efefef] from-50% to-transparent pointer-events-none">
           <button
             type="button"
             onClick={() => handleScroll("right")}
