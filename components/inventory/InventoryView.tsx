@@ -2526,7 +2526,7 @@ export const InventoryView = ({
                     </div>
                   )}
 
-                  <div className="lg:px-3 pt-2">
+                  <div className="lg:px-3 pt-1.5">
                     <GroupedCurrentRefinements />
                   </div>
 
