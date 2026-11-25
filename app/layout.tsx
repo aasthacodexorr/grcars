@@ -10,7 +10,6 @@ import { Inter } from "next/font/google";
 import { Footer, Header } from "@/components/layout";
 import { MainContent } from "@/components/layout/MainContent";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import ChekkitWidget from "@/components/widget/ChekkitWidget";
 import { MetaPixel } from "@/components/MetaPixel";
 
 const inter = Inter({
@@ -109,7 +108,6 @@ export default async function RootLayout({
           <Footer />
         </Providers>
         <GoogleAnalytics gaId="G-2PNJ1RNLQD" />
-        <ChekkitWidget />
       </body>
     </html>
   );
