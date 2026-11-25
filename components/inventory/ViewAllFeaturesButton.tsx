@@ -74,7 +74,7 @@ export default function ViewAllFeaturesButton({ standardJson, techSpecsJson, opt
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="mt-4 w-full cursor-pointer sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-[#0a2237] text-[#0a2237] font-semibold text-[15px] hover:bg-[#0d375e] hover:text-white transition-colors duration-200"
+        className="mt-4 mb-6 w-full cursor-pointer sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-[#0a2237] text-[#0a2237] font-semibold text-[15px] hover:bg-[#0d375e] hover:text-white transition-colors duration-200"
       >
         View All Features &amp; Specialities
       </button>
