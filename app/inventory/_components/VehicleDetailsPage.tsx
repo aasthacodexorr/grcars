@@ -197,7 +197,7 @@ export default async function VehicleDetailsPage({
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
 
                                 {/* BREADCRUMBS */}
-                                <nav className="flex items-center w-full h-12 lg:h-8 -mb-4">
+                                <nav className="flex items-center w-full h-12 lg:h-8 -mb-9 lg:-mb-6">
                                     <div className="flex items-center min-w-0 flex-1 pr-6 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
                                         <Link href="/inventory" className="hover:underline hover:text-black transition-colors shrink-0">
                                             All Cars
@@ -355,7 +355,7 @@ export default async function VehicleDetailsPage({
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
 
-                                    <div className="sticky top-6 h-fit space-y-3">
+                                    <div className="sticky top-6 h-fit space-y-1 lg:-mt-2">
                                         <div className="max-w-[400px] shadow-2xl rounded-xl bg-white overflow-hidden">
                                             <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop" />
                                         </div>
