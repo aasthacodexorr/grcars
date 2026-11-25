@@ -250,10 +250,10 @@ export default async function VehicleDetailsPage({
 
                                 {/* Pricing Section */}
                                 {!isSold && (
-                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-4 lg:mb-10">
+                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-2 lg:mb-10">
                                         <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
 
-                                        <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-center">
+                                        <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-left lg:text-center">
                                             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                                                 Vehicle Price
                                             </h3>
@@ -335,7 +335,7 @@ export default async function VehicleDetailsPage({
                                 {vehicle.vehicle_description && (
                                     <div
                                         id="vehicle-description-section"
-                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-6 lg:mb-6"
+                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-5 lg:mb-6"
                                     >
                                         <h2 className="text-[30px] text-center font-semibold text-black mb-[25px] lg:mt-7">
                                             Vehicle Description
