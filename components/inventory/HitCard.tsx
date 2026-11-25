@@ -252,7 +252,7 @@ export const HitCard = ({
             )}
 
             {isDealPending && (
-              <div className="absolute bottom-3 left-3 z-10 rounded-full bg-brand-green px-2.5 py-1 text-[12px] font-medium leading-none text-white shadow-sm">
+              <div className="absolute top-3 left-1/2 z-10 -translate-x-1/2 rounded-md bg-brand-green px-2.5 py-1.5 text-[12px] font-medium leading-none text-white shadow-sm">
                 Deal Pending
               </div>
             )}
