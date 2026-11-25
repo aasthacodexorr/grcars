@@ -1,29 +1,17 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronRight, Wallet, Repeat } from "lucide-react";
 import HeroDesktop from "@/assets/cars/HomebgImg.png";
 import HeroMobile from "@/assets/cars/hero-mobile.png";
 import Link from "next/link";
-import { useRecentlyViewed } from "@/lib/recentlyViewed";
 
 const src = (img: unknown) => (typeof img === "string" ? img : (img as { src?: string })?.src);
 
 const Hero = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const { recentlyViewed, isHydrated } = useRecentlyViewed();
-
-  // Keep returning visitor class in sync once client hydration completes
-  useEffect(() => {
-    if (!isHydrated) return;
-    if (recentlyViewed.length > 0) {
-      document.documentElement.classList.add("is-returning-visitor");
-    } else {
-      document.documentElement.classList.remove("is-returning-visitor");
-    }
-  }, [isHydrated, recentlyViewed.length]);
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
