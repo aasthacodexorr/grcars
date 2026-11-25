@@ -78,21 +78,20 @@ export default function VDPRecentlyViewed({
       className="w-full bg-white mb-10 overflow-hidden"
       aria-labelledby="vdp-recently-viewed-heading"
     >
-      <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-5 md:px-12 lg:px-20">
+      <div className="max-w-[1440px] xl:max-w-[1600px] mx-auto px-6 md:px-12 lg:px-20">
         {/* Section Heading & Carousel Controls */}
         <div className="mb-6 flex flex-col items-center lg:flex-row lg:justify-between mt-7 sm:mt-18  ">
           <h2
             id="vdp-recently-viewed-heading"
             className="text-center text-[30px] font-semibold text-black"
-          >
+          > 
             Recently Viewed
           </h2>
 
           {otherVehicles.length > 1 && (
             <div
-              className={`mt-4 flex items-center justify-center gap-2 lg:mt-0 ${
-                otherVehicles.length <= 3 ? "lg:hidden" : ""
-              }`}
+              className={`mt-4 hidden items-center justify-center gap-2 lg:flex lg:mt-0 ${otherVehicles.length <= 3 ? "lg:hidden" : ""
+                }`}
             >
               <button
                 type="button"
@@ -120,16 +119,14 @@ export default function VDPRecentlyViewed({
         <div
           ref={carouselRef}
           aria-label="Recently viewed vehicles carousel"
-          className="flex items-stretch gap-4 md:gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain snap-x snap-mandatory scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 md:-mx-8 md:px-8 lg:mx-0 lg:px-0"
-        >
+          className="flex items-stretch gap-4 md:gap-5 overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden mx-0 px-0"        >
           {otherVehicles.map((vehicle, index) => {
             const vehicleId = getVehicleInventoryId(vehicle) || `vdp-recent-${index}`;
             return (
               <div
                 key={vehicleId}
                 data-vdp-card
-                className="flex-none w-[calc(100vw-40px)] max-w-[330px] sm:w-[350px] lg:w-[calc((100%_-_2.5rem)/3)] lg:max-w-none snap-start flex flex-col self-stretch"
-              >
+                className="flex-none w-[min(100%,330px)] sm:w-[350px] lg:w-[calc((100%_-_2.5rem)/3)] lg:max-w-none snap-start flex flex-col self-stretch"              >
                 <HitCard hit={vehicle} showRecentlyViewed={false} />
               </div>
             );
