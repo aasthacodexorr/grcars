@@ -64,17 +64,17 @@ export default function RecentlyViewedVehicles() {
   }
 
   return (
-    <section className="w-full bg-white pt-9 pb-0 px-3 md:px-12 overflow-hidden">
+    <section className="w-full bg-white pt-9 pb-0 px-8 md:px-12 overflow-hidden">
       <div className="max-w-[1280px] mx-auto">
         {/* Section Heading & Prev / Next Controls */}
-        <div className="flex items-center justify-between mb-6 px-3 lg:px-0">
+        <div className="flex items-center justify-between mb-6 px-0 lg:px-0">
           <h2 className="text-[20px] md:text-[28px] font-bold text-[#0F2942]">
             Recently viewed
           </h2>
 
           {activeVehicles.length > 1 && (
             <div
-              className={`flex items-center gap-2 ${
+              className={`hidden lg:flex items-center gap-2 ${
                 activeVehicles.length <= 3 ? "lg:hidden" : ""
               }`}
             >
@@ -104,8 +104,7 @@ export default function RecentlyViewedVehicles() {
         <div
           ref={carouselRef}
           aria-label="Recently viewed vehicles carousel"
-          className="flex items-stretch gap-4 md:gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain snap-x snap-mandatory scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3 lg:px-0"
-        >
+className="flex items-stretch gap-4 md:gap-5 overflow-x-auto overflow-y-hidden overscroll-x-contain snap-x snap-mandatory scroll-smooth pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-4 lg:px-0"        >
           {activeVehicles.map((vehicle, index) => {
             const vehicleId = getVehicleInventoryId(vehicle) || `vehicle-${index}`;
             return (
