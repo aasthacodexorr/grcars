@@ -197,7 +197,7 @@ export default async function VehicleDetailsPage({
                             <div className={`flex flex-col gap-8 items-start flex-1 w-full ${showSidebar ? "lg:flex-1" : "mx-auto"}`}>
 
                                 {/* BREADCRUMBS */}
-                                <nav className="flex items-center w-full h-12 lg:h-8 -mb-4">
+                                <nav className="flex items-center w-full h-12 lg:h-8 -mb-9 lg:-mb-6">
                                     <div className="flex items-center min-w-0 flex-1 pr-6 text-xs text-gray-500 gap-1 whitespace-nowrap overflow-hidden">
                                         <Link href="/inventory" className="hover:underline hover:text-black transition-colors shrink-0">
                                             All Cars
@@ -250,10 +250,10 @@ export default async function VehicleDetailsPage({
 
                                 {/* Pricing Section */}
                                 {!isSold && (
-                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-4 lg:mb-10">
+                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-2 lg:mb-8  -mt-6 lg:-mt-0 ">
                                         <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
 
-                                        <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-center">
+                                        <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-left lg:text-center">
                                             <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">
                                                 Vehicle Price
                                             </h3>
@@ -335,7 +335,7 @@ export default async function VehicleDetailsPage({
                                 {vehicle.vehicle_description && (
                                     <div
                                         id="vehicle-description-section"
-                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-6 lg:mb-6"
+                                        className="w-full max-w-[925px] bg-card border-none rounded-xl p-0 scroll-mt-44 mb-5 lg:mb-6"
                                     >
                                         <h2 className="text-[30px] text-center font-semibold text-black mb-[25px] lg:mt-7">
                                             Vehicle Description
@@ -355,7 +355,7 @@ export default async function VehicleDetailsPage({
                                         <VDPWishlistButton vehicle={vehicle} />
                                     </div>
 
-                                    <div className="sticky top-6 h-fit space-y-3">
+                                    <div className="sticky top-6 h-fit space-y-1 lg:-mt-2">
                                         <div className="max-w-[400px] shadow-2xl rounded-xl bg-white overflow-hidden">
                                             <VehicleHeaderAndCTA vehicle={vehicle} topWishlistId="vdp-top-wishlist-desktop" />
                                         </div>
