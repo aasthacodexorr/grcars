@@ -250,7 +250,7 @@ export default async function VehicleDetailsPage({
 
                                 {/* Pricing Section */}
                                 {!isSold && (
-                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-2 lg:mb-10">
+                                    <div id="vehicle-pricing-section" className="w-full max-w-[925px] scroll-mt-44 mb-2 lg:mb-8  -mt-6 lg:-mt-0 ">
                                         <h2 className="text-[30px] font-semibold text-black mb-6 text-center">Price Details</h2>
 
                                         <div className=" mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm text-left lg:text-center">
