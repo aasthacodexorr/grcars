@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import type { AppConfig } from "@/lib/appConfig";
 import { useAppConfig } from "@/app/providers";
 
@@ -313,86 +313,133 @@ export function useRecentlyViewed(appConfigOverride?: AppConfig) {
     () => false
   );
 
+  const [inventoryVehicles, setInventoryVehicles] = useState<{
+    key: string;
+    vehicles: RecentlyViewedVehicle[];
+  }>({ key: "", vehicles: [] });
+
+  const host = appConfig?.site?.typesense_host;
+  const port = Number(appConfig?.site?.typesense_port) || 443;
+  const protocol = appConfig?.site?.typesense_protocol || "https";
+  const collection = appConfig?.site?.collection;
+  const searchKey = appConfig?.site?.inventory_search_only_key;
+  const inventoryKey = JSON.stringify([
+    serializedItems,
+    host,
+    port,
+    protocol,
+    collection,
+    searchKey,
+  ]);
+
+  // Only expose vehicles after resolving their IDs to current inventory documents.
   const recentlyViewed = useMemo(
-    () => parseVehicles(serializedItems),
-    [serializedItems]
+    () =>
+      inventoryVehicles.key === inventoryKey
+        ? inventoryVehicles.vehicles
+        : [],
+    [inventoryVehicles, inventoryKey]
   );
 
-  // Revalidate live inventory status from Typesense using appConfig variable to prune sold or deleted vehicles
   useEffect(() => {
-    if (!isHydrated || recentlyViewed.length === 0) return;
+    if (!isHydrated) return;
 
-    const host = appConfig?.site?.typesense_host;
-    const port = Number(appConfig?.site?.typesense_port) || 443;
-    const protocol = appConfig?.site?.typesense_protocol || "https";
-    const collection = appConfig?.site?.collection;
-    const searchKey = appConfig?.site?.inventory_search_only_key;
+    const storedVehicles = parseVehicles(serializedItems);
+    if (!storedVehicles.length) {
+      setInventoryVehicles({ key: inventoryKey, vehicles: [] });
+      return;
+    }
 
-    // Must have typesense credentials configured in appConfig
+    // Without inventory access, cached vehicle details must not be displayed.
     if (!host || !collection || !searchKey) return;
 
-    const ids = recentlyViewed.map(getVehicleInventoryId).filter(Boolean);
-    if (ids.length === 0) return;
+    const ids = Array.from(
+      new Set(
+        storedVehicles.flatMap((vehicle) => {
+          const id = vehicle.id;
+          const inventoryId = vehicle.inventory_id;
+          return [id, inventoryId]
+            .filter((value): value is string | number =>
+              typeof value === "string" || typeof value === "number"
+            )
+            .map((value) => String(value).trim())
+            .filter(Boolean);
+        })
+      )
+    );
+    if (ids.length === 0) {
+      setInventoryVehicles({ key: inventoryKey, vehicles: [] });
+      return;
+    }
 
     let isCancelled = false;
 
-    async function checkSoldStatus() {
+    async function fetchCurrentVehicles() {
       try {
-        const searchUrl = `${protocol}://${host}:${port}/collections/${collection}/documents/search?q=*&filter_by=id:=[${ids.join(",")}]&include_fields=id,inventory_id,status&per_page=${ids.length}`;
+        const filter = `id:=[${ids.map((id) => `\`${id.replace(/`/g, "'")}\``).join(",")}]`;
+        const searchUrl = `${protocol}://${host}:${port}/collections/${collection}/documents/search?q=*&filter_by=${encodeURIComponent(filter)}&per_page=${ids.length}`;
 
         const res = await fetch(searchUrl, {
           headers: {
             "X-TYPESENSE-API-KEY": searchKey,
           },
+          cache: "no-store",
         });
 
-        if (!res.ok || isCancelled) return;
-        const data = await res.json();
-        const hits = (data?.hits || []) as Array<{ document: Record<string, unknown> }>;
+        if (!res.ok) {
+          throw new Error(`Inventory lookup failed with status ${res.status}`);
+        }
+        const data = (await res.json()) as {
+          hits?: Array<{ document?: Record<string, unknown> }>;
+        };
+        if (isCancelled) return;
 
-        const statusMap = new Map<string, string>();
-        for (const hit of hits) {
-          const doc = hit.document;
-          const docId = String(doc.id ?? doc.inventory_id ?? "").trim();
-          if (docId) {
-            statusMap.set(docId, String(doc.status ?? "").trim().toLowerCase());
+        const vehiclesById = new Map<string, RecentlyViewedVehicle>();
+        for (const hit of data.hits ?? []) {
+          const document = hit.document;
+          if (!document) continue;
+          for (const value of [document.id, document.inventory_id]) {
+            if (value != null) {
+              vehiclesById.set(String(value).trim(), document);
+            }
           }
         }
 
-        let updated = false;
-        const currentList = getRecentlyViewed();
-        const validList = currentList.filter((item) => {
-          const itemId = getVehicleInventoryId(item);
-          const liveStatus = statusMap.get(itemId);
-          // If live status is present and not instock, it is sold or unavailable
-          if (liveStatus && liveStatus !== "instock") {
-            updated = true;
-            return false;
-          }
-          return true;
+        const currentVehicles = storedVehicles.flatMap((storedVehicle) => {
+          const storedIds = [storedVehicle.inventory_id, storedVehicle.id]
+            .filter((value): value is string | number =>
+              typeof value === "string" || typeof value === "number"
+            )
+            .map((value) => String(value).trim())
+            .filter(Boolean);
+          const liveVehicle = storedIds
+            .map((id) => vehiclesById.get(id))
+            .find((vehicle) => vehicle !== undefined);
+          return liveVehicle && isValidVehicle(liveVehicle) ? [liveVehicle] : [];
         });
 
-        if (updated && !isCancelled) {
-          saveVehicles(validList);
-        }
-      } catch {
-        // Silently ignore network or check errors
+        if (isCancelled) return;
+        setInventoryVehicles({ key: inventoryKey, vehicles: currentVehicles });
+        saveVehicles(currentVehicles);
+      } catch (error) {
+        console.error("Failed to refresh recently viewed vehicles from inventory:", error);
       }
     }
 
-    checkSoldStatus();
+    fetchCurrentVehicles();
 
     return () => {
       isCancelled = true;
     };
   }, [
     isHydrated,
-    recentlyViewed.length,
-    appConfig?.site?.typesense_host,
-    appConfig?.site?.typesense_port,
-    appConfig?.site?.typesense_protocol,
-    appConfig?.site?.collection,
-    appConfig?.site?.inventory_search_only_key,
+    serializedItems,
+    inventoryKey,
+    host,
+    port,
+    protocol,
+    collection,
+    searchKey,
   ]);
 
   const hasBeenViewed = useCallback(
