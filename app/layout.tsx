@@ -9,7 +9,7 @@ import { headers } from "next/headers";
 import { Inter } from "next/font/google";
 import { Footer, Header } from "@/components/layout";
 import { MainContent } from "@/components/layout/MainContent";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { MetaPixel } from "@/components/MetaPixel";
 
 const inter = Inter({
@@ -84,6 +84,7 @@ export default async function RootLayout({
       className={`h-full antialiased ${inter.variable}`}
       style={CSS_VARIABLES as React.CSSProperties}
     >
+      <GoogleTagManager gtmId="GTM-W877TL97" />
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="shortcut icon" href="/favicon.svg" />
